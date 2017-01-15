@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		    <title>Getting Started: Handling Form Submission</title>
+		        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		    <h1>Result</h1>
+				<span th:text="${expression.addToExpression(expression.info)}" />
+			    <p th:text="'Expression: ' + ${expression.toString()}" />
+			<p th:text="'Propositionals: ' + ${expression.listPropositions()}" />
+
+
+			        <a href="/expression">Submit another message</a>
+	</body>
+</html>
