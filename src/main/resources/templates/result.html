@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		    <h1>Result</h1>
-				<span th:text="${expression.addToExpression(expression.info)}" />
+				<span th:text="${expression.addToExpression(expression.expressionString)}" />
 			    <p th:text="'Expression: ' + ${expression.toString()}" />
 			<p th:text="'Propositionals: ' + ${expression.listPropositions()}" />
 

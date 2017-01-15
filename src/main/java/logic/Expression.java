@@ -12,9 +12,7 @@ public class Expression {
 
     private List<Component> expression;
 
-    private int id;
-
-    private String info;
+    private String expressionString;
 
 
     public Expression() {
@@ -23,19 +21,49 @@ public class Expression {
 
     public void addToExpression(String input) {
 
+
+
         String[] tokens = input.split(" ");
 
         for (String token : tokens) {
-            switch(token){
-                case "|": expression.add(new Operator("OR", OperatorType.OR)); break;
-                case "^": expression.add(new Operator("AND", OperatorType.AND)); break;
-                case "->": expression.add(new Operator("IMPLIES", OperatorType.IMPLIES)); break;
-                case "<->": expression.add(new Operator("ONLY", OperatorType.ONLY)); break;
-                case "(": expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET)); break;
-                case ")": expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET)); break;
+
+            switch (token) {
+                case "|":
+                    expression.add(new Operator("OR", OperatorType.OR));
+                    break;
+                case "^":
+                    expression.add(new Operator("AND", OperatorType.AND));
+                    break;
+                case "->":
+                    expression.add(new Operator("IMPLIES", OperatorType.IMPLIES));
+                    break;
+                case "<->":
+                    expression.add(new Operator("ONLY", OperatorType.ONLY));
+                    break;
+                case "(":
+                    expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+                    break;
+                case ")":
+                    expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
+                    break;
                 default:
-                    token = token.replaceAll("\\p{P}","");
+                    while (token.contains("(")) {
+                        expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+                        token = token.substring(1);
+                    }
+
+                    int count = 0;
+                    while (token.contains(")")) {
+                        token = removeLastChar(token);
+                        count++;
+                    }
+
                     expression.add(new Proposition(token));
+
+                    while (count > 0) {
+                        expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
+                        count--;
+                    }
             }
         }
     }
@@ -59,26 +87,30 @@ public class Expression {
     @Override
     public String toString() {
         String result = "";
+        int count = 0;
         for (Component c : expression) {
-            result += c.toString() + " ";
+
+            result += c.toString();
+            if (count < expression.size() - 1) {
+                result += " ";
+            }
+            count++;
         }
         return result;
     }
 
-
-    public void setId(int id) {
-        this.id = id;
+    public String getExpressionString() {
+        return expressionString;
     }
 
-    public int getId() {
-        return id;
+    public void setExpressionString(String expressionString) {
+        this.expressionString = expressionString;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
+    private String removeLastChar(String s) {
+        if (s == null || s.length() == 0) {
+            return s;
+        }
+        return s.substring(0, s.length()-1);
     }
 }
