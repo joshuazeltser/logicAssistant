@@ -21,8 +21,6 @@ public class Expression {
 
     public void addToExpression(String input) {
 
-
-
         String[] tokens = input.split(" ");
 
         for (String token : tokens) {
@@ -78,10 +76,6 @@ public class Expression {
             }
         }
         return props;
-    }
-
-    public boolean isAlpha(String name) {
-        return name.matches("[a-zA-Z]+");
     }
 
     @Override

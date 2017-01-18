@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ExpressionController {
 
 	    @GetMapping("/expression")
-	        public String expressionForm(Model model) {
-			        model.addAttribute("expression", new Expression());
-				        return "expression";
-					    }
+		public String expressionForm(Model model) {
+			model.addAttribute("expression", new Expression());
+			return "expression";
+		}
 
-	        @PostMapping("/expression")
-		    public String expressionSubmit(@ModelAttribute Expression expression) {
+		@PostMapping("/expression")
+		public String expressionSubmit(@ModelAttribute Expression expression) {
 	    	return "result";
-				        }
+		}
 
 }
