@@ -1,4 +1,4 @@
-package logic;
+package model;
 
 
 import java.util.LinkedList;
@@ -17,6 +17,7 @@ public class Expression {
 
     public Expression() {
         expression = new LinkedList<>();
+        expressionString = "";
     }
 
     public void addToExpression(String input) {
@@ -106,5 +107,58 @@ public class Expression {
             return s;
         }
         return s.substring(0, s.length()-1);
+    }
+
+    public List<Expression> splitExpressionBy(OperatorType type) {
+
+        List<Expression> result = new LinkedList<>();
+        int count = 0;
+        for (Component c : expression) {
+            count++;
+            if (c instanceof Operator) {
+                if (((Operator) c).getType() == type) {
+
+                    Expression lhsExpr = new Expression();
+                    lhsExpr.expression = expression.subList(0, count-1);
+                    result.add(lhsExpr);
+
+                    Expression rhsExpr = new Expression();
+                    rhsExpr.expression = expression.subList(count , expression.size());
+                    result.add(rhsExpr);
+
+                    return result;
+                }
+            }
+        }
+        //exception handling
+        return null;
+    }
+
+    public String convertListToString(List<Component> list) {
+        String result = "";
+        for (Component c : list) {
+            result += c.toString();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null) {
+            return false;
+        }
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        Expression expr2 = (Expression) o;
+
+        return toString().equals(expr2.toString());
     }
 }
