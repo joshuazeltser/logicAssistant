@@ -1,4 +1,4 @@
-package Controller;
+package model;
 
 import model.Expression;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ public class ExpressionController {
 
 	    @GetMapping("/expression")
 		public String expressionForm(Model model) {
-			model.addAttribute("expression", new Expression());
+			model.addAttribute("expression", new Expression(RuleType.GIVEN));
 			return "expression";
 		}
 

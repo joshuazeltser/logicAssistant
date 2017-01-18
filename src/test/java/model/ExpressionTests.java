@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class ExpressionTests {
 
-    Expression expression = new Expression();
+    Expression expression = new Expression(RuleType.GIVEN);
 
     @Test
     public void simpleCorrectPropositionsFromExpression() {

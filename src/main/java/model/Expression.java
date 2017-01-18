@@ -1,6 +1,9 @@
 package model;
 
 
+import com.oracle.tools.packager.JreUtils;
+import javassist.compiler.ast.Expr;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +17,13 @@ public class Expression {
 
     private String expressionString;
 
+    private RuleType ruleType;
 
-    public Expression() {
+
+    public Expression(RuleType ruleType) {
         expression = new LinkedList<>();
         expressionString = "";
+        this.ruleType = ruleType;
     }
 
     public void addToExpression(String input) {
@@ -109,7 +115,22 @@ public class Expression {
         return s.substring(0, s.length()-1);
     }
 
+    private String removeFirstChar(String s) {
+        if (s == null || s.length() == 0) {
+            return s;
+        }
+        return s.substring(1, s.length());
+    }
+
+
+
     public List<Expression> splitExpressionBy(OperatorType type) {
+
+        if (expression.get(0).toString().equals("OPEN")
+                && expression.get(expression.size()-1).toString().equals("CLOSE")) {
+            expression.remove(0);
+            expression.remove(expression.size()-1);
+        }
 
         List<Expression> result = new LinkedList<>();
         int count = 0;
@@ -118,11 +139,11 @@ public class Expression {
             if (c instanceof Operator) {
                 if (((Operator) c).getType() == type) {
 
-                    Expression lhsExpr = new Expression();
+                    Expression lhsExpr = new Expression(ruleType);
                     lhsExpr.expression = expression.subList(0, count-1);
                     result.add(lhsExpr);
 
-                    Expression rhsExpr = new Expression();
+                    Expression rhsExpr = new Expression(ruleType);
                     rhsExpr.expression = expression.subList(count , expression.size());
                     result.add(rhsExpr);
 
@@ -161,4 +182,10 @@ public class Expression {
 
         return toString().equals(expr2.toString());
     }
+
+    public RuleType getRuleType() {
+        return ruleType;
+    }
+
+    
 }

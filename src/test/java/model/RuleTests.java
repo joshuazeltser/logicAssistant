@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class RuleTests {
     public void splitTest() {
         String simple = "(A | B) ^ C";
 
-        Expression expression = new Expression();
+        Expression expression = new Expression(RuleType.GIVEN);
 
         expression.addToExpression(simple);
 
@@ -41,19 +42,19 @@ public class RuleTests {
 
         String str5 = "A ^ B";
 
-        Expression expr1 = new Expression();
+        Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression();
+        Expression expr2 = new Expression(RuleType.GIVEN);
         expr2.addToExpression(str2);
 
-        Expression expr3 = new Expression();
+        Expression expr3 = new Expression(RuleType.GIVEN);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression();
+        Expression expr4 = new Expression(RuleType.GIVEN);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression();
+        Expression expr5 = new Expression(RuleType.GIVEN);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr1);
@@ -66,7 +67,91 @@ public class RuleTests {
 
         assertTrue(Rules.isAndIntroValid(expr5, proof));
 
+    }
 
+    @Test
+    public void complexAndIntroductionValidity() {
+
+        Proof proof = new Proof();
+
+        String str1 = "(A -> B)";
+
+        String str2 = "B ^ C";
+
+        String str3 = "(D | E) | F";
+
+        String str4 = "G";
+
+        String str5 = "(A -> B) ^ (D | E) | F";
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.GIVEN);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.GIVEN);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr1);
+
+        proof.addExpression(expr2);
+
+        proof.addExpression(expr3);
+
+        proof.addExpression(expr4);
+
+        assertTrue(Rules.isAndIntroValid(expr5, proof));
 
     }
+
+    @Test
+    public void impliesIntroductionValidity() {
+        Proof proof = new Proof();
+
+        String str1 = "A"; //given
+
+        String str2 = "B"; //given
+
+        String str3 = "C"; //assume
+
+        String str4 = "A ^ B"; //and intro
+
+        String str5 = "C -> A ^ B"; //wanted
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.AND_INTRO);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr1);
+
+        proof.addExpression(expr2);
+
+        proof.addExpression(expr3);
+
+        assertTrue(Rules.isAndIntroValid(expr4, proof));
+
+        proof.addExpression(expr4);
+
+        assertTrue(Rules.isImpliesIntroValid(expr5, proof));
+    }
+
+
 }
