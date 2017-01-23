@@ -5,5 +5,5 @@ package model;
  */
 public enum OperatorType {
 
-    OR, AND, IMPLIES, ONLY, OPEN_BRACKET, CLOSE_BRACKET
+    NOT, OR, AND, IMPLIES, ONLY, OPEN_BRACKET, CLOSE_BRACKET
 }

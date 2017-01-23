@@ -1,9 +1,0 @@
-logic/Application.class
-logic/Proposition.class
-logic/OperatorType.class
-logic/TestMain.class
-logic/ExpressionController.class
-logic/Expression.class
-logic/Component.class
-logic/Operator.class
-logic/Greeting.class

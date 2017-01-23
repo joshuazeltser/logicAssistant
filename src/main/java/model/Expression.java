@@ -51,7 +51,12 @@ public class Expression {
                 case ")":
                     expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
                     break;
+
                 default:
+                    if (token.charAt(0) == '!') {
+                        expression.add(new Operator("NOT", OperatorType.NOT));
+                        token = token.substring(1);
+                    }
                     while (token.contains("(")) {
                         expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
                         token = token.substring(1);
@@ -63,12 +68,18 @@ public class Expression {
                         count++;
                     }
 
+                    if (token.charAt(0) == '!') {
+                        expression.add(new Operator("NOT", OperatorType.NOT));
+                        token = token.substring(1);
+                    }
+
                     expression.add(new Proposition(token));
 
                     while (count > 0) {
                         expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
                         count--;
                     }
+
             }
         }
     }
