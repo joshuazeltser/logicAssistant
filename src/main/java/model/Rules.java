@@ -46,6 +46,23 @@ public class Rules {
         return false;
     }
 
+    public static boolean isOrIntroValid(Expression e1, Proof proof) {
+        List<Expression> sides = e1.splitExpressionBy(OperatorType.OR);
+
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
+
+        for (Expression expr : proof.getExpressions()) {
+            if (expr.equals(lhs) || expr.equals(rhs)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
     public static boolean isImpliesIntroValid(Expression e1, Proof proof) {
         List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES);
 

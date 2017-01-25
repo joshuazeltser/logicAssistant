@@ -28,4 +28,18 @@ public class Proof {
     public void addExpression(Expression expr) {
         expressions.add(expr);
     }
+
+    @Override
+    public String toString() {
+
+        String result = "";
+
+        int count = 1;
+
+        for (Expression expr : expressions) {
+            result += count + " " + expr.toString() + "\n";
+            count++;
+        }
+        return result;
+    }
 }

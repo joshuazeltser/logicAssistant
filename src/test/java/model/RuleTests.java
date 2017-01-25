@@ -1,5 +1,6 @@
 package model;
 
+import javassist.compiler.ast.Expr;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -211,7 +212,59 @@ public class RuleTests {
         proof.addExpression(expr3);
 
         assertTrue(Rules.isAndElimValid(expr4, proof));
+    }
 
+    @Test
+    public void simpleOrIntroTest() {
+        Proof proof = new Proof();
+
+        String str = "B";
+
+        String str1 = "A ^ C";
+
+        String str2 = "A | B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertTrue(Rules.isOrIntroValid(expr2, proof));
+    }
+
+    @Test
+    public void andElimOrIntroTest() {
+        Proof proof = new Proof();
+
+        String str = "P ^ Q";
+
+        String str1 = "P";
+
+        String str2 = "P | Q";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+
+        assertTrue(Rules.isAndElimValid(expr1, proof));
+
+        proof.addExpression(expr1);
+
+        assertTrue(Rules.isOrIntroValid(expr2, proof));
     }
 
 
