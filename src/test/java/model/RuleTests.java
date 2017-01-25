@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class RuleTests {
 
+    Proof proof = new Proof();
     @Test
     public void splitTest() {
         String simple = "(A | B) ^ C";
@@ -22,7 +23,7 @@ public class RuleTests {
 
         expression.addToExpression(simple);
 
-        List<Expression> sides = expression.splitExpressionBy(OperatorType.AND);
+        List<Expression> sides = expression.splitExpressionBy(OperatorType.AND,0);
 
         assertTrue(sides.get(0).toString().equals("OPEN A OR B CLOSE"));
 
@@ -31,7 +32,6 @@ public class RuleTests {
 
     @Test
     public void andIntroductionValidity() {
-        Proof proof = new Proof();
 
         String str1 = "A";
 
@@ -66,14 +66,52 @@ public class RuleTests {
 
         proof.addExpression(expr4);
 
-        assertTrue(Rules.isAndIntroValid(expr5, proof));
+        assertTrue(proof.isAndIntroValid(expr5));
+
+    }
+
+    @Test
+    public void multipleAndIntroductionValidity() {
+
+        String str1 = "A";
+
+        String str2 = "A ^ B";
+
+        String str3 = "C";
+
+        String str4 = "D";
+
+        String str5 = "A ^ B ^ C";
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.GIVEN);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.GIVEN);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr1);
+
+        proof.addExpression(expr2);
+
+        proof.addExpression(expr3);
+
+        proof.addExpression(expr4);
+
+        assertTrue(proof.isAndIntroValid(expr5));
 
     }
 
     @Test
     public void complexAndIntroductionValidity() {
-
-        Proof proof = new Proof();
 
         String str1 = "(A -> B)";
 
@@ -108,13 +146,12 @@ public class RuleTests {
 
         proof.addExpression(expr4);
 
-        assertTrue(Rules.isAndIntroValid(expr5, proof));
+        assertTrue(proof.isAndIntroValid(expr5));
 
     }
 
     @Test
     public void impliesIntroductionValidity() {
-        Proof proof = new Proof();
 
         String str1 = "A"; //given
 
@@ -147,20 +184,18 @@ public class RuleTests {
 
         proof.addExpression(expr3);
 
-        assertTrue(Rules.isAndIntroValid(expr4, proof));
+        assertTrue(proof.isAndIntroValid(expr4));
 
         proof.addExpression(expr4);
 
-        assertTrue(Rules.isImpliesIntroValid(expr5, proof));
+        assertTrue(proof.isImpliesIntroValid(expr5));
     }
 
     @Test
     public void andElimSimpleTest() {
-        Proof proof = new Proof();
-
-        String str = "A ^ B";
+        String str = "A ^ C";
         String str1 = "A";
-        String str2 = "B";
+        String str2 = "C";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -173,14 +208,33 @@ public class RuleTests {
 
         proof.addExpression(expr);
 
-        assertTrue(Rules.isAndElimValid(expr1, proof));
-        assertTrue(Rules.isAndElimValid(expr2, proof));
+        assertTrue(proof.isAndElimValid(expr1));
+        assertTrue(proof.isAndElimValid(expr2));
+    }
+
+    @Test
+    public void multipleAndElimSimpleTest() {
+        String str = "A ^ B ^ C";
+        String str1 = "A ^ B";
+        String str2 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+
+        assertTrue(proof.isAndElimValid(expr1));
+        assertTrue(proof.isAndElimValid(expr2));
     }
 
     @Test
     public void complexAndElimTest() {
-        Proof proof = new Proof();
-
         String str = "A -> B";
 
         String str1 = "C";
@@ -211,13 +265,11 @@ public class RuleTests {
         proof.addExpression(expr2);
         proof.addExpression(expr3);
 
-        assertTrue(Rules.isAndElimValid(expr4, proof));
+        assertTrue(proof.isAndElimValid(expr4));
     }
 
     @Test
     public void simpleOrIntroTest() {
-        Proof proof = new Proof();
-
         String str = "B";
 
         String str1 = "A ^ C";
@@ -236,13 +288,34 @@ public class RuleTests {
         proof.addExpression(expr);
         proof.addExpression(expr1);
 
-        assertTrue(Rules.isOrIntroValid(expr2, proof));
+        assertTrue(proof.isOrIntroValid(expr2));
+    }
+
+    @Test
+    public void multipleOrIntroTest() {
+        String str = "A | B";
+
+        String str1 = "A ^ C";
+
+        String str2 = "A | B | C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertTrue(proof.isOrIntroValid(expr2));
     }
 
     @Test
     public void andElimOrIntroTest() {
-        Proof proof = new Proof();
-
         String str = "P ^ Q";
 
         String str1 = "P";
@@ -260,11 +333,11 @@ public class RuleTests {
 
         proof.addExpression(expr);
 
-        assertTrue(Rules.isAndElimValid(expr1, proof));
+        assertTrue(proof.isAndElimValid(expr1));
 
         proof.addExpression(expr1);
 
-        assertTrue(Rules.isOrIntroValid(expr2, proof));
+        assertTrue(proof.isOrIntroValid(expr2));
     }
 
 

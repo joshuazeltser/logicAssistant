@@ -1,10 +1,5 @@
 package model;
 
-
-import com.oracle.tools.packager.JreUtils;
-import javassist.compiler.ast.Expr;
-import org.springframework.util.StringUtils;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -134,9 +129,20 @@ public class Expression {
         return s.substring(1, s.length());
     }
 
+    public int countOperator(OperatorType type) {
+        int count = 0;
+        for (Component c : expression) {
+            if (c instanceof Operator) {
+                if (((Operator) c).getType() == type) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
 
-    public List<Expression> splitExpressionBy(OperatorType type) {
+    public List<Expression> splitExpressionBy(OperatorType type, int num) {
 
         if (expression.get(0).toString().equals("OPEN")
                 && expression.get(expression.size()-1).toString().equals("CLOSE")) {
@@ -145,26 +151,40 @@ public class Expression {
         }
 
         List<Expression> result = new LinkedList<>();
-        int count = 0;
-        for (Component c : expression) {
-            count++;
-            if (c instanceof Operator) {
-                if (((Operator) c).getType() == type) {
 
-                    Expression lhsExpr = new Expression(ruleType);
-                    lhsExpr.expression = expression.subList(0, count-1);
-                    result.add(lhsExpr);
+        int[] opIndex = new int[countOperator(type)];
 
-                    Expression rhsExpr = new Expression(ruleType);
-                    rhsExpr.expression = expression.subList(count , expression.size());
-                    result.add(rhsExpr);
+        int counter = 0;
+        for (int i = 0; i < expression.size(); i++) {
 
-                    return result;
+            if (expression.get(i) instanceof Operator) {
+                if (((Operator) expression.get(i)).getType() == type) {
+
+                    opIndex[counter] = i;
+                    counter++;
                 }
             }
+
         }
-        //exception handling
-        return null;
+
+
+        if (opIndex.length == 0) {
+            return null;
+        }
+
+        Expression lhsExpr = new Expression(ruleType);
+        lhsExpr.expression = expression.subList(0, opIndex[num]);
+        result.add(lhsExpr);
+
+
+
+        Expression rhsExpr = new Expression(ruleType);
+        rhsExpr.expression = expression.subList(opIndex[num]+1 , expression.size());
+        result.add(rhsExpr);
+
+        return result;
+
+
     }
 
     public String convertListToString(List<Component> list) {
