@@ -340,6 +340,24 @@ public class RuleTests {
         assertTrue(proof.isOrIntroValid(expr2));
     }
 
+    @Test
+    public void notNotSimpleTest() {
+        String str = "!!A";
+
+        String str1 = "A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.NOT_ELIM);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+
+
+        assertTrue(proof.isNotElimValid(expr1));
+    }
+
 
 
 

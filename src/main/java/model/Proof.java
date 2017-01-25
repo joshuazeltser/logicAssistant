@@ -142,10 +142,18 @@ public class Proof {
         return false;
     }
 
+    
+
     public boolean isNotElimValid(Expression e1) {
 
-
-
+        for (Expression expr : expressions) {
+            if (expr.doubleNot()) {
+                expr.removeNcomponents(2);
+                if (expr.equals(e1)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

@@ -229,19 +229,27 @@ public class Expression {
         return false;
     }
 
+    public boolean doubleNot() {
 
-//    public void removeBrackets() {
-//
-//
-//        if (expression.get(0) instanceof Operator) {
-//            if (((Operator) expression.get(0)).getType() == OperatorType.OPEN_BRACKET)
-//            expression.remove(0);
-//            System.out.println(expression.get(0));
-//        }
-//
-//        if (expression.get(expression.size()-1).equals(OperatorType.CLOSE_BRACKET)) {
-//            expression.remove(expression.size()-1);
-//        }
-//    }
+        int count = 0;
+        for (Component c : expression) {
+            if (c instanceof Operator) {
+                if (((Operator) c).getType() == OperatorType.NOT) {
+                    count++;
+                }
+                if (count == 2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void removeNcomponents(int n) {
+        for (int i = 0; i < n; i++) {
+            expression.remove(0);
+        }
+
+    }
     
 }
