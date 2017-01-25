@@ -3,6 +3,7 @@ package model;
 
 import com.oracle.tools.packager.JreUtils;
 import javassist.compiler.ast.Expr;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -198,5 +199,29 @@ public class Expression {
         return ruleType;
     }
 
+    public boolean contains(Component c) {
+        for (Component component : expression) {
+            if(c.toString().equals(component.toString())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+//    public void removeBrackets() {
+//
+//
+//        if (expression.get(0) instanceof Operator) {
+//            if (((Operator) expression.get(0)).getType() == OperatorType.OPEN_BRACKET)
+//            expression.remove(0);
+//            System.out.println(expression.get(0));
+//        }
+//
+//        if (expression.get(expression.size()-1).equals(OperatorType.CLOSE_BRACKET)) {
+//            expression.remove(expression.size()-1);
+//        }
+//    }
     
 }

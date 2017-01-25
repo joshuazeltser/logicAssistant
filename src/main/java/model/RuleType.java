@@ -5,5 +5,5 @@ package model;
  */
 public enum RuleType {
 
-    AND_INTRO, IMPLIES_INTRO, ASSUMPTION, GIVEN
+    AND_INTRO, IMPLIES_INTRO, ASSUMPTION, GIVEN, AND_ELIM
 }

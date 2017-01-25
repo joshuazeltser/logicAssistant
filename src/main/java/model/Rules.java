@@ -12,18 +12,34 @@ public class Rules {
         List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
 
 
-
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
 
         for (Expression expr : proof.getExpressions()) {
 
             if (expr.equals(lhs)) {
-                System.out.println(expr.toString());
                 for (Expression expr1 : proof.getExpressions()) {
                     if (expr1.equals(rhs)) {
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAndElimValid(Expression e1, Proof proof) {
+        for (Expression expr : proof.getExpressions()) {
+
+            if (expr.contains(new Operator("AND", OperatorType.AND))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
+
+
+                Expression lhs = sides.get(0);
+                Expression rhs = sides.get(1);
+
+                if (lhs.equals(e1) || rhs.equals(e1)) {
+                    return true;
                 }
             }
         }
@@ -35,8 +51,6 @@ public class Rules {
 
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
-
-
 
         boolean left = true;
         for (Expression expr : proof.getExpressions()) {

@@ -153,5 +153,68 @@ public class RuleTests {
         assertTrue(Rules.isImpliesIntroValid(expr5, proof));
     }
 
+    @Test
+    public void andElimSimpleTest() {
+        Proof proof = new Proof();
+
+        String str = "A ^ B";
+        String str1 = "A";
+        String str2 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+
+        assertTrue(Rules.isAndElimValid(expr1, proof));
+        assertTrue(Rules.isAndElimValid(expr2, proof));
+    }
+
+    @Test
+    public void complexAndElimTest() {
+        Proof proof = new Proof();
+
+        String str = "A -> B";
+
+        String str1 = "C";
+
+        String str2 = "A <-> C";
+
+        String str3 = "A ^ D";
+
+        String str4 = "D";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str3);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str1);
+
+        Expression expr4 = new Expression(RuleType.AND_ELIM);
+        expr4.addToExpression(str4);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+
+        assertTrue(Rules.isAndElimValid(expr4, proof));
+
+    }
+
+
+
 
 }
