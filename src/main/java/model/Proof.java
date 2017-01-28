@@ -181,4 +181,76 @@ public class Proof {
         }
         return false;
     }
+
+    public boolean isOnlyEliminationValid(Expression e1) {
+        for (Expression expr : expressions) {
+
+            if (expr.contains(new Operator("ONLY", OperatorType.ONLY))) {
+                int numAnd = expr.countOperator(OperatorType.ONLY);
+                int count = 0;
+                while (count != numAnd) {
+
+                    List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY, count);
+
+                    Expression lhs = sides.get(0);
+                    Expression rhs = sides.get(1);
+
+
+                    lhs.addToExpression("-> " + rhs);
+
+                    if (lhs.equals(e1)) {
+                        return true;
+                    }
+
+                    List<Expression> sides2 = lhs.splitExpressionBy(OperatorType.IMPLIES, count);
+
+                    Expression lhs2 = sides2.get(0);
+                    Expression rhs2 = sides2.get(1);
+
+                    rhs2.addToExpression("-> " + lhs2);
+
+                    if (rhs2.equals(e1)) {
+                        return true;
+                    }
+                    count++;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    public boolean isOnlyIntroValid(Expression e1) {
+
+        int numAnd = e1.countOperator(OperatorType.ONLY);
+        int count = 0;
+        while (count != numAnd) {
+            List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY, count);
+
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+
+            lhs.addToExpression("-> " + rhs);
+
+            List<Expression> sides2 = lhs.splitExpressionBy(OperatorType.IMPLIES, count);
+
+            Expression lhs2 = sides2.get(0);
+            Expression rhs2 = sides2.get(1);
+
+            rhs2.addToExpression("-> " + lhs2);
+
+            for (Expression expr : expressions) {
+                if (expr.equals(lhs) || expr.equals(rhs2)) {
+                    if (expr.equals(lhs) || expr.equals(rhs2)) {
+                        return true;
+                    }
+                }
+            }
+
+            count++;
+        }
+        return false;
+    }
+
+
 }

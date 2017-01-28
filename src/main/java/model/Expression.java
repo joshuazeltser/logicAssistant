@@ -1,5 +1,7 @@
 package model;
 
+import javassist.compiler.ast.Expr;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +22,10 @@ public class Expression {
         expression = new LinkedList<>();
         expressionString = "";
         this.ruleType = ruleType;
+    }
+
+    public Expression() {
+
     }
 
     public void addToExpression(String input) {

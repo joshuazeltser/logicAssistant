@@ -416,6 +416,174 @@ public class RuleTests {
         assertTrue(proof.isImpliesElimValid(expr4));
     }
 
+    @Test
+    public void realNDProofTest1() {
+        String str = "P";
+
+        String str1 = "Q";
+
+        String str2 = "P ^ Q -> R";
+
+        String str3 = "P ^ Q";
+
+        String str4 = "R";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.AND_INTRO);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        assertTrue(proof.isAndIntroValid(expr3));
+
+        proof.addExpression(expr3);
+
+        assertTrue(proof.isImpliesElimValid(expr4));
+
+        proof.addExpression(expr4);
+
+        System.out.println(proof.toString());
+    }
+
+    @Test
+    public void simpleOnlyElimTest() {
+        String str = "A <-> B";
+
+        String str1 = "A -> B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.ONLY_ELIM);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+
+        assertTrue(proof.isOnlyEliminationValid(expr1));
+    }
+
+    @Test
+    public void simpleOnlyIntroTest() {
+        String str = "A -> B";
+
+        String str1 = "B -> A";
+
+        String str2 = "A <-> B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ONLY_INTRO);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertTrue(proof.isOnlyIntroValid(expr2));
+    }
+
+    @Test
+    public void realNDProofTest2() {
+        String str = "P";
+
+        String str1 = "P <-> Q";
+
+        String str2 = "P -> Q";
+
+        String str3 = "Q";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ONLY_ELIM);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        proof.addExpression(expr);
+
+        proof.addExpression(expr1);
+
+        assertTrue(proof.isOnlyEliminationValid(expr2));
+
+        proof.addExpression(expr2);
+
+        assertTrue(proof.isImpliesElimValid(expr3));
+
+        proof.addExpression(expr3);
+    }
+
+    @Test
+    public void realNDProofTest3() {
+        String str = "P -> Q";
+
+        String str1 = "Q -> R";
+
+        String str2 = "P";
+
+        String str3 = "Q";
+
+        String str4 = "R";
+
+        String str5 = "P -> R";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        proof.addExpression(expr2);
+
+        assertTrue(proof.isImpliesElimValid(expr3));
+
+        proof.addExpression(expr3);
+
+        assertTrue(proof.isImpliesElimValid(expr4));
+
+        proof.addExpression(expr4);
+
+        assertTrue(proof.isImpliesIntroValid(expr5));
+
+        proof.addExpression(expr5);
+
+        System.out.println(proof.toString());
 
 
+    }
 }
