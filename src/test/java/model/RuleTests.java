@@ -358,6 +358,63 @@ public class RuleTests {
         assertTrue(proof.isNotElimValid(expr1));
     }
 
+    @Test
+    public void simpleImpliesEliminationTest() {
+        String str = "A";
+
+        String str1 = "A -> B";
+
+        String str2 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.IMPLIES_ELIM);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertTrue(proof.isImpliesElimValid(expr2));
+    }
+
+    @Test
+    public void complexImpliesEliminationTest() {
+        String str = "A -> C";
+
+        String str1 = "D ^ E";
+
+        String str2 = "F | G | R";
+
+        String str3 = "A -> C -> B";
+
+        String str4 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+
+        assertTrue(proof.isImpliesElimValid(expr4));
+    }
 
 
 

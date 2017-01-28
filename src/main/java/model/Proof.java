@@ -142,7 +142,32 @@ public class Proof {
         return false;
     }
 
-    
+    public boolean isImpliesElimValid(Expression e1) {
+
+        for (Expression expr : expressions) {
+            if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                int numAnd = expr.countOperator(OperatorType.IMPLIES);
+                int count = 0;
+                while (count != numAnd) {
+                    List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES, count);
+
+                    Expression lhs = sides.get(0);
+                    Expression rhs = sides.get(1);
+
+                    if (rhs.equals(e1)) {
+                        for (Expression expr2 : expressions) {
+                            if (expr2.equals(lhs)) {
+                                return true;
+                            }
+                        }
+                    }
+                count++;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public boolean isNotElimValid(Expression e1) {
 
