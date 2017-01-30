@@ -1,12 +1,9 @@
 package model;
 
-import javassist.compiler.ast.Expr;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -583,7 +580,46 @@ public class RuleTests {
         proof.addExpression(expr5);
 
         System.out.println(proof.toString());
+    }
 
+    @Test
+    public void notIntroSimpleTest() {
+        String str = "A -> B";
+        String str1 = "A -> !B";
+        String str2 = "A";
+        String str3 = "B";
+        String str4 = "A";
+        String str5 = "!B";
+        String str6 = "!A";
 
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.ASSUMPTION);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.NOT_INTRO);
+        expr6.addToExpression(str6);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+
+        assertTrue(proof.isNotIntroductionValid(expr6));
     }
 }

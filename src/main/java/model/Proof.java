@@ -252,5 +252,35 @@ public class Proof {
         return false;
     }
 
+    public boolean isNotIntroductionValid(Expression e1) {
+
+        e1.removeNcomponents(1);
+
+
+        for (Expression expr : expressions) {
+            if (expr.equals(e1)) {
+                Expression saved = e1;
+                for (Expression expr1 : expressions) {
+                    Expression e = new Expression();
+                    String temp = "!" + saved.toString();
+
+                    e.addToExpression(temp);
+
+
+                    for (Expression expr2 : expressions) {
+                        if ((expr2.toString().equals(e.toString()))) {
+                            return true;
+                        }
+                    }
+                    saved = expr1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    
+
 
 }

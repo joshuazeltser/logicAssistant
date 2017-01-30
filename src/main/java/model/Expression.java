@@ -2,6 +2,7 @@ package model;
 
 import javassist.compiler.ast.Expr;
 
+import javax.validation.constraints.Null;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,10 +26,12 @@ public class Expression {
     }
 
     public Expression() {
-
+        expression = new LinkedList<>();
+        expressionString = "";
     }
 
     public void addToExpression(String input) {
+
 
         String[] tokens = input.split(" ");
 
@@ -56,11 +59,13 @@ public class Expression {
 
                 default:
                     if (token.charAt(0) == '!') {
-                        expression.add(new Operator("NOT", OperatorType.NOT));
+                         expression.add(new Operator("NOT", OperatorType.NOT));
+
                         token = token.substring(1);
                     }
                     while (token.contains("(")) {
                         expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+
                         token = token.substring(1);
                     }
 
