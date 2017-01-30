@@ -256,7 +256,6 @@ public class Proof {
 
         e1.removeNcomponents(1);
 
-
         for (Expression expr : expressions) {
             if (expr.equals(e1)) {
                 Expression saved = e1;
@@ -273,6 +272,43 @@ public class Proof {
                         }
                     }
                     saved = expr1;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isOrEliminationValid(Expression e1) {
+        List<Expression> assumptions = new LinkedList<>();
+
+        for (Expression expr : expressions) {
+            if (expr.getRuleType() == RuleType.ASSUMPTION) {
+                assumptions.add(expr);
+            }
+        }
+        for (int i = 0; i < assumptions.size(); i++) {
+            for (int j = 0; i != j && j < assumptions.size(); j++) {
+                Expression orExpr = new Expression();
+                Expression orOppositeExpr = new Expression();
+                orExpr.addToExpression(assumptions.get(j).toString() + " | " + assumptions.get(i).toString());
+                orOppositeExpr.addToExpression(assumptions.get(i).toString() + " | " + assumptions.get(j).toString());
+
+                if (expressions.contains(orExpr) || expressions.contains(orOppositeExpr)) {
+                    Expression a = assumptions.get(j);
+                    Expression b = assumptions.get(i);
+
+                    int lhsIndex = expressions.indexOf(a);
+                    int rhsIndex = expressions.indexOf(b);
+
+                    for (int k = lhsIndex + 1; k < expressions.size(); k++) {
+                        if (expressions.get(k).equals(e1)) {
+                            for (int l = rhsIndex + 1; l < expressions.size(); l++) {
+                                if (expressions.get(l).equals(e1)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

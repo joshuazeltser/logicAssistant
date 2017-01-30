@@ -622,4 +622,50 @@ public class RuleTests {
 
         assertTrue(proof.isNotIntroductionValid(expr6));
     }
+
+    @Test
+    public void simpleOrEliminationTest() {
+        String str = "A | B";
+        String str1 = "A -> C";
+        String str2 = "B -> C";
+        String str3 = "A";
+        String str4 = "C";
+        String str5 = "B";
+        String str6 = "C";
+        String str7 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.ASSUMPTION);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr7.addToExpression(str7);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+
+        assertTrue(proof.isOrEliminationValid(expr7));
+    }
 }
