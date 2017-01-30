@@ -18,6 +18,23 @@ public class Proof {
     }
 
     public boolean isProofValid() {
+
+        for (int i = expressions.size()-1; i >= 0; i--) {
+            switch (expressions.get(i).getRuleType()) {
+                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) return false; break;
+                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) return false; break;
+                case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) return false; break;
+                case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) return false; break;
+                case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) return false; break;
+                case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) return false; break;
+                case NOT_ELIM: if (!isNotElimValid(expressions.get(i))) return false; break;
+                case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) return false; break;
+                case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) return false; break;
+                case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) return false; break;
+                default: break;
+            }
+            expressions.remove(i);
+        }
         return true;
     }
 
@@ -263,7 +280,9 @@ public class Proof {
                     Expression e = new Expression();
                     String temp = "!" + saved.toString();
 
-                    e.addToExpression(temp);
+                    if (saved.toString() != "" ) {
+                        e.addToExpression(temp);
+                    }
 
 
                     for (Expression expr2 : expressions) {

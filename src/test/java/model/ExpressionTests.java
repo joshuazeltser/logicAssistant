@@ -24,10 +24,10 @@ public class ExpressionTests {
 
     @Test
     public void notToComponent() {
-        String expr = "!A | !B";
+        String expr = "!A | !!B";
 
         expression.addToExpression(expr);
-        assertTrue(expression.toString().equals("NOT A OR NOT B"));
+        assertTrue(expression.toString().equals("NOT A OR NOT NOT B"));
 
     }
 

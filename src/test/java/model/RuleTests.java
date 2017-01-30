@@ -668,4 +668,167 @@ public class RuleTests {
 
         assertTrue(proof.isOrEliminationValid(expr7));
     }
+
+    @Test
+    public void fullCheckerTestProof1() {
+        String str = "P -> Q";
+        String str1 = "Q -> R";
+        String str2 = "P";
+        String str3 = "Q";
+        String str4 = "R";
+        String str5 = "P -> R";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+
+        assertTrue(proof.isProofValid());
+    }
+
+    @Test
+    public void fullCheckerTestProof2() {
+        String str = "P ^ Q | !P ^ R";
+        String str1 = "P ^ Q";
+        String str2 = "Q";
+        String str3 = "Q | R";
+        String str4 = "!P ^ R";
+        String str5 = "R";
+        String str6 = "Q | R";
+        String str7 = "Q | R";
+        String str8 = "P ^ Q | !P ^ R -> Q | R";
+
+        Expression expr = new Expression(RuleType.ASSUMPTION);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.ASSUMPTION);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.OR_INTRO);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.ASSUMPTION);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.AND_ELIM);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.OR_INTRO);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr7.addToExpression(str7);
+
+        Expression expr8 = new Expression(RuleType.IMPLIES_INTRO);
+        expr8.addToExpression(str8);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+        proof.addExpression(expr8);
+
+        assertTrue(proof.isProofValid());
+    }
+
+    @Test
+    public void fullCheckerTestProof3() {
+        String str = "P -> Q";
+        String str1 = "(P ^ !Q)";
+        String str2 = "P";
+        String str3 = "Q";
+        String str4 = "!Q";
+        String str5 = "!(P ^ !Q)";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.ASSUMPTION);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.AND_ELIM);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.NOT_INTRO);
+        expr5.addToExpression(str5);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+
+        assertTrue(proof.isProofValid());
+    }
+
+    @Test
+    public void fullCheckerTestProof4() {
+        String str = "!Q";
+        String str1 = "P";
+        String str2 = "!P";
+        String str3 = "!!Q";
+        String str4 = "Q";
+
+        Expression expr = new Expression(RuleType.ASSUMPTION);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.NOT_INTRO);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.NOT_ELIM);
+        expr4.addToExpression(str4);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+
+        assertTrue(proof.isProofValid());
+    }
+
+
+
+
+
 }
