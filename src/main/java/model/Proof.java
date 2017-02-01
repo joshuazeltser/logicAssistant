@@ -13,8 +13,34 @@ public class Proof {
 
     private List<Expression> expressions;
 
+    private String proofString;
+
     public Proof() {
         expressions = new LinkedList<>();
+        proofString = "";
+    }
+
+    public String separateByNewLine(String str) {
+        String result = "";
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '\n') {
+                Expression newExpr = new Expression();
+                newExpr.addToExpression(result);
+                addExpression(newExpr);
+                result = "";
+            } else {
+                result += str.charAt(i);
+                if (i == str.length() - 1) {
+                    Expression newExpr = new Expression();
+                    newExpr.addToExpression(result);
+                    addExpression(newExpr);
+                }
+
+            }
+
+        }
+        return toString();
     }
 
     public boolean isProofValid() {
@@ -335,7 +361,12 @@ public class Proof {
         return false;
     }
 
-    
 
+    public String getProofString() {
+        return proofString;
+    }
 
+    public void setProofString(String proofString) {
+        this.proofString = proofString;
+    }
 }

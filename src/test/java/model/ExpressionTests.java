@@ -7,6 +7,15 @@ public class ExpressionTests {
 
     Expression expression = new Expression(RuleType.GIVEN);
 
+//    @Test
+//    public void newLineSplitTest() {
+//        Proof proof = new Proof();
+//        String test = "A | B\nA ^ B";
+//
+//        System.out.println(proof.separateByNewLine(test));
+//        assertTrue(proof.separateByNewLine(test).equals("A | B"));
+//    }
+
     @Test
     public void simpleCorrectPropositionsFromExpression() {
         String expr = "(A | B)";

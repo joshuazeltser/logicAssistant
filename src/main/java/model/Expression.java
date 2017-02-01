@@ -14,21 +14,22 @@ public class Expression {
 
     private List<Component> expression;
 
-    private String expressionString;
+
 
     private RuleType ruleType;
 
 
     public Expression(RuleType ruleType) {
         expression = new LinkedList<>();
-        expressionString = "";
+
         this.ruleType = ruleType;
     }
 
     public Expression() {
         expression = new LinkedList<>();
-        expressionString = "";
     }
+
+
 
     public void addToExpression(String input) {
 
@@ -118,13 +119,6 @@ public class Expression {
         return result;
     }
 
-    public String getExpressionString() {
-        return expressionString;
-    }
-
-    public void setExpressionString(String expressionString) {
-        this.expressionString = expressionString;
-    }
 
     private String removeLastChar(String s) {
         if (s == null || s.length() == 0) {

@@ -6,11 +6,15 @@
 	</head>
 	<body>
 		    <h1>Result</h1>
-				<span th:text="${expression.addToExpression(expression.expressionString)}" />
-			    <p th:text="'Expression: ' + ${expression.toString()}" />
-			<p th:text="'Propositionals: ' + ${expression.listPropositions()}" />
+				<span th:action="@{/proof}" th:object="${proof}" />
 
 
-			        <a href="/expression">Submit another message</a>
+			<p data-th-utext="${#strings.replace(#strings.escapeXml(proof.separateByNewLine(proof.proofString)),
+			'&#10;','&lt;br&gt;')}"></p>
+
+
+			        <a href="/proof">Submit another message</a>
 	</body>
+
+
 </html>

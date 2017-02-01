@@ -6,9 +6,13 @@
 	</head>
 	<body>
 		    <h1>Expression Input</h1>
-		        <form action="#" th:action="@{/expression}" th:object="${expression}" method="post">
-					        <p>Expression: <input type="text" th:field="*{expressionString}" /></p>
+		        <form action="#" th:action="@{/proof}" th:object="${proof}" method="post">
+					<p>Expression:
+						<textarea name="Text1" th:field="*{proofString}" cols="40" rows="5"></textarea>
+						</p>
 						        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 							    </form>
 	</body>
+
+
 </html>
