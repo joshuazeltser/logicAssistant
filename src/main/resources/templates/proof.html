@@ -17,6 +17,7 @@
 								margin-left: auto;
 								margin-right: auto;
 								resize: none;
+								white-space: nowrap;
 							}
 							.inline-div {
 								display:inline-block;
@@ -33,13 +34,13 @@
 							textarea { font-size: 30px; }
 						</style>
 					<div class="inline-div">
-						<p align="center">Proof</p>
+						<p style="font-size:36px;" align="center">Proof</p>
 
 						<textarea id="Text1" th:field="*{proofString}" cols="20" rows="10" onkeyup="if(this.textLength != 0) {submit.disabled = false} else {submit.disabled = true}"></textarea>
 					</div>
 					<div class="inline-div">
-						<p align="center">Rule</p>
-							<textarea id="Text2" th:field="*{proofLabels}" cols="12" rows="10" style="text-transform:uppercase" ></textarea>
+						<p style="font-size:36px;" align="center">Rule</p>
+							<textarea id="Text2" th:field="*{proofLabels}" cols="14" rows="10" style="text-transform:uppercase" ></textarea>
 					</div>
 
 						        <p><input id="submit" class="medium-btn" type="submit" value="Submit" />
@@ -47,6 +48,7 @@
 
 
 							    </form>
+				<div id="display" style="height: 50px; width: 100%;"></div>
 
 
 			</center>
