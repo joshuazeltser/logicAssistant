@@ -10,9 +10,11 @@ public class ExpressionTests {
 //    @Test
 //    public void newLineSplitTest() {
 //        Proof proof = new Proof();
-//        String test = "A | B\nA ^ B";
+//        String test = "A ^ B\nA\nA | B";
 //
-//        System.out.println(proof.separateByNewLine(test));
+//        proof.separateByNewLine(test);
+//        System.out.println(proof.frontEndProofValidity());
+//
 //        assertTrue(proof.separateByNewLine(test).equals("A | B"));
 //    }
 

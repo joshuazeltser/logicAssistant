@@ -797,11 +797,11 @@ public class RuleTests {
 
     @Test
     public void fullCheckerTestProof4() {
-        String str = "!Q";
+        String str = "!Queen";
         String str1 = "P";
         String str2 = "!P";
-        String str3 = "!!Q";
-        String str4 = "Q";
+        String str3 = "!!Queen";
+        String str4 = "Queen";
 
         Expression expr = new Expression(RuleType.ASSUMPTION);
         expr.addToExpression(str);

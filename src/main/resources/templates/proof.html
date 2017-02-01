@@ -4,14 +4,52 @@
 		    <title>Expression Former</title>
 		        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	</head>
-	<body>
-		    <h1>Expression Input</h1>
+	<body onload="submit.disabled = true">
+		    <h1>Logic Assistant</h1>
+			<center>
 		        <form action="#" th:action="@{/proof}" th:object="${proof}" method="post">
-					<p>Expression:
-						<textarea name="Text1" th:field="*{proofString}" cols="40" rows="5"></textarea>
-						</p>
-						        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+
+
+						<style>
+							textarea{
+								vertical-align: middle;
+								display: block;
+								margin-left: auto;
+								margin-right: auto;
+								resize: none;
+							}
+							.inline-div {
+								display:inline-block;
+							}
+							.inline-txtarea {
+								resize: none;
+								border : 2px solid red;
+								height:125px;
+							}
+							.medium-btn {
+								width: 200px;
+								height: 100px;
+							}
+							textarea { font-size: 30px; }
+						</style>
+					<div class="inline-div">
+						<p align="center">Proof</p>
+
+						<textarea id="Text1" th:field="*{proofString}" cols="20" rows="10" onkeyup="if(this.textLength != 0) {submit.disabled = false} else {submit.disabled = true}"></textarea>
+					</div>
+					<div class="inline-div">
+						<p align="center">Rule</p>
+							<textarea id="Text2" th:field="*{proofLabels}" cols="12" rows="10" style="text-transform:uppercase" ></textarea>
+					</div>
+
+						        <p><input id="submit" class="medium-btn" type="submit" value="Submit" />
+									<input class="medium-btn"  type="reset" value="Reset" /></p>
+
+
 							    </form>
+
+
+			</center>
 	</body>
 
 

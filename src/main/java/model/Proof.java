@@ -14,41 +14,50 @@ public class Proof {
     private List<Expression> expressions;
 
     private String proofString;
+    private String proofLabels;
 
     public Proof() {
         expressions = new LinkedList<>();
         proofString = "";
     }
 
-    public String separateByNewLine(String str) {
-        String result = "";
+    public String separateByNewLine(String proof, String rule) {
 
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '\n') {
-                Expression newExpr = new Expression();
-                newExpr.addToExpression(result);
-                addExpression(newExpr);
-                result = "";
-            } else {
-                result += str.charAt(i);
-                if (i == str.length() - 1) {
-                    Expression newExpr = new Expression();
-                    newExpr.addToExpression(result);
-                    addExpression(newExpr);
-                }
+        String[] expr = proof.split("\\r?\\n");
+        String[] exprRule = rule.split("\\r?\\n");
 
-            }
-
+        for (int i = 0; i < expr.length; i++) {
+            Expression newExpr = new Expression(convertStringToRule(exprRule[i]));
+            newExpr.addToExpression(expr[i]);
+            addExpression(newExpr);
         }
         return toString();
+    }
+
+    private RuleType convertStringToRule(String rule) {
+        switch (rule) {
+            case "GIVEN": return RuleType.GIVEN;
+            case "ASSUMPTION": return RuleType.ASSUMPTION;
+            case "AND_INTRO": return RuleType.AND_INTRO;
+            case "AND_ELIM": return RuleType.AND_ELIM;
+            case "OR_INTRO": return RuleType.OR_INTRO;
+            case "OR_ELIM": return RuleType.OR_ELIM;
+            case "NOT_INTRO": return RuleType.NOT_INTRO;
+            case "NOT_ELIM": return RuleType.NOT_ELIM;
+            case "IMPLIES_INTRO": return RuleType.IMPLIES_INTRO;
+            case "IMPLIES_ELIM": return RuleType.IMPLIES_ELIM;
+            case "ONLY_INTRO": return RuleType.ONLY_INTRO;
+            case "ONLY_ELIM": return RuleType.ONLY_ELIM;
+            default: return RuleType.INVALID;
+        }
     }
 
     public boolean isProofValid() {
 
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
-                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) return false; break;
-                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) return false; break;
+                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) return false;break;
+                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) return false;break;
                 case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) return false; break;
                 case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) return false; break;
                 case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) return false; break;
@@ -57,11 +66,19 @@ public class Proof {
                 case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) return false; break;
                 case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) return false; break;
                 case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) return false; break;
+                case INVALID: return false;
                 default: break;
             }
             expressions.remove(i);
         }
         return true;
+    }
+
+    public String frontEndProofValidity() {
+        if (isProofValid()) {
+            return "Proof is Valid";
+        }
+        return "Proof is INVALID!";
     }
 
     public List<Expression> getExpressions() {
@@ -368,5 +385,15 @@ public class Proof {
 
     public void setProofString(String proofString) {
         this.proofString = proofString;
+    }
+
+
+
+    public String getProofLabels() {
+        return proofLabels;
+    }
+
+    public void setProofLabels(String proofLabels) {
+        this.proofLabels = proofLabels;
     }
 }

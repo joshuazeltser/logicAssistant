@@ -8,9 +8,10 @@
 		    <h1>Result</h1>
 				<span th:action="@{/proof}" th:object="${proof}" />
 
+			<p data-th-utext="${#strings.replace(#strings.escapeXml(
+			proof.separateByNewLine(proof.proofString, proof.proofLabels)),'&#10;','&lt;br&gt;')}"></p>
 
-			<p data-th-utext="${#strings.replace(#strings.escapeXml(proof.separateByNewLine(proof.proofString)),
-			'&#10;','&lt;br&gt;')}"></p>
+			<p th:text="${proof.frontEndProofValidity()}" />
 
 
 			        <a href="/proof">Submit another message</a>
