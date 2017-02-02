@@ -19,19 +19,22 @@ public class Proof {
     public Proof() {
         expressions = new LinkedList<>();
         proofString = "";
+        proofLabels = "";
     }
 
-    public String separateByNewLine(String proof, String rule) {
+    public void separateByNewLine(String proof, String rule) {
 
-        String[] expr = proof.split("\\r?\\n");
-        String[] exprRule = rule.split("\\r?\\n");
+        if (!proof.equals("") && !rule.equals("")) {
+            String[] expr = proof.split("\\r?\\n");
+            String[] exprRule = rule.split("\\r?\\n");
 
-        for (int i = 0; i < expr.length; i++) {
-            Expression newExpr = new Expression(convertStringToRule(exprRule[i]));
-            newExpr.addToExpression(expr[i]);
-            addExpression(newExpr);
+            for (int i = 0; i < expr.length; i++) {
+                Expression newExpr = new Expression(convertStringToRule(exprRule[i]));
+                newExpr.addToExpression(expr[i]);
+                addExpression(newExpr);
+            }
         }
-        return toString();
+
     }
 
     private RuleType convertStringToRule(String rule) {
@@ -75,7 +78,9 @@ public class Proof {
     }
 
     public String frontEndProofValidity() {
-        if (isProofValid()) {
+        if (proofString.equals("") || proofLabels.equals("")) {
+            return "";
+        } else if (isProofValid()) {
             return "Proof is Valid";
         }
         return "Proof is INVALID!";
