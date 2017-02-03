@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>gs-handling-form-submission</artifactId>
-    <version>0.1.0</version>
+    <artifactId>logicassistant</artifactId>
+    <version>0.1.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -38,7 +38,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        </plugins>
+        
+        <plugin>
+    <groupId>com.boxfuse.client</groupId>
+    <artifactId>boxfuse-maven-plugin</artifactId>
+    <version>1.24.5.1247</version>
+    <configuration>
+        <user>08ca70ad5f7343218ea6a1e0cf8e72e0</user>
+        <secret>vjHiG2Ya1keUDtNYxqT0iYKCgVKzs7o159i9JcqPiXkeMr8Cwnqu48ithIDtXaaa</secret>
+
+    </configuration>
+</plugin>
+</plugins>
     </build>
 
     <repositories>
@@ -52,5 +63,9 @@
             <id>spring-releases</id>
             <url>https://repo.spring.io/libs-release</url>
         </pluginRepository>
+        <pluginRepository>
+    <id>boxfuse-repo</id>
+    <url>https://files.boxfuse.com</url>
+</pluginRepository>
     </pluginRepositories>
 </project>

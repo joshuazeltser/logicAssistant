@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mvn clean package | grep 'BUILD SUCCESS'
+if [ $? == 0 ]; then
+	boxfuse run -ports.http=80 -env=prod
+else
+	mvn package
+fi
+
