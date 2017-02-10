@@ -5,6 +5,7 @@ import javassist.compiler.ast.Expr;
 import javax.validation.constraints.Null;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -35,6 +36,9 @@ public class Expression {
 
 
         String[] tokens = input.split(" ");
+        if (!tokens[0].contains("(") && tokens.length != 1) {
+            expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+        }
 
         for (String token : tokens) {
 
@@ -59,7 +63,7 @@ public class Expression {
                     break;
 
                 default:
-                    if (token.charAt(0) == '!') {
+                    while (token.charAt(0) == '!') {
                          expression.add(new Operator("NOT", OperatorType.NOT));
 
                         token = token.substring(1);
@@ -76,7 +80,7 @@ public class Expression {
                         count++;
                     }
 
-                    if (token.charAt(0) == '!') {
+                    while (token.charAt(0) == '!') {
                         expression.add(new Operator("NOT", OperatorType.NOT));
                         token = token.substring(1);
                     }
@@ -90,6 +94,12 @@ public class Expression {
 
             }
         }
+
+        if (!tokens[tokens.length-1].contains(")") && tokens.length > 2) {
+            expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
+
+        }
+
     }
 
     public List<Proposition> listPropositions() {
@@ -134,6 +144,13 @@ public class Expression {
         return s.substring(1, s.length());
     }
 
+    public void addExpressionExternalBrackets() {
+
+
+
+    }
+
+
     public int countOperator(OperatorType type) {
         int count = 0;
         for (Component c : expression) {
@@ -147,12 +164,15 @@ public class Expression {
     }
 
 
+
     public List<Expression> splitExpressionBy(OperatorType type, int num) {
 
-        if (expression.get(0).toString().equals("OPEN")
-                && expression.get(expression.size()-1).toString().equals("CLOSE")) {
-            expression.remove(0);
-            expression.remove(expression.size()-1);
+        if (type != OperatorType.IMPLIES) {
+            if (expression.get(0).toString().equals("OPEN")
+                    && expression.get(expression.size() - 1).toString().equals("CLOSE")) {
+                expression.remove(0);
+                expression.remove(expression.size() - 1);
+            }
         }
 
         List<Expression> result = new LinkedList<>();
@@ -179,6 +199,7 @@ public class Expression {
 
         Expression lhsExpr = new Expression(ruleType);
         lhsExpr.expression = expression.subList(0, opIndex[num]);
+
         result.add(lhsExpr);
 
 

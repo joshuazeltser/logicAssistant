@@ -271,7 +271,7 @@ public class RuleTests {
 
         String str1 = "A ^ C";
 
-        String str2 = "A | B";
+        String str2 = "(A | B)";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -294,7 +294,7 @@ public class RuleTests {
 
         String str1 = "A ^ C";
 
-        String str2 = "A | B | C";
+        String str2 = "(A | B) | C";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -419,7 +419,7 @@ public class RuleTests {
 
         String str1 = "Q";
 
-        String str2 = "P ^ Q -> R";
+        String str2 = "(P ^ Q) -> R";
 
         String str3 = "P ^ Q";
 

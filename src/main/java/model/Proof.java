@@ -2,6 +2,7 @@ package model;
 
 
 import javassist.compiler.ast.Expr;
+import javassist.compiler.ast.Symbol;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,16 +60,46 @@ public class Proof {
 
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
-                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) return false;break;
-                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) return false;break;
-                case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) return false; break;
-                case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) return false; break;
-                case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) return false; break;
-                case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) return false; break;
-                case NOT_ELIM: if (!isNotElimValid(expressions.get(i))) return false; break;
-                case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) return false; break;
-                case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) return false; break;
-                case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) return false; break;
+                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) {
+                    System.out.println("AND_ELIM error");
+                    return false;
+                } break;
+                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) {
+                    System.out.println("AND_INTRO error");
+                    return false;
+                } break;
+                case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) {
+                    System.out.println("OR_ELIM error");
+                    return false;
+                } break;
+                case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) {
+                    System.out.println("OR_INTRO error");
+                    return false;
+                } break;
+                case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) {
+                    System.out.println("IMPLIES_ELIM error");
+                    return false;
+                } break;
+                case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) {
+                    System.out.println("IMPLIES_INTRO error");
+                    return false;
+                } break;
+                case NOT_ELIM: if (!isNotElimValid(expressions.get(i))) {
+                    System.out.println("NOT_ELIM error");
+                    return false;
+                } break;
+                case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) {
+                    System.out.println("NOT_INTRO error");
+                    return false;
+                } break;
+                case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) {
+                    System.out.println("ONLY_ELIM error");
+                    return false;
+                } break;
+                case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) {
+                    System.out.println("ONLY_INTRO error");
+                    return false;
+                } break;
                 case INVALID: return false;
                 default: break;
             }
@@ -149,6 +180,8 @@ public class Proof {
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
 
+
+
                     if (lhs.equals(e1) || rhs.equals(e1)) {
                         return true;
                     }
@@ -169,7 +202,18 @@ public class Proof {
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
+//            lhs.addToExpression(")");
+//            rhs.addToExpression();
+
+
+
+
+
             for (Expression expr : expressions) {
+//                expr.addExpressionExternalBrackets();
+//                System.out.println("LHS: " + lhs.toString());
+//                System.out.println("RHS: " + rhs.toString());
+//                System.out.println("Expr: " + expr);
                 if (expr.equals(lhs) || expr.equals(rhs)) {
                     return true;
                 }
@@ -191,8 +235,15 @@ public class Proof {
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
+
+
+
             boolean left = true;
             for (Expression expr : expressions) {
+//
+//                System.out.println("EXPR: " + expr.toString());
+//                System.out.println("RHS: " + rhs.toString());
+
                 if (expr.equals(lhs) && expr.getRuleType() == RuleType.ASSUMPTION && left) {
                     left = false;
                     continue;
@@ -218,6 +269,8 @@ public class Proof {
 
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
+
+
 
                     if (rhs.equals(e1)) {
                         for (Expression expr2 : expressions) {
