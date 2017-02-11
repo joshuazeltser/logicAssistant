@@ -6,6 +6,7 @@ import javax.validation.constraints.Null;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Stack;
 
 
 /**
@@ -32,12 +33,20 @@ public class Expression {
 
 
 
-    public void addToExpression(String input) {
+    public boolean addToExpression(String input) {
 
+        if (!checkBrackets(input)) {
+            System.out.println("MISMATCHED BRACKETS");
+            return false;
+        }
 
         String[] tokens = input.split(" ");
-        if (!tokens[0].contains("(") && tokens.length != 1) {
+
+
+        boolean added = false;
+        if (!externalBrackets(input) && tokens.length > 1 && input.charAt(0) != '(') {
             expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+            added = true;
         }
 
         for (String token : tokens) {
@@ -95,10 +104,12 @@ public class Expression {
             }
         }
 
-        if (!tokens[tokens.length-1].contains(")") && tokens.length > 2) {
+        if (added) {
             expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
 
+//            System.out.println("Token " + expression);
         }
+        return true;
 
     }
 
@@ -167,23 +178,29 @@ public class Expression {
 
     public List<Expression> splitExpressionBy(OperatorType type, int num) {
 
-        if (type != OperatorType.IMPLIES) {
-            if (expression.get(0).toString().equals("OPEN")
-                    && expression.get(expression.size() - 1).toString().equals("CLOSE")) {
-                expression.remove(0);
-                expression.remove(expression.size() - 1);
+        List<Component> thisExpression = expression;
+
+
+//        if (type != OperatorType.IMPLIES && type != OperatorType.ONLY) {
+            if (thisExpression.get(0).toString().equals("OPEN")
+                    && thisExpression.get(thisExpression.size() - 1).toString().equals("CLOSE")) {
+
+                thisExpression.remove(0);
+                thisExpression.remove(thisExpression.size() - 1);
+
             }
-        }
+//        }
+
 
         List<Expression> result = new LinkedList<>();
 
         int[] opIndex = new int[countOperator(type)];
 
         int counter = 0;
-        for (int i = 0; i < expression.size(); i++) {
+        for (int i = 0; i < thisExpression.size(); i++) {
 
-            if (expression.get(i) instanceof Operator) {
-                if (((Operator) expression.get(i)).getType() == type) {
+            if (thisExpression.get(i) instanceof Operator) {
+                if (((Operator) thisExpression.get(i)).getType() == type) {
 
                     opIndex[counter] = i;
                     counter++;
@@ -198,14 +215,14 @@ public class Expression {
         }
 
         Expression lhsExpr = new Expression(ruleType);
-        lhsExpr.expression = expression.subList(0, opIndex[num]);
+        lhsExpr.expression = thisExpression.subList(0, opIndex[num]);
 
         result.add(lhsExpr);
 
 
 
         Expression rhsExpr = new Expression(ruleType);
-        rhsExpr.expression = expression.subList(opIndex[num]+1 , expression.size());
+        rhsExpr.expression = thisExpression.subList(opIndex[num]+1 , thisExpression.size());
         result.add(rhsExpr);
 
         return result;
@@ -277,5 +294,61 @@ public class Expression {
         }
 
     }
-    
+
+    public static boolean checkBrackets(String str)
+    {
+        if (str.isEmpty())
+            return true;
+
+        Stack<Character> stack = new Stack<Character>();
+        for (int i = 0; i < str.length(); i++)
+        {
+            char current = str.charAt(i);
+            if (current == '{' || current == '(' || current == '[')
+            {
+                stack.push(current);
+            }
+
+
+            if (current == '}' || current == ')' || current == ']')
+            {
+                if (stack.isEmpty())
+                    return false;
+
+                char last = stack.peek();
+                if (current == '}' && last == '{' || current == ')' && last == '(' || current == ']' && last == '[')
+                    stack.pop();
+                else
+                    return false;
+            }
+
+        }
+
+        return stack.isEmpty();
+    }
+
+    public static boolean externalBrackets(String str) {
+        int waiting = 0;
+
+        if (str.charAt(0) != '(' || str.charAt(str.length() - 1) != ')') {
+            return false;
+        }
+
+        char[] array = str.toCharArray();
+
+        String result = "";
+        for (int i = 0; i < str.length(); i++) {
+            if (i != 0 && i != str.length()-1) {
+                result += array[i];
+            }
+        }
+
+        System.out.println(result);
+
+
+        return checkBrackets(result);
+
+
+    }
+
 }

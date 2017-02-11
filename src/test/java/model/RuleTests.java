@@ -22,6 +22,8 @@ public class RuleTests {
 
         List<Expression> sides = expression.splitExpressionBy(OperatorType.AND,0);
 
+        System.out.println(sides.get(0).toString());
+
         assertTrue(sides.get(0).toString().equals("OPEN A OR B CLOSE"));
 
         assertTrue(sides.get(1).toString().equals("C"));
@@ -78,7 +80,7 @@ public class RuleTests {
 
         String str4 = "D";
 
-        String str5 = "A ^ B ^ C";
+        String str5 = "(A ^ B) ^ C";
 
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
@@ -118,7 +120,7 @@ public class RuleTests {
 
         String str4 = "G";
 
-        String str5 = "(A -> B) ^ (D | E) | F";
+        String str5 = "(A -> B) ^ ((D | E) | F)";
 
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
@@ -158,7 +160,7 @@ public class RuleTests {
 
         String str4 = "A ^ B"; //and intro
 
-        String str5 = "C -> A ^ B"; //wanted
+        String str5 = "C -> (A ^ B)"; //wanted
 
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);

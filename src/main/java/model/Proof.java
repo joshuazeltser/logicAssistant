@@ -58,6 +58,7 @@ public class Proof {
 
     public boolean isProofValid() {
 
+
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
                 case AND_ELIM: if (!isAndElimValid(expressions.get(i))) {
@@ -151,6 +152,8 @@ public class Proof {
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
+
+
             for (Expression expr : expressions) {
 
                 if (expr.equals(lhs)) {
@@ -236,13 +239,21 @@ public class Proof {
             Expression rhs = sides.get(1);
 
 
+            int counter = 0;
 
+            System.out.println("EXPRESSIONS " + expressions);
 
             boolean left = true;
             for (Expression expr : expressions) {
-//
-//                System.out.println("EXPR: " + expr.toString());
-//                System.out.println("RHS: " + rhs.toString());
+
+                System.out.println("LHS " + lhs.toString());
+                System.out.println("RHS " + rhs.toString());
+                System.out.println("EXPR " + expr.toString());
+
+
+                counter++;
+                if (counter == 4)
+                break;
 
                 if (expr.equals(lhs) && expr.getRuleType() == RuleType.ASSUMPTION && left) {
                     left = false;

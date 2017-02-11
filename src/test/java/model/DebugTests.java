@@ -1,13 +1,22 @@
 package model;
 
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by joshuazeltser on 08/02/2017.
  */
 public class DebugTests {
+
+    @Test
+    public void outerBracketsTest() {
+        String str = "(A | B) ^ (C -> D)";
+
+        assertFalse(Expression.externalBrackets(str));
+    }
 
     @Test
     public void bracketsTest1() {
