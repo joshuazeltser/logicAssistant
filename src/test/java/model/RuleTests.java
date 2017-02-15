@@ -873,6 +873,53 @@ public class RuleTests {
         assertTrue(proof.isProofValid());
     }
 
+    @Test
+    public void fullCheckerTestProof5() {
+        String str = "P -> Q";
+        String str1 = "P | !P";
+        String str2 = "P";
+        String str3 = "Q";
+        String str4 = "!P | Q";
+        String str5 = "!P";
+        String str6 = "!P | Q";
+        String str7 = "!P | Q";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.OR_INTRO);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.ASSUMPTION);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.OR_INTRO);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr7.addToExpression(str7);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+
+        assertTrue(proof.isProofValid());
+    }
+
 
 
 
