@@ -241,7 +241,7 @@ public class Proof {
 
             int counter = 0;
 
-            System.out.println("EXPRESSIONS " + expressions);
+//            System.out.println("EXPRESSIONS " + expressions);
 
             boolean left = true;
             for (Expression expr : expressions) {
@@ -251,9 +251,7 @@ public class Proof {
                 System.out.println("EXPR " + expr.toString());
 
 
-                counter++;
-                if (counter == 4)
-                break;
+
 
                 if (expr.equals(lhs) && expr.getRuleType() == RuleType.ASSUMPTION && left) {
                     left = false;
@@ -324,21 +322,19 @@ public class Proof {
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
 
+                    Expression result = new Expression();
 
-                    lhs.addToExpression("-> " + rhs);
+                    result.addToExpression(lhs + " -> " + rhs);
 
-                    if (lhs.equals(e1)) {
+                    if (result.equals(e1)) {
                         return true;
                     }
 
-                    List<Expression> sides2 = lhs.splitExpressionBy(OperatorType.IMPLIES, count);
+                    Expression result1 = new Expression();
 
-                    Expression lhs2 = sides2.get(0);
-                    Expression rhs2 = sides2.get(1);
+                    result1.addToExpression(rhs + " -> " + lhs);
 
-                    rhs2.addToExpression("-> " + lhs2);
-
-                    if (rhs2.equals(e1)) {
+                    if (result1.equals(e1)) {
                         return true;
                     }
                     count++;
@@ -359,18 +355,19 @@ public class Proof {
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
-            lhs.addToExpression("-> " + rhs);
+            Expression result = new Expression();
+            Expression result2 = new Expression();
 
-            List<Expression> sides2 = lhs.splitExpressionBy(OperatorType.IMPLIES, count);
 
-            Expression lhs2 = sides2.get(0);
-            Expression rhs2 = sides2.get(1);
+            result.addToExpression(lhs + " -> " + rhs);
 
-            rhs2.addToExpression("-> " + lhs2);
+            result2.addToExpression(rhs + " -> " + lhs);
+
+
 
             for (Expression expr : expressions) {
-                if (expr.equals(lhs) || expr.equals(rhs2)) {
-                    if (expr.equals(lhs) || expr.equals(rhs2)) {
+                if (expr.equals(result) || expr.equals(result2)) {
+                    if (expr.equals(result) || expr.equals(result2)) {
                         return true;
                     }
                 }

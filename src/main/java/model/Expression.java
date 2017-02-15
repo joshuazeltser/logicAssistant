@@ -44,7 +44,7 @@ public class Expression {
 
 
         boolean added = false;
-        if (!externalBrackets(input) && tokens.length > 1 && input.charAt(0) != '(') {
+        if (!externalBrackets(input) && tokens.length > 1 && input.charAt(0) != '(' && !tokens[0].equals("->")) {
             expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
             added = true;
         }
@@ -350,5 +350,6 @@ public class Expression {
 
 
     }
+
 
 }

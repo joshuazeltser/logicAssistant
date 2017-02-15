@@ -213,7 +213,7 @@ public class RuleTests {
 
     @Test
     public void multipleAndElimSimpleTest() {
-        String str = "A ^ B ^ C";
+        String str = "(A ^ B) ^ C";
         String str1 = "A ^ B";
         String str2 = "C";
 
@@ -718,7 +718,7 @@ public class RuleTests {
         String str5 = "R";
         String str6 = "Q | R";
         String str7 = "Q | R";
-        String str8 = "P ^ Q | !P ^ R -> Q | R";
+        String str8 = "((P ^ Q) | (!P ^ R)) -> (Q | R)";
 
         Expression expr = new Expression(RuleType.ASSUMPTION);
         expr.addToExpression(str);
