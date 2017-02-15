@@ -79,6 +79,7 @@ public class Proof {
                 } break;
                 case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) {
                     System.out.println("IMPLIES_ELIM error");
+
                     return false;
                 } break;
                 case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) {
@@ -146,7 +147,7 @@ public class Proof {
         int count = 0;
         while (count != numAnd) {
 
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.AND, count);
+            List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
 
 
             Expression lhs = sides.get(0);
@@ -174,11 +175,8 @@ public class Proof {
         for (Expression expr : expressions) {
 
             if (expr.contains(new Operator("AND", OperatorType.AND))) {
-                int numAnd = expr.countOperator(OperatorType.AND);
-                int count = 0;
-                while (count != numAnd) {
 
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.AND, count);
+                    List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
 
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
@@ -188,8 +186,6 @@ public class Proof {
                     if (lhs.equals(e1) || rhs.equals(e1)) {
                         return true;
                     }
-                    count++;
-                }
 
             }
         }
@@ -200,7 +196,7 @@ public class Proof {
         int numAnd = e1.countOperator(OperatorType.OR);
         int count = 0;
         while (count != numAnd) {
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.OR, count);
+            List<Expression> sides = e1.splitExpressionBy(OperatorType.OR);
 
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
@@ -208,7 +204,8 @@ public class Proof {
 //            lhs.addToExpression(")");
 //            rhs.addToExpression();
 
-
+            System.out.println(lhs);
+            System.out.println(rhs);
 
 
 
@@ -230,26 +227,18 @@ public class Proof {
 
 
     public boolean isImpliesIntroValid(Expression e1) {
-        int numAnd = e1.countOperator(OperatorType.IMPLIES);
-        int count = 0;
-        while (count != numAnd) {
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES, count);
+
+
+            List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES);
 
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
-
-            int counter = 0;
-
-//            System.out.println("EXPRESSIONS " + expressions);
+//            System.out.println(lhs);
+//            System.out.println(rhs);
 
             boolean left = true;
             for (Expression expr : expressions) {
-
-                System.out.println("LHS " + lhs.toString());
-                System.out.println("RHS " + rhs.toString());
-                System.out.println("EXPR " + expr.toString());
-
 
 
 
@@ -257,41 +246,44 @@ public class Proof {
                     left = false;
                     continue;
                 }
-
-                if (expr.equals(rhs) && expr.getRuleType() != RuleType.ASSUMPTION && !left) {
+                if (expr.equals(rhs) && !left) {
+                    System.out.println("TRUE");
                     return true;
                 }
             }
-            count++;
-        }
+
+
         return false;
     }
 
     public boolean isImpliesElimValid(Expression e1) {
 
-        for (Expression expr : expressions) {
+        List<Expression> temp = expressions;
+        for (Expression expr : temp) {
+
+
             if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                int numAnd = expr.countOperator(OperatorType.IMPLIES);
-                int count = 0;
-                while (count != numAnd) {
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES, count);
+
+
+                    List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
 
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
 
-
+                System.out.println(lhs);
+                System.out.println(rhs);
 
                     if (rhs.equals(e1)) {
+
                         for (Expression expr2 : expressions) {
+
                             if (expr2.equals(lhs)) {
                                 return true;
                             }
                         }
                     }
-                count++;
                 }
             }
-        }
         return false;
     }
 
@@ -317,7 +309,7 @@ public class Proof {
                 int count = 0;
                 while (count != numAnd) {
 
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY, count);
+                    List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY);
 
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
@@ -350,7 +342,7 @@ public class Proof {
         int numAnd = e1.countOperator(OperatorType.ONLY);
         int count = 0;
         while (count != numAnd) {
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY, count);
+            List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY);
 
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);

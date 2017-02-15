@@ -42,13 +42,6 @@ public class Expression {
 
         String[] tokens = input.split(" ");
 
-
-        boolean added = false;
-        if (!externalBrackets(input) && tokens.length > 1 && input.charAt(0) != '(' && !tokens[0].equals("->")) {
-            expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
-            added = true;
-        }
-
         for (String token : tokens) {
 
             switch (token) {
@@ -104,11 +97,6 @@ public class Expression {
             }
         }
 
-        if (added) {
-            expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
-
-//            System.out.println("Token " + expression);
-        }
         return true;
 
     }
@@ -155,10 +143,40 @@ public class Expression {
         return s.substring(1, s.length());
     }
 
-    public void addExpressionExternalBrackets() {
+    public int surroundedByBrackets (OperatorType type) {
+
+        int num = countOperator(type);
+        int[] ops = new int[num];
+        int counter = 0;
+
+        for (int i = 0; i < expression.size(); i++) {
+            if (expression.get(i) instanceof Operator) {
+                if (((Operator) expression.get(i)).getType() == type) {
+                    ops[counter] = i;
+                    counter++;
+                }
+            }
+        }
+//        System.out.println(expression.get(ops[0]+2).toString().equals("CLOSE"));
+        for (int j = 0; j < ops.length; j++) {
+            if (ops[j] < 2) {
+                return ops[j];
+            }
+
+            if (ops[j] > expression.size()-2) {
+                return ops[j];
+            }
+            if (!expression.get(ops[j]-2).toString().equals("OPEN")) {
+
+                return ops[j];
+            }
+        }
 
 
 
+
+        System.out.println("Syntax error");
+        return 0;
     }
 
 
@@ -176,53 +194,59 @@ public class Expression {
 
 
 
-    public List<Expression> splitExpressionBy(OperatorType type, int num) {
+    public List<Expression> splitExpressionBy(OperatorType type) {
 
         List<Component> thisExpression = expression;
 
 
-//        if (type != OperatorType.IMPLIES && type != OperatorType.ONLY) {
-            if (thisExpression.get(0).toString().equals("OPEN")
+        if (thisExpression.get(0).toString().equals("OPEN")
                     && thisExpression.get(thisExpression.size() - 1).toString().equals("CLOSE")) {
 
                 thisExpression.remove(0);
                 thisExpression.remove(thisExpression.size() - 1);
 
-            }
-//        }
-
+        }
 
         List<Expression> result = new LinkedList<>();
 
-        int[] opIndex = new int[countOperator(type)];
+        int num = countOperator(type);
 
-        int counter = 0;
-        for (int i = 0; i < thisExpression.size(); i++) {
+        Expression lhsExpr = new Expression();
+        Expression rhsExpr = new Expression();
 
-            if (thisExpression.get(i) instanceof Operator) {
-                if (((Operator) thisExpression.get(i)).getType() == type) {
+        if (num > 1) {
+//            System.out.println(num);
+            int index = surroundedByBrackets(type);
+            System.out.println(index);
+//            System.out.println(thisExpression);
+            lhsExpr = new Expression(ruleType);
+            lhsExpr.expression = thisExpression.subList(0, index);
 
-                    opIndex[counter] = i;
-                    counter++;
-                }
+
+//            System.out.println(lhsExpr.expression);
+            rhsExpr = new Expression(ruleType);
+            rhsExpr.expression = thisExpression.subList(index+1 , thisExpression.size());
+
+
+//            System.out.println(rhsExpr.expression);
+        } else {
+            for (int i = 0; i < thisExpression.size(); i++) {
+
+             if (thisExpression.get(i) instanceof Operator) {
+                  if (((Operator) thisExpression.get(i)).getType() == type) {
+                      lhsExpr = new Expression(ruleType);
+                      lhsExpr.expression = thisExpression.subList(0, i);
+                      rhsExpr = new Expression(ruleType);
+                      rhsExpr.expression = thisExpression.subList(i+1 , thisExpression.size());
+                  }
+             }
+
             }
-
         }
+//        System.out.println(lhsExpr.expression.get(0));
 
-
-        if (opIndex.length == 0) {
-            return null;
-        }
-
-        Expression lhsExpr = new Expression(ruleType);
-        lhsExpr.expression = thisExpression.subList(0, opIndex[num]);
 
         result.add(lhsExpr);
-
-
-
-        Expression rhsExpr = new Expression(ruleType);
-        rhsExpr.expression = thisExpression.subList(opIndex[num]+1 , thisExpression.size());
         result.add(rhsExpr);
 
         return result;
@@ -255,7 +279,10 @@ public class Expression {
 
         Expression expr2 = (Expression) o;
 
-        return toString().equals(expr2.toString());
+        return toString().equals(expr2.toString()) ||
+                ("OPEN " + toString() + " CLOSE").equals(expr2.toString()) ||
+                toString().equals("OPEN " + expr2.toString() + " CLOSE") ||
+                ("OPEN " + toString() + " CLOSE").equals("OPEN " + expr2.toString() + " CLOSE");
     }
 
     public RuleType getRuleType() {

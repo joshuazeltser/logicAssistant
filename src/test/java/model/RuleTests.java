@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class RuleTests {
 
     Proof proof = new Proof();
+
     @Test
     public void splitTest() {
         String simple = "(A | B) ^ C";
@@ -20,7 +21,7 @@ public class RuleTests {
 
         expression.addToExpression(simple);
 
-        List<Expression> sides = expression.splitExpressionBy(OperatorType.AND,0);
+        List<Expression> sides = expression.splitExpressionBy(OperatorType.AND);
 
         System.out.println(sides.get(0).toString());
 
@@ -120,7 +121,7 @@ public class RuleTests {
 
         String str4 = "G";
 
-        String str5 = "(A -> B) ^ ((D | E) | F)";
+        String str5 = "(A -> B) ^ (D | E) | F";
 
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
@@ -134,7 +135,7 @@ public class RuleTests {
         Expression expr4 = new Expression(RuleType.GIVEN);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.GIVEN);
+        Expression expr5 = new Expression(RuleType.AND_INTRO);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr1);
@@ -145,37 +146,75 @@ public class RuleTests {
 
         proof.addExpression(expr4);
 
-        assertTrue(proof.isAndIntroValid(expr5));
+        proof.addExpression(expr5);
+
+
+        assertTrue(proof.isProofValid());
+
+    }
+
+    @Test
+    public void simpleImpliesIntroduction() {
+
+        String str = "A";
+        String str1 = "A | B";
+        String str2 = "A -> (A | B)";
+
+        Expression expr = new Expression(RuleType.ASSUMPTION);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.OR_INTRO);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        assertTrue(proof.isProofValid());
+
 
     }
 
     @Test
     public void impliesIntroductionValidity() {
 
-        String str1 = "A"; //given
+        String str1 = "A -> (B -> C)"; //given
 
-        String str2 = "B"; //given
+        String str2 = "A ^ B";
 
-        String str3 = "C"; //assume
+        String str3 = "A";
 
-        String str4 = "A ^ B"; //and intro
+        String str4 = "B -> C";
 
-        String str5 = "C -> (A ^ B)"; //wanted
+        String str5 = "B";
+
+        String str6 = "C";
+
+        String str7 = "(A ^ B) -> C";
 
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.GIVEN);
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
         expr2.addToExpression(str2);
 
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        Expression expr3 = new Expression(RuleType.AND_ELIM);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression(RuleType.AND_INTRO);
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        Expression expr5 = new Expression(RuleType.AND_ELIM);
         expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.IMPLIES_INTRO);
+        expr7.addToExpression(str7);
 
         proof.addExpression(expr1);
 
@@ -183,11 +222,15 @@ public class RuleTests {
 
         proof.addExpression(expr3);
 
-        assertTrue(proof.isAndIntroValid(expr4));
-
+//        assertTrue(proof.isImpliesElimValid(expr4));
         proof.addExpression(expr4);
 
-        assertTrue(proof.isImpliesIntroValid(expr5));
+        proof.addExpression(expr5);
+
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -386,9 +429,9 @@ public class RuleTests {
 
         String str1 = "D ^ E";
 
-        String str2 = "F | G | R";
+        String str2 = "F | (G | R)";
 
-        String str3 = "A -> C -> B";
+        String str3 = "(A -> C) -> B";
 
         String str4 = "B";
 
@@ -411,8 +454,9 @@ public class RuleTests {
         proof.addExpression(expr1);
         proof.addExpression(expr2);
         proof.addExpression(expr3);
+        proof.addExpression(expr4);
 
-        assertTrue(proof.isImpliesElimValid(expr4));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -710,35 +754,35 @@ public class RuleTests {
 
     @Test
     public void fullCheckerTestProof2() {
-        String str = "P ^ Q | !P ^ R";
-        String str1 = "P ^ Q";
-        String str2 = "Q";
-        String str3 = "Q | R";
-        String str4 = "!P ^ R";
-        String str5 = "R";
-        String str6 = "Q | R";
-        String str7 = "Q | R";
-        String str8 = "((P ^ Q) | (!P ^ R)) -> (Q | R)";
+        String str = "A -> C";
+        String str1 = "B -> C";
+        String str2 = "A | B";
+        String str3 = "A";
+        String str4 = "C";
+        String str5 = "B";
+        String str6 = "C";
+        String str7 = "C";
+        String str8 = "A | B -> C";
 
-        Expression expr = new Expression(RuleType.ASSUMPTION);
+        Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-        Expression expr1 = new Expression(RuleType.ASSUMPTION);
+        Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
         expr2.addToExpression(str2);
 
-        Expression expr3 = new Expression(RuleType.OR_INTRO);
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression(RuleType.ASSUMPTION);
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.AND_ELIM);
+        Expression expr5 = new Expression(RuleType.ASSUMPTION);
         expr5.addToExpression(str5);
 
-        Expression expr6 = new Expression(RuleType.OR_INTRO);
+        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.OR_ELIM);
