@@ -64,4 +64,43 @@ public class ErrorTests {
 
         }
     }
+
+    @Test
+    public void syntaxErrorTest5() {
+        String str = "(A | B) ^ A A";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+        }
+    }
+
+    @Test
+    public void syntaxErrorTest6() {
+        String str = "(A | B) ^ ^ (A | A)";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+        }
+    }
+
+    @Test
+    public void syntaxErrorTest7() {
+        String str = "A -> -> B";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+        }
+    }
 }

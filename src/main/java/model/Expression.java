@@ -124,6 +124,30 @@ public class Expression {
                 throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" operator " +
                         "at this part of an expression");
             }
+
+
+            if (tokens[i] != "(" && tokens[i] != ")" && tokens[i] != "!" && i < tokens.length-1) {
+
+                if (tokens[i].equals(tokens[i+1])) {
+                    throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" twice in a row " +
+                            "as part of an expression");
+                }
+            }
+
+            if (isOperator(tokens[i]) && isOperator(tokens[i+1]) && i < tokens.length-1) {
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" twice in a row " +
+                        "as part of an expression");
+            }
+        }
+    }
+
+    private boolean isOperator(String str) {
+        switch (str) {
+            case "^":
+            case "->":
+            case "<->":
+            case "|": return true;
+            default: return false;
         }
     }
 
