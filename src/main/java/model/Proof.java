@@ -23,7 +23,7 @@ public class Proof {
         proofLabels = "";
     }
 
-    public void separateByNewLine(String proof, String rule) {
+    public void separateByNewLine(String proof, String rule)  {
 
         if (!proof.equals("") && !rule.equals("")) {
             String[] expr = proof.split("\\r?\\n");
@@ -31,7 +31,13 @@ public class Proof {
 
             for (int i = 0; i < expr.length; i++) {
                 Expression newExpr = new Expression(convertStringToRule(exprRule[i]));
-                newExpr.addToExpression(expr[i]);
+                try {
+                    newExpr.addToExpression(expr[i]);
+                } catch (SyntaxException e) {
+                    //add to error list
+
+                }
+
                 addExpression(newExpr);
             }
         }
@@ -56,7 +62,7 @@ public class Proof {
         }
     }
 
-    public boolean isProofValid() {
+    public boolean isProofValid() throws SyntaxException {
 
 
         for (int i = expressions.size()-1; i >= 0; i--) {
@@ -110,7 +116,7 @@ public class Proof {
         return true;
     }
 
-    public String frontEndProofValidity() {
+    public String frontEndProofValidity() throws SyntaxException {
         if (proofString.equals("") || proofLabels.equals("")) {
             return "";
         } else if (isProofValid()) {
@@ -301,7 +307,7 @@ public class Proof {
         return false;
     }
 
-    public boolean isOnlyEliminationValid(Expression e1) {
+    public boolean isOnlyEliminationValid(Expression e1) throws SyntaxException {
         for (Expression expr : expressions) {
 
             if (expr.contains(new Operator("ONLY", OperatorType.ONLY))) {
@@ -337,7 +343,7 @@ public class Proof {
         return false;
     }
 
-    public boolean isOnlyIntroValid(Expression e1) {
+    public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
 
         int numAnd = e1.countOperator(OperatorType.ONLY);
         int count = 0;
@@ -370,7 +376,7 @@ public class Proof {
         return false;
     }
 
-    public boolean isNotIntroductionValid(Expression e1) {
+    public boolean isNotIntroductionValid(Expression e1) throws SyntaxException {
 
         e1.removeNcomponents(1);
 
@@ -398,7 +404,7 @@ public class Proof {
         return false;
     }
 
-    public boolean isOrEliminationValid(Expression e1) {
+    public boolean isOrEliminationValid(Expression e1) throws SyntaxException {
         List<Expression> assumptions = new LinkedList<>();
 
         for (Expression expr : expressions) {

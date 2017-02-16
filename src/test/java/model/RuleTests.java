@@ -14,7 +14,7 @@ public class RuleTests {
     Proof proof = new Proof();
 
     @Test
-    public void splitTest() {
+    public void splitTest() throws SyntaxException {
         String simple = "(A | B) ^ C";
 
         Expression expression = new Expression(RuleType.GIVEN);
@@ -31,7 +31,7 @@ public class RuleTests {
     }
 
     @Test
-    public void andIntroductionValidity() {
+    public void andIntroductionValidity() throws SyntaxException {
 
         String str1 = "A";
 
@@ -71,7 +71,7 @@ public class RuleTests {
     }
 
     @Test
-    public void multipleAndIntroductionValidity() {
+    public void multipleAndIntroductionValidity() throws SyntaxException {
 
         String str1 = "A";
 
@@ -111,7 +111,7 @@ public class RuleTests {
     }
 
     @Test
-    public void complexAndIntroductionValidity() {
+    public void complexAndIntroductionValidity() throws SyntaxException {
 
         String str1 = "(A -> B)";
 
@@ -154,7 +154,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleImpliesIntroduction() {
+    public void simpleImpliesIntroduction() throws SyntaxException {
 
         String str = "A";
         String str1 = "A | B";
@@ -179,7 +179,7 @@ public class RuleTests {
     }
 
     @Test
-    public void impliesIntroductionValidity() {
+    public void impliesIntroductionValidity() throws SyntaxException {
 
         String str1 = "A -> (B -> C)"; //given
 
@@ -234,7 +234,7 @@ public class RuleTests {
     }
 
     @Test
-    public void andElimSimpleTest() {
+    public void andElimSimpleTest() throws SyntaxException {
         String str = "A ^ C";
         String str1 = "A";
         String str2 = "C";
@@ -255,7 +255,7 @@ public class RuleTests {
     }
 
     @Test
-    public void multipleAndElimSimpleTest() {
+    public void multipleAndElimSimpleTest() throws SyntaxException {
         String str = "(A ^ B) ^ C";
         String str1 = "A ^ B";
         String str2 = "C";
@@ -276,7 +276,7 @@ public class RuleTests {
     }
 
     @Test
-    public void complexAndElimTest() {
+    public void complexAndElimTest() throws SyntaxException {
         String str = "A -> B";
 
         String str1 = "C";
@@ -311,7 +311,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleOrIntroTest() {
+    public void simpleOrIntroTest() throws SyntaxException {
         String str = "B";
 
         String str1 = "A ^ C";
@@ -334,7 +334,7 @@ public class RuleTests {
     }
 
     @Test
-    public void multipleOrIntroTest() {
+    public void multipleOrIntroTest() throws SyntaxException {
         String str = "A | B";
 
         String str1 = "A ^ C";
@@ -357,7 +357,7 @@ public class RuleTests {
     }
 
     @Test
-    public void andElimOrIntroTest() {
+    public void andElimOrIntroTest() throws SyntaxException {
         String str = "P ^ Q";
 
         String str1 = "P";
@@ -383,7 +383,7 @@ public class RuleTests {
     }
 
     @Test
-    public void notNotSimpleTest() {
+    public void notNotSimpleTest() throws SyntaxException {
         String str = "!!A";
 
         String str1 = "A";
@@ -401,7 +401,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleImpliesEliminationTest() {
+    public void simpleImpliesEliminationTest() throws SyntaxException {
         String str = "A";
 
         String str1 = "A -> B";
@@ -424,7 +424,7 @@ public class RuleTests {
     }
 
     @Test
-    public void complexImpliesEliminationTest() {
+    public void complexImpliesEliminationTest() throws SyntaxException {
         String str = "A -> C";
 
         String str1 = "D ^ E";
@@ -460,7 +460,7 @@ public class RuleTests {
     }
 
     @Test
-    public void realNDProofTest1() {
+    public void realNDProofTest1() throws SyntaxException {
         String str = "P";
 
         String str1 = "Q";
@@ -502,7 +502,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleOnlyElimTest() {
+    public void simpleOnlyElimTest() throws SyntaxException {
         String str = "A <-> B";
 
         String str1 = "A -> B";
@@ -519,7 +519,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleOnlyIntroTest() {
+    public void simpleOnlyIntroTest() throws SyntaxException {
         String str = "A -> B";
 
         String str1 = "B -> A";
@@ -542,7 +542,7 @@ public class RuleTests {
     }
 
     @Test
-    public void realNDProofTest2() {
+    public void realNDProofTest2() throws SyntaxException {
         String str = "P";
 
         String str1 = "P <-> Q";
@@ -577,7 +577,7 @@ public class RuleTests {
     }
 
     @Test
-    public void realNDProofTest3() {
+    public void realNDProofTest3() throws SyntaxException {
         String str = "P -> Q";
 
         String str1 = "Q -> R";
@@ -629,7 +629,7 @@ public class RuleTests {
     }
 
     @Test
-    public void notIntroSimpleTest() {
+    public void notIntroSimpleTest() throws SyntaxException {
         String str = "A -> B";
         String str1 = "A -> !B";
         String str2 = "A";
@@ -670,7 +670,7 @@ public class RuleTests {
     }
 
     @Test
-    public void simpleOrEliminationTest() {
+    public void simpleOrEliminationTest() throws SyntaxException {
         String str = "A | B";
         String str1 = "A -> C";
         String str2 = "B -> C";
@@ -716,7 +716,7 @@ public class RuleTests {
     }
 
     @Test
-    public void fullCheckerTestProof1() {
+    public void fullCheckerTestProof1() throws SyntaxException {
         String str = "P -> Q";
         String str1 = "Q -> R";
         String str2 = "P";
@@ -753,7 +753,7 @@ public class RuleTests {
     }
 
     @Test
-    public void fullCheckerTestProof2() {
+    public void fullCheckerTestProof2() throws SyntaxException {
         String str = "A -> C";
         String str1 = "B -> C";
         String str2 = "A | B";
@@ -805,7 +805,7 @@ public class RuleTests {
     }
 
     @Test
-    public void fullCheckerTestProof3() {
+    public void fullCheckerTestProof3() throws SyntaxException {
         String str = "P -> Q";
         String str1 = "(P ^ !Q)";
         String str2 = "P";
@@ -842,7 +842,7 @@ public class RuleTests {
     }
 
     @Test
-    public void fullCheckerTestProof4() {
+    public void fullCheckerTestProof4() throws SyntaxException {
         String str = "!Queen";
         String str1 = "P";
         String str2 = "!P";
@@ -874,7 +874,7 @@ public class RuleTests {
     }
 
     @Test
-    public void fullCheckerTestProof5() {
+    public void fullCheckerTestProof5() throws SyntaxException {
         String str = "P -> Q";
         String str1 = "P | !P";
         String str2 = "P";

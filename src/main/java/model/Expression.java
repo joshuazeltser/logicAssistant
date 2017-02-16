@@ -33,17 +33,18 @@ public class Expression {
 
 
 
-    public boolean addToExpression(String input) {
+    public boolean addToExpression(String input) throws SyntaxException {
 
         if (!checkBrackets(input)) {
-            System.out.println("MISMATCHED BRACKETS");
-            return false;
+            throw new SyntaxException("Syntax Error: Mismatched brackets");
         }
 
         String[] tokens = input.split(" ");
 
-        for (String token : tokens) {
+        syntaxCheck(tokens);
+        for (int i = 0; i < tokens.length; i++) {
 
+            String token = tokens[i];
             switch (token) {
                 case "|":
                     expression.add(new Operator("OR", OperatorType.OR));
@@ -71,6 +72,7 @@ public class Expression {
                         token = token.substring(1);
                     }
                     while (token.contains("(")) {
+
                         expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
 
                         token = token.substring(1);
@@ -99,6 +101,30 @@ public class Expression {
 
         return true;
 
+    }
+
+    public void syntaxCheck(String[] tokens) throws SyntaxException {
+
+        for (int i = 0; i < tokens.length; i++) {
+            if (i == 0 || i == tokens.length - 1) {
+                switch (tokens[i]) {
+                    case "^":
+                    case "->":
+                    case "<->":
+                    case "|": throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" operator " +
+                            "at this part of an expression");
+                }
+            }
+            if (i==0 && tokens[i].charAt(0) == ')') {
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" operator " +
+                        "at this part of an expression");
+            }
+
+            if ((i == (tokens.length - 1)) && (tokens[i].contains("(") || tokens[i].equals("!"))) {
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" operator " +
+                        "at this part of an expression");
+            }
+        }
     }
 
     public List<Proposition> listPropositions() {

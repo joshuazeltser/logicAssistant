@@ -19,7 +19,7 @@ public class ExpressionTests {
 //    }
 
     @Test
-    public void simpleCorrectPropositionsFromExpression() {
+    public void simpleCorrectPropositionsFromExpression() throws SyntaxException {
         String expr = "(A | B)";
 
         expression.addToExpression(expr);
@@ -34,7 +34,7 @@ public class ExpressionTests {
     }
 
     @Test
-    public void notToComponent() {
+    public void notToComponent() throws SyntaxException {
         String expr = "!A | !!B";
 
         expression.addToExpression(expr);
@@ -43,7 +43,7 @@ public class ExpressionTests {
     }
 
     @Test
-    public void notNotToComponent() {
+    public void notNotToComponent() throws SyntaxException {
         String expr = "!(!A | B)";
 
         expression.addToExpression(expr);
@@ -53,7 +53,7 @@ public class ExpressionTests {
     }
 
     @Test
-    public void correctPropositionsFromExpression() {
+    public void correctPropositionsFromExpression() throws SyntaxException {
         String expr = "((A | B) ^ (C ^ D))";
 
         expression.addToExpression(expr);
@@ -69,7 +69,7 @@ public class ExpressionTests {
 
 
     @Test
-    public void correctConversionToComponents() {
+    public void correctConversionToComponents() throws SyntaxException {
         String test1 = "(A -> B) | C";
 
         expression.addToExpression(test1);
@@ -79,7 +79,7 @@ public class ExpressionTests {
     }
 
     @Test
-    public void complexConversionToComponents() {
+    public void complexConversionToComponents() throws SyntaxException {
         String test1 = "((A -> B) | (C ^ D) ^ (E <-> F))";
 
         expression.addToExpression(test1);
