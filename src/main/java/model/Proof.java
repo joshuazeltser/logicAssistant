@@ -14,11 +14,14 @@ public class Proof {
 
     private List<Expression> expressions;
 
+    private List<String> errors;
+
     private String proofString;
     private String proofLabels;
 
     public Proof() {
         expressions = new LinkedList<>();
+        errors = new LinkedList<>();
         proofString = "";
         proofLabels = "";
     }
@@ -34,14 +37,21 @@ public class Proof {
                 try {
                     newExpr.addToExpression(expr[i]);
                 } catch (SyntaxException e) {
-                    //add to error list
-
+                    errors.add(e.getMessage());
                 }
 
                 addExpression(newExpr);
             }
         }
 
+    }
+
+    public String printErrors() {
+        String result = "";
+        for (String str : errors) {
+            result += str + "\n";
+        }
+        return result;
     }
 
     private RuleType convertStringToRule(String rule) {
