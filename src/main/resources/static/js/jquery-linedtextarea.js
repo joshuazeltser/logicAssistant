@@ -27,6 +27,7 @@
  *   - 2010.01.06: Initial Release
  *
  */
+
 (function($) {
 
 	$.fn.linedtextarea = function(options) {

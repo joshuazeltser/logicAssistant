@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class ExpressionController {
+public class IndexController {
 
 	    @GetMapping("/")
 		public String expressionForm(Model model) {
 			model.addAttribute("proof", new Proof());
-			return "proof";
+			return "index";
 		}
 
 		@PostMapping("/")
 		public String expressionSubmit(@ModelAttribute Proof proof) {
-	    	return "proof";
+	    	return "index";
 		}
 
 }

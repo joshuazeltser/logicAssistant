@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mvn package | grep 'BUILD SUCCESS'
+mvn clean package | grep 'BUILD SUCCESS'
 if [ $? == 0 ]; then
 	mvn spring-boot:run
 else
