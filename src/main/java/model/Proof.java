@@ -26,24 +26,57 @@ public class Proof {
         proofLabels = "";
     }
 
-    public void separateByNewLine(String proof, String rule)  {
+    public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
+
+        separateByNewLine(proof, rule);
+
+        String result = frontEndProofValidity();
+
+        if (errors.size() > 0) {
+            result = printErrors();
+        }
+        return result;
+    }
+
+    public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
         if (!proof.equals("") && !rule.equals("")) {
             String[] expr = proof.split("\\r?\\n");
             String[] exprRule = rule.split("\\r?\\n");
 
             for (int i = 0; i < expr.length; i++) {
-                Expression newExpr = new Expression(convertStringToRule(exprRule[i]));
+                String[] components = exprRule[i].split(" ");
+                Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
+                    System.out.println(expr[i]);
                     newExpr.addToExpression(expr[i]);
-                } catch (SyntaxException e) {
-                    errors.add(e.getMessage());
+
+                } catch (SyntaxException s) {
+                    errors.add(s.getMessage());
                 }
 
+                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
+                    String comps = removeBracketsFromString(components[1]);
+                    String[] lines = comps.split(",");
+                    for (int j = 0; j < lines.length; j++) {
+                        newExpr.addReferenceLine(Integer.parseInt(lines[j]));
+                    }
+                }
                 addExpression(newExpr);
             }
-        }
 
+
+        }
+    }
+
+    private String removeBracketsFromString(String str) {
+        String result = "";
+
+
+        for (int i = 1; i < str.length()-1; i++) {
+            result += str.charAt(i);
+        }
+        return result.toString();
     }
 
     public String printErrors() {
@@ -58,17 +91,17 @@ public class Proof {
         switch (rule) {
             case "GIVEN": return RuleType.GIVEN;
             case "ASSUMPTION": return RuleType.ASSUMPTION;
-            case "AND_INTRO": return RuleType.AND_INTRO;
-            case "AND_ELIM": return RuleType.AND_ELIM;
-            case "OR_INTRO": return RuleType.OR_INTRO;
-            case "OR_ELIM": return RuleType.OR_ELIM;
-            case "NOT_INTRO": return RuleType.NOT_INTRO;
-            case "NOT_ELIM": return RuleType.NOT_ELIM;
-            case "IMPLIES_INTRO": return RuleType.IMPLIES_INTRO;
-            case "IMPLIES_ELIM": return RuleType.IMPLIES_ELIM;
-            case "ONLY_INTRO": return RuleType.ONLY_INTRO;
-            case "ONLY_ELIM": return RuleType.ONLY_ELIM;
-            case "NOT_NOT_ELIM": return RuleType.DOUBLE_NOT_ELIMINATION;
+            case "And-Intro": return RuleType.AND_INTRO;
+            case "And-Elim": return RuleType.AND_ELIM;
+            case "Or-Intro": return RuleType.OR_INTRO;
+            case "Or-Elim": return RuleType.OR_ELIM;
+            case "Not-Intro": return RuleType.NOT_INTRO;
+            case "Not-Elim": return RuleType.NOT_ELIM;
+            case "Implies-Intro": return RuleType.IMPLIES_INTRO;
+            case "Implies-Elim": return RuleType.IMPLIES_ELIM;
+            case "Only-Intro": return RuleType.ONLY_INTRO;
+            case "Only-Elim": return RuleType.ONLY_ELIM;
+            case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIMINATION;
             default: return RuleType.INVALID;
         }
     }
@@ -167,15 +200,20 @@ public class Proof {
             List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
 
 
-            Expression lhs = sides.get(0);
-            Expression rhs = sides.get(1);
+            try {
+                Expression lhs = sides.get(0);
+                Expression rhs = sides.get(1);
 
-            int ref1 = e1.getReferenceLine().get(0) - 1;
-            int ref2 = e1.getReferenceLine().get(1) - 1;
 
-            if((expressions.get(ref1).equals(lhs) && expressions.get(ref2).equals(rhs))
-                    || (expressions.get(ref2).equals(lhs) && expressions.get(ref1).equals(rhs))) {
-                return true;
+                int ref1 = e1.getReferenceLine().get(0) - 1;
+                int ref2 = e1.getReferenceLine().get(1) - 1;
+
+                if((expressions.get(ref1).equals(lhs) && expressions.get(ref2).equals(rhs))
+                     || (expressions.get(ref2).equals(lhs) && expressions.get(ref1).equals(rhs))) {
+                  return true;
+                }
+            } catch (IndexOutOfBoundsException ioe) {
+                errors.add("RULE ERROR: And Introduction cannot be used here");
             }
 
         return false;
