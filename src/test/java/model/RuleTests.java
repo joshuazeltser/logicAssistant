@@ -414,13 +414,14 @@ public class RuleTests {
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-        Expression expr1 = new Expression(RuleType.NOT_ELIM);
+        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         proof.addExpression(expr);
 
 
-        assertTrue(proof.isNotElimValid(expr1));
+        assertTrue(proof.isDoubleNotElimValid(expr1));
     }
 
     @Test
@@ -541,6 +542,7 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.ONLY_ELIM);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         proof.addExpression(expr);
@@ -563,6 +565,8 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.ONLY_INTRO);
+        expr2.addReferenceLine(1);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -588,6 +592,7 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.ONLY_ELIM);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
@@ -667,44 +672,46 @@ public class RuleTests {
 
     @Test
     public void notIntroSimpleTest() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "A -> !B";
-        String str2 = "A";
-        String str3 = "B";
-        String str4 = "A";
-        String str5 = "!B";
-        String str6 = "!A";
+        String str = "!(A | B)";
+        String str1 = "A";
+        String str2 = "A | B";
+        String str3 = "FALSE";
+        String str4 = "!A";
+
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-        Expression expr1 = new Expression(RuleType.GIVEN);
+        Expression expr1 = new Expression(RuleType.ASSUMPTION);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
-        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        Expression expr3 = new Expression(RuleType.NOT_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression(RuleType.ASSUMPTION);
+        Expression expr4 = new Expression(RuleType.NOT_INTRO);
+        expr4.addReferenceLine(2);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
-        expr5.addToExpression(str5);
 
-        Expression expr6 = new Expression(RuleType.NOT_INTRO);
-        expr6.addToExpression(str6);
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
         proof.addExpression(expr2);
         proof.addExpression(expr3);
         proof.addExpression(expr4);
-        proof.addExpression(expr5);
 
-        assertTrue(proof.isNotIntroductionValid(expr6));
+
+        assertTrue(proof.isProofValid());
     }
+
+
 
     @Test
     public void simpleOrEliminationTest() throws SyntaxException {
@@ -855,34 +862,54 @@ public class RuleTests {
 
     @Test
     public void fullCheckerTestProof3() throws SyntaxException {
-        String str = "P -> Q";
-        String str1 = "(P ^ !Q)";
-        String str2 = "P";
-        String str3 = "Q";
-        String str4 = "!Q";
-        String str5 = "!(P ^ !Q)";
+        String str = "!(A | !A)";
+        String str1 = "A";
+        String str2 = "A | !A";
+        String str3 = "FALSE";
+        String str4 = "!A";
+        String str5 = "A | !A";
+        String str6 = "FALSE";
+        String str7 = "!!(A | !A)";
+        String str8 = "A | !A";
 
-        Expression expr = new Expression(RuleType.GIVEN);
+
+        Expression expr = new Expression(RuleType.ASSUMPTION);
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.ASSUMPTION);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
         expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
-        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        Expression expr3 = new Expression(RuleType.NOT_ELIM);
         expr3.addReferenceLine(1);
         expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression(RuleType.AND_ELIM);
+        Expression expr4 = new Expression(RuleType.NOT_INTRO);
         expr4.addReferenceLine(2);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.NOT_INTRO);
+        Expression expr5 = new Expression(RuleType.OR_INTRO);
+        expr5.addReferenceLine(5);
         expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.NOT_ELIM);
+        expr6.addReferenceLine(1);
+        expr6.addReferenceLine(6);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.NOT_INTRO);
+        expr7.addReferenceLine(1);
+        expr7.addReferenceLine(7);
+        expr7.addToExpression(str7);
+
+        Expression expr8 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        expr8.addReferenceLine(8);
+        expr8.addToExpression(str8);
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
@@ -890,38 +917,42 @@ public class RuleTests {
         proof.addExpression(expr3);
         proof.addExpression(expr4);
         proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+        proof.addExpression(expr8);
 
         assertTrue(proof.isProofValid());
     }
 
     @Test
     public void fullCheckerTestProof4() throws SyntaxException {
-        String str = "!Queen";
-        String str1 = "P";
-        String str2 = "!P";
-        String str3 = "!!Queen";
-        String str4 = "Queen";
+        String str = "A";
+        String str1 = "!A";
+        String str2 = "FALSE";
+        String str3 = "!!A";
 
-        Expression expr = new Expression(RuleType.ASSUMPTION);
+        Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-        Expression expr1 = new Expression(RuleType.GIVEN);
+        Expression expr1 = new Expression(RuleType.ASSUMPTION);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.GIVEN);
+        Expression expr2 = new Expression(RuleType.NOT_ELIM);
+        expr2.addReferenceLine(1);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.NOT_INTRO);
+        expr3.addReferenceLine(2);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
-        Expression expr4 = new Expression(RuleType.NOT_ELIM);
-        expr4.addToExpression(str4);
+
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
         proof.addExpression(expr2);
         proof.addExpression(expr3);
-        proof.addExpression(expr4);
 
         assertTrue(proof.isProofValid());
     }
@@ -975,6 +1006,63 @@ public class RuleTests {
         proof.addExpression(expr7);
 
         assertTrue(proof.isProofValid());
+    }
+
+    @Test
+    public void fullCheckerTestProof6() throws SyntaxException {
+        String str = "stranger -> barked";
+        String str1 = "barked -> woke";
+        String str2 = "!woke";
+        String str3 = "stranger";
+        String str4 = "barked";
+        String str5 = "woke";
+        String str6 = "FALSE";
+        String str7 = "!stranger";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(1);
+        expr4.addReferenceLine(4);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
+        expr5.addReferenceLine(2);
+        expr5.addReferenceLine(5);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.NOT_ELIM);
+        expr6.addReferenceLine(3);
+        expr6.addReferenceLine(6);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.NOT_INTRO);
+        expr7.addReferenceLine(4);
+        expr7.addReferenceLine(7);
+        expr7.addToExpression(str7);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+
+        assertTrue(proof.isProofValid());
+
+
     }
 
 

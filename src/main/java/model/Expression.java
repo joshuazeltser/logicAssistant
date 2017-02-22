@@ -153,6 +153,10 @@ public class Expression {
         }
     }
 
+    public Component getFirstElement() {
+        return expression.get(0);
+    }
+
     private boolean isOperator(String str) {
         switch (str) {
             case "^":
@@ -432,11 +436,32 @@ public class Expression {
             }
         }
 
-
-
         return checkBrackets(result);
 
 
+    }
+
+    public boolean equalExceptFirst(Expression e1) {
+
+
+        if (expression.get(0).toString().equals("NOT")) {
+            expression.remove(0);
+            if (equals(e1)) {
+                expression.add(0, new Operator("NOT", OperatorType.NOT));
+                return true;
+            }
+            expression.add(0, new Operator("NOT", OperatorType.NOT));
+        }
+
+        if (e1.expression.get(0).toString().equals("NOT")) {
+            e1.expression.remove(0);
+            if (equals(e1)) {
+                e1.expression.add(0, new Operator("NOT", OperatorType.NOT));
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

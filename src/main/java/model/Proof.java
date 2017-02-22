@@ -68,6 +68,7 @@ public class Proof {
             case "IMPLIES_ELIM": return RuleType.IMPLIES_ELIM;
             case "ONLY_INTRO": return RuleType.ONLY_INTRO;
             case "ONLY_ELIM": return RuleType.ONLY_ELIM;
+            case "NOT_NOT_ELIM": return RuleType.DOUBLE_NOT_ELIMINATION;
             default: return RuleType.INVALID;
         }
     }
@@ -116,6 +117,10 @@ public class Proof {
                 } break;
                 case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) {
                     System.out.println("ONLY_INTRO error");
+                    return false;
+                } break;
+                case DOUBLE_NOT_ELIMINATION: if (!isDoubleNotElimValid(expressions.get(i))) {
+                    System.out.println("NOT_NOT_ELIM error");
                     return false;
                 } break;
                 case INVALID: return false;
@@ -265,113 +270,122 @@ public class Proof {
     }
 
 
-    public boolean isNotElimValid(Expression e1) {
+    public boolean isDoubleNotElimValid(Expression e1) {
 
-        for (Expression expr : expressions) {
-            if (expr.doubleNot()) {
-                expr.removeNcomponents(2);
-                if (expr.equals(e1)) {
-                    return true;
-                }
-            }
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+
+        Expression expr = expressions.get(ref1);
+        expr.removeNcomponents(2);
+
+        if (expr.equals(e1)) {
+            return true;
         }
         return false;
+    }
+
+    public boolean isNotElimValid(Expression e1) throws SyntaxException {
+        if (!e1.toString().equals("FALSE")) {
+            return false;
+        }
+
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref2 = e1.getReferenceLine().get(1) - 1;
+
+        Expression a = expressions.get(ref1);
+        Expression b = expressions.get(ref2);
+
+
+        Expression c = new Expression();
+        c.addToExpression("" + a);
+
+//        c.removeNcomponents(1);
+        if (c.toString().equals("") || c.equalExceptFirst(b)) {
+            return true;
+        }
+
+        Expression d = new Expression();
+
+        d.addToExpression("" + b);
+//        d.removeNcomponents(1);
+        if (d.toString().equals("") || d.equalExceptFirst(a)) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public boolean isOnlyEliminationValid(Expression e1) throws SyntaxException {
-        for (Expression expr : expressions) {
 
-            if (expr.contains(new Operator("ONLY", OperatorType.ONLY))) {
-                int numAnd = expr.countOperator(OperatorType.ONLY);
-                int count = 0;
-                while (count != numAnd) {
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        Expression expr = expressions.get(ref1);
 
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY);
+        if (expr.contains(new Operator("ONLY", OperatorType.ONLY))) {
 
-                    Expression lhs = sides.get(0);
-                    Expression rhs = sides.get(1);
-
-                    Expression result = new Expression();
-
-                    result.addToExpression(lhs + " -> " + rhs);
-
-                    if (result.equals(e1)) {
-                        return true;
-                    }
-
-                    Expression result1 = new Expression();
-
-                    result1.addToExpression(rhs + " -> " + lhs);
-
-                    if (result1.equals(e1)) {
-                        return true;
-                    }
-                    count++;
-                }
-
-            }
-        }
-        return false;
-    }
-
-    public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
-
-        int numAnd = e1.countOperator(OperatorType.ONLY);
-        int count = 0;
-        while (count != numAnd) {
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY);
+            List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY);
 
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
             Expression result = new Expression();
-            Expression result2 = new Expression();
-
 
             result.addToExpression(lhs + " -> " + rhs);
 
-            result2.addToExpression(rhs + " -> " + lhs);
-
-
-
-            for (Expression expr : expressions) {
-                if (expr.equals(result) || expr.equals(result2)) {
-                    if (expr.equals(result) || expr.equals(result2)) {
-                        return true;
-                    }
-                }
+            if (result.equals(e1)) {
+                return true;
             }
 
-            count++;
+            Expression result1 = new Expression();
+
+            result1.addToExpression(rhs + " -> " + lhs);
+            if (result1.equals(e1)) {
+                 return true;
+            }
         }
+
+        return false;
+    }
+
+    public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
+
+        List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY);
+
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
+
+        Expression result = new Expression();
+        Expression result1 = new Expression();
+
+        result.addToExpression(lhs + " -> " + rhs);
+        result1.addToExpression(rhs + " -> " + lhs);
+
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        Expression expr = expressions.get(ref1);
+
+        int ref2 = e1.getReferenceLine().get(1) - 1;
+        Expression expr1 = expressions.get(ref2);
+
+        if ((expr.equals(result) && expr1.equals(result1)) ||  (expr1.equals(result) && expr.equals(result1)) ){
+            return true;
+        }
+
         return false;
     }
 
     public boolean isNotIntroductionValid(Expression e1) throws SyntaxException {
 
-        e1.removeNcomponents(1);
 
-        for (Expression expr : expressions) {
-            if (expr.equals(e1)) {
-                Expression saved = e1;
-                for (Expression expr1 : expressions) {
-                    Expression e = new Expression();
-                    String temp = "!" + saved.toString();
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        Expression expr = expressions.get(ref1);
 
-                    if (saved.toString() != "" ) {
-                        e.addToExpression(temp);
-                    }
+        int ref2 = e1.getReferenceLine().get(1) - 1;
+        Expression expr1 = expressions.get(ref2);
 
-
-                    for (Expression expr2 : expressions) {
-                        if ((expr2.toString().equals(e.toString()))) {
-                            return true;
-                        }
-                    }
-                    saved = expr1;
-                }
-            }
+        if (expr.equalExceptFirst(e1) && expr.getRuleType() == RuleType.ASSUMPTION && expr1.toString().equals("FALSE")) {
+            return true;
         }
+
+
         return false;
     }
 
