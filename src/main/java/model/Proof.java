@@ -82,7 +82,7 @@ public class Proof {
     public String printErrors() {
         String result = "";
         for (String str : errors) {
-            result += str + "\n";
+            result += str + '\n';
         }
         return result;
     }

@@ -48,7 +48,12 @@ body {
     padding: 9px;
     color: #333;
 }
-
+.table td {
+    text-align: center;
+}
+.table th {
+    text-align: center;
+}
 footer {
     margin: 50px 0;
 }
