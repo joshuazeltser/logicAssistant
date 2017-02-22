@@ -173,26 +173,11 @@ public class Proof {
                 return true;
             }
 
-
-//            for (Expression expr : expressions) {
-//
-//                if (expr.equals(lhs)) {
-//                    for (Expression expr1 : expressions) {
-//                        if (expr1.equals(rhs)) {
-//                            return true;
-//                        }
-//                    }
-//                }
-//            }
-
         return false;
     }
 
     public boolean isAndElimValid(Expression e1) {
 
-//        for (Expression expr : expressions) {
-
-//            if (expr.contains(new Operator("AND", OperatorType.AND))) {
         int ref1 = e1.getReferenceLine().get(0) - 1;
 
         List<Expression> sides = expressions.get(ref1).splitExpressionBy(OperatorType.AND);
@@ -204,8 +189,6 @@ public class Proof {
             return true;
         }
 
-//            }
-//        }
         return false;
     }
 
@@ -218,12 +201,9 @@ public class Proof {
 
         int ref1 = e1.getReferenceLine().get(0) - 1;
 
-//        for (Expression expr : expressions) {
-
             if (expressions.get(ref1).equals(lhs) || expressions.get(ref1).equals(rhs)) {
                 return true;
             }
-//        }
 
         return false;
     }
@@ -234,59 +214,53 @@ public class Proof {
     public boolean isImpliesIntroValid(Expression e1) {
 
 
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES);
+        List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES);
 
-            Expression lhs = sides.get(0);
-            Expression rhs = sides.get(1);
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
 
-//            System.out.println(lhs);
-//            System.out.println(rhs);
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref2 = e1.getReferenceLine().get(1) - 1;
 
-            boolean left = true;
-            for (Expression expr : expressions) {
+        Expression assumption = expressions.get(ref1);
+        Expression conclusion = expressions.get(ref2);
 
-
-
-                if (expr.equals(lhs) && expr.getRuleType() == RuleType.ASSUMPTION && left) {
-                    left = false;
-                    continue;
-                }
-                if (expr.equals(rhs) && !left) {
-                    return true;
-                }
-            }
-
+        if (assumption.equals(lhs) && assumption.getRuleType() == RuleType.ASSUMPTION &&
+                conclusion.equals(rhs)) {
+            return true;
+        }
 
         return false;
     }
 
     public boolean isImpliesElimValid(Expression e1) {
 
-        List<Expression> temp = expressions;
-        for (Expression expr : temp) {
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref2 = e1.getReferenceLine().get(1) - 1;
 
+        Expression a = expressions.get(ref1);
+        Expression b = expressions.get(ref2);
 
-            if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+        Expression other = new Expression();
 
-
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
-
-                    Expression lhs = sides.get(0);
-                    Expression rhs = sides.get(1);
-
-
-
-                    if (rhs.equals(e1)) {
-
-                        for (Expression expr2 : expressions) {
-
-                            if (expr2.equals(lhs)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
+        if (a.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+            List<Expression> sides = a.splitExpressionBy(OperatorType.IMPLIES);
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+            if (rhs.equals(e1) && lhs.equals(b)) {
+                return true;
             }
+        }
+
+        if (b.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+            List<Expression> sides = b.splitExpressionBy(OperatorType.IMPLIES);
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+            if (rhs.equals(e1) && lhs.equals(a)) {
+                return true;
+            }
+        }
+
         return false;
     }
 

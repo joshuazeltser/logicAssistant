@@ -172,6 +172,8 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
+        expr2.addReferenceLine(1);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -211,6 +213,8 @@ public class RuleTests {
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(1);
+        expr4.addReferenceLine(3);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.AND_ELIM);
@@ -218,9 +222,13 @@ public class RuleTests {
         expr5.addToExpression(str5);
 
         Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addReferenceLine(4);
+        expr6.addReferenceLine(5);
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.IMPLIES_INTRO);
+        expr7.addReferenceLine(2);
+        expr7.addReferenceLine(6);
         expr7.addToExpression(str7);
 
         proof.addExpression(expr1);
@@ -229,7 +237,6 @@ public class RuleTests {
 
         proof.addExpression(expr3);
 
-//        assertTrue(proof.isImpliesElimValid(expr4));
         proof.addExpression(expr4);
 
         proof.addExpression(expr5);
@@ -431,6 +438,8 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.IMPLIES_ELIM);
+        expr2.addReferenceLine(1);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -464,6 +473,8 @@ public class RuleTests {
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(1);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         proof.addExpression(expr);
@@ -502,6 +513,8 @@ public class RuleTests {
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(3);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         proof.addExpression(expr);
@@ -578,6 +591,8 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
         proof.addExpression(expr);
@@ -617,12 +632,18 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(2);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addReferenceLine(3);
+        expr5.addReferenceLine(5);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr);
@@ -750,12 +771,18 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(2);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addReferenceLine(3);
+        expr5.addReferenceLine(5);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr);
@@ -793,18 +820,24 @@ public class RuleTests {
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(1);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.ASSUMPTION);
         expr5.addToExpression(str5);
 
         Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addReferenceLine(2);
+        expr6.addReferenceLine(6);
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.OR_ELIM);
         expr7.addToExpression(str7);
 
         Expression expr8 = new Expression(RuleType.IMPLIES_INTRO);
+        expr8.addReferenceLine(3);
+        expr8.addReferenceLine(8);
         expr8.addToExpression(str8);
 
         proof.addExpression(expr);
@@ -840,6 +873,8 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.AND_ELIM);
@@ -912,6 +947,8 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(3);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.OR_INTRO);
