@@ -1,6 +1,7 @@
 package model;
 
 import javassist.compiler.ast.Expr;
+import javassist.compiler.ast.IntConst;
 
 import javax.validation.constraints.Null;
 import java.util.LinkedList;
@@ -16,21 +17,32 @@ public class Expression {
 
     private List<Component> expression;
 
-
+    private List<Integer> lines;
 
     private RuleType ruleType;
 
 
+
     public Expression(RuleType ruleType) {
         expression = new LinkedList<>();
-
+        lines = new LinkedList<>();
         this.ruleType = ruleType;
     }
 
     public Expression() {
         expression = new LinkedList<>();
+        lines = new LinkedList<>();
     }
 
+
+
+    public void addReferenceLine(int a) {
+        lines.add(a);
+    }
+
+    public List<Integer> getReferenceLine() {
+        return lines;
+    }
 
 
     public boolean addToExpression(String input) throws SyntaxException {
@@ -267,7 +279,7 @@ public class Expression {
         if (num > 1) {
 //            System.out.println(num);
             int index = surroundedByBrackets(type);
-            System.out.println(index);
+
 //            System.out.println(thisExpression);
             lhsExpr = new Expression(ruleType);
             lhsExpr.expression = thisExpression.subList(0, index);
@@ -420,7 +432,6 @@ public class Expression {
             }
         }
 
-        System.out.println(result);
 
 
         return checkBrackets(result);

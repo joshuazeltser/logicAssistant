@@ -23,8 +23,6 @@ public class RuleTests {
 
         List<Expression> sides = expression.splitExpressionBy(OperatorType.AND);
 
-        System.out.println(sides.get(0).toString());
-
         assertTrue(sides.get(0).toString().equals("OPEN A OR B CLOSE"));
 
         assertTrue(sides.get(1).toString().equals("C"));
@@ -55,7 +53,9 @@ public class RuleTests {
         Expression expr4 = new Expression(RuleType.GIVEN);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.GIVEN);
+        Expression expr5 = new Expression(RuleType.AND_INTRO);
+        expr5.addReferenceLine(1);
+        expr5.addReferenceLine(2);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr1);
@@ -95,7 +95,9 @@ public class RuleTests {
         Expression expr4 = new Expression(RuleType.GIVEN);
         expr4.addToExpression(str4);
 
-        Expression expr5 = new Expression(RuleType.GIVEN);
+        Expression expr5 = new Expression(RuleType.AND_INTRO);
+        expr5.addReferenceLine(2);
+        expr5.addReferenceLine(3);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr1);
@@ -136,6 +138,8 @@ public class RuleTests {
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.AND_INTRO);
+        expr5.addReferenceLine(1);
+        expr5.addReferenceLine(3);
         expr5.addToExpression(str5);
 
         proof.addExpression(expr1);
@@ -164,6 +168,7 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.OR_INTRO);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
@@ -202,12 +207,14 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.AND_ELIM);
+        expr3.addReferenceLine(2);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.AND_ELIM);
+        expr5.addReferenceLine(2);
         expr5.addToExpression(str5);
 
         Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
@@ -243,9 +250,11 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addReferenceLine(1);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -264,9 +273,11 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addReferenceLine(1);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -291,15 +302,16 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str3);
+        expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.GIVEN);
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.GIVEN);
-        expr3.addToExpression(str1);
+        expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.AND_ELIM);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         proof.addExpression(expr);
@@ -325,6 +337,7 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addReferenceLine(1);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -348,6 +361,7 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addReferenceLine(1);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -368,9 +382,11 @@ public class RuleTests {
         expr.addToExpression(str);
 
         Expression expr1 = new Expression(RuleType.AND_ELIM);
+        expr1.addReferenceLine(1);
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
@@ -481,6 +497,8 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.AND_INTRO);
+        expr3.addReferenceLine(1);
+        expr3.addReferenceLine(2);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
@@ -498,7 +516,6 @@ public class RuleTests {
 
         proof.addExpression(expr4);
 
-        System.out.println(proof.toString());
     }
 
     @Test
@@ -625,7 +642,6 @@ public class RuleTests {
 
         proof.addExpression(expr5);
 
-        System.out.println(proof.toString());
     }
 
     @Test
@@ -820,12 +836,14 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addReferenceLine(2);
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.AND_ELIM);
+        expr4.addReferenceLine(2);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.NOT_INTRO);
@@ -897,12 +915,14 @@ public class RuleTests {
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.OR_INTRO);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.ASSUMPTION);
         expr5.addToExpression(str5);
 
         Expression expr6 = new Expression(RuleType.OR_INTRO);
+        expr6.addReferenceLine(6);
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.OR_ELIM);

@@ -159,83 +159,72 @@ public class Proof {
 
     public boolean isAndIntroValid(Expression e1) {
 
-        int numAnd = e1.countOperator(OperatorType.AND);
-        int count = 0;
-        while (count != numAnd) {
-
             List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
 
 
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
+            int ref1 = e1.getReferenceLine().get(0) - 1;
+            int ref2 = e1.getReferenceLine().get(1) - 1;
 
-
-            for (Expression expr : expressions) {
-
-                if (expr.equals(lhs)) {
-                    for (Expression expr1 : expressions) {
-                        if (expr1.equals(rhs)) {
-                            return true;
-                        }
-                    }
-                }
+            if((expressions.get(ref1).equals(lhs) && expressions.get(ref2).equals(rhs))
+                    || (expressions.get(ref2).equals(lhs) && expressions.get(ref1).equals(rhs))) {
+                return true;
             }
-            count++;
-        }
+
+
+//            for (Expression expr : expressions) {
+//
+//                if (expr.equals(lhs)) {
+//                    for (Expression expr1 : expressions) {
+//                        if (expr1.equals(rhs)) {
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+
         return false;
     }
 
     public boolean isAndElimValid(Expression e1) {
 
-        for (Expression expr : expressions) {
+//        for (Expression expr : expressions) {
 
-            if (expr.contains(new Operator("AND", OperatorType.AND))) {
+//            if (expr.contains(new Operator("AND", OperatorType.AND))) {
+        int ref1 = e1.getReferenceLine().get(0) - 1;
 
-                    List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
+        List<Expression> sides = expressions.get(ref1).splitExpressionBy(OperatorType.AND);
 
-                    Expression lhs = sides.get(0);
-                    Expression rhs = sides.get(1);
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
 
-
-
-                    if (lhs.equals(e1) || rhs.equals(e1)) {
-                        return true;
-                    }
-
-            }
+        if (lhs.equals(e1) || rhs.equals(e1)) {
+            return true;
         }
+
+//            }
+//        }
         return false;
     }
 
     public boolean isOrIntroValid(Expression e1) {
-        int numAnd = e1.countOperator(OperatorType.OR);
-        int count = 0;
-        while (count != numAnd) {
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.OR);
 
-            Expression lhs = sides.get(0);
-            Expression rhs = sides.get(1);
+        List<Expression> sides = e1.splitExpressionBy(OperatorType.OR);
 
-//            lhs.addToExpression(")");
-//            rhs.addToExpression();
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
 
-            System.out.println(lhs);
-            System.out.println(rhs);
+        int ref1 = e1.getReferenceLine().get(0) - 1;
 
+//        for (Expression expr : expressions) {
 
-
-            for (Expression expr : expressions) {
-//                expr.addExpressionExternalBrackets();
-//                System.out.println("LHS: " + lhs.toString());
-//                System.out.println("RHS: " + rhs.toString());
-//                System.out.println("Expr: " + expr);
-                if (expr.equals(lhs) || expr.equals(rhs)) {
-                    return true;
-                }
+            if (expressions.get(ref1).equals(lhs) || expressions.get(ref1).equals(rhs)) {
+                return true;
             }
-            count++;
-        }
+//        }
+
         return false;
     }
 
@@ -263,7 +252,6 @@ public class Proof {
                     continue;
                 }
                 if (expr.equals(rhs) && !left) {
-                    System.out.println("TRUE");
                     return true;
                 }
             }
@@ -286,8 +274,7 @@ public class Proof {
                     Expression lhs = sides.get(0);
                     Expression rhs = sides.get(1);
 
-                System.out.println(lhs);
-                System.out.println(rhs);
+
 
                     if (rhs.equals(e1)) {
 
