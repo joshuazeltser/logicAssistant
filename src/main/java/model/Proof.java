@@ -390,37 +390,30 @@ public class Proof {
     }
 
     public boolean isOrEliminationValid(Expression e1) throws SyntaxException {
-        List<Expression> assumptions = new LinkedList<>();
 
-        for (Expression expr : expressions) {
-            if (expr.getRuleType() == RuleType.ASSUMPTION) {
-                assumptions.add(expr);
-            }
-        }
-        for (int i = 0; i < assumptions.size(); i++) {
-            for (int j = 0; i != j && j < assumptions.size(); j++) {
-                Expression orExpr = new Expression();
-                Expression orOppositeExpr = new Expression();
-                orExpr.addToExpression(assumptions.get(j).toString() + " | " + assumptions.get(i).toString());
-                orOppositeExpr.addToExpression(assumptions.get(i).toString() + " | " + assumptions.get(j).toString());
+        int ref1 = e1.getReferenceLine().get(0) - 1;
+        Expression expr1 = expressions.get(ref1);
 
-                if (expressions.contains(orExpr) || expressions.contains(orOppositeExpr)) {
-                    Expression a = assumptions.get(j);
-                    Expression b = assumptions.get(i);
+        int ref2 = e1.getReferenceLine().get(1) - 1;
+        Expression expr2 = expressions.get(ref2);
 
-                    int lhsIndex = expressions.indexOf(a);
-                    int rhsIndex = expressions.indexOf(b);
+        int ref3 = e1.getReferenceLine().get(2) - 1;
+        Expression expr3 = expressions.get(ref3);
 
-                    for (int k = lhsIndex + 1; k < expressions.size(); k++) {
-                        if (expressions.get(k).equals(e1)) {
-                            for (int l = rhsIndex + 1; l < expressions.size(); l++) {
-                                if (expressions.get(l).equals(e1)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
+        int ref4 = e1.getReferenceLine().get(3) - 1;
+        Expression expr4 = expressions.get(ref4);
+
+        int ref5 = e1.getReferenceLine().get(4) - 1;
+        Expression expr5 = expressions.get(ref5);
+
+        if (expr1.contains(new Operator("OR", OperatorType.OR))) {
+            List<Expression> sides = expr1.splitExpressionBy(OperatorType.OR);
+
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+
+            if (lhs.equals(expr2) && rhs.equals(expr4) && expr3.equals(expr5) && expr3.equals(e1)) {
+                return true;
             }
         }
 

@@ -66,7 +66,9 @@ public class RuleTests {
 
         proof.addExpression(expr4);
 
-        assertTrue(proof.isAndIntroValid(expr5));
+        proof.addExpression(expr5);
+
+        assertTrue(proof.isProofValid());
 
     }
 
@@ -107,8 +109,9 @@ public class RuleTests {
         proof.addExpression(expr3);
 
         proof.addExpression(expr4);
+        proof.addExpression(expr5);
 
-        assertTrue(proof.isAndIntroValid(expr5));
+        assertTrue(proof.isProofValid());
 
     }
 
@@ -265,9 +268,10 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isAndElimValid(expr1));
-        assertTrue(proof.isAndElimValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -288,9 +292,10 @@ public class RuleTests {
         expr2.addToExpression(str2);
 
         proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isAndElimValid(expr1));
-        assertTrue(proof.isAndElimValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -325,8 +330,9 @@ public class RuleTests {
         proof.addExpression(expr1);
         proof.addExpression(expr2);
         proof.addExpression(expr3);
+        proof.addExpression(expr4);
 
-        assertTrue(proof.isAndElimValid(expr4));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -349,8 +355,9 @@ public class RuleTests {
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isOrIntroValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -373,8 +380,9 @@ public class RuleTests {
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isOrIntroValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -398,11 +406,10 @@ public class RuleTests {
 
         proof.addExpression(expr);
 
-        assertTrue(proof.isAndElimValid(expr1));
-
         proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isOrIntroValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -419,9 +426,9 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         proof.addExpression(expr);
+        proof.addExpression(expr1);
 
-
-        assertTrue(proof.isDoubleNotElimValid(expr1));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -445,8 +452,9 @@ public class RuleTests {
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isImpliesElimValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -521,14 +529,10 @@ public class RuleTests {
         proof.addExpression(expr);
         proof.addExpression(expr1);
         proof.addExpression(expr2);
-
-        assertTrue(proof.isAndIntroValid(expr3));
-
         proof.addExpression(expr3);
-
-        assertTrue(proof.isImpliesElimValid(expr4));
-
         proof.addExpression(expr4);
+
+        assertTrue(proof.isProofValid());
 
     }
 
@@ -546,8 +550,9 @@ public class RuleTests {
         expr1.addToExpression(str1);
 
         proof.addExpression(expr);
+        proof.addExpression(expr1);
 
-        assertTrue(proof.isOnlyEliminationValid(expr1));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -571,8 +576,9 @@ public class RuleTests {
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
+        proof.addExpression(expr2);
 
-        assertTrue(proof.isOnlyIntroValid(expr2));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -604,70 +610,11 @@ public class RuleTests {
 
         proof.addExpression(expr1);
 
-        assertTrue(proof.isOnlyEliminationValid(expr2));
-
         proof.addExpression(expr2);
-
-        assertTrue(proof.isImpliesElimValid(expr3));
-
-        proof.addExpression(expr3);
-    }
-
-    @Test
-    public void realNDProofTest3() throws SyntaxException {
-        String str = "P -> Q";
-
-        String str1 = "Q -> R";
-
-        String str2 = "P";
-
-        String str3 = "Q";
-
-        String str4 = "R";
-
-        String str5 = "P -> R";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
-        expr3.addReferenceLine(1);
-        expr3.addReferenceLine(3);
-        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
-        expr4.addReferenceLine(2);
-        expr4.addReferenceLine(4);
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
-        expr5.addReferenceLine(3);
-        expr5.addReferenceLine(5);
-        expr5.addToExpression(str5);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-
-        proof.addExpression(expr2);
-
-        assertTrue(proof.isImpliesElimValid(expr3));
 
         proof.addExpression(expr3);
 
-        assertTrue(proof.isImpliesElimValid(expr4));
-
-        proof.addExpression(expr4);
-
-        assertTrue(proof.isImpliesIntroValid(expr5));
-
-        proof.addExpression(expr5);
-
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -715,14 +662,15 @@ public class RuleTests {
 
     @Test
     public void simpleOrEliminationTest() throws SyntaxException {
-        String str = "A | B";
-        String str1 = "A -> C";
-        String str2 = "B -> C";
+        String str = "A -> C";
+        String str1 = "B -> C";
+        String str2 = "A | B";
         String str3 = "A";
         String str4 = "C";
         String str5 = "B";
         String str6 = "C";
         String str7 = "C";
+        String str8 = "A | B -> C";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -730,23 +678,37 @@ public class RuleTests {
         Expression expr1 = new Expression(RuleType.GIVEN);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.GIVEN);
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
         expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.ASSUMPTION);
         expr3.addToExpression(str3);
 
         Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine(1);
+        expr4.addReferenceLine(4);
         expr4.addToExpression(str4);
 
         Expression expr5 = new Expression(RuleType.ASSUMPTION);
         expr5.addToExpression(str5);
 
         Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addReferenceLine(2);
+        expr6.addReferenceLine(6);
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr7.addReferenceLine(3);
+        expr7.addReferenceLine(4);
+        expr7.addReferenceLine(5);
+        expr7.addReferenceLine(6);
+        expr7.addReferenceLine(7);
         expr7.addToExpression(str7);
+
+        Expression expr8 = new Expression(RuleType.IMPLIES_INTRO);
+        expr8.addReferenceLine(3);
+        expr8.addReferenceLine(8);
+        expr8.addToExpression(str8);
 
         proof.addExpression(expr);
         proof.addExpression(expr1);
@@ -755,8 +717,10 @@ public class RuleTests {
         proof.addExpression(expr4);
         proof.addExpression(expr5);
         proof.addExpression(expr6);
+        proof.addExpression(expr7);
+        proof.addExpression(expr8);
 
-        assertTrue(proof.isOrEliminationValid(expr7));
+        assertTrue(proof.isProofValid());
     }
 
     @Test
@@ -802,63 +766,6 @@ public class RuleTests {
         assertTrue(proof.isProofValid());
     }
 
-    @Test
-    public void fullCheckerTestProof2() throws SyntaxException {
-        String str = "A -> C";
-        String str1 = "B -> C";
-        String str2 = "A | B";
-        String str3 = "A";
-        String str4 = "C";
-        String str5 = "B";
-        String str6 = "C";
-        String str7 = "C";
-        String str8 = "A | B -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
-        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
-        expr4.addReferenceLine(1);
-        expr4.addReferenceLine(4);
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.ASSUMPTION);
-        expr5.addToExpression(str5);
-
-        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
-        expr6.addReferenceLine(2);
-        expr6.addReferenceLine(6);
-        expr6.addToExpression(str6);
-
-        Expression expr7 = new Expression(RuleType.OR_ELIM);
-        expr7.addToExpression(str7);
-
-        Expression expr8 = new Expression(RuleType.IMPLIES_INTRO);
-        expr8.addReferenceLine(3);
-        expr8.addReferenceLine(8);
-        expr8.addToExpression(str8);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
-        proof.addExpression(expr5);
-        proof.addExpression(expr6);
-        proof.addExpression(expr7);
-        proof.addExpression(expr8);
-
-        assertTrue(proof.isProofValid());
-    }
 
     @Test
     public void fullCheckerTestProof3() throws SyntaxException {
@@ -994,6 +901,12 @@ public class RuleTests {
         expr6.addToExpression(str6);
 
         Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr7.addReferenceLine(2);
+        expr7.addReferenceLine(3);
+        expr7.addReferenceLine(5);
+        expr7.addReferenceLine(6);
+        expr7.addReferenceLine(7);
+        expr7.addReferenceLine(8);
         expr7.addToExpression(str7);
 
         proof.addExpression(expr);
@@ -1061,12 +974,7 @@ public class RuleTests {
         proof.addExpression(expr7);
 
         assertTrue(proof.isProofValid());
-
-
     }
-
-
-
 
 
 }
