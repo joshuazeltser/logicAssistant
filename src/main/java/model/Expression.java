@@ -36,8 +36,15 @@ public class Expression {
 
 
 
-    public void addReferenceLine(int a) {
-        lines.add(a);
+    public void addReferenceLine(String a) throws SyntaxException {
+
+        try {
+            int num = Integer.parseInt(a);
+            lines.add(num);
+        } catch (NumberFormatException e) {
+            throw new SyntaxException("Syntax Error: " + a + " is an invalid line number");
+        }
+
     }
 
     public List<Integer> getReferenceLine() {

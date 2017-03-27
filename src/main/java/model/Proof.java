@@ -27,10 +27,17 @@ public class Proof {
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
+        String result = "";
 
-        separateByNewLine(proof, rule);
+        try {
+            separateByNewLine(proof, rule);
 
-        String result = frontEndProofValidity();
+
+
+            result = frontEndProofValidity();
+        } catch (SyntaxException s) {
+            errors.add(s.getMessage());
+        }
 
         if (errors.size() > 0) {
             result = printErrors();
@@ -59,7 +66,7 @@ public class Proof {
                     String comps = removeBracketsFromString(components[1]);
                     String[] lines = comps.split(",");
                     for (int j = 0; j < lines.length; j++) {
-                        newExpr.addReferenceLine(Integer.parseInt(lines[j]));
+                        newExpr.addReferenceLine(lines[j]);
                     }
                 }
                 addExpression(newExpr);
@@ -108,52 +115,39 @@ public class Proof {
 
     public boolean isProofValid() throws SyntaxException {
 
-
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
                 case AND_ELIM: if (!isAndElimValid(expressions.get(i))) {
-                    System.out.println("AND_ELIM error");
                     return false;
                 } break;
                 case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) {
-                    System.out.println("AND_INTRO error");
                     return false;
                 } break;
                 case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) {
-                    System.out.println("OR_ELIM error");
                     return false;
                 } break;
                 case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) {
-                    System.out.println("OR_INTRO error");
                     return false;
                 } break;
                 case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) {
-                    System.out.println("IMPLIES_ELIM error");
-
                     return false;
                 } break;
                 case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) {
-                    System.out.println("IMPLIES_INTRO error");
                     return false;
                 } break;
                 case NOT_ELIM: if (!isNotElimValid(expressions.get(i))) {
-                    System.out.println("NOT_ELIM error");
                     return false;
                 } break;
                 case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) {
-                    System.out.println("NOT_INTRO error");
                     return false;
                 } break;
                 case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) {
-                    System.out.println("ONLY_ELIM error");
                     return false;
                 } break;
                 case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) {
-                    System.out.println("ONLY_INTRO error");
                     return false;
                 } break;
                 case DOUBLE_NOT_ELIMINATION: if (!isDoubleNotElimValid(expressions.get(i))) {
-                    System.out.println("NOT_NOT_ELIM error");
                     return false;
                 } break;
                 case INVALID: return false;
@@ -199,7 +193,6 @@ public class Proof {
 
             List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
 
-
             try {
                 Expression lhs = sides.get(0);
                 Expression rhs = sides.get(1);
@@ -213,9 +206,9 @@ public class Proof {
                   return true;
                 }
             } catch (IndexOutOfBoundsException ioe) {
-                errors.add("RULE ERROR: And Introduction cannot be used here");
-            }
 
+            }
+        errors.add("RULE ERROR: And Introduction cannot be used here");
         return false;
     }
 
@@ -232,6 +225,7 @@ public class Proof {
             return true;
         }
 
+        errors.add("RULE ERROR: And Elimination cannot be used here");
         return false;
     }
 
@@ -248,6 +242,7 @@ public class Proof {
                 return true;
             }
 
+        errors.add("RULE ERROR: Or Introduction cannot be used here");
         return false;
     }
 
@@ -273,6 +268,7 @@ public class Proof {
             return true;
         }
 
+        errors.add("RULE ERROR: Implies Introduction cannot be used here");
         return false;
     }
 
@@ -304,6 +300,7 @@ public class Proof {
             }
         }
 
+        errors.add("RULE ERROR: Implies Elimination cannot be used here");
         return false;
     }
 
@@ -318,6 +315,8 @@ public class Proof {
         if (expr.equals(e1)) {
             return true;
         }
+
+        errors.add("RULE ERROR: Double Not ELimination cannot be used here");
         return false;
     }
 
@@ -349,6 +348,8 @@ public class Proof {
             return true;
         }
 
+
+        errors.add("RULE ERROR: Not ELimination cannot be used here");
         return false;
 
     }
@@ -381,6 +382,7 @@ public class Proof {
             }
         }
 
+        errors.add("RULE ERROR: Only Elimination cannot be used here");
         return false;
     }
 
@@ -407,6 +409,7 @@ public class Proof {
             return true;
         }
 
+        errors.add("RULE ERROR: Only Introduction cannot be used here");
         return false;
     }
 
@@ -424,6 +427,7 @@ public class Proof {
         }
 
 
+        errors.add("RULE ERROR: Not Introduction cannot be used here");
         return false;
     }
 
@@ -455,6 +459,7 @@ public class Proof {
             }
         }
 
+        errors.add("RULE ERROR: Or Elimination cannot be used here");
         return false;
     }
 
