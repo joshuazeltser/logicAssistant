@@ -128,7 +128,7 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: And Introduction has not been used here\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: And Introduction has not been used here\n<br>"));
 
     }
 
@@ -150,7 +150,7 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: The line referenced cannot be used for this " +
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: The line referenced cannot be used for this " +
                 "And Elimination\n<br>"));
 
     }
@@ -173,7 +173,8 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: This line cannot be used for Or Introduction\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: This line cannot be used for Or " +
+                "Introduction\n<br>"));
     }
 
     @Test
@@ -194,7 +195,7 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: Five valid lines must be referenced to " +
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: Five valid lines must be referenced to " +
                 "use this rule\n<br>"));
 
     }
@@ -222,7 +223,8 @@ public class ErrorTests {
         proof.addExpression(expr2);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: This line cannot be used for Implies Introduction\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 3 - RULE ERROR: This line cannot be used for Implies " +
+                "Introduction\n<br>"));
     }
 
     @Test
@@ -249,7 +251,7 @@ public class ErrorTests {
 
         assertFalse(proof.isProofValid());
 
-        assertTrue(proof.printErrors().equals("RULE ERROR: This reference cannot be used for " +
+        assertTrue(proof.printErrors().equals("LINE 3 - RULE ERROR: This reference cannot be used for " +
                 "Implies Elimination\n<br>"));
     }
 
@@ -272,8 +274,8 @@ public class ErrorTests {
 
         assertFalse(proof.isProofValid());
 
-        assertTrue(proof.printErrors().equals("RULE ERROR: This reference cannot be used for NotNot Elimination as " +
-                "there is no double negation\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: This reference cannot be used for NotNot " +
+                "Elimination as there is no double negation\n<br>"));
 
     }
 
@@ -300,7 +302,7 @@ public class ErrorTests {
         proof.addExpression(expr2);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: Not Elimination cannot be used here as this " +
+        assertTrue(proof.printErrors().equals("LINE 3 - RULE ERROR: Not Elimination cannot be used here as this " +
                 "line is not FALSE\n<br>"));
     }
 
@@ -327,8 +329,8 @@ public class ErrorTests {
         proof.addExpression(expr2);
 
         assertFalse(proof.isProofValid());
-
-        assertTrue(proof.printErrors().equals("RULE ERROR: Not Introduction cannot be used here\n<br>"));
+        System.out.println(proof.printErrors());
+        assertTrue(proof.printErrors().equals("LINE 3 - RULE ERROR: Not Introduction cannot be used here\n<br>"));
     }
 
     @Test
@@ -349,8 +351,8 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: Only Elimination cannot be used here as there is no " +
-                "ONLY operator in this expression\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: Only Elimination cannot be used here as there" +
+                " is no ONLY operator in this expression\n<br>"));
     }
 
     @Test
@@ -377,7 +379,7 @@ public class ErrorTests {
 
         assertFalse(proof.isProofValid());
 
-        assertTrue(proof.printErrors().equals("RULE ERROR: Only Introduction cannot be used here as the expression " +
-                "doesn't contain an ONLY operator\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 3 - RULE ERROR: Only Introduction cannot be used here as " +
+                "the expression doesn't contain an ONLY operator\n<br>"));
     }
 }

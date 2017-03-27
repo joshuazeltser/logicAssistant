@@ -58,6 +58,8 @@ public class Proof {
 
                 } catch (SyntaxException s) {
                     errors.add(s.getMessage());
+                    //if there is a syntax error don't display other error messages
+                    break;
                 }
 
                 if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
@@ -168,7 +170,8 @@ public class Proof {
     public boolean isAndIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("AND",OperatorType.AND))) {
-            errors.add("RULE ERROR: And Introduction has not been used here");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: And Introduction has not " +
+                    "been used here");
             return false;
         }
         List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
@@ -181,17 +184,20 @@ public class Proof {
            ref1 = e1.getReferenceLine().get(0) - 1;
            ref2 = e1.getReferenceLine().get(1) - 1;
         } catch (IndexOutOfBoundsException ioe) {
-            errors.add("RULE ERROR: Two lines must be referenced when using this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two lines must be referenced when " +
+                    "using this rule");
             return false;
         }
 
         if (!expressions.get(ref1).equals(lhs) && !expressions.get(ref1).equals(rhs)) {
-            errors.add("RULE ERROR: This line cannot be used for this And Introduction");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
+                    "this And Introduction");
             return false;
         }
 
         if (!expressions.get(ref2).equals(lhs) && !expressions.get(ref2).equals(rhs)) {
-            errors.add("RULE ERROR: The line referenced cannot be used for this And Introduction");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: The line referenced cannot be used " +
+                    "for this And Introduction");
             return false;
         }
 
@@ -205,11 +211,13 @@ public class Proof {
             ref1 = e1.getReferenceLine().get(0) - 1;
 
             if (!expressions.get(ref1).contains(new Operator("AND", OperatorType.AND))) {
-                errors.add("RULE ERROR: The line referenced cannot be used for this And Elimination");
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: The line referenced cannot be " +
+                        "used for this And Elimination");
                 return false;
             }
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: A valid line must be referenced to " +
+                    "use this rule");
             return false;
         }
 
@@ -225,14 +233,16 @@ public class Proof {
             return true;
         }
 
-        errors.add("RULE ERROR: And Elimination cannot be used here with this reference");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: And Elimination cannot be used here " +
+                "with this reference");
         return false;
     }
 
     public boolean isOrIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("OR", OperatorType.OR))) {
-            errors.add("RULE ERROR: This line cannot be used for Or Introduction");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
+                    "Or Introduction");
             return false;
         }
 
@@ -245,7 +255,8 @@ public class Proof {
         try {
             ref1 = e1.getReferenceLine().get(0) - 1;
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: A valid line must be referenced " +
+                    "to use this rule");
             return false;
         }
 
@@ -253,7 +264,8 @@ public class Proof {
                 return true;
             }
 
-        errors.add("RULE ERROR: Or Introduction cannot be used here with this reference");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Or Introduction cannot be used here " +
+                "with this reference");
         return false;
     }
 
@@ -261,7 +273,8 @@ public class Proof {
     public boolean isImpliesIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-            errors.add("RULE ERROR: This line cannot be used for Implies Introduction");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
+                    "Implies Introduction");
             return false;
         }
 
@@ -277,7 +290,8 @@ public class Proof {
             ref1 = e1.getReferenceLine().get(0) - 1;
             ref2 = e1.getReferenceLine().get(1) - 1;
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced " +
+                    "to use this rule");
             return false;
         }
 
@@ -289,7 +303,7 @@ public class Proof {
             return true;
         }
 
-        errors.add("RULE ERROR: Implies Introduction cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Implies Introduction cannot be used here");
         return false;
     }
 
@@ -302,7 +316,8 @@ public class Proof {
             ref1 = e1.getReferenceLine().get(0) - 1;
             ref2 = e1.getReferenceLine().get(1) - 1;
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be " +
+                    "referenced to use this rule");
             return false;
         }
 
@@ -329,11 +344,12 @@ public class Proof {
                 return true;
             }
         } else {
-            errors.add("RULE ERROR: This reference cannot be used for Implies Elimination");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This reference cannot be used for " +
+                    "Implies Elimination");
             return false;
         }
 
-        errors.add("RULE ERROR: Implies Elimination cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Implies Elimination cannot be used here");
         return false;
     }
 
@@ -345,7 +361,7 @@ public class Proof {
         try {
             ref1 = e1.getReferenceLine().get(0) - 1;
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: A valid line must be referenced to use this rule");
             return false;
         }
 
@@ -355,13 +371,13 @@ public class Proof {
             if (expr.contains(new Operator("NOT", OperatorType.NOT))) {
                 expr.removeNcomponents(1);
             } else {
-                errors.add("RULE ERROR: This reference cannot be used for NotNot Elimination as there is " +
-                        "no double negation");
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This reference cannot be used " +
+                        "for NotNot Elimination as there is no double negation");
                 return false;
             }
         } else {
-            errors.add("RULE ERROR: This reference cannot be used for NotNot Elimination as there is " +
-                    "no double negation");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This reference cannot be used for " +
+                    "NotNot Elimination as there is no double negation");
             return false;
         }
 
@@ -369,13 +385,15 @@ public class Proof {
             return true;
         }
 
-        errors.add("RULE ERROR: Double Not Elimination cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Double Not Elimination cannot" +
+                " be used here");
         return false;
     }
 
     public boolean isNotElimValid(Expression e1) throws SyntaxException {
         if (!e1.toString().equals("FALSE")) {
-            errors.add("RULE ERROR: Not Elimination cannot be used here as this line is not FALSE");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Not Elimination cannot be used " +
+                    "here as this line is not FALSE");
             return false;
         }
 
@@ -386,7 +404,8 @@ public class Proof {
             ref1 = e1.getReferenceLine().get(0) - 1;
             ref2 = e1.getReferenceLine().get(1) - 1;
         }  catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced" +
+                    " to use this rule");
             return false;
         }
 
@@ -409,7 +428,7 @@ public class Proof {
         }
 
 
-        errors.add("RULE ERROR: Not Elimination cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Not Elimination cannot be used here");
         return false;
 
     }
@@ -420,7 +439,8 @@ public class Proof {
         try {
             ref1 = e1.getReferenceLine().get(0) - 1;
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: A valid line must be used to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: A valid line must be " +
+                    "used to use this rule");
             return false;
         }
         Expression expr = expressions.get(ref1);
@@ -446,20 +466,22 @@ public class Proof {
             if (result1.equals(e1)) {
                  return true;
             } else {
-                errors.add("RULE ERROR: This reference cannot be used for Only Elimination");
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " -RULE ERROR: This reference cannot be used" +
+                        " for Only Elimination");
                 return false;
             }
         }
 
-        errors.add("RULE ERROR: Only Elimination cannot be used here as there is no ONLY operator in this expression");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Only Elimination cannot be used here" +
+                " as there is no ONLY operator in this expression");
         return false;
     }
 
     public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
 
         if (!e1.contains(new Operator("ONLY", OperatorType.ONLY))) {
-            errors.add("RULE ERROR: Only Introduction cannot be used here as the expression doesn't contain " +
-                    "an ONLY operator");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Only Introduction cannot be used" +
+                    " here as the expression doesn't contain an ONLY operator");
             return false;
         }
 
@@ -483,7 +505,8 @@ public class Proof {
             int ref2 = e1.getReferenceLine().get(1) - 1;
             expr1 = expressions.get(ref2);
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced " +
+                    "to use this rule");
             return false;
         }
 
@@ -491,7 +514,7 @@ public class Proof {
             return true;
         }
 
-        errors.add("RULE ERROR: Only Introduction cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Only Introduction cannot be used here");
         return false;
     }
 
@@ -507,7 +530,8 @@ public class Proof {
             int ref2 = e1.getReferenceLine().get(1) - 1;
             expr1 = expressions.get(ref2);
         } catch (IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced " +
+                    "to use this rule");
             return false;
         }
 
@@ -516,7 +540,7 @@ public class Proof {
         }
 
 
-        errors.add("RULE ERROR: Not Introduction cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Not Introduction cannot be used here");
         return false;
     }
 
@@ -545,7 +569,8 @@ public class Proof {
             expr5 = expressions.get(ref5);
 
         } catch(IndexOutOfBoundsException e) {
-            errors.add("RULE ERROR: Five valid lines must be referenced to use this rule");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Five valid lines must " +
+                    "be referenced to use this rule");
             return false;
         }
 
@@ -559,11 +584,12 @@ public class Proof {
                     return true;
                 }
             } else {
-                errors.add("RULE ERROR: There is no OR operator in the expression you are using for OR Elimination");
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: There is no OR operator in the" +
+                        " expression you are using for OR Elimination");
                 return false;
             }
 
-        errors.add("RULE ERROR: Or Elimination cannot be used here");
+        errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Or Elimination cannot be used here");
         return false;
     }
 
