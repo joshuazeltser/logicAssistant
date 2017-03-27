@@ -119,7 +119,6 @@ public class ErrorTests {
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-
         Expression expr1 = new Expression(RuleType.AND_INTRO);
         expr1.addToExpression(str1);
         expr1.addReferenceLine("1");
@@ -195,7 +194,8 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: Or Elimination cannot be used here\n<br>"));
+        assertTrue(proof.printErrors().equals("RULE ERROR: Five valid lines must be referenced to " +
+                "use this rule\n<br>"));
 
     }
 
@@ -349,7 +349,8 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: Only Elimination cannot be used here\n<br>"));
+        assertTrue(proof.printErrors().equals("RULE ERROR: Only Elimination cannot be used here as there is no " +
+                "ONLY operator in this expression\n<br>"));
     }
 
     @Test
@@ -376,6 +377,7 @@ public class ErrorTests {
 
         assertFalse(proof.isProofValid());
 
-        assertTrue(proof.printErrors().equals("RULE ERROR: Only Introduction cannot be used here\n<br>"));
+        assertTrue(proof.printErrors().equals("RULE ERROR: Only Introduction cannot be used here as the expression " +
+                "doesn't contain an ONLY operator\n<br>"));
     }
 }

@@ -39,8 +39,6 @@ public class Proof {
 
         if (errors.size() > 0) {
             result = printErrors();
-            result.replaceAll("\n", "\\n");
-            System.out.println(result);
         }
         return result;
     }
@@ -381,8 +379,16 @@ public class Proof {
             return false;
         }
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        int ref2 = e1.getReferenceLine().get(1) - 1;
+        int ref1;
+        int ref2;
+
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+            ref2 = e1.getReferenceLine().get(1) - 1;
+        }  catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            return false;
+        }
 
         Expression a = expressions.get(ref1);
         Expression b = expressions.get(ref2);
@@ -410,7 +416,13 @@ public class Proof {
 
     public boolean isOnlyEliminationValid(Expression e1) throws SyntaxException {
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref1;
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: A valid line must be used to use this rule");
+            return false;
+        }
         Expression expr = expressions.get(ref1);
 
         if (expr.contains(new Operator("ONLY", OperatorType.ONLY))) {
@@ -433,17 +445,21 @@ public class Proof {
             result1.addToExpression(rhs + " -> " + lhs);
             if (result1.equals(e1)) {
                  return true;
+            } else {
+                errors.add("RULE ERROR: This reference cannot be used for Only Elimination");
+                return false;
             }
         }
 
-        errors.add("RULE ERROR: Only Elimination cannot be used here");
+        errors.add("RULE ERROR: Only Elimination cannot be used here as there is no ONLY operator in this expression");
         return false;
     }
 
     public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
 
         if (!e1.contains(new Operator("ONLY", OperatorType.ONLY))) {
-            errors.add("RULE ERROR: Only Introduction cannot be used here");
+            errors.add("RULE ERROR: Only Introduction cannot be used here as the expression doesn't contain " +
+                    "an ONLY operator");
             return false;
         }
 
@@ -458,11 +474,18 @@ public class Proof {
         result.addToExpression(lhs + " -> " + rhs);
         result1.addToExpression(rhs + " -> " + lhs);
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        Expression expr = expressions.get(ref1);
+        Expression expr;
+        Expression expr1;
+        try {
+            int ref1 = e1.getReferenceLine().get(0) - 1;
+            expr = expressions.get(ref1);
 
-        int ref2 = e1.getReferenceLine().get(1) - 1;
-        Expression expr1 = expressions.get(ref2);
+            int ref2 = e1.getReferenceLine().get(1) - 1;
+            expr1 = expressions.get(ref2);
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            return false;
+        }
 
         if ((expr.equals(result) && expr1.equals(result1)) ||  (expr1.equals(result) && expr.equals(result1)) ){
             return true;
@@ -474,12 +497,19 @@ public class Proof {
 
     public boolean isNotIntroductionValid(Expression e1) throws SyntaxException {
 
+        Expression expr;
+        Expression expr1;
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        Expression expr = expressions.get(ref1);
+        try {
+            int ref1 = e1.getReferenceLine().get(0) - 1;
+            expr = expressions.get(ref1);
 
-        int ref2 = e1.getReferenceLine().get(1) - 1;
-        Expression expr1 = expressions.get(ref2);
+            int ref2 = e1.getReferenceLine().get(1) - 1;
+            expr1 = expressions.get(ref2);
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            return false;
+        }
 
         if (expr.equalExceptFirst(e1) && expr.getRuleType() == RuleType.ASSUMPTION && expr1.toString().equals("FALSE")) {
             return true;
@@ -492,22 +522,32 @@ public class Proof {
 
     public boolean isOrEliminationValid(Expression e1) throws SyntaxException {
 
+        Expression expr1;
+        Expression expr2;
+        Expression expr3;
+        Expression expr4;
+        Expression expr5;
+
         try {
             int ref1 = e1.getReferenceLine().get(0) - 1;
-            Expression expr1 = expressions.get(ref1);
+            expr1 = expressions.get(ref1);
 
             int ref2 = e1.getReferenceLine().get(1) - 1;
-            Expression expr2 = expressions.get(ref2);
+            expr2 = expressions.get(ref2);
 
             int ref3 = e1.getReferenceLine().get(2) - 1;
-            Expression expr3 = expressions.get(ref3);
+            expr3 = expressions.get(ref3);
 
             int ref4 = e1.getReferenceLine().get(3) - 1;
-            Expression expr4 = expressions.get(ref4);
+            expr4 = expressions.get(ref4);
 
             int ref5 = e1.getReferenceLine().get(4) - 1;
-            Expression expr5 = expressions.get(ref5);
+            expr5 = expressions.get(ref5);
 
+        } catch(IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: Five valid lines must be referenced to use this rule");
+            return false;
+        }
 
             if (expr1.contains(new Operator("OR", OperatorType.OR))) {
                 List<Expression> sides = expr1.splitExpressionBy(OperatorType.OR);
@@ -518,11 +558,11 @@ public class Proof {
                 if (lhs.equals(expr2) && rhs.equals(expr4) && expr3.equals(expr5) && expr3.equals(e1)) {
                     return true;
                 }
+            } else {
+                errors.add("RULE ERROR: There is no OR operator in the expression you are using for OR Elimination");
+                return false;
             }
 
-        } catch(IndexOutOfBoundsException e) {
-
-        }
         errors.add("RULE ERROR: Or Elimination cannot be used here");
         return false;
     }
