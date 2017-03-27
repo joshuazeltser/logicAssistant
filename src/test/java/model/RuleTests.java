@@ -453,6 +453,7 @@ public class RuleTests {
         proof.addExpression(expr);
         proof.addExpression(expr1);
         proof.addExpression(expr2);
+        System.out.println(proof.printErrors());
 
         assertTrue(proof.isProofValid());
     }
@@ -491,6 +492,7 @@ public class RuleTests {
         proof.addExpression(expr2);
         proof.addExpression(expr3);
         proof.addExpression(expr4);
+
 
         assertTrue(proof.isProofValid());
     }

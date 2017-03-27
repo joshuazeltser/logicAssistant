@@ -169,80 +169,118 @@ public class Proof {
 
     public boolean isAndIntroValid(Expression e1) {
 
-            List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
+        if (!e1.contains(new Operator("AND",OperatorType.AND))) {
+            errors.add("RULE ERROR: And Introduction has not been used here");
+            return false;
+        }
+        List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);
+        Expression lhs = sides.get(0);
+        Expression rhs = sides.get(1);
+        int ref1;
+        int ref2;
 
-            try {
-                Expression lhs = sides.get(0);
-                Expression rhs = sides.get(1);
+        try {
+           ref1 = e1.getReferenceLine().get(0) - 1;
+           ref2 = e1.getReferenceLine().get(1) - 1;
+        } catch (IndexOutOfBoundsException ioe) {
+            errors.add("RULE ERROR: Two lines must be referenced when using this rule");
+            return false;
+        }
 
+        if (!expressions.get(ref1).equals(lhs) && !expressions.get(ref1).equals(rhs)) {
+            errors.add("RULE ERROR: This line cannot be used for this And Introduction");
+            return false;
+        }
 
-                int ref1 = e1.getReferenceLine().get(0) - 1;
-                int ref2 = e1.getReferenceLine().get(1) - 1;
+        if (!expressions.get(ref2).equals(lhs) && !expressions.get(ref2).equals(rhs)) {
+            errors.add("RULE ERROR: The line referenced cannot be used for this And Introduction");
+            return false;
+        }
 
-                if((expressions.get(ref1).equals(lhs) && expressions.get(ref2).equals(rhs))
-                     || (expressions.get(ref2).equals(lhs) && expressions.get(ref1).equals(rhs))) {
-                  return true;
-                }
-            } catch (IndexOutOfBoundsException ioe) {
-
-            }
-        errors.add("RULE ERROR: And Introduction cannot be used here");
-        return false;
+        return true;
     }
 
     public boolean isAndElimValid(Expression e1) {
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref1;
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
 
-        List<Expression> sides = expressions.get(ref1).splitExpressionBy(OperatorType.AND);
+            if (!expressions.get(ref1).contains(new Operator("AND", OperatorType.AND))) {
+                errors.add("RULE ERROR: The line referenced cannot be used for this And Elimination");
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            return false;
+        }
+
+
+    List<Expression> sides = expressions.get(ref1).splitExpressionBy(OperatorType.AND);
 
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
+
+
 
         if (lhs.equals(e1) || rhs.equals(e1)) {
             return true;
         }
 
-        errors.add("RULE ERROR: And Elimination cannot be used here");
+        errors.add("RULE ERROR: And Elimination cannot be used here with this reference");
         return false;
     }
 
     public boolean isOrIntroValid(Expression e1) {
+
+        if (!e1.contains(new Operator("OR", OperatorType.OR))) {
+            errors.add("RULE ERROR: This line cannot be used for Or Introduction");
+            return false;
+        }
 
         List<Expression> sides = e1.splitExpressionBy(OperatorType.OR);
 
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref1;
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            return false;
+        }
 
             if (expressions.get(ref1).equals(lhs) || expressions.get(ref1).equals(rhs)) {
                 return true;
             }
 
-        errors.add("RULE ERROR: Or Introduction cannot be used here");
+        errors.add("RULE ERROR: Or Introduction cannot be used here with this reference");
         return false;
     }
 
 
-
-
     public boolean isImpliesIntroValid(Expression e1) {
 
+        if (!e1.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+            errors.add("RULE ERROR: This line cannot be used for Implies Introduction");
+            return false;
+        }
 
         List<Expression> sides = e1.splitExpressionBy(OperatorType.IMPLIES);
 
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
 
-        int ref1 = -1;
-        int ref2 = -1;
+        int ref1;
+        int ref2;
 
         try {
             ref1 = e1.getReferenceLine().get(0) - 1;
             ref2 = e1.getReferenceLine().get(1) - 1;
         } catch (IndexOutOfBoundsException e) {
-
+            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            return false;
         }
 
         Expression assumption = expressions.get(ref1);
@@ -259,18 +297,26 @@ public class Proof {
 
     public boolean isImpliesElimValid(Expression e1) {
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        int ref2 = e1.getReferenceLine().get(1) - 1;
+        int ref1;
+        int ref2;
+
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+            ref2 = e1.getReferenceLine().get(1) - 1;
+        } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: Two valid lines must be referenced to use this rule");
+            return false;
+        }
+
 
         Expression a = expressions.get(ref1);
         Expression b = expressions.get(ref2);
-
-        Expression other = new Expression();
 
         if (a.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
             List<Expression> sides = a.splitExpressionBy(OperatorType.IMPLIES);
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
+
             if (rhs.equals(e1) && lhs.equals(b)) {
                 return true;
             }
@@ -280,9 +326,13 @@ public class Proof {
             List<Expression> sides = b.splitExpressionBy(OperatorType.IMPLIES);
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
+
             if (rhs.equals(e1) && lhs.equals(a)) {
                 return true;
             }
+        } else {
+            errors.add("RULE ERROR: This reference cannot be used for Implies Elimination");
+            return false;
         }
 
         errors.add("RULE ERROR: Implies Elimination cannot be used here");
@@ -292,17 +342,33 @@ public class Proof {
 
     public boolean isDoubleNotElimValid(Expression e1) {
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
+        int ref1;
 
         try {
-            Expression expr = expressions.get(ref1);
-            expr.removeNcomponents(2);
-
-            if (expr.equals(e1)) {
-                return true;
-            }
+            ref1 = e1.getReferenceLine().get(0) - 1;
         } catch (IndexOutOfBoundsException e) {
+            errors.add("RULE ERROR: A valid line must be referenced to use this rule");
+            return false;
+        }
 
+        Expression expr = expressions.get(ref1);
+        if (expr.contains(new Operator("NOT", OperatorType.NOT))) {
+            expr.removeNcomponents(1);
+            if (expr.contains(new Operator("NOT", OperatorType.NOT))) {
+                expr.removeNcomponents(1);
+            } else {
+                errors.add("RULE ERROR: This reference cannot be used for NotNot Elimination as there is " +
+                        "no double negation");
+                return false;
+            }
+        } else {
+            errors.add("RULE ERROR: This reference cannot be used for NotNot Elimination as there is " +
+                    "no double negation");
+            return false;
+        }
+
+        if (expr.equals(e1)) {
+            return true;
         }
 
         errors.add("RULE ERROR: Double Not Elimination cannot be used here");
@@ -311,7 +377,7 @@ public class Proof {
 
     public boolean isNotElimValid(Expression e1) throws SyntaxException {
         if (!e1.toString().equals("FALSE")) {
-            errors.add("RULE ERROR: Not Elimination cannot be used here");
+            errors.add("RULE ERROR: Not Elimination cannot be used here as this line is not FALSE");
             return false;
         }
 
@@ -325,7 +391,6 @@ public class Proof {
         Expression c = new Expression();
         c.addToExpression("" + a);
 
-//        c.removeNcomponents(1);
         if (c.toString().equals("") || c.equalExceptFirst(b)) {
             return true;
         }
@@ -333,7 +398,6 @@ public class Proof {
         Expression d = new Expression();
 
         d.addToExpression("" + b);
-//        d.removeNcomponents(1);
         if (d.toString().equals("") || d.equalExceptFirst(a)) {
             return true;
         }
@@ -377,6 +441,11 @@ public class Proof {
     }
 
     public boolean isOnlyIntroValid(Expression e1) throws SyntaxException {
+
+        if (!e1.contains(new Operator("ONLY", OperatorType.ONLY))) {
+            errors.add("RULE ERROR: Only Introduction cannot be used here");
+            return false;
+        }
 
         List<Expression> sides = e1.splitExpressionBy(OperatorType.ONLY);
 
