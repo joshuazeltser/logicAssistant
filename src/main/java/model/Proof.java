@@ -32,8 +32,6 @@ public class Proof {
         try {
             separateByNewLine(proof, rule);
 
-
-
             result = frontEndProofValidity();
         } catch (SyntaxException s) {
             errors.add(s.getMessage());
@@ -41,6 +39,8 @@ public class Proof {
 
         if (errors.size() > 0) {
             result = printErrors();
+            result.replaceAll("\n", "\\n");
+            System.out.println(result);
         }
         return result;
     }
@@ -89,7 +89,7 @@ public class Proof {
     public String printErrors() {
         String result = "";
         for (String str : errors) {
-            result += str + '\n';
+            result += str + "\n<br>";
         }
         return result;
     }
@@ -117,45 +117,23 @@ public class Proof {
 
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
-                case AND_ELIM: if (!isAndElimValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case AND_INTRO: if (!isAndIntroValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case OR_ELIM: if (!isOrEliminationValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case OR_INTRO: if (!isOrIntroValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case IMPLIES_ELIM: if (!isImpliesElimValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case IMPLIES_INTRO: if (!isImpliesIntroValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case NOT_ELIM: if (!isNotElimValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case NOT_INTRO: if (!isNotIntroductionValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case ONLY_ELIM: if (!isOnlyEliminationValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case ONLY_INTRO: if (!isOnlyIntroValid(expressions.get(i))) {
-                    return false;
-                } break;
-                case DOUBLE_NOT_ELIMINATION: if (!isDoubleNotElimValid(expressions.get(i))) {
-                    return false;
-                } break;
+                case AND_ELIM: isAndElimValid(expressions.get(i)); break;
+                case AND_INTRO: isAndIntroValid(expressions.get(i)); break;
+                case OR_ELIM: isOrEliminationValid(expressions.get(i)); break;
+                case OR_INTRO: isOrIntroValid(expressions.get(i)); break;
+                case IMPLIES_ELIM: isImpliesElimValid(expressions.get(i)); break;
+                case IMPLIES_INTRO: isImpliesIntroValid(expressions.get(i)); break;
+                case NOT_ELIM: isNotElimValid(expressions.get(i)); break;
+                case NOT_INTRO: isNotIntroductionValid(expressions.get(i)); break;
+                case ONLY_ELIM: isOnlyEliminationValid(expressions.get(i)); break;
+                case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
+                case DOUBLE_NOT_ELIMINATION: isDoubleNotElimValid(expressions.get(i)); break;
                 case INVALID: return false;
                 default: break;
             }
             expressions.remove(i);
         }
-        return true;
+        return errors.isEmpty();
     }
 
     public String frontEndProofValidity() throws SyntaxException {
@@ -257,8 +235,15 @@ public class Proof {
         Expression lhs = sides.get(0);
         Expression rhs = sides.get(1);
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        int ref2 = e1.getReferenceLine().get(1) - 1;
+        int ref1 = -1;
+        int ref2 = -1;
+
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+            ref2 = e1.getReferenceLine().get(1) - 1;
+        } catch (IndexOutOfBoundsException e) {
+
+        }
 
         Expression assumption = expressions.get(ref1);
         Expression conclusion = expressions.get(ref2);
@@ -309,19 +294,24 @@ public class Proof {
 
         int ref1 = e1.getReferenceLine().get(0) - 1;
 
-        Expression expr = expressions.get(ref1);
-        expr.removeNcomponents(2);
+        try {
+            Expression expr = expressions.get(ref1);
+            expr.removeNcomponents(2);
 
-        if (expr.equals(e1)) {
-            return true;
+            if (expr.equals(e1)) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException e) {
+
         }
 
-        errors.add("RULE ERROR: Double Not ELimination cannot be used here");
+        errors.add("RULE ERROR: Double Not Elimination cannot be used here");
         return false;
     }
 
     public boolean isNotElimValid(Expression e1) throws SyntaxException {
         if (!e1.toString().equals("FALSE")) {
+            errors.add("RULE ERROR: Not Elimination cannot be used here");
             return false;
         }
 
@@ -349,7 +339,7 @@ public class Proof {
         }
 
 
-        errors.add("RULE ERROR: Not ELimination cannot be used here");
+        errors.add("RULE ERROR: Not Elimination cannot be used here");
         return false;
 
     }
@@ -433,32 +423,37 @@ public class Proof {
 
     public boolean isOrEliminationValid(Expression e1) throws SyntaxException {
 
-        int ref1 = e1.getReferenceLine().get(0) - 1;
-        Expression expr1 = expressions.get(ref1);
+        try {
+            int ref1 = e1.getReferenceLine().get(0) - 1;
+            Expression expr1 = expressions.get(ref1);
 
-        int ref2 = e1.getReferenceLine().get(1) - 1;
-        Expression expr2 = expressions.get(ref2);
+            int ref2 = e1.getReferenceLine().get(1) - 1;
+            Expression expr2 = expressions.get(ref2);
 
-        int ref3 = e1.getReferenceLine().get(2) - 1;
-        Expression expr3 = expressions.get(ref3);
+            int ref3 = e1.getReferenceLine().get(2) - 1;
+            Expression expr3 = expressions.get(ref3);
 
-        int ref4 = e1.getReferenceLine().get(3) - 1;
-        Expression expr4 = expressions.get(ref4);
+            int ref4 = e1.getReferenceLine().get(3) - 1;
+            Expression expr4 = expressions.get(ref4);
 
-        int ref5 = e1.getReferenceLine().get(4) - 1;
-        Expression expr5 = expressions.get(ref5);
+            int ref5 = e1.getReferenceLine().get(4) - 1;
+            Expression expr5 = expressions.get(ref5);
 
-        if (expr1.contains(new Operator("OR", OperatorType.OR))) {
-            List<Expression> sides = expr1.splitExpressionBy(OperatorType.OR);
 
-            Expression lhs = sides.get(0);
-            Expression rhs = sides.get(1);
+            if (expr1.contains(new Operator("OR", OperatorType.OR))) {
+                List<Expression> sides = expr1.splitExpressionBy(OperatorType.OR);
 
-            if (lhs.equals(expr2) && rhs.equals(expr4) && expr3.equals(expr5) && expr3.equals(e1)) {
-                return true;
+                Expression lhs = sides.get(0);
+                Expression rhs = sides.get(1);
+
+                if (lhs.equals(expr2) && rhs.equals(expr4) && expr3.equals(expr5) && expr3.equals(e1)) {
+                    return true;
+                }
             }
-        }
 
+        } catch(IndexOutOfBoundsException e) {
+
+        }
         errors.add("RULE ERROR: Or Elimination cannot be used here");
         return false;
     }

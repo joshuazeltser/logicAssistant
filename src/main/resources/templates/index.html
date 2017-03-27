@@ -134,8 +134,9 @@
             <p></p>
             <div id="error" class="panel panel-default">
                 <div class="panel-body">
-                <output th:name="result" th:text="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
+                <output th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
                 </div>
+
             </div>
 
 

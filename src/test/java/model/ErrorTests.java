@@ -129,7 +129,7 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: And Introduction cannot be used here\n"));
+        assertTrue(proof.printErrors().equals("RULE ERROR: And Introduction cannot be used here\n<br>"));
 
     }
 
@@ -151,7 +151,151 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("RULE ERROR: And Elimination cannot be used here\n"));
+        assertTrue(proof.printErrors().equals("RULE ERROR: And Elimination cannot be used here\n<br>"));
 
+    }
+
+    @Test
+    public void ruleErrorTest3() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+
+        Expression expr1 = new Expression(RuleType.OR_INTRO);
+        expr1.addToExpression(str1);
+        expr1.addReferenceLine("1");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertFalse(proof.isProofValid());
+        assertTrue(proof.printErrors().equals("RULE ERROR: Or Introduction cannot be used here\n<br>"));
+    }
+
+    @Test
+    public void ruleErrorTest4() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+
+        Expression expr1 = new Expression(RuleType.OR_ELIM);
+        expr1.addToExpression(str1);
+        expr1.addReferenceLine("1");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertFalse(proof.isProofValid());
+        assertTrue(proof.printErrors().equals("RULE ERROR: Or Elimination cannot be used here\n<br>"));
+
+    }
+
+    @Test
+    public void ruleErrorTest5() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+        String str2 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
+        expr2.addToExpression(str2);
+        expr2.addReferenceLine("1");
+        expr2.addReferenceLine("2");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        assertFalse(proof.isProofValid());
+        assertTrue(proof.printErrors().equals("RULE ERROR: Implies Introduction cannot be used here\n<br>"));
+    }
+
+    @Test
+    public void ruleErrorTest6() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+        String str2 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.IMPLIES_ELIM);
+        expr2.addToExpression(str2);
+        expr2.addReferenceLine("1");
+        expr2.addReferenceLine("2");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        assertFalse(proof.isProofValid());
+        assertTrue(proof.printErrors().equals("RULE ERROR: Implies Elimination cannot be used here\n<br>"));
+    }
+
+    @Test
+    public void ruleErrorTest7() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+
+        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        expr1.addToExpression(str1);
+        expr1.addReferenceLine("1");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        assertFalse(proof.isProofValid());
+        assertTrue(proof.printErrors().equals("RULE ERROR: Double Not Elimination cannot be used here\n<br>"));
+
+    }
+
+    @Test
+    public void ruleErrorTest8() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+        String str2 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.NOT_ELIM);
+        expr2.addToExpression(str2);
+        expr2.addReferenceLine("1");
+        expr2.addReferenceLine("2");
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        assertFalse(proof.isProofValid());
+
+        assertTrue(proof.printErrors().equals("RULE ERROR: Not Elimination cannot be used here\n<br>"));
     }
 }
