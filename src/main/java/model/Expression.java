@@ -131,17 +131,17 @@ public class Expression {
                     case "^":
                     case "->":
                     case "<->":
-                    case "|": throw new SyntaxException("LINE " + line + " - Syntax Error: You cannot use "
+                    case "|": throw new SyntaxException("Syntax Error: You cannot use "
                             + tokens[i] +" operator at this part of an expression");
                 }
             }
             if (i==0 && tokens[i].charAt(0) == ')') {
-                throw new SyntaxException("LINE " + line + " - Syntax Error: You cannot use " + tokens[i] +"" +
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +"" +
                         " operator at this part of an expression");
             }
 
             if ((i == (tokens.length - 1)) && (tokens[i].contains("(") || tokens[i].equals("!"))) {
-                throw new SyntaxException("LINE " + line + " - Syntax Error: You cannot use " + tokens[i] +" " +
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
                         "operator at this part of an expression");
             }
 
@@ -149,13 +149,13 @@ public class Expression {
             if (tokens[i] != "(" && tokens[i] != ")" && tokens[i] != "!" && i < tokens.length-1) {
 
                 if (tokens[i].equals(tokens[i+1])) {
-                    throw new SyntaxException("LINE " + line + " - Syntax Error: You cannot use " + tokens[i] +"" +
+                    throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +"" +
                             " twice in a row as part of an expression");
                 }
             }
 
             if (isOperator(tokens[i]) && isOperator(tokens[i+1]) && i < tokens.length-1) {
-                throw new SyntaxException("LINE " + line + " - Syntax Error: You cannot use " + tokens[i] +" " +
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
                         "twice in a row as part of an expression");
             }
             line++;
@@ -250,7 +250,6 @@ public class Expression {
 
 
 
-        System.out.println("Syntax error");
         return 0;
     }
 

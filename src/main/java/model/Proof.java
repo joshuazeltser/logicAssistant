@@ -49,6 +49,11 @@ public class Proof {
             String[] expr = proof.split("\\r?\\n");
             String[] exprRule = rule.split("\\r?\\n");
 
+            if (expr.length != exprRule.length) {
+                errors.add("ERROR: A rule is missing on a line of the proof");
+                return;
+            }
+
             for (int i = 0; i < expr.length; i++) {
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
@@ -57,9 +62,10 @@ public class Proof {
                     newExpr.addToExpression(expr[i]);
 
                 } catch (SyntaxException s) {
-                    errors.add(s.getMessage());
+                    errors = new LinkedList<>();
+                    errors.add("LINE " + (i+1) + " - " + s.getMessage());
                     //if there is a syntax error don't display other error messages
-                    break;
+                   return;
                 }
 
                 if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
@@ -170,8 +176,8 @@ public class Proof {
     public boolean isAndIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("AND",OperatorType.AND))) {
-            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: And Introduction has not " +
-                    "been used here");
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: And Introduction cannot " +
+                    "be used here");
             return false;
         }
         List<Expression> sides = e1.splitExpressionBy(OperatorType.AND);

@@ -128,7 +128,7 @@ public class ErrorTests {
         proof.addExpression(expr1);
 
         assertFalse(proof.isProofValid());
-        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: And Introduction has not been used here\n<br>"));
+        assertTrue(proof.printErrors().equals("LINE 2 - RULE ERROR: And Introduction cannot be used here\n<br>"));
 
     }
 
