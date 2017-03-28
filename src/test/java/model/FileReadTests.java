@@ -11,11 +11,11 @@ public class FileReadTests {
 
     @Test
     public void readFile() throws SyntaxException {
-        Proof proof = new Proof();
-
-        String result = proof.proofFromFile("testFiles/test1.la");
-
-        System.out.println(result.toString());
+//        Proof proof = new Proof();
+//
+//        String result = proof.proofFromFile("testFiles/test1.la");
+//
+//        System.out.println(result.toString());
 
     }
 }
