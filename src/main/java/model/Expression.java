@@ -162,10 +162,6 @@ public class Expression {
         }
     }
 
-    public Component getFirstElement() {
-        return expression.get(0);
-    }
-
     private boolean isOperator(String str) {
         switch (str) {
             case "^":
@@ -211,13 +207,6 @@ public class Expression {
         return s.substring(0, s.length()-1);
     }
 
-    private String removeFirstChar(String s) {
-        if (s == null || s.length() == 0) {
-            return s;
-        }
-        return s.substring(1, s.length());
-    }
-
     public int surroundedByBrackets (OperatorType type) {
 
         int num = countOperator(type);
@@ -232,7 +221,6 @@ public class Expression {
                 }
             }
         }
-//        System.out.println(expression.get(ops[0]+2).toString().equals("CLOSE"));
         for (int j = 0; j < ops.length; j++) {
             if (ops[j] < 2) {
                 return ops[j];
@@ -289,20 +277,15 @@ public class Expression {
         Expression rhsExpr = new Expression();
 
         if (num > 1) {
-//            System.out.println(num);
             int index = surroundedByBrackets(type);
 
-//            System.out.println(thisExpression);
             lhsExpr = new Expression(ruleType);
             lhsExpr.expression = thisExpression.subList(0, index);
 
-
-//            System.out.println(lhsExpr.expression);
             rhsExpr = new Expression(ruleType);
             rhsExpr.expression = thisExpression.subList(index+1 , thisExpression.size());
 
 
-//            System.out.println(rhsExpr.expression);
         } else {
             for (int i = 0; i < thisExpression.size(); i++) {
 
@@ -317,8 +300,6 @@ public class Expression {
 
             }
         }
-//        System.out.println(lhsExpr.expression.get(0));
-
 
         result.add(lhsExpr);
         result.add(rhsExpr);
@@ -328,13 +309,6 @@ public class Expression {
 
     }
 
-    public String convertListToString(List<Component> list) {
-        String result = "";
-        for (Component c : list) {
-            result += c.toString();
-        }
-        return result;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -370,22 +344,6 @@ public class Expression {
             }
         }
 
-        return false;
-    }
-
-    public boolean doubleNot() {
-
-        int count = 0;
-        for (Component c : expression) {
-            if (c instanceof Operator) {
-                if (((Operator) c).getType() == OperatorType.NOT) {
-                    count++;
-                }
-                if (count == 2) {
-                    return true;
-                }
-            }
-        }
         return false;
     }
 
@@ -429,7 +387,6 @@ public class Expression {
     }
 
     public static boolean externalBrackets(String str) {
-        int waiting = 0;
 
         if (str.charAt(0) != '(' || str.charAt(str.length() - 1) != ')') {
             return false;

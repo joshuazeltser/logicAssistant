@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
 
@@ -71,7 +71,7 @@
     <!-- Page Content -->
     <div class="container">
 
-        <div class="col-md-2">
+        <input class="col-md-2">
             <p class="lead" align="center">Key</p>
             <table class="table">
                 <thead>
@@ -109,8 +109,7 @@
                 </tbody>
             </table>
         </div>
-
-
+    
         <div class="col-md-8">
         <form id="proof" action="/"  th:object="${proof}" method="post">
 
