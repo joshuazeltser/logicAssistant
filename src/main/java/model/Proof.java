@@ -29,33 +29,7 @@ public class Proof {
         proofLabels = "";
     }
 
-    public String proofFromFile(String file) throws SyntaxException {
 
-        List<Tuple> output = new LinkedList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String currentLine;
-
-            while ((currentLine = br.readLine()) != null) {
-                String[] components = currentLine.split(", ");
-                Tuple t = new Tuple(components[0], components[1]);
-                output.add(t);
-            }
-
-        } catch (IOException e) {
-            errors.add(e.toString());
-        }
-        String proof = "";
-        String rule = "";
-
-        for (Tuple t : output) {
-            proof += t.getProof() + "\n";
-            rule += t.getRule() +"\n";
-        }
-
-
-        return frontEndFunctionality(proof, rule);
-    }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
         String result = "";

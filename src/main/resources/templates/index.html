@@ -109,21 +109,15 @@
                 </tbody>
             </table>
 
-            <style>
-                #byte_content {
-                    margin: 5px 0;
-                    max-height: 100px;
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                }
-                #byte_range { margin-top: 5px; }
-            </style>
+
+
+            <p class="lead" align="center">Upload Proof</p>
 
             <input type="file" id="files" name="file" />
-            <span class="readBytesButtons">
-                     <button>entire file</button>
-            </span>
 
+            <span class="readBytesButtons">
+                <button id="bfile" type="button" class="btn btn-primary" value="Upload">Upload</button>
+            </span>
             <script>
 
                 function readBlob(opt_startByte, opt_stopByte) {
@@ -153,7 +147,7 @@
 
                             var i = 0;
                             while (i != lines.length) {
-                                var components = lines[i].split(',');
+                                var components = lines[i].split(' , ');
                                 mytextbox1.value = mytextbox1.value + components[0] + '\n';
                                 mytextbox2.value = mytextbox2.value + components[1] + '\n';
                                 i++;
@@ -174,6 +168,7 @@
 
                     }, false);
             </script>
+
 
         </div>
     
