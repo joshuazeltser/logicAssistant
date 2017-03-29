@@ -1,3 +1,0 @@
-A ^ B , GIVEN
-A , AND_ELIM
-A | B , OR_INTRO

@@ -62,9 +62,7 @@ public class Proof {
             for (int i = 0; i < expr.length; i++) {
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
-                System.out.println(newExpr);
                 try {
-                    System.out.println(expr[i]);
                     newExpr.addToExpression(expr[i]);
 
                 } catch (SyntaxException s) {
