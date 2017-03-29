@@ -182,7 +182,8 @@
 
             <div class="inline-div">
                 <p class="lead" align="center">Proof</p>
-                <textarea class="lined" id="Text1" th:field="*{proofString}" cols="20" rows="10" onkeyup="if(this.textLength != 0)
+                <a th:utext="${proof.addTabsForBoxes()}"></a>
+                <textarea class="lined" id="Text1" th:field="*{proofString}" th:utext="${proof.toString()}" cols="20" rows="10" onkeyup="if(this.textLength != 0)
 			{submit.disabled = false} else {submit.disabled = true}"></textarea>
             </div>
             <div class="inline-div">

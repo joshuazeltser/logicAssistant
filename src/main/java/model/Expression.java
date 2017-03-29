@@ -21,12 +21,15 @@ public class Expression {
 
     private RuleType ruleType;
 
+    private boolean box;
+
 
 
     public Expression(RuleType ruleType) {
         expression = new LinkedList<>();
         lines = new LinkedList<>();
         this.ruleType = ruleType;
+        box =false;
     }
 
     public Expression() {
@@ -34,6 +37,9 @@ public class Expression {
         lines = new LinkedList<>();
     }
 
+    public void setBox(boolean set) {
+        box = set;
+    }
 
 
     public void addReferenceLine(String a) throws SyntaxException {
@@ -188,6 +194,9 @@ public class Expression {
     public String toString() {
         String result = "";
         int count = 0;
+        if (box) {
+            result += "&nbsp;&nbsp;&nbsp;&nbsp;";
+        }
         for (Component c : expression) {
 
             result += c.toString();

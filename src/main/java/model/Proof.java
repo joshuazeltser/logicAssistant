@@ -38,6 +38,7 @@ public class Proof {
             separateByNewLine(proof, rule);
 
             result = frontEndProofValidity();
+
         } catch (SyntaxException s) {
             errors.add(s.getMessage());
         }
@@ -48,18 +49,38 @@ public class Proof {
         return result;
     }
 
+    public void addTabsForBoxes() throws SyntaxException {
+
+        boolean box = false;
+
+        for (Expression e : expressions) {
+            if (e.getRuleType() == RuleType.IMPLIES_INTRO || e.getRuleType() == RuleType.NOT_INTRO) {
+                box = false;
+                e.setBox(false);
+            }
+            if (e.getRuleType() == RuleType.ASSUMPTION || box) {
+                e.setBox(true);
+                box = true;
+
+            }
+        }
+    }
+
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
         if (!proof.equals("") && !rule.equals("")) {
             String[] expr = proof.split("\\r?\\n");
             String[] exprRule = rule.split("\\r?\\n");
 
+            //check rules are all present
             if (expr.length != exprRule.length) {
                 errors.add("ERROR: A rule is missing on a line of the proof");
                 return;
             }
 
+
             for (int i = 0; i < expr.length; i++) {
+                // split rules by space
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
