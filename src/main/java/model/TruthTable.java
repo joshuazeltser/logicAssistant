@@ -37,14 +37,24 @@ public class TruthTable {
 
     }
 
-    public void printBin(String soFar, int iterations) {
-        if(iterations == 0) {
-            System.out.println(soFar);
+    public List<String> printBin(int numProps) {
+
+        List<String> perms = new LinkedList<>();
+
+        for (int i=0;i<Math.pow(2,numProps);i++){
+            int mask = (int) (Math.pow(2,numProps) + 1);
+            String perm = "";
+            while (mask > 0){
+                if ((mask & i) == 0){
+                    perm += "0";
+                } else {
+                    perm += "1";
+                }
+                mask = mask >> 1;
+            }
+            perms.add(perm);
         }
-        else {
-            printBin(soFar + "0", iterations - 1);
-            printBin(soFar + "1", iterations - 1);
-        }
+        return perms;
     }
 
 }

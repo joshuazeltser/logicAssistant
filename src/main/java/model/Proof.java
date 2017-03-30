@@ -49,23 +49,6 @@ public class Proof {
         return result;
     }
 
-    public void addTabsForBoxes() throws SyntaxException {
-
-        boolean box = false;
-
-        for (Expression e : expressions) {
-            if (e.getRuleType() == RuleType.IMPLIES_INTRO || e.getRuleType() == RuleType.NOT_INTRO) {
-                box = false;
-                e.setBox(false);
-            }
-            if (e.getRuleType() == RuleType.ASSUMPTION || box) {
-                e.setBox(true);
-                box = true;
-
-            }
-        }
-    }
-
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
         if (!proof.equals("") && !rule.equals("")) {

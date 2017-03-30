@@ -17,6 +17,6 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(list,expr);
 
-        tt.printBin("", 4);
+        System.out.println(tt.printBin(4));
     }
 }
