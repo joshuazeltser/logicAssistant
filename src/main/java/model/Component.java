@@ -10,6 +10,7 @@ public interface Component {
 
     String toString();
 
+
     @SpringBootApplication
     class Application {
 

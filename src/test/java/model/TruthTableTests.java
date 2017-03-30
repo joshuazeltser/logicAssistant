@@ -11,12 +11,34 @@ import java.util.List;
 public class TruthTableTests {
 
     @Test
-    public void binaryPermutationTest1() {
+    public void binaryPermutationTest1() throws SyntaxException {
+        String str = "A ^ B";
+
         Expression expr = new Expression();
+
+        expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
         TruthTable tt = new TruthTable(list,expr);
 
-        System.out.println(tt.printBin(4));
+
+        tt.evaluateTruthValues(expr);
+
+    }
+
+    @Test
+    public void binaryPermutationTest2() throws SyntaxException {
+        String str = "A ^ (B | C)";
+
+        Expression expr = new Expression();
+
+        expr.addToExpression(str);
+        List<Expression> list = new LinkedList<>();
+
+        TruthTable tt = new TruthTable(list,expr);
+        
+
+        tt.evaluateTruthValues(expr);
+
     }
 }

@@ -35,5 +35,25 @@ public class Operator implements Component{
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null) {
+            return false;
+        }
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        Operator expr2 = (Operator) o;
+
+        return toString().equals(expr2.toString());
+    }
+
 
 }

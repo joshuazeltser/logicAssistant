@@ -4,10 +4,7 @@ import javassist.compiler.ast.Expr;
 import javassist.compiler.ast.IntConst;
 
 import javax.validation.constraints.Null;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Stack;
+import java.util.*;
 
 
 /**
@@ -161,6 +158,30 @@ public class Expression {
             }
             line++;
         }
+    }
+
+
+    public List<String> replacePropositions(List<Map<Proposition, Integer>> permMapList) throws SyntaxException {
+
+        List<String> results = new LinkedList<>();
+
+        for (Map permMap : permMapList) {
+            String str = "";
+
+            for (Component c : expression) {
+                if (permMap.containsKey(c)) {
+                    str += permMap.get(c) + " ";
+                } else if (c.equals(new Operator("AND", OperatorType.AND))) {
+                    str += "& ";
+                } else {
+                    str += c + " ";
+                }
+            }
+
+            results.add(str);
+        }
+        return results;
+
     }
 
     private boolean isOperator(String str) {
