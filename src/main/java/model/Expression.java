@@ -161,7 +161,8 @@ public class Expression {
     }
 
 
-    public List<String> replacePropositions(List<Map<Proposition, Integer>> permMapList) throws SyntaxException {
+    public List<String> replacePropositions(List<LinkedHashMap<Proposition, Integer>> permMapList)
+            throws SyntaxException {
 
         List<String> results = new LinkedList<>();
 
@@ -203,6 +204,7 @@ public class Expression {
                         not = false;
                     }
                 }
+
             }
 
             str += ")";

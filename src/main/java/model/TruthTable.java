@@ -19,41 +19,111 @@ public class TruthTable {
         this.result = result;
     }
 
-    public List<Integer> convertToTruthValues(Expression expr) throws SyntaxException {
+    public boolean validateProof() throws SyntaxException {
+
+        List<List<Integer>> truthLists = new LinkedList<>();
+
+
+        List<LinkedHashMap<Proposition, Integer>> resultMap = convertToTruthValues(result);
+
+
+
+        for (int i = 0; i < premises.size()-1; i++) {
+            List<LinkedHashMap<Proposition, Integer>> premiseMap1 = convertToTruthValues(premises.get(i));
+            List<LinkedHashMap<Proposition, Integer>> premiseMap2 = convertToTruthValues(premises.get(i+1));
+
+            if (!compareListMaps(premiseMap1, premiseMap2)) {
+                return false;
+            }
+        }
+
+        if (!compareListMaps(resultMap, convertToTruthValues(premises.get(premises.size()-1)))) {
+            return false;
+        }
+
+
+
+
+        return true;
+    }
+
+    private boolean compareListMaps(List<LinkedHashMap<Proposition, Integer>> premiseMap1,
+                                    List<LinkedHashMap<Proposition, Integer>> premiseMap2) {
+
+        List<LinkedHashMap<Proposition, Integer>> first = new LinkedList<>();
+        List<LinkedHashMap<Proposition, Integer>> second = new LinkedList<>();
+
+        if (premiseMap1.size() > premiseMap2.size()) {
+            first = premiseMap1;
+            second = premiseMap2;
+        } else {
+            first = premiseMap2;
+            second = premiseMap1;
+        }
+
+        System.out.println(first);
+        System.out.println(second);
+
+        for (LinkedHashMap<Proposition, Integer> map : second) {
+            for (Map.Entry<Proposition, Integer> entry : map.entrySet()) {
+                for (LinkedHashMap<Proposition, Integer> longMap : first) {
+                    for (Map.Entry<Proposition, Integer> longMapEntry : longMap.entrySet()) {
+
+                        if (entry.getKey().toString().equals(longMapEntry.getKey().toString())) {
+
+                            if (entry.getValue() != longMapEntry.getValue()) {
+                                return false;
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+        return true;
+
+    }
+
+    public List<LinkedHashMap<Proposition, Integer>> convertToTruthValues(Expression expr) throws SyntaxException {
 
         List<Proposition> propositions = expr.listPropositions();
 
-        int[] result = new int[propositions.size()];
+        int[][] permutations = generatePermutations(propositions.size());
 
-        int[][] permutations = printPermutations(propositions.size());
+        List<LinkedHashMap<Proposition, Integer>> perms = new LinkedList<>();
 
-        List<Map<Proposition, Integer>> perms = new LinkedList<>();
 
         for (int i = 0; i < Math.pow(2, propositions.size()); i++) {
-            Map<Proposition, Integer> permMap = new HashMap<>();
+            LinkedHashMap<Proposition, Integer> permMap = new LinkedHashMap<>();
             for (int j = 0; j < propositions.size(); j++) {
-
 
                 permMap.put(propositions.get(j), permutations[i][j]);
             }
+
             perms.add(permMap);
         }
 
-        List<String> temp = expr.replacePropositions(perms);
+        List<String> replacedProps = expr.replacePropositions(perms);
 
 
-        return evaluateTruthValues(temp);
+
+        return evaluateTruthValues(replacedProps, perms);
     }
 
-    public List<Integer> evaluateTruthValues(List<String> values) {
+    public List<LinkedHashMap<Proposition, Integer>> evaluateTruthValues(List<String> values,
+                                                               List<LinkedHashMap<Proposition, Integer>> perms) {
 
-        List<Integer> results = new LinkedList();
+        List<LinkedHashMap<Proposition, Integer>> results = new LinkedList();
+        int count = 0;
         for (String str : values) {
 
-            Stack<String> ops  = new Stack<String>();
-            Stack<Integer> vals = new Stack<Integer>();
+            Stack<String> ops  = new Stack<>();
+            Stack<Integer> vals = new Stack<>();
 
             for (int i = 0; i < str.length(); i++) {
+
+
                 char c = str.charAt(i);
 
                 switch(c) {
@@ -64,6 +134,10 @@ public class TruthTable {
                     case '>': /*implies operator*/
                     case '~': ops.push(c + ""); break; /*Only operator*/
                     case ')':
+
+                        if (str.length() == 6) {
+                            break;
+                        }
                         String op = ops.pop();
                         int v = vals.pop();
 
@@ -80,9 +154,16 @@ public class TruthTable {
                     default : vals.push(Integer.parseInt(c + ""));
                 }
             }
+            if (vals.peek() == 1) {
 
-            results.add(vals.pop());
+                results.add(perms.get(count));
+            }
+
+            count++;
         }
+
+
+
         return results;
     }
 
@@ -117,7 +198,7 @@ public class TruthTable {
         }
     }
 
-    public int[][] printPermutations(int size) {
+    public int[][] generatePermutations(int size) {
 
         int numRows = (int)Math.pow(2, size);
         int[][] perms = new int[numRows][size];
