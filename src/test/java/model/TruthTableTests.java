@@ -37,8 +37,6 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(list,expr);
 
-        System.out.println(1 | 0);
-
         tt.convertToTruthValues(expr);
 
     }

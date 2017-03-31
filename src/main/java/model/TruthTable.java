@@ -45,8 +45,9 @@ public class TruthTable {
         evaluateTruthValues(temp);
     }
 
-    public void evaluateTruthValues(List<String> values) {
+    public List<Integer> evaluateTruthValues(List<String> values) {
 
+        List<Integer> results = new LinkedList();
         for (String str : values) {
 
             Stack<String> ops  = new Stack<String>();
@@ -65,6 +66,7 @@ public class TruthTable {
                     case ')':
                         String op = ops.pop();
                         int v = vals.pop();
+
                         switch (op) {
                             case "&": v = vals.pop() & v; break;
                             case "|": v = vals.pop() | v; break;
@@ -78,9 +80,11 @@ public class TruthTable {
                     default : vals.push(Integer.parseInt(c + ""));
                 }
             }
-            System.out.println(vals.pop());
-        }
 
+            System.out.println(str + " = " + vals.peek());
+            results.add(vals.pop());
+        }
+        return results;
     }
 
     private int notOperator(int v) {

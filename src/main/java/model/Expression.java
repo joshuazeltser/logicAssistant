@@ -165,12 +165,20 @@ public class Expression {
 
         List<String> results = new LinkedList<>();
 
+        boolean not = false;
+
         for (Map permMap : permMapList) {
             String str = "( ";
 
             for (Component c : expression) {
                 if (permMap.containsKey(c)) {
                     str += permMap.get(c) + " ";
+                    if (!not) {
+                        str += " ";
+                    } else {
+                        str += ") ";
+                        not = false;
+                    }
                 } else if (c.equals(new Operator("AND", OperatorType.AND))) {
                     str += "& ";
                 } else if (c.equals(new Operator("OR", OperatorType.OR))) {
@@ -180,13 +188,20 @@ public class Expression {
                 } else if (c.equals(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) {
                     str += ")";
                 } else if (c.equals(new Operator("NOT", OperatorType.NOT))) {
-                    str += "! ";
+                    str += "! (";
+                    not = true;
                 } else if (c.equals(new Operator("IMPLIES", OperatorType.IMPLIES))) {
                     str += "> ";
                 } else if (c.equals(new Operator("ONLY", OperatorType.ONLY))) {
                     str += "~ ";
                 } else {
-                    str += c + " ";
+                    str += c;
+                    if (!not) {
+                        str += " ";
+                    } else {
+                        str += ") ";
+                        not = false;
+                    }
                 }
             }
 
