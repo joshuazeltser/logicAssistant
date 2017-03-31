@@ -19,7 +19,7 @@ public class TruthTable {
         this.result = result;
     }
 
-    public void convertToTruthValues(Expression expr) throws SyntaxException {
+    public List<Integer> convertToTruthValues(Expression expr) throws SyntaxException {
 
         List<Proposition> propositions = expr.listPropositions();
 
@@ -42,7 +42,7 @@ public class TruthTable {
         List<String> temp = expr.replacePropositions(perms);
 
 
-        evaluateTruthValues(temp);
+        return evaluateTruthValues(temp);
     }
 
     public List<Integer> evaluateTruthValues(List<String> values) {
@@ -81,7 +81,6 @@ public class TruthTable {
                 }
             }
 
-            System.out.println(str + " = " + vals.peek());
             results.add(vals.pop());
         }
         return results;
