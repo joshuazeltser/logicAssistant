@@ -22,13 +22,13 @@ public class TruthTableTests {
         TruthTable tt = new TruthTable(list,expr);
 
 
-        tt.evaluateTruthValues(expr);
+        tt.convertToTruthValues(expr);
 
     }
 
     @Test
     public void binaryPermutationTest2() throws SyntaxException {
-        String str = "A ^ (B | C)";
+        String str = "A ^ (!B | C)";
 
         Expression expr = new Expression();
 
@@ -36,9 +36,28 @@ public class TruthTableTests {
         List<Expression> list = new LinkedList<>();
 
         TruthTable tt = new TruthTable(list,expr);
-        
 
-        tt.evaluateTruthValues(expr);
+        System.out.println(1 | 0);
+
+        tt.convertToTruthValues(expr);
 
     }
+
+    @Test
+    public void binaryPermutationTest3() throws SyntaxException {
+        String str = "(A -> B) | (C -> D)";
+
+        Expression expr = new Expression();
+
+        expr.addToExpression(str);
+        List<Expression> list = new LinkedList<>();
+
+        TruthTable tt = new TruthTable(list,expr);
+
+
+        tt.convertToTruthValues(expr);
+
+    }
+
+
 }

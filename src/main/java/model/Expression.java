@@ -166,18 +166,31 @@ public class Expression {
         List<String> results = new LinkedList<>();
 
         for (Map permMap : permMapList) {
-            String str = "";
+            String str = "( ";
 
             for (Component c : expression) {
                 if (permMap.containsKey(c)) {
                     str += permMap.get(c) + " ";
                 } else if (c.equals(new Operator("AND", OperatorType.AND))) {
                     str += "& ";
+                } else if (c.equals(new Operator("OR", OperatorType.OR))) {
+                    str += "| ";
+                } else if (c.equals(new Operator("OPEN", OperatorType.OPEN_BRACKET))) {
+                    str += "( ";
+                } else if (c.equals(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) {
+                    str += ")";
+                } else if (c.equals(new Operator("NOT", OperatorType.NOT))) {
+                    str += "! ";
+                } else if (c.equals(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                    str += "> ";
+                } else if (c.equals(new Operator("ONLY", OperatorType.ONLY))) {
+                    str += "~ ";
                 } else {
                     str += c + " ";
                 }
             }
 
+            str += ")";
             results.add(str);
         }
         return results;
