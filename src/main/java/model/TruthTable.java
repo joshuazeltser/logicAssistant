@@ -75,26 +75,63 @@ public class TruthTable {
         }
 
         //fill in all evaluated truth values for expressions
-        LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> exprTruth = convertToTruthValues(premises.get(0));
-        System.out.println(exprTruth);
+        for (int i = 0; i < 1/*premises.size()*/; i++) {
+            LinkedHashMap<LinkedHashMap<Proposition, Integer>, Integer> exprTruth = convertToTruthValues(premises.get(i));
+            System.out.println(exprTruth);
 
-        for (Map.Entry<LinkedHashMap<Proposition, Integer>,Integer> entry : exprTruth.entrySet()) {
-            LinkedHashMap<Proposition, Integer> permutation = entry.getKey();
-            int column = 0;
-            for (Map.Entry<Proposition, Integer> perm : permutation.entrySet()) {
-                Proposition prop = perm.getKey();
+            List<Proposition> p = premises.get(i).listPropositions();
+            List<String> str = new LinkedList<>();
 
-                //search for correct column by proposition
-                for (int i = 0; i < propositions.size(); i++) {
-                    if (prop.toString().equals(truthTable[0][i])) {
-                        column = i;
-                        break;
-                    }
-                }
-
-                System.out.println(column);
+            for (Proposition pr : p) {
+                str.add(pr.toString());
             }
+
+
+            List<String> zeroColumn = new LinkedList<>();
+
+            for (String pr : propositions) {
+                if (!str.contains(pr.toString())) {
+                    zeroColumn.add(pr.toString());
+                }
+            }
+            System.out.println(str);
+            System.out.println(zeroColumn);
+            System.out.println();
+
+            int[] columns = new int[str.size()];
+            int columnCount = 0;
+
+            for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
+
+                for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
+
+                    for (String s : str) {
+                        for (int j = 0; j < propositions.size(); j++) {
+
+                            //get columns of str props
+                            //then all rows with the required values are filled in accordingly
+                            if (s.equals(truthTable[0][j])) {
+
+                                columns[columnCount] = j;
+                                System.out.println(columns[columnCount]);
+                                columnCount++;
+                            }
+
+                        }
+                    }
+//                    rowVals[cnt][propositions.size()] = map.getValue();
+
+                }
+            }
+            for (int i1 = 0; i1 < columns.length; i1++) {
+                System.out.println(columns[i1]);
+            }
+
+
+
         }
+
+
 
 
 
