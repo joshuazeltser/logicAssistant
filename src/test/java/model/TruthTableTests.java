@@ -26,6 +26,7 @@ public class TruthTableTests {
 
         List<Integer> expected = Arrays.asList(0,0,0,1);
 
+        System.out.println(tt.convertToTruthValues(expr));
         assertTrue(tt.convertToTruthValues(expr).equals(expected));
 
     }
@@ -134,7 +135,7 @@ public class TruthTableTests {
 
         String str3 = "A ^ D";
 
-        String str4 = "D";
+        String str4 = "A";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
