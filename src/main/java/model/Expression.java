@@ -169,7 +169,7 @@ public class Expression {
         boolean not = false;
 
         for (Map permMap : permMapList) {
-            String str = "( ";
+            String str = "(";
 
             for (Component c : expression) {
                 if (permMap.containsKey(c)) {
@@ -177,30 +177,30 @@ public class Expression {
                     if (!not) {
                         str += " ";
                     } else {
-                        str += ") ";
+                        str += ")";
                         not = false;
                     }
                 } else if (c.equals(new Operator("AND", OperatorType.AND))) {
-                    str += "& ";
+                    str += "&";
                 } else if (c.equals(new Operator("OR", OperatorType.OR))) {
-                    str += "| ";
+                    str += "|";
                 } else if (c.equals(new Operator("OPEN", OperatorType.OPEN_BRACKET))) {
-                    str += "( ";
+                    str += "(";
                 } else if (c.equals(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) {
                     str += ")";
                 } else if (c.equals(new Operator("NOT", OperatorType.NOT))) {
-                    str += "! (";
+                    str += "!(";
                     not = true;
                 } else if (c.equals(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                    str += "> ";
+                    str += ">";
                 } else if (c.equals(new Operator("ONLY", OperatorType.ONLY))) {
-                    str += "~ ";
+                    str += "~";
                 } else {
                     str += c;
                     if (!not) {
                         str += " ";
                     } else {
-                        str += ") ";
+                        str += ")";
                         not = false;
                     }
                 }

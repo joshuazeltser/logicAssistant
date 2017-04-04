@@ -23,40 +23,12 @@ public class TruthTable {
 
     public boolean validateProof() throws SyntaxException {
 
-
-
-        List<String> propositions =  new LinkedList<>();
-
-        for (Expression expr : premises) {
-            List<Proposition> props = expr.listPropositions();
-
-            for (Proposition p : props) {
-                if (!propositions.contains(p.toString())) {
-                    propositions.add(p.toString());
-                }
-            }
-        }
-
-        List<Proposition> props = result.listPropositions();
-
-        for (Proposition p : props) {
-            if (!propositions.contains(p.toString())) {
-                propositions.add(p.toString());
-            }
-        }
+        List<String> propositions = generateProofPropositions();
 
         int[][] perms = generatePermutations(propositions.size());
 
-
         String[][] truthTable =
                 new String[(int) Math.pow(2, propositions.size())+1][propositions.size() + premises.size() + 1];
-
-
-        // Fill top row of table
-        for (String[] row : truthTable) {
-            Arrays.fill(row, "0");
-        }
-
 
         for (int i = 0; i < propositions.size(); i++) {
             truthTable[0][i] = propositions.get(i);
@@ -80,20 +52,33 @@ public class TruthTable {
         for (int i = 0; i < premises.size(); i++) {
            addExpressionValues(truthTable, propositions, premises.get(i), i);
         }
-
         addExpressionValues(truthTable,propositions, result, premises.size());
 
 
+        if (checkRowValidity(propositions, truthTable)) {
+//            printTruthTable(propositions, truthTable);
+            return false;
+        }
+//        printTruthTable(propositions, truthTable);
+        return true;
+    }
 
+    private boolean checkRowValidity(List<String> propositions, String[][] truthTable) {
+        for (int i = 1; i < (int) Math.pow(2, propositions.size())+1; i++) {
+            for (int j = propositions.size(); j < propositions.size() + premises.size() + 1; j++) {
+                if (Integer.parseInt(truthTable[i][j]) != 1) {
+                    if (j == propositions.size() + premises.size()) {
+                        return true;
+                    }
+                    break;
+                }
 
+            }
+        }
+        return false;
+    }
 
-
-
-
-
-
-
-
+    private void printTruthTable(List<String> propositions, String[][] truthTable) {
         //print results for testing purposes
         for (int i = 0; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
             for (int j = 0; j < propositions.size() + premises.size() + 1; j++) {
@@ -101,20 +86,35 @@ public class TruthTable {
             }
             System.out.println();
         }
+    }
 
+    private List<String> generateProofPropositions() {
+        List<String> propositions =  new LinkedList<>();
 
+        for (Expression expr : premises) {
+            List<Proposition> props = expr.listPropositions();
 
+            for (Proposition p : props) {
+                if (!propositions.contains(p.toString())) {
+                    propositions.add(p.toString());
+                }
+            }
+        }
 
+        List<Proposition> props = result.listPropositions();
 
-        return false;
+        for (Proposition p : props) {
+            if (!propositions.contains(p.toString())) {
+                propositions.add(p.toString());
+            }
+        }
+        return propositions;
     }
 
     private void addExpressionValues(String[][] truthTable, List<String> propositions,
                                      Expression expr, int i) throws SyntaxException {
 
         LinkedHashMap<LinkedHashMap<Proposition, Integer>, Integer> exprTruth = convertToTruthValues(expr);
-        System.out.println(exprTruth);
-
 
         List<Proposition> p = expr.listPropositions();
         List<String> str = new LinkedList<>();
@@ -131,17 +131,12 @@ public class TruthTable {
                 zeroColumn.add(pr.toString());
             }
         }
-        System.out.println(str);
-        System.out.println(zeroColumn);
-        System.out.println();
-
         List<Integer> columns = new LinkedList<>();
 
         for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
 
             for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
 
-                System.out.println(innerMap.getKey());
                 for (int j = 0; j < propositions.size(); j++) {
                     if (innerMap.getKey().toString().equals(truthTable[0][j])) {
                         columns.add(j);
@@ -168,8 +163,7 @@ public class TruthTable {
             values.add(newMap);
             premiseVals.add(map.getValue());
         }
-        System.out.println(values);
-        System.out.println(premiseVals);
+
 
         boolean notRow = false;
         int premiseCount = 0;
@@ -226,7 +220,6 @@ public class TruthTable {
     public LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> evaluateTruthValues(List<String> values, List<LinkedHashMap<Proposition, Integer>> perms) {
 
         LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> results = new LinkedHashMap<>();
-        int[] result = new int[values.size()];
         int count = 0;
         for (String str : values) {
 
@@ -247,14 +240,14 @@ public class TruthTable {
                     case '~': ops.push(c + ""); break; /*Only operator*/
                     case ')':
 
-                        if (str.length() == 6) {
+                        if (str.length() == 5 || ops.isEmpty()) {
                             break;
                         }
+
                         String op = ops.pop();
                         int v = vals.pop();
-
                         switch (op) {
-                            case "&": v = vals.pop() & v; break;
+                            case "&": v = andOperator(vals.pop(), v); break;
                             case "|": v = vals.pop() | v; break;
                             case "!": v = notOperator(v); break;
                             case ">": v = impliesOperator(vals.pop(), v); break;
@@ -266,9 +259,7 @@ public class TruthTable {
                     default : vals.push(Integer.parseInt(c + ""));
                 }
             }
-//            if (vals.peek() == 1) {
-//
-                results.put(perms.get(count), vals.peek());
+            results.put(perms.get(count), vals.peek());
 
 
 
@@ -305,6 +296,14 @@ public class TruthTable {
         if (x == 0) {
             return 1;
         } else if (y == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private int andOperator(int x, int y) {
+        if (x == 1 && y == 1) {
             return 1;
         } else {
             return 0;

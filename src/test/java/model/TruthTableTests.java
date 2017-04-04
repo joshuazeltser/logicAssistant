@@ -24,10 +24,9 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(list,expr);
 
-        List<Integer> expected = Arrays.asList(0,0,0,1);
+        String expected = "{{A=0, B=0}=0, {A=1, B=0}=0, {A=0, B=1}=0, {A=1, B=1}=1}";
 
-        System.out.println(tt.convertToTruthValues(expr));
-        assertTrue(tt.convertToTruthValues(expr).equals(expected));
+        assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
 
     }
 
@@ -42,9 +41,11 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(list,expr);
 
-        List<Integer> expected = Arrays.asList(0, 1, 0, 0, 0, 1, 0, 1);
+        String expected = "{{A=0, B=0, C=0}=0, {A=1, B=0, C=0}=1, {A=0, B=1, C=0}=0, {A=1, B=1, C=0}=0, " +
+                "{A=0, B=0, C=1}=0, {A=1, B=0, C=1}=1, {A=0, B=1, C=1}=0, {A=1, B=1, C=1}=1}";
 
-        assertTrue(tt.convertToTruthValues(expr).equals(expected));
+        System.out.println(tt.convertToTruthValues(expr));
+        assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
 
     }
 
@@ -61,9 +62,16 @@ public class TruthTableTests {
 
         tt.convertToTruthValues(expr);
 
-        List<Integer> expected = Arrays.asList(1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+//        List<Integer> expected = Arrays.asList(1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-        assertTrue(tt.convertToTruthValues(expr).equals(expected));
+        String expected = "{{A=0, B=0, C=0, D=0}=1, {A=1, B=0, C=0, D=0}=1, {A=0, B=1, C=0, D=0}=1, " +
+                "{A=1, B=1, C=0, D=0}=1, {A=0, B=0, C=1, D=0}=1, {A=1, B=0, C=1, D=0}=0, {A=0, B=1, C=1, D=0}=1, " +
+                "{A=1, B=1, C=1, D=0}=1, {A=0, B=0, C=0, D=1}=1, {A=1, B=0, C=0, D=1}=1, {A=0, B=1, C=0, D=1}=1, " +
+                "{A=1, B=1, C=0, D=1}=1, {A=0, B=0, C=1, D=1}=1, {A=1, B=0, C=1, D=1}=1, {A=0, B=1, C=1, D=1}=1, " +
+                "{A=1, B=1, C=1, D=1}=1}";
+
+        System.out.println(tt.convertToTruthValues(expr));
+        assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }
 
     @Test
@@ -79,9 +87,12 @@ public class TruthTableTests {
 
         tt.convertToTruthValues(expr);
 
-        List<Integer> expected = Arrays.asList(0, 1, 0, 0, 1, 0, 1, 1);
+        String expected = "{{A=0, B=0, C=0}=0, {A=1, B=0, C=0}=1, {A=0, B=1, C=0}=0, {A=1, B=1, C=0}=0, " +
+                "{A=0, B=0, C=1}=1, {A=1, B=0, C=1}=0, {A=0, B=1, C=1}=1, {A=1, B=1, C=1}=1}";
 
-        assertTrue(tt.convertToTruthValues(expr).equals(expected));
+        System.out.println(tt.convertToTruthValues(expr));
+
+        assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }
 
     @Test
@@ -97,15 +108,21 @@ public class TruthTableTests {
 
         tt.convertToTruthValues(expr);
 
-        List<Integer> expected = Arrays.asList(0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1);
+        String expected = "{{A=0, C=0, B=0, D=0}=0, {A=1, C=0, B=0, D=0}=1, {A=0, C=1, B=0, D=0}=0," +
+                " {A=1, C=1, B=0, D=0}=0, {A=0, C=0, B=1, D=0}=0, {A=1, C=0, B=1, D=0}=1, {A=0, C=1, B=1, D=0}=0," +
+                " {A=1, C=1, B=1, D=0}=0, {A=0, C=0, B=0, D=1}=0, {A=1, C=0, B=0, D=1}=1, {A=0, C=1, B=0, D=1}=0, " +
+                "{A=1, C=1, B=0, D=1}=0, {A=0, C=0, B=1, D=1}=1, {A=1, C=0, B=1, D=1}=1, {A=0, C=1, B=1, D=1}=1, " +
+                "{A=1, C=1, B=1, D=1}=1}";
 
-        assertTrue(tt.convertToTruthValues(expr).equals(expected));
+        System.out.println(tt.convertToTruthValues(expr));
+
+        assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }
 
     @Test
     public void proofValidationTest1() throws SyntaxException {
         String str = "A ^ C";
-        String str1 = "B -> A";
+        String str1 = "C";
 
 
         Expression expr = new Expression(RuleType.GIVEN);
@@ -121,30 +138,19 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(premises,expr1);
 
-
         assertTrue(tt.validateProof());
     }
 
     @Test
     public void proofValidationTest2() throws SyntaxException {
-        String str = "A -> B";
+        String str = "B";
 
-        String str1 = "C";
+        String str3 = "A | D";
 
-        String str2 = "A <-> C";
-
-        String str3 = "A ^ D";
-
-        String str4 = "A";
+        String str4 = "B";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
 
         Expression expr3 = new Expression(RuleType.GIVEN);
         expr3.addToExpression(str3);
@@ -156,8 +162,6 @@ public class TruthTableTests {
 
         List<Expression> premises = new LinkedList<>();
         premises.add(expr);
-        premises.add(expr1);
-        premises.add(expr2);
         premises.add(expr3);
 
         TruthTable tt = new TruthTable(premises,expr4);
@@ -172,8 +176,6 @@ public class TruthTableTests {
         String str1 = "P | R";
 
         String str2 = "Q | S";
-
-
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -190,6 +192,72 @@ public class TruthTableTests {
         premises.add(expr1);
 
         TruthTable tt = new TruthTable(premises,expr2);
+
+        assertTrue(tt.validateProof());
+    }
+
+    @Test
+    public void proofValidationTest5() throws SyntaxException {
+        String str = "P";
+
+        String str1 = "Q";
+
+        String str2 = "P ^ Q";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.AND_INTRO);
+        expr2.addToExpression(str2);
+
+
+        List<Expression> premises = new LinkedList<>();
+        premises.add(expr);
+        premises.add(expr1);
+
+        TruthTable tt = new TruthTable(premises,expr2);
+
+        assertTrue(tt.validateProof());
+    }
+
+    @Test
+    public void proofValidationTest6() throws SyntaxException {
+        String str = "A -> (B | !C)";
+
+        String str1 = "D -> C";
+
+        String str2 = "A";
+
+        String str3 = "!B";
+
+        String str4 = "!C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.OR_ELIM);
+        expr4.addToExpression(str4);
+
+
+        List<Expression> premises = new LinkedList<>();
+        premises.add(expr);
+        premises.add(expr1);
+        premises.add(expr2);
+        premises.add(expr3);
+
+        TruthTable tt = new TruthTable(premises,expr4);
 
         assertTrue(tt.validateProof());
     }
