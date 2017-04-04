@@ -44,7 +44,7 @@ public class TruthTableTests {
         String expected = "{{A=0, B=0, C=0}=0, {A=1, B=0, C=0}=1, {A=0, B=1, C=0}=0, {A=1, B=1, C=0}=0, " +
                 "{A=0, B=0, C=1}=0, {A=1, B=0, C=1}=1, {A=0, B=1, C=1}=0, {A=1, B=1, C=1}=1}";
 
-        System.out.println(tt.convertToTruthValues(expr));
+//        System.out.println(tt.convertToTruthValues(expr));
         assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
 
     }
@@ -62,15 +62,13 @@ public class TruthTableTests {
 
         tt.convertToTruthValues(expr);
 
-//        List<Integer> expected = Arrays.asList(1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
         String expected = "{{A=0, B=0, C=0, D=0}=1, {A=1, B=0, C=0, D=0}=1, {A=0, B=1, C=0, D=0}=1, " +
                 "{A=1, B=1, C=0, D=0}=1, {A=0, B=0, C=1, D=0}=1, {A=1, B=0, C=1, D=0}=0, {A=0, B=1, C=1, D=0}=1, " +
                 "{A=1, B=1, C=1, D=0}=1, {A=0, B=0, C=0, D=1}=1, {A=1, B=0, C=0, D=1}=1, {A=0, B=1, C=0, D=1}=1, " +
                 "{A=1, B=1, C=0, D=1}=1, {A=0, B=0, C=1, D=1}=1, {A=1, B=0, C=1, D=1}=1, {A=0, B=1, C=1, D=1}=1, " +
                 "{A=1, B=1, C=1, D=1}=1}";
 
-        System.out.println(tt.convertToTruthValues(expr));
+//        System.out.println(tt.convertToTruthValues(expr));
         assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }
 
@@ -90,7 +88,7 @@ public class TruthTableTests {
         String expected = "{{A=0, B=0, C=0}=0, {A=1, B=0, C=0}=1, {A=0, B=1, C=0}=0, {A=1, B=1, C=0}=0, " +
                 "{A=0, B=0, C=1}=1, {A=1, B=0, C=1}=0, {A=0, B=1, C=1}=1, {A=1, B=1, C=1}=1}";
 
-        System.out.println(tt.convertToTruthValues(expr));
+//        System.out.println(tt.convertToTruthValues(expr));
 
         assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }
@@ -114,7 +112,7 @@ public class TruthTableTests {
                 "{A=1, C=1, B=0, D=1}=0, {A=0, C=0, B=1, D=1}=1, {A=1, C=0, B=1, D=1}=1, {A=0, C=1, B=1, D=1}=1, " +
                 "{A=1, C=1, B=1, D=1}=1}";
 
-        System.out.println(tt.convertToTruthValues(expr));
+//        System.out.println(tt.convertToTruthValues(expr));
 
         assertTrue(tt.convertToTruthValues(expr).toString().equals(expected));
     }

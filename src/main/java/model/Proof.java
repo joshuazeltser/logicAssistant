@@ -131,8 +131,7 @@ public class Proof {
 
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
-                case AND_ELIM:
-                    System.out.println("here"); isAndElimValid(expressions.get(i)); break;
+                case AND_ELIM: isAndElimValid(expressions.get(i)); break;
                 case AND_INTRO: isAndIntroValid(expressions.get(i)); break;
                 case OR_ELIM: isOrEliminationValid(expressions.get(i)); break;
                 case OR_INTRO: isOrIntroValid(expressions.get(i)); break;

@@ -1,9 +1,5 @@
 package model;
 
-
-
-import javassist.compiler.ast.Expr;
-
 import java.util.*;
 
 /**
@@ -23,25 +19,30 @@ public class TruthTable {
 
     public boolean validateProof() throws SyntaxException {
 
+        //Find all propositions in proof
         List<String> propositions = generateProofPropositions();
 
+        // Generate all possible permutations of these propositions in bits
         int[][] perms = generatePermutations(propositions.size());
 
+        // Create a truth table
         String[][] truthTable =
                 new String[(int) Math.pow(2, propositions.size())+1][propositions.size() + premises.size() + 1];
 
+        // Fill the top row with the names of the propositions
         for (int i = 0; i < propositions.size(); i++) {
             truthTable[0][i] = propositions.get(i);
         }
+
+        // fill the rest of the top row with premise numbers and R for result
         int count = 1;
         for (int j = propositions.size(); j < propositions.size() + premises.size(); j++) {
             truthTable[0][j] = Integer.toString(count);
             count++;
         }
-
         truthTable[0][propositions.size() + premises.size()] = "R";
 
-        //fill in all permutations of propositions
+        //fill truth table in with all permutations of propositions
         for (int i = 1; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
             for (int j = 0; j < propositions.size(); j++) {
                 truthTable[i][j] = Integer.toString(perms[i-1][j]);
@@ -55,6 +56,7 @@ public class TruthTable {
         addExpressionValues(truthTable,propositions, result, premises.size());
 
 
+        // Check that in all rows that every premise evaluates to true the result also evaluates to true
         if (checkRowValidity(propositions, truthTable)) {
 //            printTruthTable(propositions, truthTable);
             return false;
@@ -62,6 +64,7 @@ public class TruthTable {
 //        printTruthTable(propositions, truthTable);
         return true;
     }
+
 
     private boolean checkRowValidity(List<String> propositions, String[][] truthTable) {
         for (int i = 1; i < (int) Math.pow(2, propositions.size())+1; i++) {
@@ -114,18 +117,19 @@ public class TruthTable {
     private void addExpressionValues(String[][] truthTable, List<String> propositions,
                                      Expression expr, int i) throws SyntaxException {
 
+        //convert the expression to maps of permutations to their results
         LinkedHashMap<LinkedHashMap<Proposition, Integer>, Integer> exprTruth = convertToTruthValues(expr);
 
         List<Proposition> p = expr.listPropositions();
         List<String> str = new LinkedList<>();
 
+        // Create list of propositions used in this expression
         for (Proposition pr : p) {
             str.add(pr.toString());
         }
 
-
+        // Create list of propositions used in the proof but not in this expression
         List<String> zeroColumn = new LinkedList<>();
-
         for (String pr : propositions) {
             if (!str.contains(pr.toString())) {
                 zeroColumn.add(pr.toString());
@@ -133,6 +137,7 @@ public class TruthTable {
         }
         List<Integer> columns = new LinkedList<>();
 
+        // iterate through the map finding the columns in the truth table corresponding to the propositions in the expr
         for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
 
             for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
@@ -147,7 +152,7 @@ public class TruthTable {
             break;
         }
 
-        //list of list of values of props used in each row
+        //Create a list of the values of each proposition in each permutation as well as a list of the resulting values
         List<List<Integer>> values = new LinkedList<>();
         List<Integer> premiseVals = new LinkedList<>();
 
@@ -164,7 +169,12 @@ public class TruthTable {
             premiseVals.add(map.getValue());
         }
 
+        // add these truth values to the table
+        addTruthResultsToTable(truthTable, propositions, i, columns, values, premiseVals);
 
+    }
+
+    private void addTruthResultsToTable(String[][] truthTable, List<String> propositions, int i, List<Integer> columns, List<List<Integer>> values, List<Integer> premiseVals) {
         boolean notRow = false;
         int premiseCount = 0;
         for (List<Integer> row : values) {
@@ -187,7 +197,6 @@ public class TruthTable {
             premiseCount++;
 
         }
-
     }
 
 
