@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class IndexController {
+public class PropositionalController {
 
-	    @GetMapping("/")
+	    @GetMapping("/propositional")
 		public String expressionForm(Model model) {
 			model.addAttribute("proof", new Proof());
-			return "index";
+			return "propositional";
 		}
 
-		@PostMapping("/")
+		@PostMapping("/propositional")
 		public String expressionSubmit(@ModelAttribute Proof proof) {
-	    	return "validity";
+	    	return "propositional";
 		}
 
 }
