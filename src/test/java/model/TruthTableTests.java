@@ -162,6 +162,34 @@ public class TruthTableTests {
 
         TruthTable tt = new TruthTable(premises,expr4);
 
+        assertTrue(tt.validateProof());
+    }
+
+    @Test
+    public void proofValidationTest4() throws SyntaxException {
+        String str = "(P -> Q) ^ (R -> S)";
+
+        String str1 = "P | R";
+
+        String str2 = "Q | S";
+
+
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.OR_INTRO);
+        expr2.addToExpression(str2);
+
+
+        List<Expression> premises = new LinkedList<>();
+        premises.add(expr);
+        premises.add(expr1);
+
+        TruthTable tt = new TruthTable(premises,expr2);
 
         assertTrue(tt.validateProof());
     }

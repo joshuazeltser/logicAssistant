@@ -2,6 +2,8 @@ package model;
 
 
 
+import javassist.compiler.ast.Expr;
+
 import java.util.*;
 
 /**
@@ -68,97 +70,19 @@ public class TruthTable {
         truthTable[0][propositions.size() + premises.size()] = "R";
 
         //fill in all permutations of propositions
-        for (int i = 1; i < (int) Math.pow(2, propositions.size()); i++) {
+        for (int i = 1; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
             for (int j = 0; j < propositions.size(); j++) {
                 truthTable[i][j] = Integer.toString(perms[i-1][j]);
             }
         }
 
         //fill in all evaluated truth values for expressions
-        for (int i = 0; i < 1/*premises.size()*/; i++) {
-            LinkedHashMap<LinkedHashMap<Proposition, Integer>, Integer> exprTruth = convertToTruthValues(premises.get(i));
-            System.out.println(exprTruth);
-
-
-            List<Proposition> p = premises.get(i).listPropositions();
-            List<String> str = new LinkedList<>();
-
-            for (Proposition pr : p) {
-                str.add(pr.toString());
-            }
-
-
-            List<String> zeroColumn = new LinkedList<>();
-
-            for (String pr : propositions) {
-                if (!str.contains(pr.toString())) {
-                    zeroColumn.add(pr.toString());
-                }
-            }
-            System.out.println(str);
-            System.out.println(zeroColumn);
-            System.out.println();
-
-            List<Integer> columns = new LinkedList<>();
-
-            for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
-
-                for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
-
-                    System.out.println(innerMap.getKey());
-                    for (int j = 0; j < propositions.size(); j++) {
-                        if (innerMap.getKey().toString().equals(truthTable[0][j])) {
-                            columns.add(j);
-                        }
-                    }
-
-                }
-                break;
-            }
-
-            //list of list of values of props used in each row
-            List<List<Integer>> values = new LinkedList<>();
-            List<Integer> premiseVals = new LinkedList<>();
-
-            for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
-                List<Integer> newMap = new LinkedList<>();
-                for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
-                    for (String s : propositions) {
-                       if (s.equals(innerMap.getKey().toString())) {
-                           newMap.add(innerMap.getValue());
-                       }
-                    }
-                }
-                values.add(newMap);
-                premiseVals.add(map.getValue());
-            }
-            System.out.println(values);
-            System.out.println(premiseVals);
-
-            boolean notRow = false;
-            int premiseCount = 0;
-            for (List<Integer> row : values) {
-                for (int q = 1; q <  (int) Math.pow(2, propositions.size()); q++) {
-                    int count1 = 0;
-                    for (Integer num : columns) {
-                        if (Integer.parseInt(truthTable[q][num]) != row.get(count1)) {
-                            notRow = true;
-                            break;
-                        }
-                        count1++;
-                    }
-                    count1 = 0;
-                    if (!notRow) {
-                        truthTable[q][propositions.size()] = premiseVals.get(premiseCount).toString();
-                    }
-                    notRow = false;
-
-                }
-                premiseCount++;
-
-            }
-
+        for (int i = 0; i < premises.size(); i++) {
+           addExpressionValues(truthTable, propositions, premises.get(i), i);
         }
+
+        addExpressionValues(truthTable,propositions, result, premises.size());
+
 
 
 
@@ -171,7 +95,7 @@ public class TruthTable {
 
 
         //print results for testing purposes
-        for (int i = 0; i < (int) Math.pow(2, propositions.size()); i++) {
+        for (int i = 0; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
             for (int j = 0; j < propositions.size() + premises.size() + 1; j++) {
                 System.out.print(truthTable[i][j] + " ");
             }
@@ -183,6 +107,93 @@ public class TruthTable {
 
 
         return false;
+    }
+
+    private void addExpressionValues(String[][] truthTable, List<String> propositions,
+                                     Expression expr, int i) throws SyntaxException {
+
+        LinkedHashMap<LinkedHashMap<Proposition, Integer>, Integer> exprTruth = convertToTruthValues(expr);
+        System.out.println(exprTruth);
+
+
+        List<Proposition> p = expr.listPropositions();
+        List<String> str = new LinkedList<>();
+
+        for (Proposition pr : p) {
+            str.add(pr.toString());
+        }
+
+
+        List<String> zeroColumn = new LinkedList<>();
+
+        for (String pr : propositions) {
+            if (!str.contains(pr.toString())) {
+                zeroColumn.add(pr.toString());
+            }
+        }
+        System.out.println(str);
+        System.out.println(zeroColumn);
+        System.out.println();
+
+        List<Integer> columns = new LinkedList<>();
+
+        for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
+
+            for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
+
+                System.out.println(innerMap.getKey());
+                for (int j = 0; j < propositions.size(); j++) {
+                    if (innerMap.getKey().toString().equals(truthTable[0][j])) {
+                        columns.add(j);
+                    }
+                }
+
+            }
+            break;
+        }
+
+        //list of list of values of props used in each row
+        List<List<Integer>> values = new LinkedList<>();
+        List<Integer> premiseVals = new LinkedList<>();
+
+        for (Map.Entry<LinkedHashMap<Proposition, Integer>, Integer> map : exprTruth.entrySet()) {
+            List<Integer> newMap = new LinkedList<>();
+            for (Map.Entry<Proposition, Integer> innerMap : map.getKey().entrySet()) {
+                for (String s : propositions) {
+                    if (s.equals(innerMap.getKey().toString())) {
+                        newMap.add(innerMap.getValue());
+                    }
+                }
+            }
+            values.add(newMap);
+            premiseVals.add(map.getValue());
+        }
+        System.out.println(values);
+        System.out.println(premiseVals);
+
+        boolean notRow = false;
+        int premiseCount = 0;
+        for (List<Integer> row : values) {
+            for (int q = 1; q <  (int) Math.pow(2, propositions.size())+1; q++) {
+                int count1 = 0;
+                for (Integer num : columns) {
+                    if (Integer.parseInt(truthTable[q][num]) != row.get(count1)) {
+                        notRow = true;
+                        break;
+                    }
+                    count1++;
+                }
+                count1 = 0;
+                if (!notRow) {
+                    truthTable[q][propositions.size() + i] = premiseVals.get(premiseCount).toString();
+                }
+                notRow = false;
+
+            }
+            premiseCount++;
+
+        }
+
     }
 
 
