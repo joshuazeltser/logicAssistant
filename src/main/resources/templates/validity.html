@@ -71,6 +71,8 @@
 
 <div class="container">
 
+    <h1 class="jumbotron" align="center">Validity Checker</h1>
+
     <div class="col-md-2">
         <p class="lead" align="center">Key</p>
         <table class="table">
@@ -121,18 +123,37 @@
         <div class="input-group">
             <p class="lead" align="center">Premises</p>
              <textarea class="lined" th:field="*{ttPremises}" id="Text1" cols="20" rows="5"></textarea>
+            <style>
+                .linedtextarea textarea {
+                    padding-right:0.3em;
+                    padding-top:0.3em;
+                    border: 0;
+                    height: 240px;
+                    width: 300px;
+                }
+            </style>
+
         </div>
+        <p></p>
         <div class="input-group">
             <p class="lead" align="center">Result</p>
             <textarea class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
-            <p>
-            <input id="submit2" class="btn btn-primary" type="submit" value="Check Validity" />
-            </p>
-        </div>
 
+        </div>
+        <p></p>
+        <div>
+            <input id="submit2" class="btn btn-primary" type="submit" value="Check Validity" />
+        </div>
+        <p></p>
         <div id="error" class="panel panel-default">
             <div class="panel-body">
-                <output th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
+                <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
+                <script>
+                    var x = document.getElementById('errorBox');
+                    if (x.value  == 'Proof is Valid' ) {
+                        window.location.replace('/propositional');
+                    }
+                </script>
             </div>
 
         </div>
