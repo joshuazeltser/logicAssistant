@@ -11,10 +11,60 @@ public class TruthTable {
 
     private List<Expression> premises;
 
+    private String ttPremises;
+    private String ttResults;
 
-    public TruthTable(List<Expression> premises, Expression result) {
-        this.premises = premises;
-        this.result = result;
+
+    public TruthTable() {
+        ttPremises = "";
+        ttResults = "";
+        premises = new LinkedList<>();
+        result = new Expression();
+    }
+
+    public String frontEndFunctionality(String prems, String res) throws SyntaxException {
+
+        if (!prems.equals("") && !res.equals("")) {
+            readPremisesFromInput(prems, res);
+
+            boolean result = validateProof();
+
+            if (result) {
+                return "Proof is Valid";
+            } else {
+                return "Proof is Invalid";
+            }
+        }
+        else {
+            return "";
+        }
+    }
+
+    public void readPremisesFromInput(String prems, String res) {
+
+            Expression temp2 = new Expression(RuleType.GIVEN);
+            try {
+                temp2.addToExpression(res);
+            } catch (SyntaxException se) {
+                System.out.println("Result - Syntax Error: " + se.toString());
+                return;
+            }
+            result = temp2;
+
+            String[] premList = prems.split("\\r?\\n");
+
+            for (int i = 0; i < premList.length; i++) {
+                Expression temp = new Expression(RuleType.GIVEN);
+                try {
+                    temp.addToExpression(premList[i]);
+                } catch (SyntaxException se) {
+                    System.out.println("Line " + (i + 1) + " - Syntax Error: " + se.toString());
+                    return;
+                }
+                premises.add(temp);
+            }
+
+
     }
 
     public boolean validateProof() throws SyntaxException {
@@ -335,4 +385,38 @@ public class TruthTable {
         return perms;
     }
 
+
+    public Expression getResult() {
+        return result;
+    }
+
+    public void setResult(Expression result) {
+        this.result = result;
+    }
+
+
+
+    public List<Expression> getPremises() {
+        return premises;
+    }
+
+    public void setPremises(List<Expression> premises) {
+        this.premises = premises;
+    }
+
+    public String getTtPremises() {
+        return ttPremises;
+    }
+
+    public void setTtPremises(String ttPremises) {
+        this.ttPremises = ttPremises;
+    }
+
+    public String getTtResults() {
+        return ttResults;
+    }
+
+    public void setTtResults(String ttResults) {
+        this.ttResults = ttResults;
+    }
 }

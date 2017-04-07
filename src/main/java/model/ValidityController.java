@@ -11,13 +11,13 @@ public class ValidityController {
 
 	    @GetMapping("/validity")
 		public String expressionForm(Model model) {
-			model.addAttribute("proof", new Proof());
+			model.addAttribute("truthTable", new TruthTable());
 			return "validity";
 		}
 
 		@PostMapping("/validity")
-		public String expressionSubmit(@ModelAttribute Proof proof) {
-	    	return "propositional";
+		public String expressionSubmit(@ModelAttribute TruthTable truthTable) {
+	    	return "validity";
 		}
 
 }

@@ -22,7 +22,10 @@ public class TruthTableTests {
         expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
-        TruthTable tt = new TruthTable(list,expr);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(list);
+        tt.setResult(expr);
 
         String expected = "{{A=0, B=0}=0, {A=1, B=0}=0, {A=0, B=1}=0, {A=1, B=1}=1}";
 
@@ -39,7 +42,10 @@ public class TruthTableTests {
         expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
-        TruthTable tt = new TruthTable(list,expr);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(list);
+        tt.setResult(expr);
 
         String expected = "{{A=0, B=0, C=0}=0, {A=1, B=0, C=0}=1, {A=0, B=1, C=0}=0, {A=1, B=1, C=0}=0, " +
                 "{A=0, B=0, C=1}=0, {A=1, B=0, C=1}=1, {A=0, B=1, C=1}=0, {A=1, B=1, C=1}=1}";
@@ -58,7 +64,10 @@ public class TruthTableTests {
         expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
-        TruthTable tt = new TruthTable(list,expr);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(list);
+        tt.setResult(expr);
 
         tt.convertToTruthValues(expr);
 
@@ -81,7 +90,10 @@ public class TruthTableTests {
         expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
-        TruthTable tt = new TruthTable(list,expr);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(list);
+        tt.setResult(expr);
 
         tt.convertToTruthValues(expr);
 
@@ -102,7 +114,10 @@ public class TruthTableTests {
         expr.addToExpression(str);
         List<Expression> list = new LinkedList<>();
 
-        TruthTable tt = new TruthTable(list,expr);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(list);
+        tt.setResult(expr);
 
         tt.convertToTruthValues(expr);
 
@@ -134,7 +149,10 @@ public class TruthTableTests {
         List<Expression> premises = new LinkedList<>();
         premises.add(expr);
 
-        TruthTable tt = new TruthTable(premises,expr1);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(premises);
+        tt.setResult(expr1);
 
         assertTrue(tt.validateProof());
     }
@@ -162,7 +180,9 @@ public class TruthTableTests {
         premises.add(expr);
         premises.add(expr3);
 
-        TruthTable tt = new TruthTable(premises,expr4);
+        TruthTable tt = new TruthTable();
+        tt.setPremises(premises);
+        tt.setResult(expr4);
 
         assertTrue(tt.validateProof());
     }
@@ -189,7 +209,10 @@ public class TruthTableTests {
         premises.add(expr);
         premises.add(expr1);
 
-        TruthTable tt = new TruthTable(premises,expr2);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(premises);
+        tt.setResult(expr2);
 
         assertTrue(tt.validateProof());
     }
@@ -216,7 +239,10 @@ public class TruthTableTests {
         premises.add(expr);
         premises.add(expr1);
 
-        TruthTable tt = new TruthTable(premises,expr2);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(premises);
+        tt.setResult(expr2);
 
         assertTrue(tt.validateProof());
     }
@@ -255,7 +281,10 @@ public class TruthTableTests {
         premises.add(expr2);
         premises.add(expr3);
 
-        TruthTable tt = new TruthTable(premises,expr4);
+        TruthTable tt = new TruthTable();
+
+        tt.setPremises(premises);
+        tt.setResult(expr4);
 
         assertTrue(tt.validateProof());
     }
