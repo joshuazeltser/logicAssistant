@@ -619,10 +619,42 @@ public class Proof {
                 Expression rhs = sides.get(1);
                 rhs.addReferenceLine(Integer.toString(count));
 
+                System.out.println(isAndElimValid(lhs));
+
                 if (isAndElimValid(lhs) || isAndElimValid(rhs)) {
                     hints.add("AND_ELIM");
                 }
             }
+
+            if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+
+                Expression lhs = sides.get(0);
+
+                int count1 = 1;
+                for (Expression expr1 : expressions) {
+                    if (expr1.equals(lhs)) {
+                        rhs.addReferenceLine(Integer.toString(count1));
+
+                        if (isImpliesElimValid(rhs)) {
+                            hints.add("IMPLIES_ELIM");
+                        }
+
+                        break;
+                    }
+                    count1++;
+                }
+
+            }
+
+
+
+
+
+
+
             count++;
         }
 

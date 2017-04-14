@@ -2,7 +2,8 @@ package model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -48,4 +49,50 @@ public class HintTests {
 
         assertTrue(proof.generateHint().contains("AND_ELIM"));
     }
+
+    @Test
+    public void hintTest3() throws SyntaxException {
+        String str = "C -> B";
+        String str1 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().contains("IMPLIES_ELIM"));
+    }
+
+    @Test
+    public void hintTest4() throws SyntaxException {
+        String str = "D -> (B -> C)";
+        String str1 = "A ^ C";
+        String str2 = "D";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+
+        List<String> hints = proof.generateHint();
+
+//        System.out.println(hints);
+        assertTrue(hints.contains("IMPLIES_ELIM") && hints.contains("AND_ELIM"));
+    }
+
+
 }
