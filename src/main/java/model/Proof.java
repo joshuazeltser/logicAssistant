@@ -601,6 +601,36 @@ public class Proof {
     }
 
 
+    public List<String> generateHint() throws SyntaxException {
+
+        List<String> hints = new LinkedList<>();
+
+        Expression lastExpr = expressions.get(expressions.size()-1);
+
+        //Check AND ELIM rule
+
+        int count = 1;
+        for (Expression expr : expressions) {
+            if (expr.contains(new Operator("AND", OperatorType.AND))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+
+                if (isAndElimValid(lhs) || isAndElimValid(rhs)) {
+                    hints.add("AND_ELIM");
+                }
+            }
+            count++;
+        }
+
+
+        return hints;
+    }
+
+
     public String getProofString() {
         return proofString;
     }
