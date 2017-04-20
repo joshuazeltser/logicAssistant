@@ -605,12 +605,18 @@ public class Proof {
 
         List<String> hints = new LinkedList<>();
 
-        Expression lastExpr = expressions.get(expressions.size()-1);
-
-        //Check AND ELIM rule
-
         int count = 1;
         for (Expression expr : expressions) {
+
+            //OR INTRO
+            hints.add("OR_INTRO");
+
+            //AND INTRO
+            if (count == 2) {
+                hints.add("AND_INTRO");
+            }
+
+            //AND ELIM
             if (expr.contains(new Operator("AND", OperatorType.AND))) {
                 List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
 
@@ -626,6 +632,8 @@ public class Proof {
                 }
             }
 
+
+            // IMPLIES ELIM
             if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
                 List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
                 Expression rhs = sides.get(1);
@@ -648,6 +656,14 @@ public class Proof {
                 }
 
             }
+
+            //IMPLIES INTRO
+
+            //OR ELIM
+
+            // ONLY INTRO
+
+            //ONLY ELIM
 
 
 

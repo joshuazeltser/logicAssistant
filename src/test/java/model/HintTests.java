@@ -94,5 +94,22 @@ public class HintTests {
         assertTrue(hints.contains("IMPLIES_ELIM") && hints.contains("AND_ELIM"));
     }
 
+    @Test
+    public void hintTest5() throws SyntaxException {
+        String str = "C -> B";
+        String str1 = "C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().contains("AND_INTRO"));
+    }
 
 }
