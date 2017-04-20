@@ -665,12 +665,7 @@ public class Proof {
 
             //ONLY ELIM
 
-
-
-
-
-
-
+            
             count++;
         }
 
