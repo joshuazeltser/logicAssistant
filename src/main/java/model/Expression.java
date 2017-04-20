@@ -16,6 +16,8 @@ public class Expression {
 
     private List<Integer> lines;
 
+
+
     private RuleType ruleType;
 
     private boolean box;
@@ -49,6 +51,9 @@ public class Expression {
         return lines;
     }
 
+    public void setRuleType(RuleType ruleType) {
+        this.ruleType = ruleType;
+    }
 
     public boolean addToExpression(String input) throws SyntaxException {
 

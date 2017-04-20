@@ -42,6 +42,62 @@ public class HintTests {
         assertTrue(proof.nextStep(proofs).toString().equals("[A AND B, C, B]"));
     }
 
+    @Test
+    public void impliesEliminationHintTest() throws SyntaxException {
+        String str = "A -> B";
+        String str1 = "A";
+
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        System.out.println(proof.nextStep(proofs));
+        assertTrue(proof.nextStep(proofs).toString().equals("[A IMPLIES B, A, B]"));
+    }
+
+//    @Test
+//    public void impliesAndEliminationHintTest() throws SyntaxException {
+//        String str = "A ^ B";
+//        String str1 = "B -> C";
+//
+//
+//        Expression expr = new Expression(RuleType.GIVEN);
+//        expr.addToExpression(str);
+//
+//        Expression expr1 = new Expression(RuleType.GIVEN);
+//        expr1.addToExpression(str1);
+//
+//        proof.addExpression(expr);
+//        proof.addExpression(expr1);
+//
+//        String result = "C";
+//        Expression resultExpr = new Expression();
+//        resultExpr.addToExpression(result);
+//        proof.setResultExpr(resultExpr);
+//
+//        List<Proof> proofs = new LinkedList<>();
+//
+//        proofs.add(proof);
+//
+//        System.out.println(proof.nextStep(proofs));
+//        assertTrue(proof.nextStep(proofs).toString().equals("[A IMPLIES B, A, B]"));
+//    }
+
 //    @Test
 //    public void hintTest2() throws SyntaxException {
 //        String str = "C -> (A ^ B)";

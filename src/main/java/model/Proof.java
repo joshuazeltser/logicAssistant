@@ -647,36 +647,88 @@ public class Proof {
                 rhs.addReferenceLine(Integer.toString(count));
 
                 if (isAndElimValid(lhs)) {
+                    lhs.setRuleType(RuleType.AND_ELIM);
                     possAndElim.add(lhs);
                 }
 //
                 if (isAndElimValid(rhs)) {
+                    rhs.setRuleType(RuleType.AND_ELIM);
                     possAndElim.add(rhs);
                 }
             }
             count++;
         }
-        List<Proof> newPossProofs = new LinkedList<>();
-
-        if (!possAndElim.isEmpty()) {
-            for (Proof p : possProofs) {
-
-                for (Expression expr : possAndElim) {
-                    Proof temp = new Proof();
-                    temp.expressions.addAll(p.expressions);
-                    temp.expressions.add(expr);
-                    newPossProofs.add(temp);
-                }
-            }
-        }
-        possProofs = newPossProofs;
+        possProofs = updateProofs(possProofs, possAndElim);
 
         Proof possResult = foundResult(possProofs);
         if (possResult != null) {
             return foundResult(possProofs);
         }
 
+        System.out.println(possProofs);
+
+        //check if implies elimination is possible
+        List<Expression> possImpliesElim = new LinkedList<>();
+        count = 1;
+        for (Expression e : expressions) {
+            if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+
+                Expression lhs = sides.get(0);
+
+                int count1 = 1;
+                for (Expression expr1 : expressions) {
+                    if (expr1.equals(lhs)) {
+                        rhs.addReferenceLine(Integer.toString(count1));
+
+                        if (isImpliesElimValid(rhs)) {
+                            rhs.setRuleType(RuleType.IMPLIES_ELIM);
+                            possImpliesElim.add(rhs);
+                        }
+
+                        break;
+                    }
+                    count1++;
+                }
+
+            }
+            count++;
+        }
+
+
+        possProofs = updateProofs(possProofs, possImpliesElim);
+
+//        System.out.println(possProofs);
+        possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return foundResult(possProofs);
+        }
+
+
+
+
         return new Proof();
+    }
+
+    private List<Proof> updateProofs(List<Proof> possProofs, List<Expression> possRule) {
+        List<Proof> newPossProofs = new LinkedList<>();
+
+        if (!possRule.isEmpty()) {
+            for (Proof p : possProofs) {
+
+                for (Expression expr : possRule) {
+                    Proof temp = new Proof();
+                    temp.expressions.addAll(p.expressions);
+                    temp.expressions.add(expr);
+                    newPossProofs.add(temp);
+                }
+            }
+            possProofs = newPossProofs;
+        }
+
+        return possProofs;
     }
 
 
