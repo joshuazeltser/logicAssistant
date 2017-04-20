@@ -656,7 +656,6 @@ public class Proof {
                 }
 
             }
-
             //IMPLIES INTRO
 
             //OR ELIM
@@ -665,7 +664,7 @@ public class Proof {
 
             //ONLY ELIM
 
-            
+
             count++;
         }
 
