@@ -1,7 +1,9 @@
 package model;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by joshuazeltser on 18/01/2017.
@@ -635,99 +637,123 @@ public class Proof {
 
         //check if and elimination is possible
 
-        int count = 1;
-        List<Expression> possAndElim = new LinkedList<>();
-        for (Expression e : expressions) {
-            if (e.contains(new Operator("AND", OperatorType.AND))) {
-                List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
+        int count;
+        List<List<String>> toBeAndEliminated = new LinkedList<>();
 
-                Expression lhs = sides.get(0);
-                lhs.addReferenceLine(Integer.toString(count));
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
+                if (e.contains(new Operator("AND", OperatorType.AND))) {
+                    List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
 
-                if (isAndElimValid(lhs)) {
-                    lhs.setRuleType(RuleType.AND_ELIM);
-                    possAndElim.add(lhs);
+                    Expression lhs = sides.get(0);
+                    lhs.addReferenceLine(Integer.toString(count));
+                    Expression rhs = sides.get(1);
+                    rhs.addReferenceLine(Integer.toString(count));
+
+                    if (possProofs.get(i).isAndElimValid(lhs)) {
+                        lhs.setRuleType(RuleType.AND_ELIM);
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(lhs.toString());
+                        toBeAndEliminated.add(pair);
+
+                    }
+                    if (possProofs.get(i).isAndElimValid(rhs)) {
+
+                        rhs.setRuleType(RuleType.AND_ELIM);
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(rhs.toString());
+                        toBeAndEliminated.add(pair);
+                    }
                 }
-//
-                if (isAndElimValid(rhs)) {
-                    rhs.setRuleType(RuleType.AND_ELIM);
-                    possAndElim.add(rhs);
-                }
+                count++;
             }
-            count++;
         }
-        possProofs = updateProofs(possProofs, possAndElim);
+
+
+        possProofs = updateProofs(possProofs, toBeAndEliminated);
 
         Proof possResult = foundResult(possProofs);
         if (possResult != null) {
             return foundResult(possProofs);
         }
 
-        System.out.println(possProofs);
-
         //check if implies elimination is possible
         List<Expression> possImpliesElim = new LinkedList<>();
-        count = 1;
-        for (Expression e : expressions) {
-            if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
 
-                Expression lhs = sides.get(0);
+        List<List<String>> toBeEliminated = new LinkedList<>();
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
 
-                int count1 = 1;
-                for (Expression expr1 : expressions) {
-                    if (expr1.equals(lhs)) {
-                        rhs.addReferenceLine(Integer.toString(count1));
+                if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                    List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
+                    Expression rhs = sides.get(1);
+                    rhs.addReferenceLine(Integer.toString(count));
 
-                        if (isImpliesElimValid(rhs)) {
-                            rhs.setRuleType(RuleType.IMPLIES_ELIM);
-                            possImpliesElim.add(rhs);
+                    Expression lhs = sides.get(0);
+
+                    int count1 = 1;
+                    for (Expression expr1 : possProofs.get(i).expressions) {
+                        if (expr1.equals(lhs)) {
+
+                            rhs.addReferenceLine(Integer.toString(count1));
+
+
+                            if (possProofs.get(i).isImpliesElimValid(rhs)) {
+                                rhs.setRuleType(RuleType.IMPLIES_ELIM);
+                                List<String> pair = new LinkedList<>();
+                                pair.add(Integer.toString(i));
+                                pair.add(rhs.toString());
+                                toBeEliminated.add(pair);
+                            }
+                            break;
                         }
-
-                        break;
+                        count1++;
                     }
-                    count1++;
+
                 }
+                if (count > 1) break;
+                count++;
 
             }
-            count++;
+
+
         }
+        possProofs = updateProofs(possProofs, toBeEliminated);
 
-
-        possProofs = updateProofs(possProofs, possImpliesElim);
-
-//        System.out.println(possProofs);
         possResult = foundResult(possProofs);
         if (possResult != null) {
-            return foundResult(possProofs);
+            return possResult;
         }
-
-
 
 
         return new Proof();
     }
 
-    private List<Proof> updateProofs(List<Proof> possProofs, List<Expression> possRule) {
+    private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated) throws SyntaxException {
         List<Proof> newPossProofs = new LinkedList<>();
+        if (!toBeEliminated.isEmpty()) {
+            for (List<String> pair : toBeEliminated) {
+                for (int i = 0; i < possProofs.size(); i++) {
 
-        if (!possRule.isEmpty()) {
-            for (Proof p : possProofs) {
+                    if (pair.get(0).equals(Integer.toString(i))) {
+                        Proof temp = new Proof();
+                        temp.expressions.addAll(possProofs.get(i).expressions);
+                        Expression e = new Expression();
+                        e.addToExpression(pair.get(1));
+                        temp.expressions.add(e);
+                        newPossProofs.add(temp);
+                    } else {
+                        newPossProofs.add(possProofs.get(i));
+                    }
 
-                for (Expression expr : possRule) {
-                    Proof temp = new Proof();
-                    temp.expressions.addAll(p.expressions);
-                    temp.expressions.add(expr);
-                    newPossProofs.add(temp);
                 }
             }
-            possProofs = newPossProofs;
+            return newPossProofs;
         }
-
         return possProofs;
     }
 
