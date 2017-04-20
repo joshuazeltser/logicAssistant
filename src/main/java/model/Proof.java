@@ -15,6 +15,10 @@ public class Proof {
     private String proofString;
     private String proofLabels;
 
+
+
+    private Expression resultExpr;
+
     public Proof() {
         expressions = new LinkedList<>();
         errors = new LinkedList<>();
@@ -163,15 +167,7 @@ public class Proof {
     @Override
     public String toString() {
 
-        String result = "";
-
-        int count = 1;
-
-        for (Expression expr : expressions) {
-            result += count + " " + expr.toString() + "\n";
-            count++;
-        }
-        return result;
+        return expressions.toString();
     }
 
     public boolean isAndIntroValid(Expression e1) {
@@ -601,77 +597,6 @@ public class Proof {
     }
 
 
-    public List<String> generateHint() throws SyntaxException {
-
-        List<String> hints = new LinkedList<>();
-
-        int count = 1;
-        for (Expression expr : expressions) {
-
-            //OR INTRO
-            hints.add("OR_INTRO");
-
-            //AND INTRO
-            if (count == 2) {
-                hints.add("AND_INTRO");
-            }
-
-            //AND ELIM
-            if (expr.contains(new Operator("AND", OperatorType.AND))) {
-                List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
-
-                Expression lhs = sides.get(0);
-                lhs.addReferenceLine(Integer.toString(count));
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
-
-                System.out.println(isAndElimValid(lhs));
-
-                if (isAndElimValid(lhs) || isAndElimValid(rhs)) {
-                    hints.add("AND_ELIM");
-                }
-            }
-
-
-            // IMPLIES ELIM
-            if (expr.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
-
-                Expression lhs = sides.get(0);
-
-                int count1 = 1;
-                for (Expression expr1 : expressions) {
-                    if (expr1.equals(lhs)) {
-                        rhs.addReferenceLine(Integer.toString(count1));
-
-                        if (isImpliesElimValid(rhs)) {
-                            hints.add("IMPLIES_ELIM");
-                        }
-
-                        break;
-                    }
-                    count1++;
-                }
-
-            }
-            
-            //IMPLIES INTRO
-
-            //OR ELIM
-
-            // ONLY INTRO
-
-            //ONLY ELIM
-
-
-            count++;
-        }
-
-
-        return hints;
-    }
 
 
     public String getProofString() {
@@ -690,5 +615,76 @@ public class Proof {
 
     public void setProofLabels(String proofLabels) {
         this.proofLabels = proofLabels;
+    }
+
+
+
+    // functionality to solve a proof step by step in order to suggest hints
+
+    private Proof foundResult(List<Proof> possProofs) {
+        for (Proof p : possProofs) {
+            if (p.expressions.get(p.expressions.size()-1).equals(resultExpr)) {
+                return p;
+            }
+        }
+        //remember to set this up in front end
+        return null;
+    }
+
+    public Proof nextStep(List<Proof> possProofs) throws SyntaxException {
+
+        //check if and elimination is possible
+
+        int count = 1;
+        List<Expression> possAndElim = new LinkedList<>();
+        for (Expression e : expressions) {
+            if (e.contains(new Operator("AND", OperatorType.AND))) {
+                List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+
+                if (isAndElimValid(lhs)) {
+                    possAndElim.add(lhs);
+                }
+//
+                if (isAndElimValid(rhs)) {
+                    possAndElim.add(rhs);
+                }
+            }
+            count++;
+        }
+        List<Proof> newPossProofs = new LinkedList<>();
+
+        if (!possAndElim.isEmpty()) {
+            for (Proof p : possProofs) {
+
+                for (Expression expr : possAndElim) {
+                    Proof temp = new Proof();
+                    temp.expressions.addAll(p.expressions);
+                    temp.expressions.add(expr);
+                    newPossProofs.add(temp);
+                }
+            }
+        }
+        possProofs = newPossProofs;
+
+        Proof possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return foundResult(possProofs);
+        }
+
+        return new Proof();
+    }
+
+
+    public Expression getResultExpr() {
+        return resultExpr;
+    }
+
+    public void setResultExpr(Expression resultExpr) {
+        this.resultExpr = resultExpr;
     }
 }
