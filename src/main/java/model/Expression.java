@@ -149,7 +149,9 @@ public class Expression {
             }
 
 
-            if (tokens[i] != "(" && tokens[i] != ")" && tokens[i] != "!" && i < tokens.length-1) {
+
+            if (!tokens[i].equals("(") && !tokens[i].equals(")") && !tokens[i].equals("!") &&
+                    !tokens[i].equals("NOT") && i < tokens.length-1) {
 
                 if (tokens[i].equals(tokens[i+1])) {
                     throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +"" +

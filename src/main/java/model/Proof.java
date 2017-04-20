@@ -681,8 +681,6 @@ public class Proof {
         }
 
         //check if implies elimination is possible
-        List<Expression> possImpliesElim = new LinkedList<>();
-
         List<List<String>> toBeEliminated = new LinkedList<>();
         for (int i = 0; i < possProofs.size(); i++) {
             count = 1;
@@ -730,7 +728,90 @@ public class Proof {
         }
 
 
-        return new Proof();
+        //check if not elimination is possible
+//        List<List<String>> toBeNotEliminated = new LinkedList<>();
+//
+//        for (int i = 0; i < possProofs.size(); i++) {
+//            count = 1;
+//            for (Expression e : possProofs.get(i).expressions) {
+//                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+//                    e.removeNcomponents(1);
+//                    System.out.println("e" + e);
+//                    if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+//                        e.removeNcomponents(1);
+//                        e.setRuleType(RuleType.NOT_ELIM);
+//                        List<String> pair = new LinkedList<>();
+//                        pair.add(Integer.toString(i));
+//                        pair.add(e.toString());
+//                        toBeNotEliminated.add(pair);
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        possProofs = updateProofs(possProofs, toBeNotEliminated);
+//
+//        possResult = foundResult(possProofs);
+//        if (possResult != null) {
+//            return possResult;
+//        }
+
+        //check if iff elimination is possible
+        List<List<String>> toBeIffEliminated = new LinkedList<>();
+
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
+                if (e.contains(new Operator("ONLY", OperatorType.ONLY))) {
+                    List<Expression> sides = e.splitExpressionBy(OperatorType.ONLY);
+
+                    Expression lhs = sides.get(0);
+                    lhs.addReferenceLine(Integer.toString(count));
+                    Expression rhs = sides.get(1);
+                    rhs.addReferenceLine(Integer.toString(count));
+
+                    Expression result = new Expression();
+                    Expression result1 = new Expression();
+
+                    result.addToExpression(lhs + " -> " + rhs);
+                    result1.addToExpression(rhs + " -> " + lhs);
+
+                    result.addReferenceLine(Integer.toString(count));
+                    if (possProofs.get(i).isOnlyEliminationValid(result)) {
+                        lhs.setRuleType(RuleType.ONLY_ELIM);
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(result.toString());
+                        toBeIffEliminated.add(pair);
+
+                    }
+
+                    result1.addReferenceLine(Integer.toString(count));
+                    if (possProofs.get(i).isOnlyEliminationValid(result1)) {
+
+                        rhs.setRuleType(RuleType.ONLY_ELIM);
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(result1.toString());
+                        toBeIffEliminated.add(pair);
+                    }
+                }
+                count++;
+            }
+        }
+
+        possProofs = updateProofs(possProofs, toBeIffEliminated);
+        
+        possResult = foundResult(possProofs);
+
+        if (possResult != null) {
+            return foundResult(possProofs);
+        }
+
+
+
+        return new Proof();//nextStep(possProofs);
     }
 
     private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated) throws SyntaxException {
