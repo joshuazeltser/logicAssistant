@@ -656,6 +656,7 @@ public class Proof {
                 }
 
             }
+            
             //IMPLIES INTRO
 
             //OR ELIM
