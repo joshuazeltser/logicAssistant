@@ -633,8 +633,10 @@ public class Proof {
         return null;
     }
 
+    private int timeoutCount = 0;
     public Proof nextStep(List<Proof> possProofs) throws SyntaxException {
 
+        System.out.println("beginning " + possProofs);
         //check if and elimination is possible
 
         int count;
@@ -684,18 +686,26 @@ public class Proof {
         List<List<String>> toBeEliminated = new LinkedList<>();
         for (int i = 0; i < possProofs.size(); i++) {
             count = 1;
+//            System.out.println("implies possproof " + possProofs);
             for (Expression e : possProofs.get(i).expressions) {
 
+//                System.out.println(e);
+
                 if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                    System.out.println("e " + e);
                     List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
                     Expression rhs = sides.get(1);
                     rhs.addReferenceLine(Integer.toString(count));
 
                     Expression lhs = sides.get(0);
+                    //WHY IS lhs NULL???????????????????
+                    System.out.println("lhs " + lhs);
 
                     int count1 = 1;
                     for (Expression expr1 : possProofs.get(i).expressions) {
+
                         if (expr1.equals(lhs)) {
+                            System.out.println("here");
 
                             rhs.addReferenceLine(Integer.toString(count1));
 
@@ -713,7 +723,7 @@ public class Proof {
                     }
 
                 }
-                if (count > 1) break;
+//                if (count > 1) break;
                 count++;
 
             }
@@ -721,6 +731,7 @@ public class Proof {
 
         }
         possProofs = updateProofs(possProofs, toBeEliminated);
+        System.out.println("post implies "  + possProofs);
 
         possResult = foundResult(possProofs);
         if (possResult != null) {
@@ -802,7 +813,7 @@ public class Proof {
         }
 
         possProofs = updateProofs(possProofs, toBeIffEliminated);
-        
+
         possResult = foundResult(possProofs);
 
         if (possResult != null) {
@@ -810,8 +821,12 @@ public class Proof {
         }
 
 
-
-        return new Proof();//nextStep(possProofs);
+        if (timeoutCount < 1) {
+            timeoutCount++;
+            return nextStep(possProofs);
+        } else {
+            return new Proof();
+        }
     }
 
     private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated) throws SyntaxException {

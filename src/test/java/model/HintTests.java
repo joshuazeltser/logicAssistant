@@ -158,5 +158,35 @@ public class HintTests {
         assertTrue(res.toString().equals("[A ONLY B, B IMPLIES A]"));
     }
 
+    @Test
+    public void onlyImpliesEliminationHintTest() throws SyntaxException {
+        String str1 = "A <-> B";
+        String str = "A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+        System.out.println("result " + res);
+//        assertTrue(res.toString().equals("[A ONLY B, B IMPLIES A]"));
+    }
+
 
 }
