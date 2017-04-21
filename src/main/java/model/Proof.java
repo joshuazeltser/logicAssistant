@@ -634,9 +634,7 @@ public class Proof {
     private int timeoutCount = 0;
     public Proof nextStep(List<Proof> possProofs) throws SyntaxException {
 
-//        System.out.println("beginning " + possProofs);
         //check if and elimination is possible
-
         int count;
         List<List<String>> toBeAndEliminated = new LinkedList<>();
 
@@ -679,7 +677,7 @@ public class Proof {
         if (possResult != null) {
             return foundResult(possProofs);
         }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if implies elimination is possible
         List<List<String>> toBeEliminated = new LinkedList<>();
         for (int i = 0; i < possProofs.size(); i++) {
@@ -728,36 +726,57 @@ public class Proof {
             return possResult;
         }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if not elimination is possible
-//        List<List<String>> toBeNotEliminated = new LinkedList<>();
-//
-//        for (int i = 0; i < possProofs.size(); i++) {
-//            count = 1;
-//            for (Expression e : possProofs.get(i).expressions) {
-//                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
-//                    e.removeNcomponents(1);
-//                    System.out.println("e" + e);
-//                    if (e.contains(new Operator("NOT", OperatorType.NOT))) {
-//                        e.removeNcomponents(1);
-//                        e.setRuleType(RuleType.NOT_ELIM);
-//                        List<String> pair = new LinkedList<>();
-//                        pair.add(Integer.toString(i));
-//                        pair.add(e.toString());
-//                        toBeNotEliminated.add(pair);
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//        possProofs = updateProofs(possProofs, toBeNotEliminated);
-//
-//        possResult = foundResult(possProofs);
-//        if (possResult != null) {
-//            return possResult;
-//        }
+        List<List<String>> toBeNotEliminated = new LinkedList<>();
 
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
+                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+                    Expression temp = new Expression();
+                    temp.addToExpression(e.toString());
+
+                    temp.removeNcomponents(1);
+                    int count1 = 1;
+                    for (Expression e1 : possProofs.get(i).expressions) {
+
+                        if (e1.equals(temp)) {
+                            List<String> pair = new LinkedList<>();
+                            pair.add(Integer.toString(i));
+                            pair.add("FALSE");
+                            toBeNotEliminated.add(pair);
+                        }
+                    }
+                }
+            }
+        }
+
+        possProofs = updateProofs(possProofs, toBeNotEliminated, RuleType.NOT_ELIM);
+
+        System.out.println(possProofs);
+        possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return possResult;
+        }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //check if Double not elimination is possible
+        List<List<String>> toBeDoubleNotEliminated = new LinkedList<>();
+
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
+
+            }
+        }
+
+        possProofs = updateProofs(possProofs, toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIMINATION);
+
+        possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return possResult;
+        }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if iff elimination is possible
         List<List<String>> toBeIffEliminated = new LinkedList<>();
 
@@ -811,8 +830,8 @@ public class Proof {
             return foundResult(possProofs);
         }
 
-
-        if (timeoutCount < 1) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (timeoutCount < 5) {
             timeoutCount++;
             return nextStep(possProofs);
         } else {
@@ -843,7 +862,6 @@ public class Proof {
         }
         return possProofs;
     }
-
 
     public Expression getResultExpr() {
         return resultExpr;

@@ -129,7 +129,7 @@ public class HintTests {
 
         Proof res = proof.nextStep(proofs);
 
-        System.out.println("result " + res);
+//        System.out.println("result " + res);
         assertTrue(res.toString().equals("[B IMPLIES C, A AND B, B, C]"));
     }
 
@@ -184,9 +184,72 @@ public class HintTests {
 
         Proof res = proof.nextStep(proofs);
 
-        System.out.println("result " + res);
+//        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A ONLY B, A, A IMPLIES B, B]"));
     }
 
+    @Test
+    public void notEliminationHintTest() throws SyntaxException {
+        String str = "!A";
+        String str1 = "A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "FALSE";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[NOT A, A, FALSE]"));
+    }
+
+    @Test
+    public void notImpliesEliminationHintTest() throws SyntaxException {
+        String str = "A -> B";
+        String str1 = "A";
+        String str2 = "!B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        String result = "FALSE";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[A IMPLIES B, A, NOT B, B, FALSE]"));
+    }
 
 }
