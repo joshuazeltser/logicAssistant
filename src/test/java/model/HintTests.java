@@ -160,8 +160,8 @@ public class HintTests {
 
     @Test
     public void onlyImpliesEliminationHintTest() throws SyntaxException {
-        String str1 = "A <-> B";
-        String str = "A";
+        String str = "A <-> B";
+        String str1 = "A";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -185,7 +185,7 @@ public class HintTests {
         Proof res = proof.nextStep(proofs);
 
         System.out.println("result " + res);
-//        assertTrue(res.toString().equals("[A ONLY B, B IMPLIES A]"));
+        assertTrue(res.toString().equals("[A ONLY B, A, A IMPLIES B, B]"));
     }
 
 

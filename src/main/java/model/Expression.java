@@ -315,11 +315,10 @@ public class Expression {
     }
 
 
-
+    private List<String> operatorNames = Arrays.asList("AND", "OR", "IMPLIES", "ONLY");
     public List<Expression> splitExpressionBy(OperatorType type) {
 
         List<Component> thisExpression = expression;
-
 
         if (thisExpression.get(0).toString().equals("OPEN")
                     && thisExpression.get(thisExpression.size() - 1).toString().equals("CLOSE")) {
@@ -349,8 +348,20 @@ public class Expression {
         } else {
             for (int i = 0; i < thisExpression.size(); i++) {
 
-             if (thisExpression.get(i) instanceof Operator) {
-                  if (((Operator) thisExpression.get(i)).getType() == type) {
+
+             if (thisExpression.get(i) instanceof Operator || operatorNames.contains(thisExpression.get(i).toString()) ) {
+
+                 OperatorType t;
+                 switch (thisExpression.get(i).toString()) {
+                     case "AND" : t = OperatorType.AND; break;
+                     case "OR" : t = OperatorType.OR; break;
+                     case "IMPLIES" : t = OperatorType.IMPLIES; break;
+                     case "ONLY" : t = OperatorType.ONLY; break;
+                     default: t =((Operator) thisExpression.get(i)).getType();
+                 }
+
+
+                 if ( t == type) {
                       lhsExpr = new Expression(ruleType);
                       lhsExpr.expression = thisExpression.subList(0, i);
                       rhsExpr = new Expression(ruleType);

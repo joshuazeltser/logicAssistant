@@ -1,9 +1,7 @@
 package model;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by joshuazeltser on 18/01/2017.
@@ -636,7 +634,7 @@ public class Proof {
     private int timeoutCount = 0;
     public Proof nextStep(List<Proof> possProofs) throws SyntaxException {
 
-        System.out.println("beginning " + possProofs);
+//        System.out.println("beginning " + possProofs);
         //check if and elimination is possible
 
         int count;
@@ -675,7 +673,7 @@ public class Proof {
         }
 
 
-        possProofs = updateProofs(possProofs, toBeAndEliminated);
+        possProofs = updateProofs(possProofs, toBeAndEliminated, RuleType.AND_ELIM);
 
         Proof possResult = foundResult(possProofs);
         if (possResult != null) {
@@ -686,29 +684,23 @@ public class Proof {
         List<List<String>> toBeEliminated = new LinkedList<>();
         for (int i = 0; i < possProofs.size(); i++) {
             count = 1;
-//            System.out.println("implies possproof " + possProofs);
             for (Expression e : possProofs.get(i).expressions) {
 
-//                System.out.println(e);
-
                 if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                    System.out.println("e " + e);
+
                     List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
+
                     Expression rhs = sides.get(1);
                     rhs.addReferenceLine(Integer.toString(count));
 
                     Expression lhs = sides.get(0);
-                    //WHY IS lhs NULL???????????????????
-                    System.out.println("lhs " + lhs);
 
                     int count1 = 1;
                     for (Expression expr1 : possProofs.get(i).expressions) {
 
                         if (expr1.equals(lhs)) {
-                            System.out.println("here");
 
                             rhs.addReferenceLine(Integer.toString(count1));
-
 
                             if (possProofs.get(i).isImpliesElimValid(rhs)) {
                                 rhs.setRuleType(RuleType.IMPLIES_ELIM);
@@ -723,15 +715,13 @@ public class Proof {
                     }
 
                 }
-//                if (count > 1) break;
                 count++;
 
             }
 
 
         }
-        possProofs = updateProofs(possProofs, toBeEliminated);
-        System.out.println("post implies "  + possProofs);
+        possProofs = updateProofs(possProofs, toBeEliminated, RuleType.IMPLIES_ELIM);
 
         possResult = foundResult(possProofs);
         if (possResult != null) {
@@ -788,9 +778,10 @@ public class Proof {
                     result.addToExpression(lhs + " -> " + rhs);
                     result1.addToExpression(rhs + " -> " + lhs);
 
+
                     result.addReferenceLine(Integer.toString(count));
                     if (possProofs.get(i).isOnlyEliminationValid(result)) {
-                        lhs.setRuleType(RuleType.ONLY_ELIM);
+                        result.setRuleType(RuleType.ONLY_ELIM);
                         List<String> pair = new LinkedList<>();
                         pair.add(Integer.toString(i));
                         pair.add(result.toString());
@@ -801,7 +792,7 @@ public class Proof {
                     result1.addReferenceLine(Integer.toString(count));
                     if (possProofs.get(i).isOnlyEliminationValid(result1)) {
 
-                        rhs.setRuleType(RuleType.ONLY_ELIM);
+                        result1.setRuleType(RuleType.ONLY_ELIM);
                         List<String> pair = new LinkedList<>();
                         pair.add(Integer.toString(i));
                         pair.add(result1.toString());
@@ -812,7 +803,7 @@ public class Proof {
             }
         }
 
-        possProofs = updateProofs(possProofs, toBeIffEliminated);
+        possProofs = updateProofs(possProofs, toBeIffEliminated, RuleType.ONLY_ELIM);
 
         possResult = foundResult(possProofs);
 
@@ -829,7 +820,7 @@ public class Proof {
         }
     }
 
-    private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated) throws SyntaxException {
+    private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated, RuleType type) throws SyntaxException {
         List<Proof> newPossProofs = new LinkedList<>();
         if (!toBeEliminated.isEmpty()) {
             for (List<String> pair : toBeEliminated) {
@@ -838,7 +829,7 @@ public class Proof {
                     if (pair.get(0).equals(Integer.toString(i))) {
                         Proof temp = new Proof();
                         temp.expressions.addAll(possProofs.get(i).expressions);
-                        Expression e = new Expression();
+                        Expression e = new Expression(type);
                         e.addToExpression(pair.get(1));
                         temp.expressions.add(e);
                         newPossProofs.add(temp);
