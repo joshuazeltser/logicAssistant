@@ -252,4 +252,57 @@ public class HintTests {
         assertTrue(res.toString().equals("[A IMPLIES B, A, NOT B, B, FALSE]"));
     }
 
+    @Test
+    public void simpleNotNotEliminationHintTest() throws SyntaxException {
+        String str = "!!A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        proof.addExpression(expr);
+
+        String result = "A";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[NOT NOT A, A]"));
+    }
+
+    @Test
+    public void impliesNotNotEliminationHintTest() throws SyntaxException {
+        String str = "!!A";
+        String str1 = "A -> B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[NOT NOT A, A IMPLIES B, A, B]"));
+    }
+
 }

@@ -750,11 +750,11 @@ public class Proof {
                     }
                 }
             }
+            count++;
         }
 
         possProofs = updateProofs(possProofs, toBeNotEliminated, RuleType.NOT_ELIM);
 
-        System.out.println(possProofs);
         possResult = foundResult(possProofs);
         if (possResult != null) {
             return possResult;
@@ -766,13 +766,29 @@ public class Proof {
         for (int i = 0; i < possProofs.size(); i++) {
             count = 1;
             for (Expression e : possProofs.get(i).expressions) {
+                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+                    Expression temp = new Expression();
+                    temp.addToExpression(e.toString());
+                    temp.removeNcomponents(1);
 
+                    if (temp.contains(new Operator("NOT", OperatorType.NOT))) {
+                        Expression temp1 = new Expression();
+                        temp1.addToExpression(temp.toString());
+                        temp1.removeNcomponents(1);
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(temp1.toString());
+                        toBeDoubleNotEliminated.add(pair);
+                    }
+                }
             }
+            count++;
         }
 
         possProofs = updateProofs(possProofs, toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIMINATION);
 
         possResult = foundResult(possProofs);
+
         if (possResult != null) {
             return possResult;
         }
@@ -831,7 +847,7 @@ public class Proof {
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if (timeoutCount < 5) {
+        if (timeoutCount < 1) {
             timeoutCount++;
             return nextStep(possProofs);
         } else {
