@@ -671,12 +671,12 @@ public class Proof {
         }
 
 
-        possProofs = updateProofs(possProofs, toBeAndEliminated, RuleType.AND_ELIM);
+            possProofs = updateProofs(possProofs, toBeAndEliminated, RuleType.AND_ELIM);
 
-        Proof possResult = foundResult(possProofs);
-        if (possResult != null) {
-            return foundResult(possProofs);
-        }
+            Proof possResult = foundResult(possProofs);
+            if (possResult != null) {
+                return foundResult(possProofs);
+            }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if implies elimination is possible
         List<List<String>> toBeEliminated = new LinkedList<>();
@@ -846,8 +846,50 @@ public class Proof {
             return foundResult(possProofs);
         }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if (timeoutCount < 1) {
+        //check if or elimination is possible
+
+
+
+        //check for several eliminations before starting introductions
+        if (timeoutCount < 2) {
+            timeoutCount++;
+            return nextStep(possProofs);
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //check if and introduction is possible
+
+        List<List<String>> toBeAndIntro = new LinkedList<>();
+
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            for (Expression e : possProofs.get(i).expressions) {
+               for (Expression e1 : possProofs.get(i).expressions) {
+                   if (!e.equals(e1)) {
+                       Expression and = new Expression(RuleType.AND_INTRO);
+                       and.addToExpression(e.toString() + " ^ " + e1.toString());
+                       List<String> pair = new LinkedList<>();
+                       pair.add(Integer.toString(i));
+                       pair.add(and.toString());
+                       toBeAndIntro.add(pair);
+                   }
+               }
+            }
+            count++;
+        }
+
+        possProofs = updateProofs(possProofs, toBeAndIntro, RuleType.AND_INTRO);
+        possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return possResult;
+        }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (timeoutCount < 5) {
             timeoutCount++;
             return nextStep(possProofs);
         } else {
@@ -857,6 +899,7 @@ public class Proof {
 
     private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated, RuleType type) throws SyntaxException {
         List<Proof> newPossProofs = new LinkedList<>();
+        newPossProofs.addAll(possProofs);
         if (!toBeEliminated.isEmpty()) {
             for (List<String> pair : toBeEliminated) {
                 for (int i = 0; i < possProofs.size(); i++) {
