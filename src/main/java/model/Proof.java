@@ -1,5 +1,7 @@
 package model;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -874,76 +876,90 @@ public class Proof {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if and introduction is possible
 
+        if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
 
-        List<List<String>> toBeAndIntro = new LinkedList<>();
+            List<List<String>> toBeAndIntro = new LinkedList<>();
 
-        for (int i = 0; i < possProofs.size(); i++) {
-            count = 1;
-            for (Expression e : possProofs.get(i).expressions) {
-               for (Expression e1 : possProofs.get(i).expressions) {
-                   if (!e.equals(e1)) {
-                       Expression and = new Expression(RuleType.AND_INTRO);
-                       and.addToExpression(e.toString() + " ^ " + e1.toString());
-                       List<String> pair = new LinkedList<>();
-                       pair.add(Integer.toString(i));
-                       pair.add(and.toString());
-                       toBeAndIntro.add(pair);
-                   }
-               }
+            for (int i = 0; i < possProofs.size(); i++) {
+                count = 1;
+                for (Expression e : possProofs.get(i).expressions) {
+                    for (Expression e1 : possProofs.get(i).expressions) {
+                        if (!e.equals(e1)) {
+                            Expression and = new Expression(RuleType.AND_INTRO);
+                            and.addToExpression(e.toString() + " ^ " + e1.toString());
+                            List<String> pair = new LinkedList<>();
+                            pair.add(Integer.toString(i));
+                            pair.add(and.toString());
+                            toBeAndIntro.add(pair);
+                        }
+                    }
+                }
+                count++;
             }
-            count++;
-        }
 
-        possProofs = updateProofs(possProofs, toBeAndIntro, RuleType.AND_INTRO);
-        possResult = foundResult(possProofs);
-        if (possResult != null) {
-            return possResult;
-        }
+            possProofs = updateProofs(possProofs, toBeAndIntro, RuleType.AND_INTRO);
+            possResult = foundResult(possProofs);
+            if (possResult != null) {
+                return possResult;
+            }
 
+        } else {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //check if or introduction is possible
+            //check if or introduction is possible
 
-        List<List<String>> toBeOrIntro = new LinkedList<>();
+            List<List<String>> toBeOrIntro = new LinkedList<>();
 
-        for (int i = 0; i < possProofs.size(); i++) {
-            count = 1;
-            List<Proposition> props = new LinkedList<>();
-            List<String> lhs = new LinkedList<>();
-            for (Expression e : possProofs.get(i).expressions) {
-                for (Proposition p : e.listPropositions()) {
-                    if (!props.contains(p)) {
-                        props.add(p);
+            for (int i = 0; i < possProofs.size(); i++) {
+
+                count = 1;
+                List<String> props = new LinkedList<>();
+                for (Expression e : possProofs.get(i).expressions) {
+                    for (Proposition p : e.listPropositions()) {
+                        if (!props.contains(p.toString())) {
+                            props.add(p.toString());
+                        }
+                    }
+                    for (Proposition p : resultExpr.listPropositions()) {
+                        if (!props.contains(p.toString())) {
+                            props.add(p.toString());
+                        }
+                    }
+
+                    if (!props.contains(e.toString())) {
+                        props.add(e.toString());
+                    }
+
+                    if (!props.contains(resultExpr.toString()))
+                        props.add(resultExpr.toString());
+
+                }
+//                System.out.println(props);
+                for (Expression p : possProofs.get(i).expressions) {
+                    for (String p1 : props) {
+                        if (!p.toString().equals(p1.toString())) {
+                            Expression or = new Expression(RuleType.OR_INTRO);
+                            or.addToExpression(p.toString() + " | " + p1.toString());
+                            List<String> pair = new LinkedList<>();
+                            pair.add(Integer.toString(i));
+                            pair.add(or.toString());
+                            toBeOrIntro.add(pair);
+                        }
                     }
                 }
-                for (Proposition p : resultExpr.listPropositions()) {
-                    if (!props.contains(p)) {
-                        props.add(p);
-                    }
-                }
-                if (e.toString().length() == 1) {
-                    lhs.add(e.toString());
-                }
+                count++;
+
             }
-            for (String p : lhs) {
-                for (Proposition p1 : props) {
-                    if (!p.equals(p1)) {
-                        Expression or = new Expression(RuleType.OR_INTRO);
-                        or.addToExpression(p.toString() + " | " + p1.toString());
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(or.toString());
-                        toBeOrIntro.add(pair);
-                    }
-                }
-            }
-            count++;
-        }
 
-        possProofs = updateProofs(possProofs, toBeOrIntro, RuleType.OR_INTRO);
-        possResult = foundResult(possProofs);
-        if (possResult != null) {
-            return possResult;
+            possProofs = updateProofs(possProofs, toBeOrIntro, RuleType.OR_INTRO);
+//            System.out.println(possProofs);
+            possResult = foundResult(possProofs);
+            if (possResult != null) {
+                return possResult;
+            }
         }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //make an assumption
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (timeoutCount < 5) {
@@ -956,7 +972,6 @@ public class Proof {
 
     private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated, RuleType type) throws SyntaxException {
         List<Proof> newPossProofs = new LinkedList<>();
-//        newPossProofs.addAll(possProofs);
         if (!toBeEliminated.isEmpty()) {
             for (List<String> pair : toBeEliminated) {
                 for (int i = 0; i < possProofs.size(); i++) {
