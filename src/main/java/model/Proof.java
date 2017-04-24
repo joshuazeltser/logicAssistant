@@ -650,6 +650,9 @@ public class Proof {
                     rhs.addReferenceLine(Integer.toString(count));
 
                     if (possProofs.get(i).isAndElimValid(lhs)) {
+                        if (possProofs.get(i).expressions.contains(lhs)) {
+                            break;
+                        }
                         lhs.setRuleType(RuleType.AND_ELIM);
                         List<String> pair = new LinkedList<>();
                         pair.add(Integer.toString(i));
@@ -658,7 +661,9 @@ public class Proof {
 
                     }
                     if (possProofs.get(i).isAndElimValid(rhs)) {
-
+                        if (possProofs.get(i).expressions.contains(rhs)) {
+                            break;
+                        }
                         rhs.setRuleType(RuleType.AND_ELIM);
                         List<String> pair = new LinkedList<>();
                         pair.add(Integer.toString(i));
@@ -701,6 +706,9 @@ public class Proof {
                             rhs.addReferenceLine(Integer.toString(count1));
 
                             if (possProofs.get(i).isImpliesElimValid(rhs)) {
+                                if (possProofs.get(i).expressions.contains(rhs)) {
+                                    break;
+                                }
                                 rhs.setRuleType(RuleType.IMPLIES_ELIM);
                                 List<String> pair = new LinkedList<>();
                                 pair.add(Integer.toString(i));
@@ -719,12 +727,14 @@ public class Proof {
 
 
         }
+
         possProofs = updateProofs(possProofs, toBeEliminated, RuleType.IMPLIES_ELIM);
 
         possResult = foundResult(possProofs);
         if (possResult != null) {
             return possResult;
         }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if not elimination is possible
@@ -759,6 +769,8 @@ public class Proof {
         if (possResult != null) {
             return possResult;
         }
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if Double not elimination is possible
         List<List<String>> toBeDoubleNotEliminated = new LinkedList<>();
@@ -792,6 +804,7 @@ public class Proof {
         if (possResult != null) {
             return possResult;
         }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if iff elimination is possible
         List<List<String>> toBeIffEliminated = new LinkedList<>();
@@ -861,6 +874,7 @@ public class Proof {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //check if and introduction is possible
 
+
         List<List<String>> toBeAndIntro = new LinkedList<>();
 
         for (int i = 0; i < possProofs.size(); i++) {
@@ -886,7 +900,50 @@ public class Proof {
             return possResult;
         }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //check if or introduction is possible
 
+        List<List<String>> toBeOrIntro = new LinkedList<>();
+
+        for (int i = 0; i < possProofs.size(); i++) {
+            count = 1;
+            List<Proposition> props = new LinkedList<>();
+            List<String> lhs = new LinkedList<>();
+            for (Expression e : possProofs.get(i).expressions) {
+                for (Proposition p : e.listPropositions()) {
+                    if (!props.contains(p)) {
+                        props.add(p);
+                    }
+                }
+                for (Proposition p : resultExpr.listPropositions()) {
+                    if (!props.contains(p)) {
+                        props.add(p);
+                    }
+                }
+                if (e.toString().length() == 1) {
+                    lhs.add(e.toString());
+                }
+            }
+            for (String p : lhs) {
+                for (Proposition p1 : props) {
+                    if (!p.equals(p1)) {
+                        Expression or = new Expression(RuleType.OR_INTRO);
+                        or.addToExpression(p.toString() + " | " + p1.toString());
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(or.toString());
+                        toBeOrIntro.add(pair);
+                    }
+                }
+            }
+            count++;
+        }
+
+        possProofs = updateProofs(possProofs, toBeOrIntro, RuleType.OR_INTRO);
+        possResult = foundResult(possProofs);
+        if (possResult != null) {
+            return possResult;
+        }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (timeoutCount < 5) {
@@ -899,7 +956,7 @@ public class Proof {
 
     private List<Proof> updateProofs(List<Proof> possProofs, List<List<String>> toBeEliminated, RuleType type) throws SyntaxException {
         List<Proof> newPossProofs = new LinkedList<>();
-        newPossProofs.addAll(possProofs);
+//        newPossProofs.addAll(possProofs);
         if (!toBeEliminated.isEmpty()) {
             for (List<String> pair : toBeEliminated) {
                 for (int i = 0; i < possProofs.size(); i++) {

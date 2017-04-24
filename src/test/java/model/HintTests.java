@@ -438,4 +438,122 @@ public class HintTests {
         assertTrue(res.toString().equals("[A IMPLIES B, B IMPLIES C, A, B, C, A AND C]"));
     }
 
+    @Test
+    public void simpleOrIntroHintTest() throws SyntaxException {
+        String str = "A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        proof.addExpression(expr);
+
+        String result = "A | B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[A, A OR B]"));
+    }
+
+    @Test
+    public void largeOrIntroHintTest() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+        String str2 = "C";
+        String str3 = "D";
+        String str4 = "E -> F";
+        String str5 = "O";
+        String str6 = "S";
+        String str7 = "Y -> F";
+        String str8 = "X";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.GIVEN);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.GIVEN);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.GIVEN);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.GIVEN);
+        expr7.addToExpression(str7);
+
+        Expression expr8 = new Expression(RuleType.GIVEN);
+        expr8.addToExpression(str8);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+        proof.addExpression(expr8);
+
+
+        String result = "S | P";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, A AND B, S OR P]"));
+    }
+
+    @Test
+    public void OrImpliesAndHintTest() throws SyntaxException {
+        String str = "A ^ B";
+        String str1 = "A -> C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "B | C";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        Proof res = proof.nextStep(proofs);
+
+//        System.out.println("result " + res);
+        //not guaranteed to be the shortest proof
+        assertTrue(res.toString().equals("[A AND B, A IMPLIES C, B, A, C, B OR C]"));
+    }
 }
