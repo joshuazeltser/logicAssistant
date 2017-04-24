@@ -38,9 +38,11 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 //        System.out.println("result " + res);
-        assertTrue(proof.nextStep(proofs).toString().equals("[A AND B, C, B]"));
+        assertTrue(res.toString().equals("[A AND B, C, B]"));
     }
 
     @Test
@@ -67,7 +69,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A IMPLIES B, A, B]"));
@@ -97,7 +101,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A AND B, B IMPLIES C, B, C]"));
@@ -127,7 +133,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[B IMPLIES C, A AND B, B, C]"));
@@ -152,7 +160,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A ONLY B, B IMPLIES A]"));
@@ -182,7 +192,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A ONLY B, A, A IMPLIES B, B]"));
@@ -212,7 +224,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[NOT A, A, FALSE]"));
@@ -246,7 +260,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A IMPLIES B, A, NOT B, B, FALSE]"));
@@ -270,7 +286,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[NOT NOT A, A]"));
@@ -299,7 +317,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[NOT NOT A, A IMPLIES B, A, B]"));
@@ -328,7 +348,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A, B, A AND B]"));
@@ -398,7 +420,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, P, S AND P]"));
@@ -432,7 +456,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A IMPLIES B, B IMPLIES C, A, B, C, A AND C]"));
@@ -456,7 +482,9 @@ public class HintTests {
 
         proofs.add(proof);
 
-        Proof res = proof.nextStep(proofs);
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A, A OR B]"));
@@ -520,8 +548,9 @@ public class HintTests {
         List<Proof> proofs = new LinkedList<>();
 
         proofs.add(proof);
+        proof.setProofSteps(proofs);
 
-        Proof res = proof.nextStep(proofs);
+        Proof res = proof.nextStep();
 
 //        System.out.println("result " + res);
         assertTrue(res.toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, S OR P]"));
