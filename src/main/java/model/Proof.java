@@ -650,7 +650,17 @@ public class Proof {
 
         Proof possResult = null;
 
+
         while (possResult == null) {
+
+            //check for simple solution
+            if (resultExpr.contains(new Operator("OR", OperatorType.OR))) {
+                possResult = tryOrIntroduction();
+                if (possResult != null) {
+                    break;
+                }
+            }
+            
             //check if and elimination is possible
             possResult = tryAndEliminationStep();
             if (possResult != null) {
@@ -691,11 +701,24 @@ public class Proof {
 
                 //check if and introduction is possible
                 possResult = tryAndIntroduction();
-
-            } else {
-
-                //check if or introduction is possible
+                if (possResult != null) {
+                    break;
+                }
                 possResult = tryOrIntroduction();
+                if (possResult != null) {
+                    break;
+                }
+
+            } else  if (resultExpr.contains(new Operator("OR", OperatorType.OR))){
+
+                possResult = tryOrIntroduction();
+                if (possResult != null) {
+                    break;
+                }
+                possResult = tryAndIntroduction();
+                if (possResult != null) {
+                    break;
+                }
 
             }
 
@@ -733,7 +756,6 @@ public class Proof {
                     props.add(resultExpr.toString());
 
             }
-//                System.out.println(props);
             for (Expression p : proofSteps.get(i).expressions) {
                 for (String p1 : props) {
                     if (!p.toString().equals(p1.toString())) {
@@ -749,6 +771,7 @@ public class Proof {
 
         }
 
+//        System.out.println(toBeOrIntro);
         proofSteps = updateProofs(toBeOrIntro, RuleType.OR_INTRO);
         return foundResult(proofSteps);
     }
