@@ -657,6 +657,8 @@ public class Proof {
         Expression lhsImplies = new Expression();
         Expression rhsImplies = new Expression();
 
+        List<Proof> alternativeBox = new LinkedList<>();
+
         while (possResult == null) {
 
 
@@ -683,11 +685,12 @@ public class Proof {
                 if (possResult != null) {
                     break;
                 }
-                
+
                 box = true;
                 List<Expression> sides = resultExpr.splitExpressionBy(OperatorType.IMPLIES);
 
                 lhsImplies = sides.get(0);
+                lhsImplies.setRuleType(RuleType.ASSUMPTION);
                 rhsImplies = sides.get(1);
 
                 for (Proof p : proofSteps) {
@@ -734,6 +737,40 @@ public class Proof {
                 break;
             }
 
+            //check if or elimination is possible
+            List<List<String>> toBeOrEliminated = new LinkedList<>();
+            int count;
+            for (int i = 0; i < proofSteps.size(); i++) {
+                count = 1;
+                for (Expression e : proofSteps.get(i).expressions) {
+                    if (e.contains(new Operator("OR", OperatorType.OR))) {
+                        List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
+
+                        Expression lhs = sides.get(0);
+                        Expression rhs = sides.get(1);
+
+                        lhs.setRuleType(RuleType.ASSUMPTION);
+                        rhs.setRuleType(RuleType.ASSUMPTION);
+
+                        alternativeBox.addAll(proofSteps);
+                        for (Proof p : alternativeBox) {
+                            p.addExpression(rhs);
+                        }
+
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(lhs.toString());
+                        toBeOrEliminated.add(pair);
+                        box = true;
+                        //now must work out way to find same expression in both lists for or elim
+                    }
+                }
+                count++;
+            }
+
+
+            proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
+
             //check for several eliminations before starting introductions
             if (timeoutCount < 2) {
                 timeoutCount++;
@@ -762,7 +799,6 @@ public class Proof {
                 if (possResult != null) {
                     break;
                 }
-
             }
 
             if (timeoutCount < 5) {
