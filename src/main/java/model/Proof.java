@@ -1,5 +1,7 @@
 package model;
 
+import javassist.expr.Expr;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -650,8 +652,48 @@ public class Proof {
 
         Proof possResult = null;
 
+        boolean box = false;
+
+        Expression lhsImplies = new Expression();
+        Expression rhsImplies = new Expression();
 
         while (possResult == null) {
+
+
+
+            if (box) {
+                for (Proof p : proofSteps) {
+                    if (p.expressions.get(p.expressions.size()-1).equals(rhsImplies)) {
+                        box = false;
+                        Expression e = new Expression(RuleType.IMPLIES_INTRO);
+                        e.addToExpression(lhsImplies + " -> " + rhsImplies);
+                        p.addExpression(e);
+                    }
+                }
+                possResult = foundResult(proofSteps);
+                if (possResult != null) {
+                    break;
+                }
+
+            }
+
+            //if result expression includes a ->
+            if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !box) {
+                possResult = tryOnlyElimination();
+                if (possResult != null) {
+                    break;
+                }
+                
+                box = true;
+                List<Expression> sides = resultExpr.splitExpressionBy(OperatorType.IMPLIES);
+
+                lhsImplies = sides.get(0);
+                rhsImplies = sides.get(1);
+
+                for (Proof p : proofSteps) {
+                    p.addExpression(lhsImplies);
+                }
+            }
 
             //check for simple solution
             if (resultExpr.contains(new Operator("OR", OperatorType.OR))) {
@@ -660,9 +702,10 @@ public class Proof {
                     break;
                 }
             }
-            
+
             //check if and elimination is possible
             possResult = tryAndEliminationStep();
+
             if (possResult != null) {
                 break;
             }
@@ -999,6 +1042,7 @@ public class Proof {
 
 
         proofSteps = updateProofs(toBeAndEliminated, RuleType.AND_ELIM);
+//        System.out.println(proofSteps);
         return foundResult(proofSteps);
     }
 

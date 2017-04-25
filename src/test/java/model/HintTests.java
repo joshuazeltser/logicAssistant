@@ -587,4 +587,62 @@ public class HintTests {
 //        not guaranteed to be the shortest proof
         assertTrue(res.toString().equals("[A AND B, A IMPLIES C, A AND B OR C]"));
     }
+
+    @Test
+    public void simpleImpliesAtEndIntroHintTest() throws SyntaxException {
+        String str = "C ^ B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        proof.addExpression(expr);
+
+        String result = "A -> B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
+
+//        System.out.println("result " + res);
+        assertTrue(res.toString() .equals("[C AND B, A, B, A IMPLIES B]"));
+    }
+
+    @Test
+    public void harderImpliesAtEndIntroHintTest() throws SyntaxException {
+        String str = "A -> C";
+        String str1 = "C -> D";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "A -> D";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
+
+//        System.out.println("result " + res);
+//        not guaranteed to be the shortest proof
+        assertTrue(res.toString() .equals("[A IMPLIES C, C IMPLIES D, A, C, D, A IMPLIES D]"));
+    }
 }
