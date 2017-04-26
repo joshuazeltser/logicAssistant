@@ -18,6 +18,9 @@ public class Proof {
     private String proofLabels;
 
     private List<Proof> proofSteps;
+    private List<Proof> extraProofSteps;
+    private boolean box;
+    private boolean orBox;
 
     private Expression resultExpr;
 
@@ -27,6 +30,7 @@ public class Proof {
         proofString = "";
         proofLabels = "";
         proofSteps = new LinkedList<>();
+        box = false;
     }
 
 
@@ -652,12 +656,13 @@ public class Proof {
 
         Proof possResult = null;
 
-        boolean box = false;
-
         Expression lhsImplies = new Expression();
         Expression rhsImplies = new Expression();
 
+        Expression rhsOr = new Expression();
+
         List<Proof> alternativeBox = new LinkedList<>();
+        int orElimIndex = 0;
 
         while (possResult == null) {
 
@@ -707,14 +712,53 @@ public class Proof {
             }
 
             //check if and elimination is possible
-            possResult = tryAndEliminationStep();
+            if (orBox) {
+                List<Proof> temp = new LinkedList<>();
+                possResult = tryImpliesElimination();
 
-            if (possResult != null) {
-                break;
+                temp = proofSteps;
+                proofSteps = extraProofSteps;
+                possResult = tryImpliesElimination();
+                extraProofSteps = proofSteps;
+                proofSteps = temp;
+
+                boolean found = false;
+                Expression orElimExpr = new Expression(RuleType.OR_ELIM);
+                for (int i = 0; i < proofSteps.size(); i++) {
+                    for (int j = 0; j < extraProofSteps.size(); j++) {
+                        if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1)
+                                .equals(extraProofSteps.get(j).expressions.get(extraProofSteps.get(j)
+                                        .expressions.size()-1))) {
+                            found = true;
+                            orElimExpr.addToExpression(proofSteps.get(i).expressions.get(proofSteps.get(i)
+                                    .expressions.size()-1).toString());
+                            orBox = false;
+                            for (int k = orElimIndex+1; k < extraProofSteps.get(j).expressions.size(); k++) {
+                                proofSteps.get(i).addExpression(extraProofSteps.get(j).expressions.get(k));
+                            }
+                        }
+                    }
+                }
+                if (found) {
+                    for (Proof p : proofSteps) {
+                        p.addExpression(orElimExpr);
+                    }
+                    found = false;
+                }
+                possResult = foundResult(proofSteps);
+                if (possResult != null) {
+                    break;
+                }
+
+            } else {
+                possResult = tryImpliesElimination();
+                if (possResult != null) {
+                    break;
+                }
             }
 
             //check if implies elimination is possible
-            possResult = tryImpliesElimination();
+            possResult = tryAndEliminationStep();
             if (possResult != null) {
                 break;
             }
@@ -736,40 +780,49 @@ public class Proof {
             if (possResult != null) {
                 break;
             }
+            List<Proof> oldProofSteps = proofSteps;
 
             //check if or elimination is possible
-            List<List<String>> toBeOrEliminated = new LinkedList<>();
-            int count;
-            for (int i = 0; i < proofSteps.size(); i++) {
-                count = 1;
-                for (Expression e : proofSteps.get(i).expressions) {
-                    if (e.contains(new Operator("OR", OperatorType.OR))) {
-                        List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
+            if (!orBox) {
+                List<List<String>> toBeOrEliminated = new LinkedList<>();
+                int count;
+                for (int i = 0; i < proofSteps.size(); i++) {
+                    count = 1;
+                    for (Expression e : proofSteps.get(i).expressions) {
+                        if (e.contains(new Operator("OR", OperatorType.OR))) {
+                            List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
 
-                        Expression lhs = sides.get(0);
-                        Expression rhs = sides.get(1);
+                            orElimIndex = proofSteps.get(i).expressions.size() - 1;
+                            Expression lhs = sides.get(0);
+                            Expression rhs = sides.get(1);
 
-                        lhs.setRuleType(RuleType.ASSUMPTION);
-                        rhs.setRuleType(RuleType.ASSUMPTION);
+                            rhsOr = rhs;
 
-                        alternativeBox.addAll(proofSteps);
-                        for (Proof p : alternativeBox) {
-                            p.addExpression(rhs);
+                            lhs.setRuleType(RuleType.ASSUMPTION);
+                            rhs.setRuleType(RuleType.ASSUMPTION);
+
+
+                            List<String> pair = new LinkedList<>();
+                            pair.add(Integer.toString(i));
+                            pair.add(lhs.toString());
+                            toBeOrEliminated.add(pair);
+                            orBox = true;
                         }
-
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(lhs.toString());
-                        toBeOrEliminated.add(pair);
-                        box = true;
-                        //now must work out way to find same expression in both lists for or elim
                     }
+                    count++;
                 }
-                count++;
+                proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
+
+            }
+            if (orBox) {
+                extraProofSteps = new LinkedList<>();
+                extraProofSteps.addAll(oldProofSteps);
+                for (Proof p : extraProofSteps) {
+                    p.addExpression(rhsOr);
+                }
+
             }
 
-
-            proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
 
             //check for several eliminations before starting introductions
             if (timeoutCount < 2) {
@@ -850,7 +903,6 @@ public class Proof {
 
         }
 
-//        System.out.println(toBeOrIntro);
         proofSteps = updateProofs(toBeOrIntro, RuleType.OR_INTRO);
         return foundResult(proofSteps);
     }
@@ -1078,7 +1130,6 @@ public class Proof {
 
 
         proofSteps = updateProofs(toBeAndEliminated, RuleType.AND_ELIM);
-//        System.out.println(proofSteps);
         return foundResult(proofSteps);
     }
 
