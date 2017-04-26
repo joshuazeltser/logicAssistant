@@ -1,0 +1,476 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\reporttitle}{LogicAssistant}
+\newcommand{\reportauthor}{Joshua Zeltser}
+\newcommand{\supervisor}{Romain Barnoud}
+\newcommand{\degreetype}{Computing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% load some definitions and default packages
+\input{includes}
+
+% load some macros
+\input{notation}
+
+\date{September 2015}
+
+\begin{document}
+
+% load title page
+\input{titlepage}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introduction}
+
+\subsection{Motivation}
+
+Mathematical logic is an area used throughout the engineering and scientific industries. Whether its developing artificial intelligence software or students completing a Computer Science degree, logic is a fundamental tool. In order to ensure that logic is used correctly a proof system must be used. Natural Deduction provides the tools needed to deduce and prove the validity of logical problems, making it a vital tool for everyone to learn to use. This is why many universities make it a priority to teach this to their students as they begin their studies. For students new to Natural Deduction or even those more advanced users are often left stuck in the middle of a proof not knowing what to do next, and then when they have completed the proof are unsure as to whether it is valid. LogicAssistant is being created to assist users with this problem.
+
+Although the basics of Natural Deduction are easy to learn by just committing to memory the various rules that are defined, when it comes to more complex proofs it can be difficult to work out whether your proof is correct. You may have made an assumption at some point in your proof that was invalid, or just mistakenly used the wrong rule. It is not always the case that you can find someone who is an expert in this field who can check over your proof for you. This problem assumes that you are even able to get to the point of completing your proof. Often you may just have to sit staring at a certain point in your proof unsure of what to do next. You could at this stage go through each rule and try to work out which fits best, but this is quite a short-sighted approach as you may be going off in the complete wrong direction. This is also quite time consuming. When using Natural Deduction in the real world there is not always someone around to point out which rule to use next. 
+
+In order to remedy these problems I am building LogicAssistant which will have a number of useful features that will aid users with their Natural Deduction proofs. The first feature which I aim to create is a proof checker which allows the user to type in their Natural Deduction Proof specifying all of the rules they have used, and the software will notify them whether it is valid. I also want the user to be notified which parts of the proof are wrong and are thereby causing the proof to be invalid. This means that a user will never be unsure whether a proof they have created is valid and if it isn't they will know immediately where they went wrong. The other main feature that LogicAssistant will have is the ability to ask for hints at any stage of a proof. This means that if a user is stuck at any point in their proof they can ask the software to provide them with the next rule to apply. This will be very helpful especially for students who are new to Natural Deduction proof techniques. All of these features and more will be condensed together into an easy to use web interface that a user can access whenever they need to check or solve a proof. 
+
+There are tools already out there that assist you with Natural Deduction. Most of these tools are very complex and difficult to use, requiring a high technical and mathematical knowledge to understand them. This makes them often a waste of time to use on a simple Natural Deduction proof. There are also tools like Pandora\cite{pandora} which allows you to enter your Natural Deduction proof step by step and tells you whether it is valid. The drawback of this software is that it only allows you to enter a step in the proof if it is valid. This means that the amount that can be learnt from this tool is limited as through trial and error you could eventually solve your proof without really knowing what you are doing. The motivation of LogicAssistant is to fill in these gaps left by existing solvers to help solve Natural Deduction proofs.
+
+\subsection{Objectives}
+
+When starting this project I came up with a number of objectives that I wanted to achieve. Over time some of these may change depending on the level of difficulty or ease that I experience during different parts of the project. The first and main objective of this project was to create an easy to use proof checker for Propositional Natural Deduction proofs. A tool that can be used by anyone to easily check whether their Natural Deduction proofs are valid and if not they will be notified as to whether they have gone wrong. Once this was complete my next objective was to add on top of this a hint option which offers the user a hint as to the next step when they are stuck at any part of the proof. These were my two main aims that I wanted to achieve by the end of the project.
+
+In order to ensure that my project is as easy to use and as useful as possible I also added the following additional objectives that time allowing I would like to complete:
+\begin{itemize}
+\item Add proof checks for first order predicate logic Natural Deduction
+\item Add hints for proofs using first order predicate logic
+\item Add live error correction 
+\item Create an aesthetically pleasing user interface
+\item Add the ability to save and load Natural Deduction proofs
+\end{itemize}
+
+\section{Background}
+
+\subsection{Propositional Logic}
+
+A Proposition is a statement of some alleged fact which must be either true or false, and not both \cite{ndBook}. This basic form of logical reasoning can be used to represent everyday scenarios that we may face. Although this system has issues when trying to represent time and context this system can be used to represent some quite complex systems.
+
+\begin{exmp}A list of propositions that could be represented by Propositional Logic
+\begin{itemize}
+\item England is in Europe
+\item Elephants are big
+\item three is smaller than two
+\item Mark smells because he is muddy
+\end{itemize}
+\end{exmp}
+
+Throughout this report I will represent propositions using a capital letter or a word starting with a capital letter. I will also use a number of operators to represent logical statements:
+\begin{itemize}
+\item Logical Truth will be represented by $\top$
+\item Logical False will be represented by $\bot$
+\item A logical And will be represented by $\wedge$
+\item A logical Or will be represented by $\vee$
+\item A logical Not will be represented by $\neg$
+\item A logical Implication will be represented by $\Rightarrow$
+\item A logical Iff (if and only if) will be represented by $\Leftrightarrow$
+\end{itemize}
+
+Propositions can be grouped together to form sentences using these operators. This is how Propositional Logic is used to model real life scenarios made up of events represented by propositions. The syntax and grammer of a sentence in Propositional Logic is defined in Figure 1.
+
+\begin{figure}[!ht]
+  \centering
+  \makebox[\textwidth]{\includegraphics[width=100mm]{figures/PropositionalSentences}}
+  \caption{Propositional Logic Grammar Rules}
+\end{figure}
+\pagebreak
+We have now defined a Propositional Logic language for this project. We have added brackets into our rules in order to ensure that we fully understand what a Propositional statement is saying. Without brackets some statements may become a bit ambiguous and difficult to understand. Truth tables can be used to interpret all of the possible results of a logical sentence. This helps users to plan for any possible outcomes of a set of propositions occurring.
+
+\begin{exmp}Examples of Propositional Statements using our language
+\begin{itemize}
+\item A $\Rightarrow$ B
+\item B $\wedge$ A
+\item ((A $\Leftrightarrow$ B) $\vee$ C)
+\item $\neg$A $\Rightarrow$ (B $\Rightarrow$ C)
+\end{itemize}
+\end{exmp}
+
+
+\subsection{Predicate Logic}
+Propositional logic is very useful when trying to represent the truth values of propositions, but there is limited scope in this formalisation as to the type of statements that can be represented. For example if I wanted to represent the statement "some boys like football", it would be very difficult to represent using just Propositional Logic. This is why I decided to also check proofs of the more useful first order Predicate Logic. This logical system allows users to both apply properties to specific objects and add quantifications to them. This is much more expressive and useful in real world applications. 
+
+The properties that an object has is called a Predicate. Predicates can be unary where they have just one property, or they can be n-ary describing relationships between them and other predicates. Predicate logic also includes two quantifiers that allow this formalisation to be more expressive. The first quantifier is a 'for all' quantifier ($\forall$). This allows us to represent statements like all dragons are green. The other quantifier is the 'exists' quantifier ($\exists$). This quantifier allows us to represent statements such as some dragons are blue. These two quantifiers together, increase the expressive power we can create using logic. Below are some examples of statements that can be created using Predicate logic.
+
+\begin{exmp}Examples of Predicate Statements using our language
+\begin{itemize}
+\item $\forall x.P(x)$
+\item $\exists y.bird(y)$
+\item $\forall y.dark(y) \Rightarrow hates(x,y)$
+\end{itemize}
+\end{exmp}
+
+\subsection{Natural Deduction}
+
+The logical systems that were introduced above present a language and an interpretation using Propositional and Predicate atoms. All the reasoning that can be taken away from these systems are based on truth tables. Truth tables are a way of considering all of the possible outcomes of a statement filled with atoms that can be true or false. For simple systems truth tables are enough to be able to prove and reason about a situation. In order to be able to reason about much more complicated problems, the truth tables would be very large making it a time consuming problem to solve. We must therefore introduce a formal system which gives us the tools to solve and deduce these problems. To solve this problem Natural Deduction was created. Using a set of strict rules Natural Deduction allows us to deduce the consequences of any Propositional or Predicate statements we are given showing us the immediate outcome. This apparatus is very useful in solving logical problems in all areas. When a statement can be deduced from a number of premises using Natural Deduction we put it on the right side of a $\vdash$ symbol, while the original premises will be listed on the left of this symbol. Natural Deduction has a list of rules for both Propositional and Predicate logic allowing us to deduce the consequences of any premise. 
+
+\subsubsection{Propositional Rules Examples}
+
+There are ten Propositional rules for Natural Deduction that can be used to form proofs (see Appendix \ref{appendix:nd-prop}). Throughout this project I have used the Gentzen Natural Deduction system. This means that I lay out proofs as shown in the examples below. The first example shows a basic proof with the given premise written first followed by the various deductions made throughout the proof. On each line of the proof I write a justification of the rule that was used together with the lines that the rule has used to make the deduction.
+
+\begin{exmp} Show that $A \wedge B \vdash A \vee B$
+
+\begin{fitch}
+\fj A \wedge B & \\
+\fa A & $\wedge$-Elim (1) \\
+\fa A \vee B & $\vee$-Intro (2) \\
+\end{fitch}
+
+\end{exmp}
+
+The next two examples require an assumption to be made at some point in the proof that will allow the user to deduce their required outcome. Throughout this project when an assumption occurs in a proof I will highlight the assumption and its result by formatting it slightly to the right of the rest of the proof. This makes it stand out and more readable for the user.
+
+\begin{exmp} Show that $ A \Rightarrow B \vdash \neg (A \wedge \neg B)$
+
+\begin{fitch}
+\fj A \Rightarrow B& \\
+\fr \fa A \wedge \neg B & Assumption \\
+\fa \fa A & $\wedge$-Elim (2) \\
+\fa \fa B  & $\Rightarrow$-Elim (1) \\
+\fa \fa \neg B & $\wedge$-Elim (2) \\
+\fa \neg (A \wedge \neg B) & $\neg$-Intro
+\end{fitch}
+
+\end{exmp}
+
+
+
+\begin{exmp} Show that $A \Rightarrow B, B \Rightarrow C \vdash A \Rightarrow C$
+
+\begin{fitch}
+\fa A \Rightarrow B & \\
+\fj B \Rightarrow C & \\
+\fr \fa A & Assumption \\
+\fa \fa B & $\Rightarrow$-Elim (1,3) \\
+\fa \fa C & $\Rightarrow$-Elim (2,4) \\
+\fa A \Rightarrow C & $\Rightarrow$-Intro (3-5)
+\end{fitch}
+
+\end{exmp}
+
+
+
+\begin{exmp} Show that $A, A \Leftrightarrow B \vdash B$
+
+\begin{fitch}
+\fa A & \\
+\fj A \Leftrightarrow B & \\
+\fa A \Rightarrow B & $\Leftrightarrow$-Elim (2) \\
+\fa B & $\Rightarrow$-Elim (1,3) \\
+\end{fitch}
+
+\end{exmp}
+
+
+\subsubsection{Predicate Rules Examples}
+
+In Predicate Logic similar Natural Deduction proofs can be created. These proofs as well as using the Propositional rules, have their own set of rules (see Appendix \ref{appendix:nd-pred}) that the user can use to form a proof. This means that very complex proofs can be created using these rules. Below are some examples of what these proofs may look like.
+
+\begin{exmp} Show that $P(m),  \forall x.(P(x) \Rightarrow Q(x)) \vdash Q(m)$
+
+\begin{fitch}
+\fa \forall x.(P(x) \Rightarrow Q(x)) & \\
+\fj P(m) & \\
+\fa P(m) \Rightarrow Q(m) & $\forall$-Elim (1) \\
+\fa Q(m) & $\Rightarrow$-Elim (2,3) \\
+\end{fitch}
+
+\end{exmp}
+
+\begin{exmp} Show that $\forall x. \forall y.P(x,y) \Rightarrow \neg P(y,x) \vdash \forall x.\neg P(x,x)$
+
+\begin{fitch}
+\fj \forall x. \forall y.P(x,y) \Rightarrow \neg P(y,x) & \\
+\fa \forall y. P(a,y) \Rightarrow \neg P(y,a) & $\forall$-Elim (1) \\
+\fa P(a,a) \Rightarrow \neg P(a,a) & $\forall$-Elim (2) \\
+\fr \fa P(a,a) & Assumption \\
+\fa \fa \neg P(a,a) & $\Rightarrow$-Elim (3,4) \\
+\fa \neg P(a,a) & $\neg$-Intro (4,5) \\
+\fa \forall x.\neg P(x,x) & $\forall$-Intro (6)
+\end{fitch}
+
+\end{exmp}
+
+\begin{exmp} Show that $s=t \vdash (s = u) \Rightarrow (t = u)$
+
+\begin{fitch}
+\fj s = t & \\
+\fr \fa s = u & Assumption \\
+\fa \fa t = u & Substitution (1,2) \\
+\fa (s = u) \Rightarrow (t = u) & $\Rightarrow$-Intro (2,3) \\
+
+\end{fitch}
+
+\end{exmp}
+
+\section{Design}
+
+\section{Project Plan and Management}
+
+\subsection{Schedule}
+
+In order to ensure that I am able to meet all of my objectives for this project, I have created a project plan. This project plan consists of seven iterations, each of which builds on the previous adding new features and fixing any discovered bugs. On top of these iterations I will also be regularly meeting with my supervisor to ensure that I am on track with my progress and to make sure that I am heading in the right direction. The iterations that I have created are quite long periods of time to ensure that the jobs set out in each iteration are completed to the best of my ability. The iteration lengths also take into account other university work that I may be working on concurrently with this project. I have created the iterations to also be quite flexible so that I can for example continue work not completed in a previous iteration in the next iteration. This way I will be able to ensure that all my tasks are completed. 
+
+
+\subsubsection{Iteration 1 - 1/12/2016 $\Rightarrow$ 8/1/2017}
+
+In this iteration I will complete the various tasks needed to set up and plan the project as a whole. To start things off I will research Natural Deduction as much as possible to ensure that I fully understand the rules and other technical terminology involved. This will allow me to envisage exactly what needs to be done to complete my objectives. Based on this research I will next decide the various features that I want to add to the project and based on this decide which tools to use. I will decide firstly which language is best suited for this project and which other tools I feel necessary to use that will help me fulfil my objectives. Once I have decided which tools to use I will set up my version control and create a blank directory for this project. Now that I am ready to begin coding up the project I will plan what I am going to do in future iterations to ensure that I meet all of my objectives. I can also take a step back at this point and make sure that all of my objectives are feasible in the time frame I have. Throughout this iteration I will meet with my supervisor several times to ensure that all of my plans are feasible and on the right track.
+
+\subsubsection{Iteration 2 - 9/1/2017 $\Rightarrow$ 10/2/2017}
+
+In this iteration I will start to actually code the first parts of the software for this project. I will start by creating a representation of Propositional logic that will be understood by the system, and a way to tokenise and convert string input into this representation. I will then create a parser that checks whether a rule that was parsed in is valid based on the Propositional Natural Deduction rules. On top of this I will create a back end representation of a proof that can be checked using the parser. Once I have done this I will have a back-end that allows a user to enter a proof and each step in the proof will be checked to ensure that it abides by one of the Propositional Natural Deduction rules. Throughout the creation of the back-end part of this software in this iteration, I will ensure to rigorously test all features that I add. This will ensure that all code I write at this stage is working, stopping bugs from occurring in future iterations. 
+
+I will not just be working on the back-end in this iteration but also on the front-end. In order to be able to help test that my proof validity checker works completely I will create a simple web interface that allows a user to enter a proof and click a "check proof" button. This button will then apply the back end functionality to check whether the proof is valid. By the end of this iteration I will therefore have completed my first objective of creating a tool which allows a user to check whether their Natural Deduction proof is valid. As this is one of the core components of the project I have made this iteration quite long to ensure that it is completed.
+
+\subsubsection{Iteration 3 - 11/2/2017 $\Rightarrow$ 10/3/2017}
+
+In this iteration I will focus firstly on completing the second of my main two objectives of creating a Natural Deduction proof checker with hints. I at this stage already have the functionality to check whether the proof that has been entered is valid, so can use this to work out what possible rules could be applied next by the user. The functionality that I create in this iteration will hopefully allow the user to stop at any point in their proof and allow them to click the hint button. The software will then produce a suggestion of which rule to apply next. It may be that multiple rules can be applied at a given point and it will be up to the user to decide. This is quite a fundamental part of my project so I have given myself quite a lot of time to complete this in order to ensure that I can test the code making sure it is working correctly.
+
+As well as adding this extra functionality in this iteration I also want to create a nice looking and easy to use user interface. Before this iteration I had only created a basic user interface which allows the user to type in their proof and then press various buttons to check whether their proof is valid. This however is not very intuitive to use and is not very nice to look at. In this iteration I therefore intend to add an HTML template to the interface to make it look much nicer and professional, and insert my functionality into this template. This as well as creating an aesthetically pleased interface ensures that my software is easy to use. By the end of this iteration I will have completed my main two objectives and thereby created a fully functioning and easy to use Natural Deduction proof checker for Propositional logic.
+
+\subsubsection{Iteration 4 - 27/3/2017 $\Rightarrow$ 21/4/2017}
+
+Up to this point in the project I have only focussed on Propositional logic and how Natural Deduction proofs using this logic system can be checked. However this logic system is not very expressive and so is not usually used to model everyday situations. A much more useful logical system is first order Predicate Logic. In this iteration I want to firstly start creating a representation in my code for Predicate logic. This will be slightly harder than for Propositional logic as I need to take into account quantifiers which add a complete other dimension onto the logical model. Once I have create this basic Predicate representation, I will start to add functionality that checks whether steps in Natural Deduction proof using this logical system are valid. This is very similar to how I did rule checking in the Propositional case as I will just be going through and checking based on the set Predicate logic rules for Natural Deduction. However these rules are slightly more complicated to check for in a proof so I have allowed myself extra time to complete this task. 
+
+As well as this major addition to the back end of my project, as these new features are added I will also need to update the front end accordingly. At this stage of the project I will just add some basic functionality that will allow me to user test this new back end functionality. This would probably just comprise of a dialogue box and a few buttons. This will give me enough functionality to test the new Propositional proofs to make sure they are valid. Overall this iteration is slightly shorter than previous ones, but I now will be able to work on this project full time having finished my other commitments allowing me to focus fully on this project. 
+
+\subsubsection{Iteration 5 - 22/4/2017 $\Rightarrow$ 12/5/2017}
+
+In the last iteration we created a representation of Predicate logic together with a checker for Predicate Natural Deduction proofs. Now as I did with Propositional logic, I will add hint functionality that the user can use while composing their proofs. As we have already created the rule verification in the last iteration this iteration includes the application of these rules to any step in the proof to give the user an idea of what to do next. This as with the Propositional logic part of this project is a very useful part of this tool. 
+
+Now that we have completed the Predicate Logic part of the back end of the project I will make sure that the user interface is user friendly and looking nice when the user tries to use the Predicate part of the tool. This may mean adding extra web pages and features to allow the user to choose between the type of logic they want to use in their proofs.
+
+\subsubsection{Iteration 6 - 13/5/2017 $\Rightarrow$ 2/6/2017}
+
+At this point I have completed all of the main features that I wanted to add to my Natural Deduction checking tool. There are however some other features which would be really useful for the user. This iteration allows some time to add these features. One feature in particular that I would like to add is error correction. This would allow the user to type in a line of their proof and the software would be able to tell whether it is valid or not, giving the user an alternative valid rule if not. This would really help the user to find out exactly where in their proofs they have gone wrong, making this an even more useful tool for people learning how to create Natural Deduction proofs.
+
+In this iteration I would also like to spend time adding some other extensions such as the saving and loading of proofs. This would allow the user to load in proofs they have written elsewhere and also save any proofs they have now checked to use elsewhere. These extensions are all dependent on the amount of time I have left at the end of the project.
+
+\subsubsection{Iteration 7 - 3/6/2017 $\Rightarrow$ 30/6/2017}
+
+From the start of this iteration I want to have stopped adding any new features. I will go through my code, tidy it up, add comments and ensure that all unnecessary code is removed. I will also look through and try to solve any remaining bugs that I have left in my code. At the same time I will complete my report noting how I carried out my project. I want to allow as much time as possible to do this, to make sure that I can create a high level and well written report. I will also use this iteration to create my presentation of the project making sure it looks professional and is able to inform the audience of exactly what my project can do.
+
+\section{Evaluation}
+
+\subsection{Expected Outcomes}
+
+By the end of the project there are a number of objectives that I want to fulfil in order to classify it as a successful project. I firstly want to make sure that the tool I have created is easy to use. It would be better for my software to have less features if it means that it is very easy to use by any user. This is one of the areas that I hope my software is better than other similar tools. I also by the end of the project want to have a working Natural Deduction proof checker, with the ability to give hints to the user at any point in the proof. This checker only needs to be for Propositional logic in order for me to fulfil my objectives. This would still mean that I have created an important and useful tool that can be used by anyone learning how to form Natural Deduction proofs. If however I have more time I would also like to extend this to Predicate logic. If I am able to complete these two tasks I will have succeeded in creating a useful tool for Natural Deduction students.
+
+\subsection{Testing}
+
+Throughout the project I intend to use Test Driven Development (TDD) to ensure that my code is always functioning as expected. This allows me to add new code to the project without worrying about how this may affect other parts of the code-base. This is especially easy for my back-end which is written in Java allowing me to easily add unit tests as I go along. The fact that I am using Java Spring to build a Model View Controller set up for my system, also provides me with some functionality allowing me to test that connections between the front and back ends are always made correctly. The front end of the project will be the hardest component for me to test as it will require user input into the various dialogue boxes provided by my UI. I will therefore work on some basic testing of this part of the project using some of Java Spring's advanced testing features. I will condense all of these tests together using the TeamCity continuous integration software. This will allow me keep track and ensure that all parts of my software are functioning correctly. Overall I intend to create quite a high coverage level of my code by the end of the project. 
+
+At the end of the project if the test coverage of my software is high, this will indicate to me that I have completed a successful project which is proven to work. This will also mean that I have carried out the project in a professional way, making sure to always test the code that I am writing. In the end the amount of testing I do will show me how successfully I was able to complete the task brief.
+
+\subsection{User Feedback}
+
+User feedback is an important tool that should be collected when completing any type of project. This is particularly true with software which is strongly user based and requires user input. I must make sure that the software I have created is intuitive to use and actually solves a problem that users are having. This is why one of my main aims at the start of this project was to ensure that the system is easy to use by anyone no matter the level of subject knowledge they have. In order to ensure that this is the case as soon as I have a working prototype of my software I intend to start asking family and friends to try it out. The more feedback that I get back the better, and the earlier I start to receive this feedback the more time I will have to actually act on it. I also want to make sure to attend the various Department of Computing demonstration days to gain as much feedback as possible about my finished product. This feedback will as well as allow me to improve the software as my iterations go on, will enable me to evaluate how well I have been able to meet my objectives by the end of the project. I will make sure that the feedback I gather is representative of people who are experts in this field as well as people who are new to this subject area. Overall this will indicate to me how successful my project was.
+
+\subsection{Project Plan}
+
+I have put a lot of thought into the project plan that I created for this project. I made sure that I have enough time to complete all of the tasks that I set out to achieve at the start of this project, as well as time at the end for any extensions I decide to add. The iterations I have created are quite flexible in order to ensure that I am able to complete the more important parts of the project which help me to meet my initial objectives. One indication of my project being successful  may be how well I am able to keep to this iteration schedule. The schedule works on the premise that I complete each iteration and then work on improving and adding features to what I have in the next iteration. If this works I will be able to ensure that all the tasks I set out at the beginning are completed. If I end up not being able to complete all of these tasks, I will be able to evaluate how in the future I will be able to structure my work plan for similar projects. It may even allow me to see how I could have planned my timetable better to ensure more work was completed in the time frame. At the end of each iteration I will be able to evaluate how well that iteration has gone, and if necessary I will be able to change future iterations accordingly. This is therefore one indicator of success during the implementation of my project.
+\pagebreak
+
+\section{Conclusion}
+
+\appendix
+\section{Natural Deduction Rules}
+\label{appendix:nd}
+
+\subsection{Propositional Rules (adapted from \cite{ndBook})}
+\label{appendix:nd-prop}
+
+\begin{namedthm}{Rule}[And Introduction]
+
+\begin{bprooftree}
+\AxiomC{$A$}
+\AxiomC{$B$}
+\BinaryInfC{$A \wedge B$}
+\end{bprooftree}\qquad or \qquad
+\begin{bprooftree}
+\AxiomC{$A$}
+\AxiomC{$B$}
+\BinaryInfC{$B \wedge A$}
+\end{bprooftree}
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[And Elimination]
+
+\begin{bprooftree}
+\AxiomC{$A \wedge B$}
+\UnaryInfC{$A$}
+\end{bprooftree}\qquad or \qquad
+\begin{bprooftree}
+\AxiomC{$A \wedge B$}
+\UnaryInfC{$B$}
+\end{bprooftree}
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Or Introduction]
+
+\begin{bprooftree}
+\AxiomC{$A$}
+\UnaryInfC{$A \vee B$}
+\end{bprooftree}\qquad or \qquad
+\begin{bprooftree}
+\AxiomC{$A$}
+\UnaryInfC{$B \vee A$}
+\end{bprooftree}
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Or Elimination]
+
+\begin{bprooftree}
+\AxiomC{$A \vdash C$}
+\AxiomC{$B \vdash C$}
+\AxiomC{$A \vee B$}
+\TrinaryInfC{$C$}
+\end{bprooftree}\qquad where A and B are assumptions
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Not Introduction]
+
+\begin{bprooftree}
+\AxiomC{$A \vdash B$}
+\AxiomC{$A \vdash \neg B$}
+\BinaryInfC{$\neg A$}
+\end{bprooftree}\qquad where A is an assumption
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Not Elimination]
+
+\begin{bprooftree}
+\AxiomC{$\neg \neg A$}
+\UnaryInfC{$A$}
+\end{bprooftree}\qquad 
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Implies Introduction]
+
+\begin{bprooftree}
+\AxiomC{$A \vdash B$}
+\UnaryInfC{$A \Rightarrow B$}
+\end{bprooftree}\qquad where A is an assumption
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Implies Elimination]
+
+\begin{bprooftree}
+\AxiomC{$A$}
+\AxiomC{$A \Rightarrow B$}
+\BinaryInfC{$B$}
+\end{bprooftree}\qquad 
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Iff Introduction]
+
+\begin{bprooftree}
+\AxiomC{$A \Rightarrow B$}
+\AxiomC{$B \Rightarrow A$}
+\BinaryInfC{$A \Leftrightarrow B$}
+\end{bprooftree}\qquad 
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Iff Elimination]
+
+\begin{bprooftree}
+\AxiomC{$A \Leftrightarrow B$}
+\UnaryInfC{$A \Rightarrow B$}
+\end{bprooftree}\qquad or \qquad
+\begin{bprooftree}
+\AxiomC{$A \Leftrightarrow B$}
+\UnaryInfC{$B \Rightarrow A$}
+\end{bprooftree}
+
+\end{namedthm}
+
+\subsection{Predicate Rules}
+\label{appendix:nd-pred}
+
+\begin{namedthm}{Rule}[$\forall$ Introduction]
+
+\begin{bprooftree}
+\AxiomC{$P(a)$}
+\UnaryInfC{$\forall x.P(x)$}
+\end{bprooftree}\qquad where a is arbitrary \qquad
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[$\forall$ Elimination]
+
+\begin{bprooftree}
+\AxiomC{$\forall x.P(x)$}
+\UnaryInfC{$P(a)$}
+\end{bprooftree}\qquad where a is arbitrary \qquad
+
+\end{namedthm}
+
+
+\begin{namedthm}{Rule}[$\exists$ Introduction]
+
+\begin{bprooftree}
+\AxiomC{$\exists x.P(x)$}
+\AxiomC{$\forall x.(P(x) \Rightarrow Q)$}
+\BinaryInfC{$Q$}
+\end{bprooftree}\qquad
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[$\exists$ Elimination]
+
+\begin{bprooftree}
+\AxiomC{$P(t)$}
+\UnaryInfC{$\exists x.P(x)$}
+\end{bprooftree}\qquad where t is any term
+
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Substitution]
+
+\begin{bprooftree}
+\AxiomC{$m = n$}
+\AxiomC{$S(n)$}
+\BinaryInfC{$S[m/n]$}
+\end{bprooftree}\qquad or \qquad
+\begin{bprooftree}
+\AxiomC{$m = n$}
+\AxiomC{$S(m)$}
+\BinaryInfC{$S[n/m]$}
+\end{bprooftree}
+
+\end{namedthm}
+
+\pagebreak
+
+\begin{thebibliography}{9}
+
+\bibitem{pandora} 
+Pandora (Proof Assistant for Natural Deduction using Organised Rectangular Areas) is a learning support tool designed to guide the construction of natural deduction proofs. Found at \url{https://www.doc.ic.ac.uk/pandora/}, last retrieved 7/2/2017
+
+\bibitem{ndBook}
+Software Engineering Mathematics by Jim Woodcock and Martin Loomes, 1989 edition
+
+
+\end{thebibliography}
+
+
+
+\end{document}
