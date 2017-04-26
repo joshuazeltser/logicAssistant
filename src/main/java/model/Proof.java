@@ -1,7 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -662,10 +660,9 @@ public class Proof {
         Expression rhsOr = new Expression();
 
         List<Proof> alternativeBox = new LinkedList<>();
-        int orElimIndex = 0;
+        int elimIndex = 0;
 
         while (possResult == null) {
-
 
 
             if (box) {
@@ -711,75 +708,9 @@ public class Proof {
                 }
             }
 
-            //check if and elimination is possible
-            if (orBox) {
-                List<Proof> temp = new LinkedList<>();
-                possResult = tryImpliesElimination();
 
-                temp = proofSteps;
-                proofSteps = extraProofSteps;
-                possResult = tryImpliesElimination();
-                extraProofSteps = proofSteps;
-                proofSteps = temp;
 
-                boolean found = false;
-                Expression orElimExpr = new Expression(RuleType.OR_ELIM);
-                for (int i = 0; i < proofSteps.size(); i++) {
-                    for (int j = 0; j < extraProofSteps.size(); j++) {
-                        if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1)
-                                .equals(extraProofSteps.get(j).expressions.get(extraProofSteps.get(j)
-                                        .expressions.size()-1))) {
-                            found = true;
-                            orElimExpr.addToExpression(proofSteps.get(i).expressions.get(proofSteps.get(i)
-                                    .expressions.size()-1).toString());
-                            orBox = false;
-                            for (int k = orElimIndex+1; k < extraProofSteps.get(j).expressions.size(); k++) {
-                                proofSteps.get(i).addExpression(extraProofSteps.get(j).expressions.get(k));
-                            }
-                        }
-                    }
-                }
-                if (found) {
-                    for (Proof p : proofSteps) {
-                        p.addExpression(orElimExpr);
-                    }
-                    found = false;
-                }
-                possResult = foundResult(proofSteps);
-                if (possResult != null) {
-                    break;
-                }
 
-            } else {
-                possResult = tryImpliesElimination();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            //check if implies elimination is possible
-            possResult = tryAndEliminationStep();
-            if (possResult != null) {
-                break;
-            }
-
-            //check if not elimination is possible
-            possResult = tryNotElimination();
-            if (possResult != null) {
-                break;
-            }
-
-            //check if Double not elimination is possible
-            possResult = tryDoubleNotElimination();
-            if (possResult != null) {
-                break;
-            }
-
-            //check if iff elimination is possible
-            possResult = tryOnlyElimination();
-            if (possResult != null) {
-                break;
-            }
             List<Proof> oldProofSteps = proofSteps;
 
             //check if or elimination is possible
@@ -792,7 +723,7 @@ public class Proof {
                         if (e.contains(new Operator("OR", OperatorType.OR))) {
                             List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
 
-                            orElimIndex = proofSteps.get(i).expressions.size() - 1;
+                            elimIndex = proofSteps.get(i).expressions.size() - 1;
                             Expression lhs = sides.get(0);
                             Expression rhs = sides.get(1);
 
@@ -823,12 +754,83 @@ public class Proof {
 
             }
 
+            //check if implies elimination is possible
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "IMPLIES_ELIM" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+
+                        break;
+                    }
+                }
+
+            } else {
+                possResult = tryImpliesElimination();
+                if (possResult != null) {
+                    break;
+                }
+            }
+
+
+            //check if and elimination is possible
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "AND_ELIM" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+            } else {
+                possResult = tryAndEliminationStep();
+                if (possResult != null) {
+                    break;
+                }
+            }
+
+            //check if not elimination is possible
+
+            if (!orBox) {
+                possResult = tryNotElimination();
+                if (possResult != null) {
+                    break;
+                }
+            } else {
+                tryNotElimination();
+            }
+
+
+
+            //check if Double not elimination is possible
+
+            if (!orBox) {
+                possResult = tryDoubleNotElimination();
+                if (possResult != null) {
+                    break;
+                }
+            } else {
+                tryDoubleNotElimination();
+            }
+
+            //check if iff elimination is possible
+
+            if (!orBox) {
+                possResult = tryOnlyElimination();
+                if (possResult != null) {
+                    break;
+                }
+            } else {
+                tryOnlyElimination();
+            }
+
 
             //check for several eliminations before starting introductions
-            if (timeoutCount < 2) {
+            if (timeoutCount < 5) {
                 timeoutCount++;
                 continue;
             }
+
 
             if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
 
@@ -861,6 +863,77 @@ public class Proof {
             }
         }
         return possResult;
+    }
+
+    private boolean checkOrBoxes(int elimIndex, String rule) throws SyntaxException {
+        Proof possResult;
+
+        RuleType ruleType = null;
+        List<Proof> temp;
+
+        switch (rule) {
+            case "IMPLIES_ELIM":    tryImpliesElimination();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryImpliesElimination();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
+            case "AND_ELIM":        tryAndEliminationStep();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryAndEliminationStep();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
+            case "AND_INTRO":       tryAndIntroduction();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryAndIntroduction();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
+        }
+
+
+//        possResult = tryImpliesElimination();
+//
+//        temp = proofSteps;
+//        proofSteps = extraProofSteps;
+//        possResult = tryImpliesElimination();
+//        extraProofSteps = proofSteps;
+//        proofSteps = temp;
+
+        boolean found = false;
+        Expression elimExpr = new Expression(RuleType.OR_ELIM);
+        for (int i = 0; i < proofSteps.size(); i++) {
+            for (int j = 0; j < extraProofSteps.size(); j++) {
+                if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1)
+                        .equals(extraProofSteps.get(j).expressions.get(extraProofSteps.get(j)
+                                .expressions.size()-1))) {
+                    found = true;
+
+                    elimExpr.addToExpression(proofSteps.get(i).expressions.get(proofSteps.get(i)
+                            .expressions.size()-1).toString());
+                    orBox = false;
+                    for (int k = elimIndex+1; k < extraProofSteps.get(j).expressions.size(); k++) {
+                        proofSteps.get(i).addExpression(extraProofSteps.get(j).expressions.get(k));
+                    }
+                }
+            }
+        }
+
+        if (found) {
+            for (Proof p : proofSteps) {
+                p.addExpression(elimExpr);
+            }
+            found = false;
+            return true;
+        }
+        return false;
     }
 
     private Proof tryOrIntroduction() throws SyntaxException {
@@ -1094,6 +1167,10 @@ public class Proof {
         for (int i = 0; i < proofSteps.size(); i++) {
             count = 1;
             for (Expression e : proofSteps.get(i).expressions) {
+                if (e.contains(new Operator("OR", OperatorType.OR)) && orBox) {
+                    count++;
+                    continue;
+                }
                 if (e.contains(new Operator("AND", OperatorType.AND))) {
                     List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
 
@@ -1102,8 +1179,9 @@ public class Proof {
                     Expression rhs = sides.get(1);
                     rhs.addReferenceLine(Integer.toString(count));
 
+
                     if (proofSteps.get(i).isAndElimValid(lhs)) {
-                        if (proofSteps.get(i).expressions.contains(lhs)) {
+                        if (proofSteps.get(i).expressions.contains(lhs) && !orBox) {
                             break;
                         }
                         lhs.setRuleType(RuleType.AND_ELIM);
@@ -1114,7 +1192,7 @@ public class Proof {
 
                     }
                     if (proofSteps.get(i).isAndElimValid(rhs)) {
-                        if (proofSteps.get(i).expressions.contains(rhs)) {
+                        if (proofSteps.get(i).expressions.contains(rhs) && !orBox) {
                             break;
                         }
                         rhs.setRuleType(RuleType.AND_ELIM);
@@ -1130,6 +1208,7 @@ public class Proof {
 
 
         proofSteps = updateProofs(toBeAndEliminated, RuleType.AND_ELIM);
+
         return foundResult(proofSteps);
     }
 

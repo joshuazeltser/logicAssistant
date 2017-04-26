@@ -678,12 +678,51 @@ public class HintTests {
 
         Proof res = proof.nextStep();
 
-        for (Expression e : res.getExpressions()) {
-            System.out.println(e.getRuleType());
-        }
+//        for (Expression e : res.getExpressions()) {
+//            System.out.println(e.getRuleType());
+//        }
 
-        System.out.println("result " + res);
+//        System.out.println("result " + res);
 //        not guaranteed to be the shortest proof
-//        assertTrue(res.toString() .equals("[A IMPLIES C, C IMPLIES D, A, C, D, A IMPLIES D]"));
+        assertTrue(res.toString() .equals("[A OR B, A IMPLIES C, B IMPLIES C, A, C, B, C, C]"));
+    }
+
+    @Test
+    public void orEliminationHintTest2() throws SyntaxException {
+        String str = "A | B ^ D";
+        String str1 = "A -> B ";
+
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
+
+//        for (Expression e : res.getExpressions()) {
+//            System.out.println(e.getRuleType());
+//        }
+
+//        System.out.println("result " + res);
+//        not guaranteed to be the shortest proof
+        assertTrue(res.toString() .equals("[A OR B AND D, A IMPLIES B, A, B, B AND D, B, B]"));
     }
 }
