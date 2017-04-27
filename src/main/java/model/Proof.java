@@ -19,6 +19,7 @@ public class Proof {
     private List<Proof> extraProofSteps;
     private boolean box;
     private boolean orBox;
+    private boolean notBox;
 
     private Expression resultExpr;
 
@@ -29,6 +30,7 @@ public class Proof {
         proofLabels = "";
         proofSteps = new LinkedList<>();
         box = false;
+        notBox = false;
     }
 
 
@@ -659,7 +661,6 @@ public class Proof {
 
         Expression rhsOr = new Expression();
 
-        List<Proof> alternativeBox = new LinkedList<>();
         int elimIndex = 0;
 
         while (possResult == null) {
@@ -681,6 +682,19 @@ public class Proof {
 
             }
 
+            if (notBox) {
+                for (Proof p : proofSteps) {
+                    if (p.expressions.get(p.expressions.size()-1).toString().equals("FALSE")) {
+                        notBox = false;
+                        p.addExpression(resultExpr);
+                    }
+                }
+                possResult = foundResult(proofSteps);
+                if (possResult != null) {
+                    break;
+                }
+            }
+
             //if result expression includes a ->
             if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !box) {
                 possResult = tryOnlyElimination();
@@ -700,13 +714,30 @@ public class Proof {
                 }
             }
 
+            //if result expression starts with a !
+            if (resultExpr.getFirstComp().equals(new Operator("NOT", OperatorType.NOT)) && !notBox) {
+                notBox = true;
+
+                Expression temp = new Expression(RuleType.ASSUMPTION);
+
+                temp.addToExpression(resultExpr.toString());
+                temp.removeNcomponents(1);
+
+                for (Proof p : proofSteps) {
+                    p.addExpression(temp);
+                }
+            }
+
+
             //check for simple solution
-            if (resultExpr.contains(new Operator("OR", OperatorType.OR))) {
+            if (resultExpr.contains(new Operator("OR", OperatorType.OR))
+                    && !proofSteps.get(0).expressions.get(0).contains(new Operator("OR", OperatorType.OR))) {
                 possResult = tryOrIntroduction();
                 if (possResult != null) {
                     break;
                 }
             }
+
 
 
 
@@ -754,6 +785,7 @@ public class Proof {
 
             }
 
+
             //check if implies elimination is possible
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "IMPLIES_ELIM" );
@@ -771,7 +803,6 @@ public class Proof {
                     break;
                 }
             }
-
 
             //check if and elimination is possible
             if (orBox) {
@@ -791,42 +822,61 @@ public class Proof {
 
             //check if not elimination is possible
 
-            if (!orBox) {
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "NOT_ELIM" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+            } else {
                 possResult = tryNotElimination();
                 if (possResult != null) {
                     break;
                 }
-            } else {
-                tryNotElimination();
             }
 
 
 
             //check if Double not elimination is possible
 
-            if (!orBox) {
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "NOT_NOT_ELIM" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+            } else {
                 possResult = tryDoubleNotElimination();
                 if (possResult != null) {
                     break;
                 }
-            } else {
-                tryDoubleNotElimination();
             }
 
             //check if iff elimination is possible
 
-            if (!orBox) {
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "ONLY_ELIM" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+
+            } else {
                 possResult = tryOnlyElimination();
                 if (possResult != null) {
                     break;
                 }
-            } else {
-                tryOnlyElimination();
             }
 
 
             //check for several eliminations before starting introductions
-            if (timeoutCount < 5) {
+            if (timeoutCount < 4) {
                 timeoutCount++;
                 continue;
             }
@@ -834,25 +884,67 @@ public class Proof {
 
             if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
 
+
                 //check if and introduction is possible
-                possResult = tryAndIntroduction();
-                if (possResult != null) {
-                    break;
+                if (orBox) {
+                    boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
+                    if (solved) {
+                        possResult = foundResult(proofSteps);
+                        if (possResult != null) {
+                            break;
+                        }
+                    }
+                } else {
+                    possResult = tryAndIntroduction();
+                    if (possResult != null) {
+                        break;
+                    }
                 }
-                possResult = tryOrIntroduction();
-                if (possResult != null) {
-                    break;
+
+                if (orBox) {
+                    boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
+                    if (solved) {
+                        possResult = foundResult(proofSteps);
+                        if (possResult != null) {
+                            break;
+                        }
+                    }
+                } else {
+                    possResult = tryOrIntroduction();
+                    if (possResult != null) {
+                        break;
+                    }
                 }
 
             } else  if (resultExpr.contains(new Operator("OR", OperatorType.OR))){
 
-                possResult = tryOrIntroduction();
-                if (possResult != null) {
-                    break;
+                if (orBox) {
+                    boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
+                    if (solved) {
+                        possResult = foundResult(proofSteps);
+                        if (possResult != null) {
+                            break;
+                        }
+                    }
+                } else {
+                    possResult = tryOrIntroduction();
+                    if (possResult != null) {
+                        break;
+                    }
                 }
-                possResult = tryAndIntroduction();
-                if (possResult != null) {
-                    break;
+                if (orBox) {
+                    boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
+                    if (solved) {
+                        possResult = foundResult(proofSteps);
+                        if (possResult != null) {
+                            break;
+                        }
+                    }
+                } else {
+                    possResult = tryOrIntroduction();
+                    if (possResult != null) {
+                        break;
+                    }
                 }
             }
 
@@ -896,16 +988,33 @@ public class Proof {
                                     proofSteps = temp;
                                     break;
 
+            case "OR_INTRO":        tryOrIntroduction();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryOrIntroduction();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
+            case "ONLY_ELIM":       tryOnlyElimination();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryOnlyElimination();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
+            case "NOT_NOT_ELIM":    tryDoubleNotElimination();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryDoubleNotElimination();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
         }
 
 
-//        possResult = tryImpliesElimination();
-//
-//        temp = proofSteps;
-//        proofSteps = extraProofSteps;
-//        possResult = tryImpliesElimination();
-//        extraProofSteps = proofSteps;
-//        proofSteps = temp;
 
         boolean found = false;
         Expression elimExpr = new Expression(RuleType.OR_ELIM);

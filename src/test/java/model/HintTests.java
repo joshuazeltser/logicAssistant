@@ -725,4 +725,47 @@ public class HintTests {
 //        not guaranteed to be the shortest proof
         assertTrue(res.toString() .equals("[A OR B AND D, A IMPLIES B, A, B, B AND D, B, B]"));
     }
+
+    @Test
+    public void notIntroHintTest() throws SyntaxException {
+        String str = "S -> B";
+        String str1 = "B -> W";
+        String str2 = "!W";
+
+
+
+
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        String result = "!S";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
+
+//        for (Expression e : res.getExpressions()) {
+//            System.out.println(e.getRuleType());
+//        }
+
+//        System.out.println("result " + res);
+//        not guaranteed to be the shortest proof
+        assertTrue(res.toString().equals("[S IMPLIES B, B IMPLIES W, NOT W, S, B, W, FALSE, NOT S]"));
+    }
 }

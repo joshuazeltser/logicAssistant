@@ -500,5 +500,8 @@ public class Expression {
         return false;
     }
 
+    public Component getFirstComp() {
+        return expression.get(0);
+    }
 
 }
