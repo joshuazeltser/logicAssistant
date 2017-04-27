@@ -732,10 +732,6 @@ public class HintTests {
         String str1 = "B -> W";
         String str2 = "!W";
 
-
-
-
-
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
         Expression expr1 = new Expression(RuleType.GIVEN);
@@ -768,4 +764,40 @@ public class HintTests {
 //        not guaranteed to be the shortest proof
         assertTrue(res.toString().equals("[S IMPLIES B, B IMPLIES W, NOT W, S, B, W, FALSE, NOT S]"));
     }
+
+    @Test
+    public void simpleOnlyIntroHintTest() throws SyntaxException {
+        String str = "A -> B";
+        String str1 = "B -> A";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "A <-> B";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+        List<Proof> proofs = new LinkedList<>();
+
+        proofs.add(proof);
+
+        proof.setProofSteps(proofs);
+
+        Proof res = proof.nextStep();
+
+//        for (Expression e : res.getExpressions()) {
+//            System.out.println(e.getRuleType());
+//        }
+
+//        System.out.println("result " + res);
+//        not guaranteed to be the shortest proof
+        assertTrue(res.toString().equals("[A IMPLIES B, B IMPLIES A, A ONLY B]"));
+    }
+    
 }

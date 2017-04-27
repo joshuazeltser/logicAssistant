@@ -874,6 +874,22 @@ public class Proof {
                 }
             }
 
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "ONLY_INTRO" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+
+            } else {
+                possResult = tryOnlyIntroduction();
+                if (possResult != null) {
+                    break;
+                }
+            }
+
 
             //check for several eliminations before starting introductions
             if (timeoutCount < 4) {
@@ -957,6 +973,8 @@ public class Proof {
         return possResult;
     }
 
+
+
     private boolean checkOrBoxes(int elimIndex, String rule) throws SyntaxException {
         Proof possResult;
 
@@ -1004,6 +1022,14 @@ public class Proof {
                                     proofSteps = temp;
                                     break;
 
+            case "ONLY_INTRO":      tryOnlyIntroduction();
+                                    temp = proofSteps;
+                                    proofSteps = extraProofSteps;
+                                    tryOnlyIntroduction();
+                                    extraProofSteps = proofSteps;
+                                    proofSteps = temp;
+                                    break;
+
             case "NOT_NOT_ELIM":    tryDoubleNotElimination();
                                     temp = proofSteps;
                                     proofSteps = extraProofSteps;
@@ -1043,6 +1069,45 @@ public class Proof {
             return true;
         }
         return false;
+    }
+
+    private Proof tryOnlyIntroduction() throws SyntaxException {
+        List<List<String>> toBeOnlyIntroduced = new LinkedList<>();
+        int count;
+        for (int i = 0; i < proofSteps.size(); i++) {
+            count = 1;
+            for (Expression e : proofSteps.get(i).expressions) {
+                if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
+                    List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
+
+                    Expression lhs = sides.get(0);
+                    lhs.addReferenceLine(Integer.toString(count));
+                    Expression rhs = sides.get(1);
+                    rhs.addReferenceLine(Integer.toString(count));
+
+                    Expression result = new Expression();
+
+                    result.addToExpression(rhs + " -> " + lhs);
+
+                    for (Expression e1 : proofSteps.get(i).expressions) {
+                        if (e1.equals(result)) {
+                            Expression newExpr = new Expression(RuleType.ONLY_INTRO);
+                            newExpr.addToExpression(lhs + " <-> " + rhs);
+                            List<String> pair = new LinkedList<>();
+                            pair.add(Integer.toString(i));
+                            pair.add(newExpr.toString());
+                            toBeOnlyIntroduced.add(pair);
+                        }
+                    }
+                }
+
+            }
+            count++;
+        }
+
+        proofSteps = updateProofs(toBeOnlyIntroduced, RuleType.ONLY_INTRO);
+        return foundResult(proofSteps);
+
     }
 
     private Proof tryOrIntroduction() throws SyntaxException {
