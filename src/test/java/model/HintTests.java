@@ -15,7 +15,7 @@ public class HintTests {
     Proof proof = new Proof();
 
     @Test
-    public void andEliminationHintTest() throws SyntaxException {
+    public void andEliminationSolverTest() throws SyntaxException {
         String str = "A ^ B";
         String str1 = "C";
 
@@ -46,7 +46,7 @@ public class HintTests {
     }
 
     @Test
-    public void impliesEliminationHintTest() throws SyntaxException {
+    public void impliesEliminationSolverTest() throws SyntaxException {
         String str = "A -> B";
         String str1 = "A";
 
@@ -78,7 +78,7 @@ public class HintTests {
     }
 
     @Test
-    public void impliesAndEliminationHintTest() throws SyntaxException {
+    public void impliesAndEliminationSolverTest() throws SyntaxException {
         String str = "A ^ B";
         String str1 = "B -> C";
 
@@ -110,7 +110,7 @@ public class HintTests {
     }
 
     @Test
-    public void impliesAndEliminationRecursiveHintTest() throws SyntaxException {
+    public void impliesAndEliminationRecursiveSolverTest() throws SyntaxException {
         String str1 = "A ^ B";
         String str = "B -> C";
 
@@ -142,7 +142,7 @@ public class HintTests {
     }
 
     @Test
-    public void onlyEliminationHintTest() throws SyntaxException {
+    public void onlyEliminationSolverTest() throws SyntaxException {
         String str = "A <-> B";
 
         Expression expr = new Expression(RuleType.GIVEN);
@@ -169,7 +169,7 @@ public class HintTests {
     }
 
     @Test
-    public void onlyImpliesEliminationHintTest() throws SyntaxException {
+    public void onlyImpliesEliminationSolverTest() throws SyntaxException {
         String str = "A <-> B";
         String str1 = "A";
 
@@ -201,7 +201,7 @@ public class HintTests {
     }
 
     @Test
-    public void notEliminationHintTest() throws SyntaxException {
+    public void notEliminationSolverTest() throws SyntaxException {
         String str = "!A";
         String str1 = "A";
 
@@ -233,7 +233,7 @@ public class HintTests {
     }
 
     @Test
-    public void notImpliesEliminationHintTest() throws SyntaxException {
+    public void notImpliesEliminationSolverTest() throws SyntaxException {
         String str = "A -> B";
         String str1 = "A";
         String str2 = "!B";
@@ -269,7 +269,7 @@ public class HintTests {
     }
 
     @Test
-    public void simpleNotNotEliminationHintTest() throws SyntaxException {
+    public void simpleNotNotEliminationSolverTest() throws SyntaxException {
         String str = "!!A";
 
         Expression expr = new Expression(RuleType.GIVEN);
@@ -295,7 +295,7 @@ public class HintTests {
     }
 
     @Test
-    public void impliesNotNotEliminationHintTest() throws SyntaxException {
+    public void impliesNotNotEliminationSolverTest() throws SyntaxException {
         String str = "!!A";
         String str1 = "A -> B";
 
@@ -326,7 +326,7 @@ public class HintTests {
     }
 
     @Test
-    public void simpleAndIntroHintTest() throws SyntaxException {
+    public void simpleAndIntroSolverTest() throws SyntaxException {
         String str = "A";
         String str1 = "B";
 
@@ -357,7 +357,7 @@ public class HintTests {
     }
 
     @Test
-    public void largeAndIntroHintTest() throws SyntaxException {
+    public void largeAndIntroSolverTest() throws SyntaxException {
         String str = "A";
         String str1 = "B";
         String str2 = "C";
@@ -429,7 +429,7 @@ public class HintTests {
     }
 
     @Test
-    public void iffImpliesAndHintTest() throws SyntaxException {
+    public void iffImpliesAndSolverTest() throws SyntaxException {
         String str = "A -> B";
         String str1 = "B -> C";
         String str2 = "A";
@@ -465,7 +465,7 @@ public class HintTests {
     }
 
     @Test
-    public void simpleOrIntroHintTest() throws SyntaxException {
+    public void simpleOrIntroSolverTest() throws SyntaxException {
         String str = "A";
 
         Expression expr = new Expression(RuleType.GIVEN);
@@ -491,7 +491,7 @@ public class HintTests {
     }
 
     @Test
-    public void largeOrIntroHintTest() throws SyntaxException {
+    public void largeOrIntroSolverTest() throws SyntaxException {
         String str = "A";
         String str1 = "B";
         String str2 = "C";
@@ -557,7 +557,7 @@ public class HintTests {
     }
 
     @Test
-    public void OrImpliesAndHintTest() throws SyntaxException {
+    public void OrImpliesAndSolverTest() throws SyntaxException {
         String str = "A ^ B";
         String str1 = "A -> C";
 
@@ -589,7 +589,7 @@ public class HintTests {
     }
 
     @Test
-    public void simpleImpliesAtEndIntroHintTest() throws SyntaxException {
+    public void simpleImpliesAtEndIntroSolverTest() throws SyntaxException {
         String str = "C ^ B";
 
         Expression expr = new Expression(RuleType.GIVEN);
@@ -615,7 +615,7 @@ public class HintTests {
     }
 
     @Test
-    public void harderImpliesAtEndIntroHintTest() throws SyntaxException {
+    public void harderImpliesAtEndIntroSolverTest() throws SyntaxException {
         String str = "A -> C";
         String str1 = "C -> D";
 
@@ -647,7 +647,7 @@ public class HintTests {
     }
 
     @Test
-    public void orEliminationHintTest() throws SyntaxException {
+    public void orEliminationSolverTest() throws SyntaxException {
         String str = "A | B";
         String str1 = "A -> C";
         String str2 = "B -> C";
@@ -688,7 +688,7 @@ public class HintTests {
     }
 
     @Test
-    public void orEliminationHintTest2() throws SyntaxException {
+    public void orEliminationSolverTest2() throws SyntaxException {
         String str = "A | B ^ D";
         String str1 = "A -> B ";
 
@@ -727,7 +727,7 @@ public class HintTests {
     }
 
     @Test
-    public void notIntroHintTest() throws SyntaxException {
+    public void notIntroSolverTest() throws SyntaxException {
         String str = "S -> B";
         String str1 = "B -> W";
         String str2 = "!W";
@@ -766,7 +766,7 @@ public class HintTests {
     }
 
     @Test
-    public void simpleOnlyIntroHintTest() throws SyntaxException {
+    public void simpleOnlyIntroSolverTest() throws SyntaxException {
         String str = "A -> B";
         String str1 = "B -> A";
 
@@ -799,5 +799,117 @@ public class HintTests {
 //        not guaranteed to be the shortest proof
         assertTrue(res.toString().equals("[A IMPLIES B, B IMPLIES A, A ONLY B]"));
     }
-    
+
+
+    @Test
+    public void simpleHintTest1() throws SyntaxException {
+        String str = "A ^ B";
+        String str1 = "A -> C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String res = "C";
+        Expression result = new Expression();
+        result.addToExpression(res);
+
+        proof.setResultExpr(result);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("AND_ELIM"));
+
+        String str2 = "A";
+        Expression expr2 = new Expression(RuleType.AND_ELIM);
+        expr2.addToExpression(str2);
+        expr2.addReferenceLine("1");
+        proof.addExpression(expr2);
+
+//        System.out.println(proof.generateHint());
+
+        assertTrue(proof.generateHint().equals("IMPLIES_ELIM"));
+
+
+    }
+
+    @Test
+    public void hintTest2() throws SyntaxException {
+        String str = "S -> B";
+        String str1 = "B -> W";
+        String str2 = "!W";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        String result = "!S";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("ASSUMPTION"));
+
+        String str3 = "S";
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        expr3.addToExpression(str3);
+        proof.addExpression(expr3);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("IMPLIES_ELIM"));
+
+        String str4 = "B";
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+        expr4.addReferenceLine("1");
+        expr4.addReferenceLine("4");
+        proof.addExpression(expr4);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("IMPLIES_ELIM"));
+
+        String str5 = "W";
+        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
+        expr5.addToExpression(str5);
+        expr5.addReferenceLine("2");
+        expr5.addReferenceLine("5");
+        proof.addExpression(expr5);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("NOT_ELIM"));
+
+        String str6 = "FALSE";
+        Expression expr6 = new Expression(RuleType.NOT_ELIM);
+        expr6.addToExpression(str6);
+        expr6.addReferenceLine("3");
+        expr6.addReferenceLine("6");
+        proof.addExpression(expr6);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("NOT_INTRO"));
+
+        String str7 = "FALSE";
+        Expression expr7 = new Expression(RuleType.NOT_INTRO);
+        expr7.addToExpression(str6);
+        expr7.addReferenceLine("4");
+        expr7.addReferenceLine("7");
+        proof.addExpression(expr7);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+    }
+
 }

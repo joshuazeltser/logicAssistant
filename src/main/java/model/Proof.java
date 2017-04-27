@@ -149,7 +149,7 @@ public class Proof {
                 case INVALID: return false;
                 default: break;
             }
-            expressions.remove(i);
+//            expressions.remove(i);
         }
         return errors.isEmpty();
     }
@@ -650,6 +650,33 @@ public class Proof {
 
 
 
+    public String generateHint() throws SyntaxException {
+
+//        proofSteps.clear();
+
+        proofSteps.add(this);
+
+        Proof solvedProof = nextStep();
+
+//        System.out.println(expressions);
+//        System.out.println(solvedProof.expressions);
+
+        if (solvedProof.expressions.size() == expressions.size()) {
+            return "Proof already successfully solved";
+        }
+
+        if (isProofValid()) {
+            if (solvedProof != null) {
+                return solvedProof.expressions.get(expressions.size()).getRuleType().toString();
+            } else {
+                return "solvedProof is null??????";
+            }
+        } else {
+            return "PROOF IS INVALID";
+        }
+
+        ////REMEMBER TO ADD ASSUMPTIONS IF NOTHING ELSE FOR IMPLIES AND NOT
+    }
 
 
     public Proof nextStep() throws SyntaxException {
@@ -664,6 +691,7 @@ public class Proof {
         int elimIndex = 0;
 
         while (possResult == null) {
+
 
 
             if (box) {
@@ -683,18 +711,31 @@ public class Proof {
             }
 
             if (notBox) {
-                for (Proof p : proofSteps) {
-                    if (p.expressions.get(p.expressions.size()-1).toString().equals("FALSE")) {
+                List<List<String>> toBeNotted = new LinkedList<>();
+                for (int i = 0; i < proofSteps.size(); i++) {
+                    if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1).toString()
+                            .equals("FALSE")) {
                         notBox = false;
-                        p.addExpression(resultExpr);
+
+                        List<String> pair = new LinkedList<>();
+                        pair.add(Integer.toString(i));
+                        pair.add(resultExpr.toString());
+                        toBeNotted.add(pair);
+
+
+
                     }
                 }
+                proofSteps = updateProofs(toBeNotted, RuleType.NOT_INTRO);
+
+
                 possResult = foundResult(proofSteps);
                 if (possResult != null) {
                     break;
                 }
             }
 
+            List<List<String>> toBeAssumed = new LinkedList<>();
             //if result expression includes a ->
             if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !box) {
                 possResult = tryOnlyElimination();
@@ -709,23 +750,38 @@ public class Proof {
                 lhsImplies.setRuleType(RuleType.ASSUMPTION);
                 rhsImplies = sides.get(1);
 
-                for (Proof p : proofSteps) {
-                    p.addExpression(lhsImplies);
+                for (int i = 0; i < proofSteps.size(); i ++) {
+                    List<String> pair = new LinkedList<>();
+                    pair.add(Integer.toString(i));
+                    pair.add(lhsImplies.toString());
+                    toBeAssumed.add(pair);
                 }
+
+                proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
+
+
+                toBeAssumed = new LinkedList<>();
             }
 
             //if result expression starts with a !
             if (resultExpr.getFirstComp().equals(new Operator("NOT", OperatorType.NOT)) && !notBox) {
                 notBox = true;
 
+
                 Expression temp = new Expression(RuleType.ASSUMPTION);
 
                 temp.addToExpression(resultExpr.toString());
                 temp.removeNcomponents(1);
 
-                for (Proof p : proofSteps) {
-                    p.addExpression(temp);
+                for (int i = 0; i < proofSteps.size(); i ++) {
+                    List<String> pair = new LinkedList<>();
+                    pair.add(Integer.toString(i));
+                    pair.add(temp.toString());
+                    toBeAssumed.add(pair);
                 }
+
+                proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
+
             }
 
 
@@ -737,10 +793,6 @@ public class Proof {
                     break;
                 }
             }
-
-
-
-
 
             List<Proof> oldProofSteps = proofSteps;
 
