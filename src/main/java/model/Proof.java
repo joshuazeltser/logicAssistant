@@ -3,6 +3,8 @@ package model;
 import java.util.LinkedList;
 import java.util.List;
 
+import static model.OperatorType.NOT;
+
 /**
  * Created by joshuazeltser on 18/01/2017.
  */
@@ -17,11 +19,17 @@ public class Proof {
 
     private List<Proof> proofSteps;
     private List<Proof> extraProofSteps;
-    private boolean box;
+    private boolean impliesBox;
     private boolean orBox;
     private boolean notBox;
+    private Expression rhsOr;
+    private boolean done;
+    private int timeoutCount;
+    private Proof solvedProof;
 
     private Expression resultExpr;
+    private Expression lhsImplies;
+    private Expression rhsImplies;
 
     public Proof() {
         expressions = new LinkedList<>();
@@ -29,9 +37,11 @@ public class Proof {
         proofString = "";
         proofLabels = "";
         proofSteps = new LinkedList<>();
-        box = false;
+        impliesBox = false;
         notBox = false;
         rhsOr = new Expression();
+        done = true;
+        timeoutCount = 0;
     }
 
 
@@ -377,9 +387,9 @@ public class Proof {
         }
 
         Expression expr = expressions.get(ref1);
-        if (expr.contains(new Operator("NOT", OperatorType.NOT))) {
+        if (expr.contains(new Operator("NOT", NOT))) {
             expr.removeNcomponents(1);
-            if (expr.contains(new Operator("NOT", OperatorType.NOT))) {
+            if (expr.contains(new Operator("NOT", NOT))) {
                 expr.removeNcomponents(1);
             } else {
                 errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This reference cannot be used " +
@@ -646,15 +656,8 @@ public class Proof {
         return null;
     }
 
-    private int timeoutCount = 0;
-
-
-
-    private Proof solvedProof;
-
     public String generateHint(boolean first) throws SyntaxException {
 
-//        proofSteps.clear();
         proofSteps.add(this);
 
         if (first) {
@@ -676,62 +679,33 @@ public class Proof {
             System.out.println(errors);
             return "PROOF IS INVALID";
         }
-
-        ////REMEMBER TO ADD ASSUMPTIONS IF NOTHING ELSE FOR IMPLIES AND NOT
     }
-
-
-    private Expression rhsOr;
-    private boolean done = true;
 
     public Proof nextStep() throws SyntaxException {
 
         Proof possResult = null;
 
-        Expression lhsImplies = new Expression();
-        Expression rhsImplies = new Expression();
+        lhsImplies = new Expression();
+        rhsImplies = new Expression();
 
         int elimIndex = 0;
 
         while (possResult == null) {
 
+            //If there are no premises
+            if (proofSteps.get(0).expressions.isEmpty()) {
+                noPremisesCase();
+            }
 
-
-            if (box) {
-                for (Proof p : proofSteps) {
-                    if (p.expressions.get(p.expressions.size()-1).equals(rhsImplies)) {
-                        box = false;
-                        Expression e = new Expression(RuleType.IMPLIES_INTRO);
-                        e.addToExpression(lhsImplies + " -> " + rhsImplies);
-                        p.addExpression(e);
-                    }
-                }
-                possResult = foundResult(proofSteps);
+            if (impliesBox) {
+                possResult = introduceImplies(lhsImplies, rhsImplies);
                 if (possResult != null) {
                     break;
                 }
-
             }
 
             if (notBox) {
-
-                List<List<String>> toBeNotted = new LinkedList<>();
-                for (int i = 0; i < proofSteps.size(); i++) {
-                    if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1).toString()
-                            .equals("FALSE")) {
-                        notBox = false;
-
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(resultExpr.toString());
-                        toBeNotted.add(pair);
-
-                    }
-                }
-                proofSteps = updateProofs(toBeNotted, RuleType.NOT_INTRO);
-
-
-                possResult = foundResult(proofSteps);
+                possResult = introduceFalse();
                 if (possResult != null) {
                     break;
                 }
@@ -739,51 +713,17 @@ public class Proof {
 
             List<List<String>> toBeAssumed = new LinkedList<>();
             //if result expression includes a ->
-            if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !box) {
+            if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !impliesBox) {
                 possResult = tryOnlyElimination();
                 if (possResult != null) {
                     break;
                 }
-
-                box = true;
-                List<Expression> sides = resultExpr.splitExpressionBy(OperatorType.IMPLIES);
-
-                lhsImplies = sides.get(0);
-                lhsImplies.setRuleType(RuleType.ASSUMPTION);
-                rhsImplies = sides.get(1);
-
-                for (int i = 0; i < proofSteps.size(); i ++) {
-                    List<String> pair = new LinkedList<>();
-                    pair.add(Integer.toString(i));
-                    pair.add(lhsImplies.toString());
-                    toBeAssumed.add(pair);
-                }
-
-                proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
-
-
-                toBeAssumed = new LinkedList<>();
+                addImpliesIntroAssumption(toBeAssumed);
             }
 
             //if result expression starts with a !
-            if (resultExpr.getFirstComp().equals(new Operator("NOT", OperatorType.NOT)) && !notBox) {
-                notBox = true;
-
-                Expression temp = new Expression(RuleType.ASSUMPTION);
-
-                temp.addToExpression(resultExpr.toString());
-                temp.removeNcomponents(1);
-
-                for (int i = 0; i < proofSteps.size(); i ++) {
-                    List<String> pair = new LinkedList<>();
-                    pair.add(Integer.toString(i));
-                    pair.add(temp.toString());
-                    toBeAssumed.add(pair);
-                }
-
-                proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
-
-
+            if (resultExpr.getFirstComp().equals(new Operator("NOT", NOT)) && !notBox) {
+                addNotIntroAssumption(toBeAssumed);
             }
 
 
@@ -794,70 +734,16 @@ public class Proof {
                 if (possResult != null) {
                     break;
                 }
-
             }
 
             //check if or elimination is possible
             if (!orBox && done) {
-                done = false;
-                List<List<String>> toBeOrEliminated = new LinkedList<>();
-                int count;
-                for (int i = 0; i < proofSteps.size(); i++) {
-                    count = 1;
-                    for (Expression e : proofSteps.get(i).expressions) {
-                        if (e.contains(new Operator("OR", OperatorType.OR))) {
-                            List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
-
-                            elimIndex = proofSteps.get(i).expressions.size() - 1;
-                            Expression lhs = sides.get(0);
-                            Expression rhs = sides.get(1);
-
-                            if ((lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                    !lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                                    (!lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                            lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                                    (rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                            !rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                                    (!rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                            rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ) {
-                                done = true;
-                                break;
-                            }
-
-                            rhsOr = rhs;
-
-                            lhs.setRuleType(RuleType.ASSUMPTION);
-                            rhs.setRuleType(RuleType.ASSUMPTION);
-
-
-                            List<String> pair = new LinkedList<>();
-                            pair.add(Integer.toString(i));
-                            pair.add(lhs.toString());
-                            toBeOrEliminated.add(pair);
-                            orBox = true;
-                        }
-                    }
-                    count++;
-                }
-                proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
+                elimIndex = addOrElimFirstAssumption(elimIndex);
 
             }
+
             if (orBox) {
-                extraProofSteps = new LinkedList<>();
-//                extraProofSteps.addAll(oldProofSteps);
-                for (Proof p : proofSteps) {
-
-                    Proof newProof = new Proof();
-                    for (Expression e : p.expressions) {
-                        if (e.equals(p.expressions.get(p.expressions.size() - 1))) {
-                            break;
-                        }
-                        newProof.addExpression(e);
-                    }
-                    newProof.addExpression(rhsOr);
-                    extraProofSteps.add(newProof);
-                }
-
+                addOrElimSecondAssumption();
             }
 
 
@@ -867,15 +753,11 @@ public class Proof {
                 if (solved) {
                     possResult = foundResult(proofSteps);
                     if (possResult != null) {
-
                         break;
                     }
                 }
-
             } else {
-
                 possResult = tryImpliesElimination();
-
                 if (possResult != null) {
                     break;
                 }
@@ -899,7 +781,6 @@ public class Proof {
 
 
             //check if not elimination is possible
-
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "NOT_ELIM" );
                 if (solved) {
@@ -915,10 +796,7 @@ public class Proof {
                 }
             }
 
-
-
             //check if Double not elimination is possible
-
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "NOT_NOT_ELIM" );
                 if (solved) {
@@ -933,8 +811,8 @@ public class Proof {
                     break;
                 }
             }
-            //check if iff elimination is possible
 
+            //check if iff elimination is possible
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "ONLY_ELIM" );
                 if (solved) {
@@ -943,7 +821,6 @@ public class Proof {
                         break;
                     }
                 }
-
             } else {
                 possResult = tryOnlyElimination();
                 if (possResult != null) {
@@ -951,6 +828,7 @@ public class Proof {
                 }
             }
 
+            //check if iff introduction is possible
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "ONLY_INTRO" );
                 if (solved) {
@@ -959,7 +837,6 @@ public class Proof {
                         break;
                     }
                 }
-
             } else {
                 possResult = tryOnlyIntroduction();
                 if (possResult != null) {
@@ -972,8 +849,6 @@ public class Proof {
                 timeoutCount++;
                 continue;
             }
-
-
 
             if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
 
@@ -1009,7 +884,7 @@ public class Proof {
                     }
                 }
 
-            } else  if (resultExpr.contains(new Operator("OR", OperatorType.OR))){
+            } else {
 
                 if (orBox) {
                     boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
@@ -1020,6 +895,7 @@ public class Proof {
                         }
                     }
                 } else {
+                    timeoutCount = 1;
                     possResult = tryOrIntroduction();
                     if (possResult != null) {
                         break;
@@ -1034,44 +910,13 @@ public class Proof {
                         }
                     }
                 } else {
+                    timeoutCount = 1;
                     possResult = tryOrIntroduction();
                     if (possResult != null) {
                         break;
                     }
                 }
             }
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                timeoutCount = 1;
-                possResult = tryOrIntroduction();
-                if (possResult != null) {
-                    break;
-                }
-            }
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                timeoutCount = 1;
-                possResult = tryOrIntroduction();
-
-                if (possResult != null) {
-                    break;
-                }
-            }
-
 
             if (timeoutCount < 5) {
                 timeoutCount++;
@@ -1084,6 +929,152 @@ public class Proof {
         return possResult;
     }
 
+    private void addOrElimSecondAssumption() {
+        extraProofSteps = new LinkedList<>();
+        for (Proof p : proofSteps) {
+
+            Proof newProof = new Proof();
+            for (Expression e : p.expressions) {
+                if (e.equals(p.expressions.get(p.expressions.size() - 1))) {
+                    break;
+                }
+                newProof.addExpression(e);
+            }
+            newProof.addExpression(rhsOr);
+            extraProofSteps.add(newProof);
+        }
+    }
+
+    private int addOrElimFirstAssumption(int elimIndex) throws SyntaxException {
+        done = false;
+        List<List<String>> toBeOrEliminated = new LinkedList<>();
+        int count;
+        for (int i = 0; i < proofSteps.size(); i++) {
+            count = 1;
+            for (Expression e : proofSteps.get(i).expressions) {
+                if (e.contains(new Operator("OR", OperatorType.OR))) {
+                    List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
+
+                    elimIndex = proofSteps.get(i).expressions.size() - 1;
+                    Expression lhs = sides.get(0);
+                    Expression rhs = sides.get(1);
+
+                    if ((lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                            !lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                            (!lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                    lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                            (rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                    !rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                            (!rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                    rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ) {
+                        done = true;
+                        break;
+                    }
+
+                    rhsOr = rhs;
+
+                    lhs.setRuleType(RuleType.ASSUMPTION);
+                    rhs.setRuleType(RuleType.ASSUMPTION);
+
+
+                    List<String> pair = new LinkedList<>();
+                    pair.add(Integer.toString(i));
+                    pair.add(lhs.toString());
+                    toBeOrEliminated.add(pair);
+                    orBox = true;
+                }
+            }
+            count++;
+        }
+        proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
+        return elimIndex;
+    }
+
+    private void addNotIntroAssumption(List<List<String>> toBeAssumed) throws SyntaxException {
+        notBox = true;
+
+        Expression temp = new Expression(RuleType.ASSUMPTION);
+
+        temp.addToExpression(resultExpr.toString());
+        temp.removeNcomponents(1);
+
+        for (int i = 0; i < proofSteps.size(); i ++) {
+            List<String> pair = new LinkedList<>();
+            pair.add(Integer.toString(i));
+            pair.add(temp.toString());
+            toBeAssumed.add(pair);
+        }
+
+        proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
+    }
+
+    private void addImpliesIntroAssumption(List<List<String>> toBeAssumed) throws SyntaxException {
+        impliesBox = true;
+        List<Expression> sides = resultExpr.splitExpressionBy(OperatorType.IMPLIES);
+
+        lhsImplies = sides.get(0);
+        lhsImplies.setRuleType(RuleType.ASSUMPTION);
+        rhsImplies = sides.get(1);
+
+        for (int i = 0; i < proofSteps.size(); i ++) {
+            List<String> pair = new LinkedList<>();
+            pair.add(Integer.toString(i));
+            pair.add(lhsImplies.toString());
+            toBeAssumed.add(pair);
+        }
+
+        proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
+    }
+
+    private Proof introduceFalse() throws SyntaxException {
+        Proof possResult;
+        List<List<String>> toBeNotted = new LinkedList<>();
+        for (int i = 0; i < proofSteps.size(); i++) {
+            if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1).toString()
+                    .equals("FALSE")) {
+                notBox = false;
+
+                List<String> pair = new LinkedList<>();
+                pair.add(Integer.toString(i));
+                pair.add(resultExpr.toString());
+                toBeNotted.add(pair);
+
+            }
+        }
+        proofSteps = updateProofs(toBeNotted, RuleType.NOT_INTRO);
+
+
+        possResult = foundResult(proofSteps);
+        return possResult;
+    }
+
+    private Proof introduceImplies(Expression lhsImplies, Expression rhsImplies) throws SyntaxException {
+        Proof possResult;
+        for (Proof p : proofSteps) {
+            if (p.expressions.get(p.expressions.size()-1).equals(rhsImplies)) {
+                impliesBox = false;
+                Expression e = new Expression(RuleType.IMPLIES_INTRO);
+                e.addToExpression(lhsImplies + " -> " + rhsImplies);
+                p.addExpression(e);
+            }
+        }
+        possResult = foundResult(proofSteps);
+        return possResult;
+    }
+
+    private void noPremisesCase() throws SyntaxException {
+        Expression expr = new Expression(RuleType.ASSUMPTION);
+        if (resultExpr.getFirstComp().equals(new Operator("NOT", NOT))) {
+            expr.addToExpression(resultExpr.toString());
+            expr.removeNcomponents(1);
+        } else {
+            expr.addToExpression("!" + resultExpr.toString());
+        }
+        Proof newProof = new Proof();
+        newProof.addExpression(expr);
+        proofSteps.clear();
+        proofSteps.add(newProof);
+    }
 
 
     private boolean checkOrBoxes(int elimIndex, String rule) throws SyntaxException {
@@ -1348,12 +1339,12 @@ public class Proof {
         for (int i = 0; i < proofSteps.size(); i++) {
             count = 1;
             for (Expression e : proofSteps.get(i).expressions) {
-                if (e.getFirstComp().equals(new Operator("NOT", OperatorType.NOT))) {
+                if (e.getFirstComp().equals(new Operator("NOT", NOT))) {
                     Expression temp = new Expression();
                     temp.addToExpression(e.toString());
                     temp.removeNcomponents(1);
 
-                    if (temp.contains(new Operator("NOT", OperatorType.NOT))) {
+                    if (temp.contains(new Operator("NOT", NOT))) {
                         Expression temp1 = new Expression();
                         temp1.addToExpression(temp.toString());
                         temp1.removeNcomponents(1);
@@ -1379,7 +1370,7 @@ public class Proof {
         for (int i = 0; i < proofSteps.size(); i++) {
             count = 1;
             for (Expression e : proofSteps.get(i).expressions) {
-                if (e.getFirstComp().equals(new Operator("NOT", OperatorType.NOT))) {
+                if (e.getFirstComp().equals(new Operator("NOT", NOT))) {
                     Expression temp = new Expression();
                     temp.addToExpression(e.toString());
 

@@ -1285,4 +1285,5 @@ public class HintTests {
 //        System.out.println(proof.generateHint(false));
         assertTrue(proof.generateHint(false).equals("Proof already successfully solved"));
     }
+    
 }
