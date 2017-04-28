@@ -127,7 +127,7 @@ public class Proof {
             case "Implies-Elim": return RuleType.IMPLIES_ELIM;
             case "Only-Intro": return RuleType.ONLY_INTRO;
             case "Only-Elim": return RuleType.ONLY_ELIM;
-            case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIMINATION;
+            case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIM;
             default: return RuleType.INVALID;
         }
     }
@@ -146,7 +146,7 @@ public class Proof {
                 case NOT_INTRO: isNotIntroductionValid(expressions.get(i)); break;
                 case ONLY_ELIM: isOnlyEliminationValid(expressions.get(i)); break;
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
-                case DOUBLE_NOT_ELIMINATION: isDoubleNotElimValid(expressions.get(i)); break;
+                case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
                 case INVALID: return false;
                 default: break;
             }
@@ -1313,7 +1313,7 @@ public class Proof {
             count++;
         }
 
-        proofSteps = updateProofs(toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIMINATION);
+        proofSteps = updateProofs(toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIM);
         return foundResult(proofSteps);
     }
 

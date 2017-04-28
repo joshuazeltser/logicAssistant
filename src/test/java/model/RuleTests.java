@@ -421,7 +421,7 @@ public class RuleTests {
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
 
-        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIM);
         expr1.addReferenceLine("1");
         expr1.addToExpression(str1);
 
@@ -816,7 +816,7 @@ public class RuleTests {
         expr7.addReferenceLine("7");
         expr7.addToExpression(str7);
 
-        Expression expr8 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        Expression expr8 = new Expression(RuleType.DOUBLE_NOT_ELIM);
         expr8.addReferenceLine("8");
         expr8.addToExpression(str8);
 

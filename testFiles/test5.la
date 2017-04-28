@@ -1,0 +1,9 @@
+!(A | !A) , ASSUMPTION
+A , ASSUMPTION
+A | !A , Or-Intro (2)
+FALSE , Not-Elim (1,3)
+!A , Not-Intro (2,4)
+A | !A , Or-Intro (5)
+FALSE , Not-Elim (1,6)
+!!(A | !A) , Not-Intro (1,7)
+A | !A , DoubleNot-Elim (8)

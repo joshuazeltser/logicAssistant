@@ -1,11 +1,8 @@
 package model;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import javax.validation.constraints.AssertTrue;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -264,7 +261,7 @@ public class ErrorTests {
         expr.addToExpression(str);
 
 
-        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIMINATION);
+        Expression expr1 = new Expression(RuleType.DOUBLE_NOT_ELIM);
         expr1.addToExpression(str1);
         expr1.addReferenceLine("1");
 
