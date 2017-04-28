@@ -504,4 +504,8 @@ public class Expression {
         return expression.get(0);
     }
 
+    public boolean isOperatorName(String str) {
+        return operatorNames.contains(str);
+    }
+
 }

@@ -650,27 +650,27 @@ public class Proof {
 
 
 
+    private Proof solvedProof;
 
-    public String generateHint() throws SyntaxException {
+    public String generateHint(boolean first) throws SyntaxException {
 
 //        proofSteps.clear();
-
         proofSteps.add(this);
 
-        Proof solvedProof = nextStep();
-
-//        System.out.println(expressions);
-//        System.out.println(solvedProof.expressions);
-
-        if (solvedProof.expressions.size() == expressions.size()) {
-            return "Proof already successfully solved";
+        if (first) {
+            solvedProof = nextStep();
         }
+//        System.out.println(expressions);
+//        System.out.println(solvedProof);
 
         if (isProofValid()) {
             if (solvedProof != null) {
+                if (solvedProof.expressions.size() == expressions.size()) {
+                    return "Proof already successfully solved";
+                }
                 return solvedProof.expressions.get(expressions.size()).getRuleType().toString();
             } else {
-                return "solvedProof is null??????";
+                return "ASSUMPTION";
             }
         } else {
             System.out.println(errors);
@@ -714,6 +714,7 @@ public class Proof {
             }
 
             if (notBox) {
+
                 List<List<String>> toBeNotted = new LinkedList<>();
                 for (int i = 0; i < proofSteps.size(); i++) {
                     if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1).toString()
@@ -724,8 +725,6 @@ public class Proof {
                         pair.add(Integer.toString(i));
                         pair.add(resultExpr.toString());
                         toBeNotted.add(pair);
-
-
 
                     }
                 }
@@ -770,7 +769,6 @@ public class Proof {
             if (resultExpr.getFirstComp().equals(new Operator("NOT", OperatorType.NOT)) && !notBox) {
                 notBox = true;
 
-
                 Expression temp = new Expression(RuleType.ASSUMPTION);
 
                 temp.addToExpression(resultExpr.toString());
@@ -785,6 +783,7 @@ public class Proof {
 
                 proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
 
+
             }
 
 
@@ -795,6 +794,7 @@ public class Proof {
                 if (possResult != null) {
                     break;
                 }
+
             }
 
             //check if or elimination is possible
@@ -811,6 +811,18 @@ public class Proof {
                             elimIndex = proofSteps.get(i).expressions.size() - 1;
                             Expression lhs = sides.get(0);
                             Expression rhs = sides.get(1);
+
+                            if ((lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                    !lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                                    (!lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                            lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                                    (rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                            !rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
+                                    (!rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
+                                            rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ) {
+                                done = true;
+                                break;
+                            }
 
                             rhsOr = rhs;
 
@@ -861,7 +873,9 @@ public class Proof {
                 }
 
             } else {
+
                 possResult = tryImpliesElimination();
+
                 if (possResult != null) {
                     break;
                 }
@@ -882,6 +896,7 @@ public class Proof {
                     break;
                 }
             }
+
 
             //check if not elimination is possible
 
@@ -918,7 +933,6 @@ public class Proof {
                     break;
                 }
             }
-
             //check if iff elimination is possible
 
             if (orBox) {
@@ -953,12 +967,12 @@ public class Proof {
                 }
             }
 
-
             //check for several eliminations before starting introductions
             if (timeoutCount < 4) {
                 timeoutCount++;
                 continue;
             }
+
 
 
             if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
@@ -1026,13 +1040,47 @@ public class Proof {
                     }
                 }
             }
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+            } else {
+                timeoutCount = 1;
+                possResult = tryOrIntroduction();
+                if (possResult != null) {
+                    break;
+                }
+            }
+            if (orBox) {
+                boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
+                if (solved) {
+                    possResult = foundResult(proofSteps);
+                    if (possResult != null) {
+                        break;
+                    }
+                }
+            } else {
+                timeoutCount = 1;
+                possResult = tryOrIntroduction();
+
+                if (possResult != null) {
+                    break;
+                }
+            }
+
 
             if (timeoutCount < 5) {
                 timeoutCount++;
+
             } else {
                 break;
             }
         }
+
         return possResult;
     }
 
@@ -1200,8 +1248,14 @@ public class Proof {
             }
             for (Expression p : proofSteps.get(i).expressions) {
                 for (String p1 : props) {
-                    if (!p.toString().equals(p1.toString())) {
+                    Expression tempExpr = new Expression();
+                    tempExpr.addToExpression(p1);
+                    if (!p.toString().equals(p1.toString()) && !tempExpr.equals(p)) {
                         Expression or = new Expression(RuleType.OR_INTRO);
+                        if (p1.toString().equals("NOT") || p1.toString().equals("OPEN") ||
+                                p1.toString().equals("CLOSE") || p1.toString().equals("OR")) {
+                            break;
+                        }
                         or.addToExpression(p.toString() + " | " + p1.toString());
                         List<String> pair = new LinkedList<>();
                         pair.add(Integer.toString(i));
@@ -1294,7 +1348,7 @@ public class Proof {
         for (int i = 0; i < proofSteps.size(); i++) {
             count = 1;
             for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+                if (e.getFirstComp().equals(new Operator("NOT", OperatorType.NOT))) {
                     Expression temp = new Expression();
                     temp.addToExpression(e.toString());
                     temp.removeNcomponents(1);
@@ -1307,6 +1361,7 @@ public class Proof {
                         pair.add(Integer.toString(i));
                         pair.add(temp1.toString());
                         toBeDoubleNotEliminated.add(pair);
+
                     }
                 }
             }
@@ -1314,6 +1369,7 @@ public class Proof {
         }
 
         proofSteps = updateProofs(toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIM);
+
         return foundResult(proofSteps);
     }
 
@@ -1323,14 +1379,13 @@ public class Proof {
         for (int i = 0; i < proofSteps.size(); i++) {
             count = 1;
             for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("NOT", OperatorType.NOT))) {
+                if (e.getFirstComp().equals(new Operator("NOT", OperatorType.NOT))) {
                     Expression temp = new Expression();
                     temp.addToExpression(e.toString());
 
                     temp.removeNcomponents(1);
                     int count1 = 1;
                     for (Expression e1 : proofSteps.get(i).expressions) {
-
                         if (e1.equals(temp)) {
                             List<String> pair = new LinkedList<>();
                             pair.add(Integer.toString(i));
@@ -1338,12 +1393,16 @@ public class Proof {
                             toBeNotEliminated.add(pair);
                         }
                     }
+
                 }
             }
             count++;
         }
 
+
+
         proofSteps = updateProofs(toBeNotEliminated, RuleType.NOT_ELIM);
+
         return foundResult(proofSteps);
     }
 
