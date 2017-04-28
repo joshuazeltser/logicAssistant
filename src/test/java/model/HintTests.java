@@ -912,4 +912,81 @@ public class HintTests {
 
     }
 
+    @Test
+    public void hintTest3() throws SyntaxException {
+        String str = "A | B";
+        String str1 = "A -> C";
+        String str2 = "B -> C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        String result = "C";
+        Expression resultExpr = new Expression();
+        resultExpr.addToExpression(result);
+        proof.setResultExpr(resultExpr);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("ASSUMPTION"));
+
+        String str3 = "A";
+        Expression expr3 = new Expression(RuleType.ASSUMPTION);
+        expr3.addToExpression(str3);
+        proof.addExpression(expr3);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("IMPLIES_ELIM"));
+
+        String str4 = "C";
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addToExpression(str4);
+        expr4.addReferenceLine("2");
+        expr4.addReferenceLine("4");
+        proof.addExpression(expr4);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("ASSUMPTION"));
+
+        String str5 = "B";
+        Expression expr5 = new Expression(RuleType.ASSUMPTION);
+        expr5.addToExpression(str5);
+        proof.addExpression(expr5);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("IMPLIES_ELIM"));
+
+        String str6 = "C";
+        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
+        expr6.addToExpression(str6);
+        expr6.addReferenceLine("3");
+        expr6.addReferenceLine("6");
+        proof.addExpression(expr6);
+
+//                 System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("OR_ELIM"));
+
+        String str7 = "C";
+        Expression expr7 = new Expression(RuleType.OR_ELIM);
+        expr6.addToExpression(str7);
+        expr7.addReferenceLine("1");
+        expr7.addReferenceLine("4");
+        expr7.addReferenceLine("6");
+//        expr7.addReferenceLine("6");
+        proof.addExpression(expr7);
+
+//                         System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+    }
+
 }

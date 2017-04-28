@@ -31,6 +31,7 @@ public class Proof {
         proofSteps = new LinkedList<>();
         box = false;
         notBox = false;
+        rhsOr = new Expression();
     }
 
 
@@ -672,6 +673,7 @@ public class Proof {
                 return "solvedProof is null??????";
             }
         } else {
+            System.out.println(errors);
             return "PROOF IS INVALID";
         }
 
@@ -679,14 +681,15 @@ public class Proof {
     }
 
 
+    private Expression rhsOr;
+    private boolean done = true;
+
     public Proof nextStep() throws SyntaxException {
 
         Proof possResult = null;
 
         Expression lhsImplies = new Expression();
         Expression rhsImplies = new Expression();
-
-        Expression rhsOr = new Expression();
 
         int elimIndex = 0;
 
@@ -794,10 +797,9 @@ public class Proof {
                 }
             }
 
-            List<Proof> oldProofSteps = proofSteps;
-
             //check if or elimination is possible
-            if (!orBox) {
+            if (!orBox && done) {
+                done = false;
                 List<List<String>> toBeOrEliminated = new LinkedList<>();
                 int count;
                 for (int i = 0; i < proofSteps.size(); i++) {
@@ -830,9 +832,18 @@ public class Proof {
             }
             if (orBox) {
                 extraProofSteps = new LinkedList<>();
-                extraProofSteps.addAll(oldProofSteps);
-                for (Proof p : extraProofSteps) {
-                    p.addExpression(rhsOr);
+//                extraProofSteps.addAll(oldProofSteps);
+                for (Proof p : proofSteps) {
+
+                    Proof newProof = new Proof();
+                    for (Expression e : p.expressions) {
+                        if (e.equals(p.expressions.get(p.expressions.size() - 1))) {
+                            break;
+                        }
+                        newProof.addExpression(e);
+                    }
+                    newProof.addExpression(rhsOr);
+                    extraProofSteps.add(newProof);
                 }
 
             }
@@ -1468,5 +1479,9 @@ public class Proof {
 
     public void setResultExpr(Expression resultExpr) {
         this.resultExpr = resultExpr;
+    }
+
+    public boolean isOrBox() {
+        return orBox;
     }
 }
