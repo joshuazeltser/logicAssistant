@@ -17,22 +17,23 @@ public class DebugTests {
 
         assertFalse(Expression.externalBrackets(str));
     }
-
-    @Test
-    public void frontEndParsingTesting() throws SyntaxException {
-        String str = "A ^ B\nA\nA | B";
-        String str1 = "GIVEN (1,2)\nAND_ELIM (1)\nOR_INTRO (2)";
-
-        Proof proof = new Proof();
-
-        proof.separateByNewLine(str,str1);
-
-
-        System.out.println(proof.frontEndProofValidity());
-        System.out.println(proof.printErrors());
-        assertTrue(true);
-
-    }
+//
+//    @Test
+//    public void frontEndParsingTesting() throws SyntaxException {
+//        String str = "A ^ B\nA\nA | B";
+//        String str1 = "GIVEN (1,2)\nAND_ELIM (1)\nOR_INTRO (2)";
+//
+//
+//        Proof proof = new Proof();
+//
+//        proof.separateByNewLine(str,str1);
+//
+//
+//        System.out.println(proof.frontEndProofValidity());
+//        System.out.println(proof.printErrors());
+//        assertTrue(true);
+//
+//    }
 //
 //    @Test
 //    public void bracketsTest1() {

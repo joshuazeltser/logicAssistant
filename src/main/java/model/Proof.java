@@ -26,6 +26,9 @@ public class Proof {
     private boolean done;
     private int timeoutCount;
     private Proof solvedProof;
+    private boolean firstRound;
+
+    private String resultString;
 
     private Expression resultExpr;
     private Expression lhsImplies;
@@ -42,6 +45,15 @@ public class Proof {
         rhsOr = new Expression();
         done = true;
         timeoutCount = 0;
+        firstRound = true;
+        resultString = "";
+        resultExpr = new Expression();
+//        try {
+//            resultExpr.addToExpression("A");
+//        } catch (SyntaxException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
 
@@ -100,7 +112,6 @@ public class Proof {
                 }
                 addExpression(newExpr);
             }
-
 
         }
     }
@@ -656,28 +667,35 @@ public class Proof {
         return null;
     }
 
-    public String generateHint(boolean first) throws SyntaxException {
+    public String generateHint() throws SyntaxException {
 
         proofSteps.add(this);
 
-        if (first) {
-            solvedProof = nextStep();
-        }
+        if (!resultString.equals("")) {
+            resultExpr.addToExpression(resultString);
+            if (firstRound) {
+                solvedProof = nextStep();
+                firstRound = false;
+            }
+
 //        System.out.println(expressions);
 //        System.out.println(solvedProof);
 
-        if (isProofValid()) {
-            if (solvedProof != null) {
-                if (solvedProof.expressions.size() == expressions.size()) {
-                    return "Proof already successfully solved";
+            if (isProofValid()) {
+                if (solvedProof != null) {
+                    if (solvedProof.expressions.size() == expressions.size()) {
+                        return "Proof already successfully solved";
+                    }
+                    return solvedProof.expressions.get(expressions.size()).getRuleType().toString();
+                } else {
+                    return "ASSUMPTION";
                 }
-                return solvedProof.expressions.get(expressions.size()).getRuleType().toString();
             } else {
-                return "ASSUMPTION";
+                System.out.println(errors);
+                return "PROOF IS INVALID";
             }
         } else {
-            System.out.println(errors);
-            return "PROOF IS INVALID";
+            return "";
         }
     }
 
@@ -1534,4 +1552,13 @@ public class Proof {
     public boolean isOrBox() {
         return orBox;
     }
+
+    public String getResultString() {
+        return resultString;
+    }
+
+    public void setResultString(String resultString) {
+        this.resultString = resultString;
+    }
+
 }

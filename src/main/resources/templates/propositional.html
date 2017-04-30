@@ -178,6 +178,9 @@
         </script>
 
 
+        <p></p>
+
+
     </div>
 
     <div class="col-md-8">
@@ -201,15 +204,27 @@
                         }
                     </style>
                 </div>
+               <p></p>
+                <center>
 
-                <p></p>
-                <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                <a href="/propositional" type="reset" class="btn btn-primary">Reset</a>
 
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning" type="submit">Hint</button>
+                     </span>
+                    </div>
+                </div>
+
+                    <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
+                    <a href="/propositional" type="reset" class="btn btn-primary">Reset</a>
+                </center>
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
                         <output th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
+                        <output th:name="hintResult" th:utext="${proof.generateHint()}"></output>
                     </div>
 
                 </div>
