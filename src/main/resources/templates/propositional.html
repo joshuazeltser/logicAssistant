@@ -190,16 +190,16 @@
                 <div class="inline-div">
                     <p class="lead" align="center">Proof</p>
 
-                    <textarea class="lined" id="Text1" th:field="*{proofString}" cols="20" rows="10" onkeyup="if(this.textLength != 0)
+                    <textarea class="lined" id="Text1" th:field="*{proofString}" cols="20" rows="8" onkeyup="if(this.textLength != 0)
 			{submit.disabled = false} else {submit.disabled = true}"></textarea>
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center">Rule</p>
-                    <textarea id="Text2" th:field="*{proofLabels}" cols="14" rows="10" spellcheck="false" >
+                    <textarea id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
 			</textarea>
                     <style>
                         textarea {
-                            height: 408px;
+                            height: 358px;
                             width: 300px;
                         }
                     </style>
@@ -224,7 +224,7 @@
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
                         <output th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
-                        <output th:name="hintResult" th:utext="${proof.generateHint()}"></output>
+                        <output th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
                     </div>
 
                 </div>

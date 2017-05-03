@@ -48,12 +48,6 @@ public class Proof {
         firstRound = true;
         resultString = "";
         resultExpr = new Expression();
-//        try {
-//            resultExpr.addToExpression("A");
-//        } catch (SyntaxException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
 
@@ -667,12 +661,12 @@ public class Proof {
         return null;
     }
 
-    public String generateHint() throws SyntaxException {
+    public String generateHint(String resString) throws SyntaxException {
 
         proofSteps.add(this);
 
         if (!resultString.equals("")) {
-            resultExpr.addToExpression(resultString);
+            resultExpr.addToExpression(resString);
             if (firstRound) {
                 solvedProof = nextStep();
                 firstRound = false;
@@ -680,15 +674,23 @@ public class Proof {
 
 //        System.out.println(expressions);
 //        System.out.println(solvedProof);
+            for (Expression e : solvedProof.expressions) {
+                System.out.println(e.getRuleType());
+            }
+
+
+
 
             if (isProofValid()) {
+                System.out.println(solvedProof.expressions);
                 if (solvedProof != null) {
                     if (solvedProof.expressions.size() == expressions.size()) {
                         return "Proof already successfully solved";
                     }
-                    return solvedProof.expressions.get(expressions.size()).getRuleType().toString();
+                    return "Hint: " + solvedProof.expressions.get(expressions.size()).getRuleType().toString();
                 } else {
-                    return "ASSUMPTION";
+                    System.out.println("here");
+                    return "Hint: ASSUMPTION";
                 }
             } else {
                 System.out.println(errors);
@@ -830,6 +832,8 @@ public class Proof {
                 }
             }
 
+
+
             //check if iff elimination is possible
             if (orBox) {
                 boolean solved = checkOrBoxes(elimIndex, "ONLY_ELIM" );
@@ -844,6 +848,12 @@ public class Proof {
                 if (possResult != null) {
                     break;
                 }
+            }
+
+            //check for several eliminations before starting introductions
+            if (timeoutCount < 3) {
+                timeoutCount++;
+                continue;
             }
 
             //check if iff introduction is possible
@@ -862,11 +872,7 @@ public class Proof {
                 }
             }
 
-            //check for several eliminations before starting introductions
-            if (timeoutCount < 4) {
-                timeoutCount++;
-                continue;
-            }
+
 
             if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
 
@@ -1096,9 +1102,6 @@ public class Proof {
 
 
     private boolean checkOrBoxes(int elimIndex, String rule) throws SyntaxException {
-        Proof possResult;
-
-        RuleType ruleType = null;
         List<Proof> temp;
 
         switch (rule) {
@@ -1134,7 +1137,8 @@ public class Proof {
                                     proofSteps = temp;
                                     break;
 
-            case "ONLY_ELIM":       tryOnlyElimination();
+            case "ONLY_ELIM":
+                tryOnlyElimination();
                                     temp = proofSteps;
                                     proofSteps = extraProofSteps;
                                     tryOnlyElimination();
@@ -1159,6 +1163,7 @@ public class Proof {
                                     break;
 
         }
+
 
 
 
@@ -1206,8 +1211,11 @@ public class Proof {
                     rhs.addReferenceLine(Integer.toString(count));
 
                     Expression result = new Expression();
-
-                    result.addToExpression(rhs + " -> " + lhs);
+                    try {
+                        result.addToExpression(rhs + " -> " + lhs);
+                    } catch (SyntaxException s) {
+                        break;
+                    }
 
                     for (Expression e1 : proofSteps.get(i).expressions) {
                         if (e1.equals(result)) {
@@ -1330,7 +1338,6 @@ public class Proof {
                         pair.add(Integer.toString(i));
                         pair.add(result.toString());
                         toBeIffEliminated.add(pair);
-
                     }
 
                     result1.addReferenceLine(Integer.toString(count));
@@ -1347,7 +1354,9 @@ public class Proof {
             }
         }
 
+
         proofSteps = updateProofs(toBeIffEliminated, RuleType.ONLY_ELIM);
+
         return foundResult(proofSteps);
     }
 
