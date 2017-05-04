@@ -695,6 +695,7 @@ public class Proof {
                     return true;
                 }
             }
+
             if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
                 List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
 
@@ -702,20 +703,74 @@ public class Proof {
                 lhs.addReferenceLine(Integer.toString(count));
                 Expression rhs = sides.get(1);
                 rhs.addReferenceLine(Integer.toString(count));
-                
-            }
-            if (expr.contains(new Operator("ONLY", ONLY))) {
 
+                int count1 = 1;
+                for (Expression expr1 : proofSoFar.expressions) {
+                    if (expr1.equals(lhs)) {
+                        rhs.addReferenceLine(Integer.toString(count1));
+                        if (isImpliesElimValid(rhs)) {
+                            return true;
+                        }
+                    }
+                    count1++;
+                }
+            }
+
+            if (expr.contains(new Operator("ONLY", ONLY))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+
+                Expression lhs = sides.get(0);
+                Expression rhs = sides.get(1);
+
+                Expression result1 = new Expression();
+                result1.addToExpression(lhs.toString() + " -> " + rhs.toString());
+                result1.addReferenceLine(Integer.toString(count));
+
+                Expression result2 = new Expression();
+                result2.addToExpression(rhs.toString() + " -> " + lhs.toString());
+                result2.addReferenceLine(Integer.toString(count));
+
+                if (isOnlyEliminationValid(result1) || isOnlyEliminationValid(result2)) {
+                    return true;
+                }
+            }
+
+            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+                Expression notResult = new Expression();
+                notResult.addToExpression("FALSE");
+
+                Expression temp = new Expression();
+                temp.addToExpression(expr.toString());
+                temp.removeNcomponents(1);
+
+                notResult.addReferenceLine(Integer.toString(count));
+
+                int count1 = 1;
+                for (Expression expr1 : proofSoFar.expressions) {
+                    if (expr1.equals(temp)) {
+                        notResult.addReferenceLine(Integer.toString(count1));
+                        return isNotElimValid(notResult);
+                    }
+                    count1++;
+                }
             }
             if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
-
+                Expression temp = new Expression();
+                temp.addToExpression(expr.toString());
+                temp.removeNcomponents(1);
+                if (temp.getFirstComp().equals(new Operator("NOT", NOT))) {
+                    Expression temp1 = new Expression();
+                    temp1.addToExpression(temp.toString());
+                    temp1.removeNcomponents(1);
+                    return isDoubleNotElimValid(temp1);
+                }
             }
+
+
             if (expr.contains(new Operator("OR", OR))) {
                 //complex case to be thought about
             }
-
-
-
+            
             count++;
         }
 

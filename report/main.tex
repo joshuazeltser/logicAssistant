@@ -368,8 +368,8 @@ I have put a lot of thought into the project plan that I created for this projec
 \begin{namedthm}{Rule}[Not Introduction]
 
 \begin{bprooftree}
-\AxiomC{$A \vdash B$}
-\AxiomC{$A \vdash \neg B$}
+\AxiomC{$A$}
+\AxiomC{$\bot$}
 \BinaryInfC{$\neg A$}
 \end{bprooftree}\qquad where A is an assumption
 
@@ -378,10 +378,20 @@ I have put a lot of thought into the project plan that I created for this projec
 \begin{namedthm}{Rule}[Not Elimination]
 
 \begin{bprooftree}
-\AxiomC{$\neg \neg A$}
-\UnaryInfC{$A$}
+\AxiomC{$\neg  A$}
+\AxiomC{$A$}
+\BinaryInfC{$\bot$}
 \end{bprooftree}\qquad 
 
+\end{namedthm}
+
+\begin{namedthm}{Rule}[Double Not Elimination]
+	
+	\begin{bprooftree}
+		\AxiomC{$\neg \neg A$}
+		\UnaryInfC{$A$}
+	\end{bprooftree}\qquad 
+	
 \end{namedthm}
 
 \begin{namedthm}{Rule}[Implies Introduction]
