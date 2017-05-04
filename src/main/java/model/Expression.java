@@ -425,6 +425,10 @@ public class Expression {
 
     }
 
+    public void removeLast() {
+        expression.remove(expression.size()-1);
+    }
+
     public static boolean checkBrackets(String str)
     {
         if (str.isEmpty())

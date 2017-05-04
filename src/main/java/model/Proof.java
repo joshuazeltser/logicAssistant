@@ -618,40 +618,41 @@ public class Proof {
 
     public void solveProof() throws SyntaxException {
 
+        resultExpr.addToExpression(resultString);
         list_goals.add(resultExpr);
 
         if (!expressions.isEmpty()) {
-            list_goals.addAll(expressions);
+            list_proof.addAll(expressions);
         }
+
 
         Expression current_goal = resultExpr;
 
         while (true) {
             boolean reached = false;
             if (!current_goal.toString().equals("FALSE")) {
-                if (checkIfExpressionsDiscarded()) {
-                    list_goals.remove(current_goal);
-                    current_goal = list_goals.get(list_goals.size() - 1);
+                if (checkIfExpressionsReached(current_goal)) {
                     reached = true;
                 }
             } else {
-                if (checkIfFalseExpressionDiscarded()) {
-                    list_goals.remove(current_goal);
-                    current_goal = list_goals.get(list_goals.size() - 1);
+                if (checkIfFalseExpressionReached()) {
                     reached = true;
                 }
             }
 
             if (reached) {
                 if (current_goal.equals(list_goals.get(0))) {
+                    System.out.println("list_proof " + list_proof);
+                    System.out.println("list_goals " + list_goals);
                     return;
                 } else {
-                    applyIntroductionRule();
+                    list_goals.remove(current_goal);
+                    current_goal = list_goals.get(list_goals.size() - 1);
+//                    applyIntroductionRule();
                     continue;
                 }
             } else {
                 if (eliminationRuleApplicable()) {
-                    applyEliminationRule();
                     continue;
                 } else {
                     //procedure 2
@@ -668,56 +669,128 @@ public class Proof {
             }
         }
 
+
     }
 
     private boolean allMarked() {
         return true;
     }
 
-    private void applyEliminationRule() {
+    private void applyEliminationRule(Expression expr) {
+        if (!list_proof.contains(expr)) {
+            list_proof.add(expr);
+        }
+
     }
 
     private boolean eliminationRuleApplicable() throws SyntaxException {
 
-        Proof proofSoFar = new Proof();
-        proofSoFar.expressions = list_proof;
+        Proof newProof = new Proof();
+        newProof.expressions = list_proof;
+        boolean implies = tryImpliesElim(newProof);
+        newProof.expressions = list_proof;
+        System.out.println(list_proof);
 
+        boolean and = tryAndElim(newProof);
+        newProof.expressions = list_proof;
+        System.out.println(list_proof);
+
+
+        boolean only = tryOnlyElim(newProof);
+        newProof.expressions = list_proof;
+
+        boolean not = tryNotElim(newProof);
+        newProof.expressions = list_proof;
+
+        boolean notNot = tryDoubleNotElim(newProof);
+        newProof.expressions = list_proof;
+        boolean or = tryOrElim(newProof);
+        newProof.expressions = list_proof;
+
+        return and || implies || only || not || notNot || or;
+    }
+
+    private boolean tryOrElim(Proof newProof) {
         int count = 1;
-        for (Expression expr : proofSoFar.expressions) {
-            if (expr.contains(new Operator("AND", AND))) {
-                List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
-
-                Expression lhs = sides.get(0);
-                lhs.addReferenceLine(Integer.toString(count));
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
-                if (isAndElimValid(lhs) || isAndElimValid(rhs)) {
-                    return true;
-                }
+        boolean changed = false;
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).contains(new Operator("OR", OR))) {
+                //complex case to be thought about
             }
 
-            if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
-                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+            count++;
+        }
+        return changed;
+    }
 
-                Expression lhs = sides.get(0);
-                lhs.addReferenceLine(Integer.toString(count));
-                Expression rhs = sides.get(1);
-                rhs.addReferenceLine(Integer.toString(count));
+    private boolean tryNotElim(Proof newProof) throws SyntaxException {
+        int count = 1;
+        boolean changed = false;
+
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).getFirstComp().equals(new Operator("NOT", NOT))) {
+                Expression notResult = new Expression();
+                notResult.addToExpression("FALSE");
+
+                Expression temp = new Expression();
+                temp.addToExpression(newProof.expressions.get(i).toString());
+                temp.removeNcomponents(1);
+
+                notResult.addReferenceLine(Integer.toString(count));
 
                 int count1 = 1;
-                for (Expression expr1 : proofSoFar.expressions) {
-                    if (expr1.equals(lhs)) {
-                        rhs.addReferenceLine(Integer.toString(count1));
-                        if (isImpliesElimValid(rhs)) {
-                            return true;
+                for (Expression expr1 : newProof.expressions) {
+                    if (expr1.equals(temp)) {
+                        notResult.addReferenceLine(Integer.toString(count1));
+                        if (newProof.isNotElimValid(notResult)) {
+                            notResult.setRuleType(RuleType.NOT_ELIM);
+                            applyEliminationRule(notResult);
+                            changed = true;
                         }
                     }
                     count1++;
                 }
             }
+            count++;
 
-            if (expr.contains(new Operator("ONLY", ONLY))) {
-                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+        }
+        return changed;
+    }
+
+    private boolean tryDoubleNotElim(Proof newProof) throws SyntaxException {
+        int count = 1;
+        boolean changed = false;
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).getFirstComp().equals(new Operator("NOT", NOT))) {
+                Expression temp = new Expression();
+                temp.addToExpression(newProof.expressions.get(i).toString());
+                temp.removeNcomponents(1);
+                if (temp.getFirstComp().equals(new Operator("NOT", NOT))) {
+                    Expression temp1 = new Expression();
+                    temp1.addToExpression(temp.toString());
+                    temp1.removeNcomponents(1);
+                    if (newProof.isDoubleNotElimValid(temp1)) {
+                        temp1.setRuleType(RuleType.DOUBLE_NOT_ELIM);
+                        applyEliminationRule(temp1);
+                        changed = true;
+                    }
+
+                }
+            }
+            count++;
+
+        }
+
+        return changed;
+    }
+
+    private boolean tryOnlyElim(Proof newProof) throws SyntaxException {
+        int count = 1;
+        boolean changed = false;
+
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).contains(new Operator("ONLY", ONLY))) {
+                List<Expression> sides = newProof.expressions.get(i).splitExpressionBy(OperatorType.ONLY);
 
                 Expression lhs = sides.get(0);
                 Expression rhs = sides.get(1);
@@ -730,57 +803,111 @@ public class Proof {
                 result2.addToExpression(rhs.toString() + " -> " + lhs.toString());
                 result2.addReferenceLine(Integer.toString(count));
 
-                if (isOnlyEliminationValid(result1) || isOnlyEliminationValid(result2)) {
-                    return true;
+                if (newProof.isOnlyEliminationValid(result1)) {
+                    result1.setRuleType(RuleType.ONLY_ELIM);
+                    applyEliminationRule(result1);
+                    changed = true;
+                } else if (newProof.isOnlyEliminationValid(result2)) {
+                    result2.setRuleType(RuleType.ONLY_ELIM);
+                    applyEliminationRule(result2);
+                    changed = true;
                 }
             }
+            count++;
 
-            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
-                Expression notResult = new Expression();
-                notResult.addToExpression("FALSE");
+        }
+        return changed;
+    }
 
-                Expression temp = new Expression();
-                temp.addToExpression(expr.toString());
-                temp.removeNcomponents(1);
+    private boolean tryImpliesElim(Proof newProof) throws SyntaxException {
+        int count = 1;
+        boolean changed = false;
 
-                notResult.addReferenceLine(Integer.toString(count));
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).contains(new Operator("IMPLIES", IMPLIES))) {
+                List<Expression> sides = newProof.expressions.get(i).splitExpressionBy(OperatorType.IMPLIES);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
 
                 int count1 = 1;
-                for (Expression expr1 : proofSoFar.expressions) {
-                    if (expr1.equals(temp)) {
-                        notResult.addReferenceLine(Integer.toString(count1));
-                        return isNotElimValid(notResult);
+                for (int j = 0; j < newProof.expressions.size(); j++) {
+                    if (newProof.expressions.get(j).equals(lhs)) {
+                        rhs.addReferenceLine(Integer.toString(count1));
+
+                        if (newProof.isImpliesElimValid(rhs) &&
+                                !(!lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                                        lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
+                                !(lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                                        !lhs.contains(new Operator("CLOSE",CLOSE_BRACKET)))) {
+                            rhs.setRuleType(RuleType.IMPLIES_ELIM);
+                            applyEliminationRule(rhs);
+                            changed = true;
+                        }
                     }
                     count1++;
                 }
             }
-            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
-                Expression temp = new Expression();
-                temp.addToExpression(expr.toString());
-                temp.removeNcomponents(1);
-                if (temp.getFirstComp().equals(new Operator("NOT", NOT))) {
-                    Expression temp1 = new Expression();
-                    temp1.addToExpression(temp.toString());
-                    temp1.removeNcomponents(1);
-                    return isDoubleNotElimValid(temp1);
-                }
-            }
-
-
-            if (expr.contains(new Operator("OR", OR))) {
-                //complex case to be thought about
-            }
-            
             count++;
         }
-
-        return false;
+        return changed;
     }
 
-    private void applyIntroductionRule() {
+    private boolean tryAndElim(Proof newProof) throws SyntaxException {
+        boolean changed = false;
+        int count = 1;
+        for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).contains(new Operator("AND", AND))) {
+                List<Expression> sides = newProof.expressions.get(i).splitExpressionBy(OperatorType.AND);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+
+                System.out.println(lhs.contains(new Operator("OPEN", OPEN_BRACKET)));
+                if (newProof.isAndElimValid(lhs) &&
+                        !(!lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                                lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
+                        !(lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                                !lhs.contains(new Operator("CLOSE",CLOSE_BRACKET)))) {
+                    Expression result = new Expression(RuleType.AND_ELIM);
+                    result.addToExpression(lhs.toString());
+                    System.out.println(lhs);
+                    applyEliminationRule(result);
+                    changed = true;
+
+                }
+//                if (newProof.isAndElimValid(rhs)) {
+//                    rhs.setRuleType(RuleType.AND_ELIM);
+//                    applyEliminationRule(rhs);
+//                    changed = true;
+//                }
+            }
+            count++;
+
+        }
+        return changed;
     }
 
-    private boolean checkIfFalseExpressionDiscarded() throws SyntaxException {
+    private boolean isChanged(boolean changed, List<Expression> toBeAdded) {
+        if (!toBeAdded.isEmpty()) {
+            for (Expression e : toBeAdded) {
+                applyEliminationRule(e);
+            }
+            changed = true;
+            toBeAdded = new LinkedList<>();
+        }
+        return changed;
+    }
+
+    private void applyIntroductionRule(Expression expr) {
+
+    }
+
+    private boolean checkIfFalseExpressionReached() throws SyntaxException {
         boolean exprApresent = false;
         boolean exprNotBpresent = false;
         for (Expression expr : list_proof) {
@@ -803,18 +930,21 @@ public class Proof {
         return exprApresent && exprNotBpresent;
     }
 
-    private boolean checkIfExpressionsDiscarded() throws SyntaxException {
+    private boolean checkIfExpressionsReached(Expression current) throws SyntaxException {
         for (Expression expr : list_proof) {
-            Expression temp = new Expression();
-            temp.addToExpression("!" + expr.toString());
-            for (Expression expr1 : list_proof) {
-                if (expr1.equals(temp)) {
-                    return false;
-                }
+//            Expression temp = new Expression();
+//            temp.addToExpression("!" + expr.toString());
+//            for (Expression expr1 : list_proof) {
+//                if (expr1.equals(temp)) {
+//                    return false;
+//                }
+//            }
+            if (expr.equals(current)) {
+                return true;
             }
 
         }
-        return true;
+        return false;
     }
 
 

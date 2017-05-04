@@ -823,39 +823,28 @@ public class HintTests {
 //    }
 //
 //
-//    @Test
-//    public void simpleHintTest1() throws SyntaxException {
-//        String str = "A ^ B";
-//        String str1 = "A -> C";
-//
-//        Expression expr = new Expression(RuleType.GIVEN);
-//        expr.addToExpression(str);
-//
-//        Expression expr1 = new Expression(RuleType.GIVEN);
-//        expr1.addToExpression(str1);
-//
-//        proof.addExpression(expr);
-//        proof.addExpression(expr1);
-//
-//        String result = "C";
-//        proof.setResultString(result);
-//
-//
-////        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
-//
-//        String str2 = "A";
-//        Expression expr2 = new Expression(RuleType.AND_ELIM);
-//        expr2.addToExpression(str2);
-//        expr2.addReferenceLine("1");
-//        proof.addExpression(expr2);
-//
-////        System.out.println(proof.generateHint(result));
-//
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
-//
-//
-//    }
+    private Proof proof = new Proof();
+    @Test
+    public void simpleHintTest1() throws SyntaxException {
+        String str = "(A ^ B)";
+        String str1 = "A -> (C ^ D)";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "C";
+        proof.setResultString(result);
+
+        proof.solveProof();
+
+
+    }
 //
 //    @Test
 //    public void hintTest2() throws SyntaxException {
