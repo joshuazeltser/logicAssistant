@@ -48,6 +48,8 @@ public class Proof {
         firstRound = true;
         resultString = "";
         resultExpr = new Expression();
+        list_goals = new LinkedList<>();
+        list_proof = new Proof();
     }
 
 
@@ -621,6 +623,86 @@ public class Proof {
 
 
 
+    private Proof list_proof;
+
+    private List<Expression> list_goals;
+
+    public void solveProof() {
+
+        list_goals.add(resultExpr);
+
+        if (!expressions.isEmpty()) {
+            list_goals.addAll(expressions);
+        }
+
+        Expression current_goal = resultExpr;
+
+        while (true) {
+            boolean reached = false;
+            if (!current_goal.toString().equals("FALSE")) {
+                if (checkIfExpressionsDiscarded()) {
+                    list_goals.remove(current_goal);
+                    current_goal = list_goals.get(list_goals.size() - 1);
+                    reached = true;
+                }
+            } else {
+                if (checkIfFalseExpressionDiscarded()) {
+                    list_goals.remove(current_goal);
+                    current_goal = list_goals.get(list_goals.size() - 1);
+                    reached = true;
+                }
+            }
+
+            if (reached) {
+                if (current_goal.equals(list_goals.get(0))) {
+                    return;
+                } else {
+                    applyIntroductionRule();
+                    continue;
+                }
+            } else {
+                if (eliminationRuleApplicable()) {
+                    applyEliminationRule();
+                    continue;
+                } else {
+                    //procedure 2
+                    if (!current_goal.toString().equals("FALSE")) {
+                        //procedure 2.1
+                        continue;
+                    } else if (allMarked()) {
+                        break;
+                    } else {
+                        //procedure 2.2
+                        continue;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private boolean allMarked() {
+        return true;
+    }
+
+    private void applyEliminationRule() {
+    }
+
+    private boolean eliminationRuleApplicable() {
+        return false;
+    }
+
+    private void applyIntroductionRule() {
+    }
+
+    private boolean checkIfFalseExpressionDiscarded() {
+        return false;
+    }
+
+    private boolean checkIfExpressionsDiscarded() {
+        return false;
+    }
+
 
     public String getProofString() {
         return proofString;
@@ -629,7 +711,6 @@ public class Proof {
     public void setProofString(String proofString) {
         this.proofString = proofString;
     }
-
 
 
     public String getProofLabels() {
@@ -649,906 +730,7 @@ public class Proof {
         this.proofSteps = proofSteps;
     }
 
-    // functionality to solve a proof step by step in order to suggest hints
 
-    private Proof foundResult(List<Proof> possProofs) {
-        for (Proof p : possProofs) {
-            if (p.expressions.get(p.expressions.size()-1).equals(resultExpr)) {
-                return p;
-            }
-        }
-        //remember to set this up in front end
-        return null;
-    }
-
-    public String generateHint(String resString) throws SyntaxException {
-
-        proofSteps.add(this);
-
-        if (!resultString.equals("")) {
-            resultExpr.addToExpression(resString);
-            if (firstRound) {
-                solvedProof = nextStep();
-                firstRound = false;
-            }
-
-//        System.out.println(expressions);
-//        System.out.println(solvedProof);
-            for (Expression e : solvedProof.expressions) {
-                System.out.println(e.getRuleType());
-            }
-
-
-
-
-            if (isProofValid()) {
-                System.out.println(solvedProof.expressions);
-                if (solvedProof != null) {
-                    if (solvedProof.expressions.size() == expressions.size()) {
-                        return "Proof already successfully solved";
-                    }
-                    return "Hint: " + solvedProof.expressions.get(expressions.size()).getRuleType().toString();
-                } else {
-                    System.out.println("here");
-                    return "Hint: ASSUMPTION";
-                }
-            } else {
-                System.out.println(errors);
-                return "PROOF IS INVALID";
-            }
-        } else {
-            return "";
-        }
-    }
-
-    public Proof nextStep() throws SyntaxException {
-
-        Proof possResult = null;
-
-        lhsImplies = new Expression();
-        rhsImplies = new Expression();
-
-        int elimIndex = 0;
-
-        while (possResult == null) {
-
-            //If there are no premises
-            if (proofSteps.get(0).expressions.isEmpty()) {
-                noPremisesCase();
-            }
-
-            if (impliesBox) {
-                possResult = introduceImplies(lhsImplies, rhsImplies);
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            if (notBox) {
-                possResult = introduceFalse();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            List<List<String>> toBeAssumed = new LinkedList<>();
-            //if result expression includes a ->
-            if (resultExpr.contains(new Operator("IMPLIES", OperatorType.IMPLIES)) && !impliesBox) {
-                possResult = tryOnlyElimination();
-                if (possResult != null) {
-                    break;
-                }
-                addImpliesIntroAssumption(toBeAssumed);
-            }
-
-            //if result expression starts with a !
-            if (resultExpr.getFirstComp().equals(new Operator("NOT", NOT)) && !notBox) {
-                addNotIntroAssumption(toBeAssumed);
-            }
-
-
-            //check for simple solution
-            if (resultExpr.contains(new Operator("OR", OperatorType.OR))
-                    && !proofSteps.get(0).expressions.get(0).contains(new Operator("OR", OperatorType.OR))) {
-                possResult = tryOrIntroduction();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            //check if or elimination is possible
-            if (!orBox && done) {
-                elimIndex = addOrElimFirstAssumption(elimIndex);
-
-            }
-
-            if (orBox) {
-                addOrElimSecondAssumption();
-            }
-
-
-            //check if implies elimination is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "IMPLIES_ELIM" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryImpliesElimination();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            //check if and elimination is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "AND_ELIM" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryAndEliminationStep();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-
-            //check if not elimination is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "NOT_ELIM" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryNotElimination();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            //check if Double not elimination is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "NOT_NOT_ELIM" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryDoubleNotElimination();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-
-
-            //check if iff elimination is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "ONLY_ELIM" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryOnlyElimination();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-            //check for several eliminations before starting introductions
-            if (timeoutCount < 3) {
-                timeoutCount++;
-                continue;
-            }
-
-            //check if iff introduction is possible
-            if (orBox) {
-                boolean solved = checkOrBoxes(elimIndex, "ONLY_INTRO" );
-                if (solved) {
-                    possResult = foundResult(proofSteps);
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            } else {
-                possResult = tryOnlyIntroduction();
-                if (possResult != null) {
-                    break;
-                }
-            }
-
-
-
-            if (resultExpr.contains(new Operator("AND", OperatorType.AND))) {//temp fix
-
-
-                //check if and introduction is possible
-                if (orBox) {
-                    boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
-                    if (solved) {
-                        possResult = foundResult(proofSteps);
-                        if (possResult != null) {
-                            break;
-                        }
-                    }
-                } else {
-                    possResult = tryAndIntroduction();
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-
-                if (orBox) {
-                    boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
-                    if (solved) {
-                        possResult = foundResult(proofSteps);
-                        if (possResult != null) {
-                            break;
-                        }
-                    }
-                } else {
-                    possResult = tryOrIntroduction();
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-
-            } else {
-
-                if (orBox) {
-                    boolean solved = checkOrBoxes(elimIndex, "OR_INTRO" );
-                    if (solved) {
-                        possResult = foundResult(proofSteps);
-                        if (possResult != null) {
-                            break;
-                        }
-                    }
-                } else {
-                    timeoutCount = 1;
-                    possResult = tryOrIntroduction();
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-                if (orBox) {
-                    boolean solved = checkOrBoxes(elimIndex, "AND_INTRO" );
-                    if (solved) {
-                        possResult = foundResult(proofSteps);
-                        if (possResult != null) {
-                            break;
-                        }
-                    }
-                } else {
-                    timeoutCount = 1;
-                    possResult = tryOrIntroduction();
-                    if (possResult != null) {
-                        break;
-                    }
-                }
-            }
-
-            if (timeoutCount < 5) {
-                timeoutCount++;
-
-            } else {
-                break;
-            }
-        }
-
-        return possResult;
-    }
-
-    private void addOrElimSecondAssumption() {
-        extraProofSteps = new LinkedList<>();
-        for (Proof p : proofSteps) {
-
-            Proof newProof = new Proof();
-            for (Expression e : p.expressions) {
-                if (e.equals(p.expressions.get(p.expressions.size() - 1))) {
-                    break;
-                }
-                newProof.addExpression(e);
-            }
-            newProof.addExpression(rhsOr);
-            extraProofSteps.add(newProof);
-        }
-    }
-
-    private int addOrElimFirstAssumption(int elimIndex) throws SyntaxException {
-        done = false;
-        List<List<String>> toBeOrEliminated = new LinkedList<>();
-        int count;
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("OR", OperatorType.OR))) {
-                    List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
-
-                    elimIndex = proofSteps.get(i).expressions.size() - 1;
-                    Expression lhs = sides.get(0);
-                    Expression rhs = sides.get(1);
-
-                    if ((lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                            !lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                            (!lhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                    lhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                            (rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                    !rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ||
-                            (!rhs.contains(new Operator("OPEN", OperatorType.OPEN_BRACKET)) &&
-                                    rhs.contains(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) ) {
-                        done = true;
-                        break;
-                    }
-
-                    rhsOr = rhs;
-
-                    lhs.setRuleType(RuleType.ASSUMPTION);
-                    rhs.setRuleType(RuleType.ASSUMPTION);
-
-
-                    List<String> pair = new LinkedList<>();
-                    pair.add(Integer.toString(i));
-                    pair.add(lhs.toString());
-                    toBeOrEliminated.add(pair);
-                    orBox = true;
-                }
-            }
-            count++;
-        }
-        proofSteps = updateProofs(toBeOrEliminated, RuleType.ASSUMPTION);
-        return elimIndex;
-    }
-
-    private void addNotIntroAssumption(List<List<String>> toBeAssumed) throws SyntaxException {
-        notBox = true;
-
-        Expression temp = new Expression(RuleType.ASSUMPTION);
-
-        temp.addToExpression(resultExpr.toString());
-        temp.removeNcomponents(1);
-
-        for (int i = 0; i < proofSteps.size(); i ++) {
-            List<String> pair = new LinkedList<>();
-            pair.add(Integer.toString(i));
-            pair.add(temp.toString());
-            toBeAssumed.add(pair);
-        }
-
-        proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
-    }
-
-    private void addImpliesIntroAssumption(List<List<String>> toBeAssumed) throws SyntaxException {
-        impliesBox = true;
-        List<Expression> sides = resultExpr.splitExpressionBy(OperatorType.IMPLIES);
-
-        lhsImplies = sides.get(0);
-        lhsImplies.setRuleType(RuleType.ASSUMPTION);
-        rhsImplies = sides.get(1);
-
-        for (int i = 0; i < proofSteps.size(); i ++) {
-            List<String> pair = new LinkedList<>();
-            pair.add(Integer.toString(i));
-            pair.add(lhsImplies.toString());
-            toBeAssumed.add(pair);
-        }
-
-        proofSteps = updateProofs(toBeAssumed, RuleType.ASSUMPTION);
-    }
-
-    private Proof introduceFalse() throws SyntaxException {
-        Proof possResult;
-        List<List<String>> toBeNotted = new LinkedList<>();
-        for (int i = 0; i < proofSteps.size(); i++) {
-            if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1).toString()
-                    .equals("FALSE")) {
-                notBox = false;
-
-                List<String> pair = new LinkedList<>();
-                pair.add(Integer.toString(i));
-                pair.add(resultExpr.toString());
-                toBeNotted.add(pair);
-
-            }
-        }
-        proofSteps = updateProofs(toBeNotted, RuleType.NOT_INTRO);
-
-
-        possResult = foundResult(proofSteps);
-        return possResult;
-    }
-
-    private Proof introduceImplies(Expression lhsImplies, Expression rhsImplies) throws SyntaxException {
-        Proof possResult;
-        for (Proof p : proofSteps) {
-            if (p.expressions.get(p.expressions.size()-1).equals(rhsImplies)) {
-                impliesBox = false;
-                Expression e = new Expression(RuleType.IMPLIES_INTRO);
-                e.addToExpression(lhsImplies + " -> " + rhsImplies);
-                p.addExpression(e);
-            }
-        }
-        possResult = foundResult(proofSteps);
-        return possResult;
-    }
-
-    private void noPremisesCase() throws SyntaxException {
-        Expression expr = new Expression(RuleType.ASSUMPTION);
-        if (resultExpr.getFirstComp().equals(new Operator("NOT", NOT))) {
-            expr.addToExpression(resultExpr.toString());
-            expr.removeNcomponents(1);
-        } else {
-            expr.addToExpression("!" + resultExpr.toString());
-        }
-        Proof newProof = new Proof();
-        newProof.addExpression(expr);
-        proofSteps.clear();
-        proofSteps.add(newProof);
-    }
-
-
-    private boolean checkOrBoxes(int elimIndex, String rule) throws SyntaxException {
-        List<Proof> temp;
-
-        switch (rule) {
-            case "IMPLIES_ELIM":    tryImpliesElimination();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryImpliesElimination();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "AND_ELIM":        tryAndEliminationStep();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryAndEliminationStep();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "AND_INTRO":       tryAndIntroduction();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryAndIntroduction();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "OR_INTRO":        tryOrIntroduction();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryOrIntroduction();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "ONLY_ELIM":
-                tryOnlyElimination();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryOnlyElimination();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "ONLY_INTRO":      tryOnlyIntroduction();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryOnlyIntroduction();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-            case "NOT_NOT_ELIM":    tryDoubleNotElimination();
-                                    temp = proofSteps;
-                                    proofSteps = extraProofSteps;
-                                    tryDoubleNotElimination();
-                                    extraProofSteps = proofSteps;
-                                    proofSteps = temp;
-                                    break;
-
-        }
-
-
-
-
-        boolean found = false;
-        Expression elimExpr = new Expression(RuleType.OR_ELIM);
-        for (int i = 0; i < proofSteps.size(); i++) {
-            for (int j = 0; j < extraProofSteps.size(); j++) {
-                if (proofSteps.get(i).expressions.get(proofSteps.get(i).expressions.size()-1)
-                        .equals(extraProofSteps.get(j).expressions.get(extraProofSteps.get(j)
-                                .expressions.size()-1))) {
-                    found = true;
-
-                    elimExpr.addToExpression(proofSteps.get(i).expressions.get(proofSteps.get(i)
-                            .expressions.size()-1).toString());
-                    orBox = false;
-                    for (int k = elimIndex+1; k < extraProofSteps.get(j).expressions.size(); k++) {
-                        proofSteps.get(i).addExpression(extraProofSteps.get(j).expressions.get(k));
-                    }
-                }
-            }
-        }
-
-        if (found) {
-            for (Proof p : proofSteps) {
-                p.addExpression(elimExpr);
-            }
-            found = false;
-            return true;
-        }
-        return false;
-    }
-
-    private Proof tryOnlyIntroduction() throws SyntaxException {
-        List<List<String>> toBeOnlyIntroduced = new LinkedList<>();
-        int count;
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-                    List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
-
-                    Expression lhs = sides.get(0);
-                    lhs.addReferenceLine(Integer.toString(count));
-                    Expression rhs = sides.get(1);
-                    rhs.addReferenceLine(Integer.toString(count));
-
-                    Expression result = new Expression();
-                    try {
-                        result.addToExpression(rhs + " -> " + lhs);
-                    } catch (SyntaxException s) {
-                        break;
-                    }
-
-                    for (Expression e1 : proofSteps.get(i).expressions) {
-                        if (e1.equals(result)) {
-                            Expression newExpr = new Expression(RuleType.ONLY_INTRO);
-                            newExpr.addToExpression(lhs + " <-> " + rhs);
-                            List<String> pair = new LinkedList<>();
-                            pair.add(Integer.toString(i));
-                            pair.add(newExpr.toString());
-                            toBeOnlyIntroduced.add(pair);
-                        }
-                    }
-                }
-
-            }
-            count++;
-        }
-
-        proofSteps = updateProofs(toBeOnlyIntroduced, RuleType.ONLY_INTRO);
-        return foundResult(proofSteps);
-
-    }
-
-    private Proof tryOrIntroduction() throws SyntaxException {
-        List<List<String>> toBeOrIntro = new LinkedList<>();
-
-        for (int i = 0; i < proofSteps.size(); i++) {
-            List<String> props = new LinkedList<>();
-            for (Expression e : proofSteps.get(i).expressions) {
-                for (Proposition p : e.listPropositions()) {
-                    if (!props.contains(p.toString())) {
-                        props.add(p.toString());
-                    }
-                }
-                for (Proposition p : resultExpr.listPropositions()) {
-                    if (!props.contains(p.toString())) {
-                        props.add(p.toString());
-                    }
-                }
-
-                if (!props.contains(e.toString())) {
-                    props.add(e.toString());
-                }
-
-                if (!props.contains(resultExpr.toString()))
-                    props.add(resultExpr.toString());
-
-            }
-            for (Expression p : proofSteps.get(i).expressions) {
-                for (String p1 : props) {
-                    Expression tempExpr = new Expression();
-                    tempExpr.addToExpression(p1);
-                    if (!p.toString().equals(p1.toString()) && !tempExpr.equals(p)) {
-                        Expression or = new Expression(RuleType.OR_INTRO);
-                        if (p1.toString().equals("NOT") || p1.toString().equals("OPEN") ||
-                                p1.toString().equals("CLOSE") || p1.toString().equals("OR")) {
-                            break;
-                        }
-                        or.addToExpression(p.toString() + " | " + p1.toString());
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(or.toString());
-                        toBeOrIntro.add(pair);
-                    }
-                }
-            }
-
-        }
-
-        proofSteps = updateProofs(toBeOrIntro, RuleType.OR_INTRO);
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryAndIntroduction() throws SyntaxException {
-        List<List<String>> toBeAndIntro = new LinkedList<>();
-
-        for (int i = 0; i < proofSteps.size(); i++) {
-            for (Expression e : proofSteps.get(i).expressions) {
-                for (Expression e1 : proofSteps.get(i).expressions) {
-                    if (!e.equals(e1)) {
-                        Expression and = new Expression(RuleType.AND_INTRO);
-                        and.addToExpression(e.toString() + " ^ " + e1.toString());
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(and.toString());
-                        toBeAndIntro.add(pair);
-                    }
-                }
-            }
-        }
-
-        proofSteps = updateProofs(toBeAndIntro, RuleType.AND_INTRO);
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryOnlyElimination() throws SyntaxException {
-        List<List<String>> toBeIffEliminated = new LinkedList<>();
-        int count;
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("ONLY", OperatorType.ONLY))) {
-                    List<Expression> sides = e.splitExpressionBy(OperatorType.ONLY);
-
-                    Expression lhs = sides.get(0);
-                    lhs.addReferenceLine(Integer.toString(count));
-                    Expression rhs = sides.get(1);
-                    rhs.addReferenceLine(Integer.toString(count));
-
-                    Expression result = new Expression();
-                    Expression result1 = new Expression();
-
-                    result.addToExpression(lhs + " -> " + rhs);
-                    result1.addToExpression(rhs + " -> " + lhs);
-
-
-                    result.addReferenceLine(Integer.toString(count));
-                    if (proofSteps.get(i).isOnlyEliminationValid(result)) {
-                        result.setRuleType(RuleType.ONLY_ELIM);
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(result.toString());
-                        toBeIffEliminated.add(pair);
-                    }
-
-                    result1.addReferenceLine(Integer.toString(count));
-                    if (proofSteps.get(i).isOnlyEliminationValid(result1)) {
-
-                        result1.setRuleType(RuleType.ONLY_ELIM);
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(result1.toString());
-                        toBeIffEliminated.add(pair);
-                    }
-                }
-                count++;
-            }
-        }
-
-
-        proofSteps = updateProofs(toBeIffEliminated, RuleType.ONLY_ELIM);
-
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryDoubleNotElimination() throws SyntaxException {
-        List<List<String>> toBeDoubleNotEliminated = new LinkedList<>();
-        int count;
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.getFirstComp().equals(new Operator("NOT", NOT))) {
-                    Expression temp = new Expression();
-                    temp.addToExpression(e.toString());
-                    temp.removeNcomponents(1);
-
-                    if (temp.contains(new Operator("NOT", NOT))) {
-                        Expression temp1 = new Expression();
-                        temp1.addToExpression(temp.toString());
-                        temp1.removeNcomponents(1);
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(temp1.toString());
-                        toBeDoubleNotEliminated.add(pair);
-
-                    }
-                }
-            }
-            count++;
-        }
-
-        proofSteps = updateProofs(toBeDoubleNotEliminated, RuleType.DOUBLE_NOT_ELIM);
-
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryNotElimination() throws SyntaxException {
-        List<List<String>> toBeNotEliminated = new LinkedList<>();
-        int count;
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.getFirstComp().equals(new Operator("NOT", NOT))) {
-                    Expression temp = new Expression();
-                    temp.addToExpression(e.toString());
-
-                    temp.removeNcomponents(1);
-                    int count1 = 1;
-                    for (Expression e1 : proofSteps.get(i).expressions) {
-                        if (e1.equals(temp)) {
-                            List<String> pair = new LinkedList<>();
-                            pair.add(Integer.toString(i));
-                            pair.add("FALSE");
-                            toBeNotEliminated.add(pair);
-                        }
-                    }
-
-                }
-            }
-            count++;
-        }
-
-
-
-        proofSteps = updateProofs(toBeNotEliminated, RuleType.NOT_ELIM);
-
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryImpliesElimination() throws SyntaxException {
-        int count;
-        List<List<String>> toBeEliminated = new LinkedList<>();
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-
-                if (e.contains(new Operator("IMPLIES", OperatorType.IMPLIES))) {
-
-                    List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
-
-                    Expression rhs = sides.get(1);
-                    rhs.addReferenceLine(Integer.toString(count));
-
-                    Expression lhs = sides.get(0);
-
-                    int count1 = 1;
-                    for (Expression expr1 : proofSteps.get(i).expressions) {
-
-                        if (expr1.equals(lhs)) {
-
-                            rhs.addReferenceLine(Integer.toString(count1));
-
-                            if (proofSteps.get(i).isImpliesElimValid(rhs)) {
-                                if (proofSteps.get(i).expressions.contains(rhs)) {
-                                    break;
-                                }
-                                rhs.setRuleType(RuleType.IMPLIES_ELIM);
-                                List<String> pair = new LinkedList<>();
-                                pair.add(Integer.toString(i));
-                                pair.add(rhs.toString());
-                                toBeEliminated.add(pair);
-                            }
-                            break;
-                        }
-                        count1++;
-                    }
-
-                }
-                count++;
-
-            }
-
-
-        }
-
-        proofSteps = updateProofs(toBeEliminated, RuleType.IMPLIES_ELIM);
-        return foundResult(proofSteps);
-    }
-
-    private Proof tryAndEliminationStep() throws SyntaxException {
-        int count;
-        List<List<String>> toBeAndEliminated = new LinkedList<>();
-
-        for (int i = 0; i < proofSteps.size(); i++) {
-            count = 1;
-            for (Expression e : proofSteps.get(i).expressions) {
-                if (e.contains(new Operator("OR", OperatorType.OR)) && orBox) {
-                    count++;
-                    continue;
-                }
-                if (e.contains(new Operator("AND", OperatorType.AND))) {
-                    List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
-
-                    Expression lhs = sides.get(0);
-                    lhs.addReferenceLine(Integer.toString(count));
-                    Expression rhs = sides.get(1);
-                    rhs.addReferenceLine(Integer.toString(count));
-
-
-                    if (proofSteps.get(i).isAndElimValid(lhs)) {
-                        if (proofSteps.get(i).expressions.contains(lhs) && !orBox) {
-                            break;
-                        }
-                        lhs.setRuleType(RuleType.AND_ELIM);
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(lhs.toString());
-                        toBeAndEliminated.add(pair);
-
-                    }
-                    if (proofSteps.get(i).isAndElimValid(rhs)) {
-                        if (proofSteps.get(i).expressions.contains(rhs) && !orBox) {
-                            break;
-                        }
-                        rhs.setRuleType(RuleType.AND_ELIM);
-                        List<String> pair = new LinkedList<>();
-                        pair.add(Integer.toString(i));
-                        pair.add(rhs.toString());
-                        toBeAndEliminated.add(pair);
-                    }
-                }
-                count++;
-            }
-        }
-
-
-        proofSteps = updateProofs(toBeAndEliminated, RuleType.AND_ELIM);
-
-        return foundResult(proofSteps);
-    }
-
-    private List<Proof> updateProofs(List<List<String>> toBeEliminated, RuleType type) throws SyntaxException {
-        List<Proof> newPossProofs = new LinkedList<>();
-        if (!toBeEliminated.isEmpty()) {
-            for (List<String> pair : toBeEliminated) {
-                for (int i = 0; i < proofSteps.size(); i++) {
-
-                    if (pair.get(0).equals(Integer.toString(i))) {
-                        Proof temp = new Proof();
-                        temp.expressions.addAll(proofSteps.get(i).expressions);
-                        Expression e = new Expression(type);
-                        e.addToExpression(pair.get(1));
-                        temp.expressions.add(e);
-                        newPossProofs.add(temp);
-                    } else {
-                        newPossProofs.add(proofSteps.get(i));
-                    }
-
-                }
-            }
-            return newPossProofs;
-        }
-        return proofSteps;
-    }
 
     public Expression getResultExpr() {
         return resultExpr;
