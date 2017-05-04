@@ -1,9 +1,11 @@
 package model;
 
+import javassist.expr.Expr;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import static model.OperatorType.NOT;
+import static model.OperatorType.*;
 
 /**
  * Created by joshuazeltser on 18/01/2017.
@@ -18,21 +20,16 @@ public class Proof {
     private String proofLabels;
 
     private List<Proof> proofSteps;
-    private List<Proof> extraProofSteps;
-    private boolean impliesBox;
-    private boolean orBox;
-    private boolean notBox;
-    private Expression rhsOr;
-    private boolean done;
-    private int timeoutCount;
-    private Proof solvedProof;
-    private boolean firstRound;
+
 
     private String resultString;
 
     private Expression resultExpr;
-    private Expression lhsImplies;
-    private Expression rhsImplies;
+
+    private List<Expression> list_proof;
+
+    private List<Expression> list_goals;
+
 
     public Proof() {
         expressions = new LinkedList<>();
@@ -40,16 +37,10 @@ public class Proof {
         proofString = "";
         proofLabels = "";
         proofSteps = new LinkedList<>();
-        impliesBox = false;
-        notBox = false;
-        rhsOr = new Expression();
-        done = true;
-        timeoutCount = 0;
-        firstRound = true;
         resultString = "";
         resultExpr = new Expression();
         list_goals = new LinkedList<>();
-        list_proof = new Proof();
+        list_proof = new LinkedList<>();
     }
 
 
@@ -623,11 +614,9 @@ public class Proof {
 
 
 
-    private Proof list_proof;
 
-    private List<Expression> list_goals;
 
-    public void solveProof() {
+    public void solveProof() throws SyntaxException {
 
         list_goals.add(resultExpr);
 
@@ -688,19 +677,89 @@ public class Proof {
     private void applyEliminationRule() {
     }
 
-    private boolean eliminationRuleApplicable() {
+    private boolean eliminationRuleApplicable() throws SyntaxException {
+
+        Proof proofSoFar = new Proof();
+        proofSoFar.expressions = list_proof;
+
+        int count = 1;
+        for (Expression expr : proofSoFar.expressions) {
+            if (expr.contains(new Operator("AND", AND))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+                if (isAndElimValid(lhs) || isAndElimValid(rhs)) {
+                    return true;
+                }
+            }
+            if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
+                List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+
+                Expression lhs = sides.get(0);
+                lhs.addReferenceLine(Integer.toString(count));
+                Expression rhs = sides.get(1);
+                rhs.addReferenceLine(Integer.toString(count));
+                
+            }
+            if (expr.contains(new Operator("ONLY", ONLY))) {
+
+            }
+            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+
+            }
+            if (expr.contains(new Operator("OR", OR))) {
+                //complex case to be thought about
+            }
+
+
+
+            count++;
+        }
+
         return false;
     }
 
     private void applyIntroductionRule() {
     }
 
-    private boolean checkIfFalseExpressionDiscarded() {
-        return false;
+    private boolean checkIfFalseExpressionDiscarded() throws SyntaxException {
+        boolean exprApresent = false;
+        boolean exprNotBpresent = false;
+        for (Expression expr : list_proof) {
+            Expression temp = new Expression();
+
+            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+                temp.addToExpression(expr.toString());
+                temp.removeNcomponents(1);
+                exprNotBpresent = true;
+            } else {
+                temp.addToExpression("!" + expr.toString());
+                exprApresent = true;
+            }
+            for (Expression expr1 : list_proof) {
+                if (expr1.equals(temp)) {
+                    return false;
+                }
+            }
+        }
+        return exprApresent && exprNotBpresent;
     }
 
-    private boolean checkIfExpressionsDiscarded() {
-        return false;
+    private boolean checkIfExpressionsDiscarded() throws SyntaxException {
+        for (Expression expr : list_proof) {
+            Expression temp = new Expression();
+            temp.addToExpression("!" + expr.toString());
+            for (Expression expr1 : list_proof) {
+                if (expr1.equals(temp)) {
+                    return false;
+                }
+            }
+
+        }
+        return true;
     }
 
 
@@ -740,9 +799,6 @@ public class Proof {
         this.resultExpr = resultExpr;
     }
 
-    public boolean isOrBox() {
-        return orBox;
-    }
 
     public String getResultString() {
         return resultString;
