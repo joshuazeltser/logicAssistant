@@ -616,17 +616,48 @@ public class Proof {
 
 
 
-//    private List<Expression> completedGoals = new LinkedList<>();
 
-    public String solveProof() throws SyntaxException {
+    public String generateHint(String resultString) throws SyntaxException {
 
-        resultExpr.addToExpression(resultString);
+        if (!solved) {
+            resultExpr.addToExpression(resultString);
+            solved = true;
+        }
+
+        List<Expression> solvedProof = new LinkedList<>();
+        if (!resultString.equals("")) {
+
+            solvedProof = solveProof();
+            if (isProofValid()) {
+                if (solvedProof != null) {
+                    if (solvedProof.size() == expressions.size()) {
+                        return "Proof already successfully solved";
+                    }
+
+                    return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
+                } else {
+                    return "Hint: ASSUMPTION";
+                }
+            } else {
+                System.out.println(errors);
+                return "PROOF IS INVALID";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    private boolean solved = false;
+    public List<Expression> solveProof() throws SyntaxException {
+        list_proof.clear();
+        list_goals.clear();
+
         list_goals.add(resultExpr);
+        solved = true;
 
         if (!expressions.isEmpty()) {
             list_proof.addAll(expressions);
         }
-
 
         Expression current_goal = resultExpr;
 
@@ -651,10 +682,7 @@ public class Proof {
                     applyIntroductionRule(current_goal);
                 }
                 if (current_goal.equals(list_goals.get(0))) {
-
-                    System.out.println("list_proof " + list_proof);
-                    System.out.println("list_goals " + list_goals);
-                    return list_proof.toString();
+                    return list_proof;
                 }
                 continue;
 
@@ -677,11 +705,8 @@ public class Proof {
                         current_goal = list_goals.get(list_goals.size() - 1);
                         continue;
                     }
-
             }
         }
-
-//        return null;
     }
 
     private void falseRulesSetup() throws SyntaxException {
@@ -704,6 +729,8 @@ public class Proof {
     }
 
     private boolean firstOrRound = true;
+
+
 
     private void setupIntroductionRules(Expression expr) throws SyntaxException {
 
@@ -855,7 +882,7 @@ public class Proof {
                 result1.addToExpression(rhs + " -> " + lhs);
 
                 if (list_proof.contains(result) && list_proof.contains(result1)) {
-                    list_goals.get(list_goals.size() - 1).setRuleType(RuleType.AND_INTRO);
+                    list_goals.get(list_goals.size() - 1).setRuleType(RuleType.ONLY_INTRO);
                     list_proof.add(list_goals.get(list_goals.size() - 1));
 
                     return;
