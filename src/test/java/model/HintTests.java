@@ -188,79 +188,69 @@ public class HintTests {
 
         assertTrue(proof.solveProof().equals("[A, A IMPLIES B, B, A AND B]"));
     }
-//
-//    @Test
-//    public void largeAndIntroSolverTest() throws SyntaxException {
-//        String str = "A";
-//        String str1 = "B";
-//        String str2 = "C";
-//        String str3 = "D";
-//        String str4 = "E -> F";
-//        String str5 = "O";
-//        String str6 = "S";
-//        String str7 = "Y -> F";
-//        String str8 = "X";
-//        String str9 = "P";
-//
-//        Expression expr = new Expression(RuleType.GIVEN);
-//        expr.addToExpression(str);
-//
-//        Expression expr1 = new Expression(RuleType.GIVEN);
-//        expr1.addToExpression(str1);
-//
-//        Expression expr2 = new Expression(RuleType.GIVEN);
-//        expr2.addToExpression(str2);
-//
-//        Expression expr3 = new Expression(RuleType.GIVEN);
-//        expr3.addToExpression(str3);
-//
-//        Expression expr4 = new Expression(RuleType.GIVEN);
-//        expr4.addToExpression(str4);
-//
-//        Expression expr5 = new Expression(RuleType.GIVEN);
-//        expr5.addToExpression(str5);
-//
-//        Expression expr6 = new Expression(RuleType.GIVEN);
-//        expr6.addToExpression(str6);
-//
-//        Expression expr7 = new Expression(RuleType.GIVEN);
-//        expr7.addToExpression(str7);
-//
-//        Expression expr8 = new Expression(RuleType.GIVEN);
-//        expr8.addToExpression(str8);
-//
-//        Expression expr9 = new Expression(RuleType.GIVEN);
-//        expr9.addToExpression(str9);
-//
-//        proof.addExpression(expr);
-//        proof.addExpression(expr1);
-//        proof.addExpression(expr2);
-//        proof.addExpression(expr3);
-//        proof.addExpression(expr4);
-//        proof.addExpression(expr5);
-//        proof.addExpression(expr6);
-//        proof.addExpression(expr7);
-//        proof.addExpression(expr8);
-//        proof.addExpression(expr9);
-//
-//
-//        String result = "S ^ P";
-//        proof.setResultString(result);
-//
-//        List<Proof> proofs = new LinkedList<>();
-//
-//        proofs.add(proof);
-//
-//        proof.setProofSteps(proofs);
-//        Expression resExpr = new Expression();
-//        resExpr.addToExpression(proof.getResultString());
-//        proof.setResultExpr(resExpr);
-//
-//        Proof res = proof.nextStep();
-//
-////        System.out.println("result " + res);
-//        assertTrue(res.toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, P, S AND P]"));
-//    }
+
+
+
+    @Test
+    public void largeAndIntroSolverTest() throws SyntaxException {
+        String str = "A";
+        String str1 = "B";
+        String str2 = "C";
+        String str3 = "D";
+        String str4 = "E -> F";
+        String str5 = "O";
+        String str6 = "S";
+        String str7 = "Y -> F";
+        String str8 = "X";
+        String str9 = "P";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.GIVEN);
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.GIVEN);
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.GIVEN);
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.GIVEN);
+        expr6.addToExpression(str6);
+
+        Expression expr7 = new Expression(RuleType.GIVEN);
+        expr7.addToExpression(str7);
+
+        Expression expr8 = new Expression(RuleType.GIVEN);
+        expr8.addToExpression(str8);
+
+        Expression expr9 = new Expression(RuleType.GIVEN);
+        expr9.addToExpression(str9);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+        proof.addExpression(expr7);
+        proof.addExpression(expr8);
+        proof.addExpression(expr9);
+
+
+        String result = "S ^ P";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, P, S AND P]"));
+    }
 //
     @Test
     public void iffImpliesAndSolverTest() throws SyntaxException {
@@ -429,39 +419,27 @@ public class HintTests {
 
         assertTrue(proof.solveProof().equals("[C AND B, C, A, B, A IMPLIES B]"));
     }
+
 //
-//    @Test
-//    public void harderImpliesAtEndIntroSolverTest() throws SyntaxException {
-//        String str = "A -> C";
-//        String str1 = "C -> D";
-//
-//        Expression expr = new Expression(RuleType.GIVEN);
-//        expr.addToExpression(str);
-//
-//        Expression expr1 = new Expression(RuleType.GIVEN);
-//        expr1.addToExpression(str1);
-//
-//        proof.addExpression(expr);
-//        proof.addExpression(expr1);
-//
-//        String result = "A -> D";
-//        proof.setResultString(result);
-//
-//        List<Proof> proofs = new LinkedList<>();
-//
-//        proofs.add(proof);
-//
-//        proof.setProofSteps(proofs);
-//        Expression resExpr = new Expression();
-//        resExpr.addToExpression(proof.getResultString());
-//        proof.setResultExpr(resExpr);
-//
-//        Proof res = proof.nextStep();
-//
-////        System.out.println("result " + res);
-////        not guaranteed to be the shortest proof
-//        assertTrue(res.toString() .equals("[A IMPLIES C, C IMPLIES D, A, C, D, A IMPLIES D]"));
-//    }
+    @Test
+    public void harderImpliesAtEndIntroSolverTest() throws SyntaxException {
+        String str = "A -> C";
+        String str1 = "C -> D";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "A -> D";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[A IMPLIES C, C IMPLIES D, A, C, D, A IMPLIES D]"));
+    }
 //
 //    @Test
 //    public void orEliminationSolverTest() throws SyntaxException {
@@ -545,45 +523,47 @@ public class HintTests {
 //        assertTrue(res.toString() .equals("[A OR B AND D, A IMPLIES B, A, B, B AND D, B, B]"));
 //    }
 //
-//    @Test
-//    public void notIntroSolverTest() throws SyntaxException {
-//        String str = "S -> B";
-//        String str1 = "B -> W";
-//        String str2 = "!W";
-//
-//        Expression expr = new Expression(RuleType.GIVEN);
-//        expr.addToExpression(str);
-//        Expression expr1 = new Expression(RuleType.GIVEN);
-//        expr1.addToExpression(str1);
-//        Expression expr2 = new Expression(RuleType.GIVEN);
-//        expr2.addToExpression(str2);
-//
-//        proof.addExpression(expr);
-//        proof.addExpression(expr1);
-//        proof.addExpression(expr2);
-//
-//        String result = "!S";
-//        proof.setResultString(result);
-//
-//        List<Proof> proofs = new LinkedList<>();
-//
-//        proofs.add(proof);
-//
-//        proof.setProofSteps(proofs);
-//        Expression resExpr = new Expression();
-//        resExpr.addToExpression(proof.getResultString());
-//        proof.setResultExpr(resExpr);
-//
-//        Proof res = proof.nextStep();
-//
-////        for (Expression e : res.getExpressions()) {
-////            System.out.println(e.getRuleType());
-////        }
-//
-////        System.out.println("result " + res);
-////        not guaranteed to be the shortest proof
-//        assertTrue(res.toString().equals("[S IMPLIES B, B IMPLIES W, NOT W, S, B, W, FALSE, NOT S]"));
-//    }
+    @Test
+    public void notIntroSolverTest() throws SyntaxException {
+        String str = "S -> B";
+        String str1 = "B -> W";
+        String str2 = "!W";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+        Expression expr2 = new Expression(RuleType.GIVEN);
+        expr2.addToExpression(str2);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+
+        String result = "!S";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[S IMPLIES B, B IMPLIES W, NOT W, S, B, W, FALSE, NOT S]"));
+    }
+
+    @Test
+    public void notElimolverTest() throws SyntaxException {
+        String str = "!A";
+        String str1 = "A ^ B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "FALSE";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[NOT A, A AND B, A, FALSE]"));
+    }
 //
 //    @Test
 //    public void simpleOnlyIntroSolverTest() throws SyntaxException {

@@ -668,6 +668,7 @@ public class Proof {
                         continue;
                     } else {
                         //procedure 2.2
+                        falseRulesSetup();
                         continue;
                     }
 
@@ -677,7 +678,18 @@ public class Proof {
 //        return null;
     }
 
-    private void setupIntroductionRules(Expression expr) {
+    private void falseRulesSetup() throws SyntaxException {
+        for (Expression expr : list_proof) {
+            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+                Expression temp = new Expression();
+                temp.addToExpression(expr.toString());
+                temp.removeNcomponents(1);
+                list_goals.add(temp);
+            }
+        }
+    }
+
+    private void setupIntroductionRules(Expression expr) throws SyntaxException {
 
         if (expr.contains(new Operator("AND", AND))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.AND);
@@ -696,6 +708,16 @@ public class Proof {
             Expression rhs = sides.get(1);
             list_goals.add(rhs);
             list_proof.add(lhs);
+        } else if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+            Expression temp = new Expression(RuleType.ASSUMPTION);
+            temp.addToExpression(expr.toString());
+            temp.removeNcomponents(1);
+
+            list_proof.add(temp);
+
+            Expression subGoal = new Expression();
+            subGoal.addToExpression("FALSE");
+            list_goals.add(subGoal);
         }
     }
 
@@ -721,11 +743,16 @@ public class Proof {
                 list_goals.get(list_goals.size()-1).setRuleType(RuleType.IMPLIES_INTRO);
                 list_proof.add(list_goals.get(list_goals.size()-1));
             }
+        } else if (list_goals.get(list_goals.size()-1).getFirstComp().equals(new Operator("NOT", NOT))) {
+            if (list_proof.get(list_proof.size()-1).toString().equals("FALSE")) {
+                list_goals.get(list_goals.size()-1).setRuleType(RuleType.NOT_INTRO);
+                list_proof.add(list_goals.get(list_goals.size()-1));
+            }
         }
     }
 
     private boolean allMarked() {
-        return true;
+        return false;
     }
 
     private void applyEliminationRule(Expression expr) {
