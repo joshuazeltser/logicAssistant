@@ -2,9 +2,6 @@ package model;
 
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -99,10 +96,7 @@ public class HintTests {
         String result = "B -> A";
         proof.setResultString(result);
 
-        //???????????
-
-//        System.out.println("result " + res);
-//        assertTrue(proof.solveProof().equals("[A ONLY B, A IMPLIES B, B IMPLIES A]"));
+        assertTrue(proof.solveProof().equals("[A ONLY B, B IMPLIES A]"));
     }
 
 //
@@ -372,39 +366,26 @@ public class HintTests {
 //        assertTrue(res.toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, S OR P]"));
 //    }
 //
-//    @Test
-//    public void OrImpliesAndSolverTest() throws SyntaxException {
-//        String str = "A ^ B";
-//        String str1 = "A -> C";
-//
-//        Expression expr = new Expression(RuleType.GIVEN);
-//        expr.addToExpression(str);
-//
-//        Expression expr1 = new Expression(RuleType.GIVEN);
-//        expr1.addToExpression(str1);
-//
-//        proof.addExpression(expr);
-//        proof.addExpression(expr1);
-//
-//        String result = "A ^ B | C";
-//        proof.setResultString(result);
-//
-//        List<Proof> proofs = new LinkedList<>();
-//
-//        proofs.add(proof);
-//
-//        proof.setProofSteps(proofs);
-//        Expression resExpr = new Expression();
-//        resExpr.addToExpression(proof.getResultString());
-//        proof.setResultExpr(resExpr);
-//
-//        Proof res = proof.nextStep();
-//
-////        System.out.println("result " + res);
-////        not guaranteed to be the shortest proof
-//        assertTrue(res.toString().equals("[A AND B, A IMPLIES C, A AND B OR C]"));
-//    }
-//
+    @Test
+    public void OrImpliesAndSolverTest() throws SyntaxException {
+        String str = "A ^ B";
+        String str1 = "A -> C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+
+        String result = "A ^ B | C";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[A AND B, A IMPLIES C, A, C, B, B OR C, A AND B OR C]"));
+    }
+
     @Test
     public void simpleImpliesAtEndIntroSolverTest() throws SyntaxException {
         String str = "C ^ B";
@@ -563,6 +544,22 @@ public class HintTests {
         proof.setResultString(result);
 
         assertTrue(proof.solveProof().equals("[NOT A, A AND B, A, FALSE]"));
+    }
+
+    @Test
+    public void bracketsIntroTest() throws SyntaxException {
+        String str = "A ^ C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+
+        proof.addExpression(expr);
+
+        String result = "A ^ B -> C";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[A AND C, A, A AND B, C, A AND B IMPLIES C]"));
     }
 //
 //    @Test
