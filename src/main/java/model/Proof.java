@@ -1,7 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -769,11 +767,30 @@ public class Proof {
             return;
         }
 
+        if (expr.contains(new Operator("ONLY", ONLY))) {
+            List<Expression> sides = expr.splitExpressionBy(OperatorType.ONLY);
+
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+
+            if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
+                Expression result = new Expression();
+                result.addToExpression(lhs + " -> " + rhs);
+                Expression result1 = new Expression();
+                result1.addToExpression(rhs + " -> " + lhs);
+
+                list_goals.add(result);
+                list_goals.add(result1);
+                return;
+            }
+
+        }
+
 
     }
 
 
-    private void applyIntroductionRule(Expression expr) {
+    private void applyIntroductionRule(Expression expr) throws SyntaxException {
 
         if (list_goals.get(list_goals.size()-1).contains(new Operator("IMPLIES", IMPLIES))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
@@ -822,6 +839,27 @@ public class Proof {
                 list_proof.add(list_goals.get(list_goals.size()-1));
 
                 return;
+            }
+        }
+
+        if (list_goals.get(list_goals.size()-1).contains(new Operator("ONLY", ONLY))) {
+            List<Expression> sides = list_goals.get(list_goals.size()-1).splitExpressionBy(OperatorType.ONLY);
+
+            Expression lhs = sides.get(0);
+            Expression rhs = sides.get(1);
+
+            if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
+                Expression result = new Expression();
+                result.addToExpression(lhs + " -> " + rhs);
+                Expression result1 = new Expression();
+                result1.addToExpression(rhs + " -> " + lhs);
+
+                if (list_proof.contains(result) && list_proof.contains(result1)) {
+                    list_goals.get(list_goals.size() - 1).setRuleType(RuleType.AND_INTRO);
+                    list_proof.add(list_goals.get(list_goals.size() - 1));
+
+                    return;
+                }
             }
         }
     }
