@@ -676,6 +676,7 @@ public class Proof {
                     } else {
                         //procedure 2.2
                         falseRulesSetup();
+                        current_goal = list_goals.get(list_goals.size() - 1);
                         continue;
                     }
 
@@ -691,6 +692,14 @@ public class Proof {
                 Expression temp = new Expression();
                 temp.addToExpression(expr.toString());
                 temp.removeNcomponents(1);
+
+                if (temp.getFirstComp().toString().equals("OPEN")
+                        && temp.getLastComp().toString().equals("CLOSE")) {
+                    temp.removeNcomponents(1);
+                    temp.removeLast();
+
+                }
+
                 list_goals.add(temp);
             }
         }
@@ -944,7 +953,6 @@ public class Proof {
 
         for (int i = 0; i < newProof.expressions.size(); i++) {
             if (newProof.expressions.get(i).contains(new Operator("ONLY", ONLY))) {
-                System.out.println(newProof.expressions.get(i));
                 List<Expression> sides = newProof.expressions.get(i).splitExpressionBy(OperatorType.ONLY);
 
                 Expression lhs = sides.get(0);

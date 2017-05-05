@@ -508,6 +508,12 @@ public class Expression {
         return expression.get(0);
     }
 
+    public Component getLastComp() {
+        return expression.get(expression.size()-1);
+    }
+
+
+
     public boolean isOperatorName(String str) {
         return operatorNames.contains(str);
     }

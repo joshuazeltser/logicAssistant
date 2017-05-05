@@ -122,9 +122,8 @@ public class HintTests {
 //        System.out.println("result " + res);
         assertTrue(proof.solveProof().equals("[NOT A, A, FALSE]"));
     }
-//
 
-//
+
     @Test
     public void simpleNotNotEliminationSolverTest() throws SyntaxException {
         String str = "!!A";
@@ -270,6 +269,21 @@ public class HintTests {
 
         assertTrue(proof.solveProof().equals("[A IMPLIES B, B IMPLIES C, A, B, C]"));
     }
+
+    @Test
+    public void fullProofTest() throws SyntaxException {
+
+        String str = "!(A | B)";
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+        proof.addExpression(expr);
+
+        String result = "!A";
+        proof.setResultString(result);
+
+        assertTrue(proof.solveProof().equals("[NOT OPEN A OR B CLOSE, A, A OR B, FALSE, NOT A]"));
+    }
+
 //
 //    @Test
 //    public void simpleOrIntroSolverTest() throws SyntaxException {
