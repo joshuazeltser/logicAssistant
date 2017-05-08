@@ -609,19 +609,18 @@ public class Proof {
     }
 
 
-
+    private List<Expression> solvedProof;
 
     public String generateHint(String resultString) throws SyntaxException {
 
-        if (!solved) {
-            resultExpr.addToExpression(resultString);
-            solved = true;
-        }
-
-        List<Expression> solvedProof = new LinkedList<>();
         if (!resultString.equals("")) {
 
-            solvedProof = solveProof();
+            if (!solved) {
+                resultExpr.addToExpression(resultString);
+                solved = true;
+                solvedProof = solveProof();
+            }
+
             if (isProofValid()) {
                 if (solvedProof != null) {
                     if (solvedProof.size() == expressions.size()) {
@@ -650,7 +649,11 @@ public class Proof {
         solved = true;
 
         if (!expressions.isEmpty()) {
-            list_proof.addAll(expressions);
+            for (Expression expr : expressions) {
+                if (expr.getRuleType() == RuleType.GIVEN) {
+                    list_proof.add(expr);
+                }
+            }
         }
 
         Expression current_goal = resultExpr;
@@ -667,6 +670,7 @@ public class Proof {
                 }
             }
         }
+
         while (true) {
 
             if (checkIfExpressionsReached(current_goal)) {
@@ -688,6 +692,7 @@ public class Proof {
                     //procedure 2
                     if (!current_goal.toString().equals("FALSE")) {
                         //procedure 2.1
+
                         setupIntroductionRules(current_goal);
                         current_goal = list_goals.get(list_goals.size() - 1);
                         continue;
@@ -756,20 +761,7 @@ public class Proof {
 
         }
 
-        if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
-            Expression temp = new Expression(RuleType.ASSUMPTION);
-            temp.addToExpression(expr.toString());
-            temp.removeNcomponents(1);
 
-            list_proof.add(temp);
-
-            if (checkBracketValidity(temp)) {
-                Expression subGoal = new Expression();
-                subGoal.addToExpression("FALSE");
-                list_goals.add(subGoal);
-                return;
-            }
-        }
 
         if (expr.contains(new Operator("OR", OR))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.OR);
@@ -805,6 +797,22 @@ public class Proof {
                 return;
             }
 
+        }
+
+        if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
+            Expression temp = new Expression(RuleType.ASSUMPTION);
+            temp.addToExpression(expr.toString());
+            temp.removeNcomponents(1);
+
+            if (checkBracketValidity(temp)) {
+                if (!list_proof.contains(temp)) {
+                    list_proof.add(temp);
+                    Expression subGoal = new Expression();
+                    subGoal.addToExpression("FALSE");
+                    list_goals.add(subGoal);
+                }
+                return;
+            }
         }
 
 
