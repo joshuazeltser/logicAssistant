@@ -255,9 +255,17 @@ In order to carry out the tokenization correctly, and to help with the various o
 
 \subsubsection{Proof}
 
-end today
+In order to represent the proofs that the user will be inputting into this software, a Proof class has been created. This class contains a large amount of functionality used to represent these proofs in a way that they can be manipulated to help solve Natural Deduction proofs. In this class a proof is represented by a list of expressions, each representing a line in a proof. 
+
+In order to populate a Proof object based on user input, this class reads in expressions and their associated rules and tokenizes them accordingly. It then fills the list of expressions in order to create the proof representation. While this is being carried out the code checks that each expression has been created using the specified rule correctly. For example if an expression was created using And Introduction, the code would check to ensure that both the right and left hand sides of the And operator have been proven earlier on in the code. If a rule has been used incorrectly, or cannot be used at this stage in the proof, then a rule error will be thrown aborting this entire process. Once all of the steps of the proof have been checked and been proven to have used the rules correctly the process will complete. This completion indicates that the proof so far is valid. 
+
+When a user inputs each line of their proof along with the rule used, they also must include the lines that these rules used to create this expression. I therefore must, when reading in this information, check that the lines mentioned are valid and correspond to expressions that can be used for this rule. As a proof is represented by a list of expressions it is easy to traverse the list and find the required expression by line number. Another additional complexity that has to be taken into account here, is the scope that the current expression is in. Whenever an assumption is made a new scope (or box), is opened until it is closed by certain rules being completed. Once this has happened nothing after the scope can use any expressions inside the scope for any further steps of the proof (apart from the result of the scope). This is therefore another check that the code must make when checking whether a rule has been used correctly at certain points of the proof.
 
 \subsubsection{Error Checking}
+
+syntax errors
+
+rule errors
 \subsubsection{Validity Checking}
 \subsubsection{Hints}
 

@@ -17,9 +17,6 @@ public class Proof {
     private String proofString;
     private String proofLabels;
 
-    private List<Proof> proofSteps;
-
-
     private String resultString;
 
     private Expression resultExpr;
@@ -34,14 +31,11 @@ public class Proof {
         errors = new LinkedList<>();
         proofString = "";
         proofLabels = "";
-        proofSteps = new LinkedList<>();
         resultString = "";
         resultExpr = new Expression();
         list_goals = new LinkedList<>();
         list_proof = new LinkedList<>();
     }
-
-
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
         String result = "";
@@ -1199,7 +1193,6 @@ public class Proof {
         this.proofString = proofString;
     }
 
-
     public String getProofLabels() {
         return proofLabels;
     }
@@ -1208,17 +1201,6 @@ public class Proof {
         this.proofLabels = proofLabels;
     }
 
-
-    public List<Proof> getProofSteps() {
-        return proofSteps;
-    }
-
-    public void setProofSteps(List<Proof> proofSteps) {
-        this.proofSteps = proofSteps;
-    }
-
-
-
     public Expression getResultExpr() {
         return resultExpr;
     }
@@ -1226,7 +1208,6 @@ public class Proof {
     public void setResultExpr(Expression resultExpr) {
         this.resultExpr = resultExpr;
     }
-
 
     public String getResultString() {
         return resultString;

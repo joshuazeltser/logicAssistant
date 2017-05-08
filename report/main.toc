@@ -14,7 +14,7 @@
 \contentsline {subsubsection}{\numberline {3.2.1}Component}{8}{subsubsection.3.2.1}
 \contentsline {subsubsection}{\numberline {3.2.2}Expression}{9}{subsubsection.3.2.2}
 \contentsline {subsubsection}{\numberline {3.2.3}Proof}{10}{subsubsection.3.2.3}
-\contentsline {subsubsection}{\numberline {3.2.4}Error Checking}{11}{subsubsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.4}Error Checking}{10}{subsubsection.3.2.4}
 \contentsline {subsubsection}{\numberline {3.2.5}Validity Checking}{11}{subsubsection.3.2.5}
 \contentsline {subsubsection}{\numberline {3.2.6}Hints}{11}{subsubsection.3.2.6}
 \contentsline {subsection}{\numberline {3.3}View}{11}{subsection.3.3}
