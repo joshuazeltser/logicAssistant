@@ -20,6 +20,8 @@ public class Expression {
 
     private boolean box;
 
+    private boolean marked;
+
 
 
     public Expression(RuleType ruleType) {
@@ -27,11 +29,13 @@ public class Expression {
         lines = new LinkedList<>();
         this.ruleType = ruleType;
         box = false;
+        marked = false;
     }
 
     public Expression() {
         expression = new LinkedList<>();
         lines = new LinkedList<>();
+        marked = false;
     }
 
     public void addReferenceLine(String a) throws SyntaxException {
@@ -503,6 +507,14 @@ public class Expression {
 
     public Component getLastComp() {
         return expression.get(expression.size()-1);
+    }
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
     }
 
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import static model.OperatorType.*;
 
@@ -674,19 +675,29 @@ public class Proof {
         while (true) {
 
             if (checkIfExpressionsReached(current_goal)) {
-                if (list_goals.size() > 1) {
-                    list_goals.remove(current_goal);
-                    current_goal = list_goals.get(list_goals.size() - 1);
-                    applyIntroductionRule(current_goal);
+                if (orsLeft) {
+                    if (list_goals.size() > 1) {
+                        list_goals.remove(current_goal);
+                        current_goal = list_goals.get(list_goals.size() - 1);
+                    }
+                        applyIntroductionRule(current_goal);
+
+                } else {
+                    if (list_goals.size() > 1) {
+                        list_goals.remove(current_goal);
+                        current_goal = list_goals.get(list_goals.size() - 1);
+                        applyIntroductionRule(current_goal);
+                    }
                 }
-                if (current_goal.equals(list_goals.get(0))) {
+
+                if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
                     return list_proof;
                 }
                 continue;
-
             } else {
                 if (eliminationRuleApplicable() && !specialCase) {
                     specialCase = false;
+
                     continue;
                 }
                     //procedure 2
@@ -694,6 +705,7 @@ public class Proof {
                         //procedure 2.1
 
                         setupIntroductionRules(current_goal);
+
                         current_goal = list_goals.get(list_goals.size() - 1);
                         continue;
                     } else if (allMarked()) {
@@ -701,6 +713,7 @@ public class Proof {
                     } else {
                         //procedure 2.2
                         falseRulesSetup();
+
                         current_goal = list_goals.get(list_goals.size() - 1);
                         continue;
                     }
@@ -729,9 +742,15 @@ public class Proof {
 
     private boolean firstOrRound = true;
 
+    private Stack<Expression> lhsStack = new Stack<>();
+    private Stack<Expression> rhsStack = new Stack<>();
+    private Stack<Expression> orElimStack = new Stack<>();
+    private boolean orsLeft = false;
 
 
     private void setupIntroductionRules(Expression expr) throws SyntaxException {
+
+
 
         if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
@@ -815,11 +834,53 @@ public class Proof {
             }
         }
 
+        for (Expression e : list_proof) {
+            if (e.contains(new Operator("OR", OR)) && !e.isMarked()) {
+                e.setMarked(true);
+
+                List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
+                sides.get(0).setRuleType(RuleType.ASSUMPTION);
+                sides.get(1).setRuleType(RuleType.ASSUMPTION);
+                lhsStack.push(sides.get(0));
+                rhsStack.push(sides.get(1));
+
+                if (checkBracketValidity(sides.get(0)) && checkBracketValidity(sides.get(1))) {
+                    orsLeft = true;
+                    list_proof.add(lhsStack.pop());
+//                    if (!list_goals.contains(expr)) {
+                    list_goals.add(expr);
+//                    }
+                    orElimStack.push(expr);
+
+                    return;
+                }
+            }
+        }
+
 
     }
 
 
     private void applyIntroductionRule(Expression expr) throws SyntaxException {
+
+        if (!orElimStack.isEmpty()) {
+            if (list_goals.get(list_goals.size() - 1).equals(orElimStack.peek())) {
+                if (lhsStack.size() < rhsStack.size()) {
+                    list_proof.add(rhsStack.pop());
+                } else {
+                    System.out.println(list_proof);
+                    Expression expr1 = list_goals.get(list_goals.size() - 1);
+                    expr1.setRuleType(list_goals.get(list_goals.size()-1).getRuleType());
+                    System.out.println(expr1.getRuleType());
+                    list_proof.add(expr1);
+                    expr1.setRuleType(RuleType.OR_ELIM);
+                    list_proof.add(expr1);
+                    orsLeft = false;
+                    orElimStack.pop();
+                    return;
+                }
+            }
+        }
 
         if (list_goals.get(list_goals.size()-1).contains(new Operator("IMPLIES", IMPLIES))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
@@ -1089,6 +1150,8 @@ public class Proof {
                             rhs.setRuleType(RuleType.IMPLIES_ELIM);
                             if (!newProof.expressions.contains(rhs)) {
                                 applyEliminationRule(rhs);
+                                System.out.println(list_proof + "dnjknsdasdasd");
+                                System.out.println(rhs.getRuleType() );
                                 changed = true;
                             }
                         }
