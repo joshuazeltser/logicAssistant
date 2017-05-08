@@ -502,6 +502,9 @@ public class Expression {
     }
 
     public Component getFirstComp() {
+        if (expression.get(0) == null) {
+            return null;
+        }
         return expression.get(0);
     }
 
