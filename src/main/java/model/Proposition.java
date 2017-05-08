@@ -25,21 +25,20 @@ public class Proposition implements Component{
     }
 
     @Override
-    public boolean equals(Object o) {
-
-        if (this == o) {
+    public boolean equals(Component c) {
+        if (this == c) {
             return true;
         }
 
-        if (o == null) {
+        if (c == null) {
             return false;
         }
 
-        if (getClass() != o.getClass()) {
+        if (getClass() != c.getClass()) {
             return false;
         }
 
-        Proposition expr2 = (Proposition) o;
+        Proposition expr2 = (Proposition) c;
 
         return toString().equals(expr2.toString());
     }

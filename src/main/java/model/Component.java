@@ -10,6 +10,8 @@ public interface Component {
 
     String toString();
 
+    boolean equals(Component c);
+
 
     @SpringBootApplication
     class Application {

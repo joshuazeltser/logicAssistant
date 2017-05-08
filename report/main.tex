@@ -16,6 +16,7 @@
 
 \date{September 2015}
 
+
 \begin{document}
 
 % load title page
@@ -216,12 +217,48 @@ In Predicate Logic similar Natural Deduction proofs can be created. These proofs
 
 The design methodology that I decided to use for this project is the Model View Controller idea. This entails the separation of all the front end website components from the back-end where the actual required functionality of the system is created. These two areas are then controlled by various controller classes, which bring all of these components together to create the finished application. I chose this methodology as it makes the entire system easier to understand and work on. If I want to add an extra feature to this application I can just update the model part of the code base and then change the front-end view code. This is much simpler than having all of the code together in one large code base. This methodology therefore made the development of this application much easier.
 
+\subsection{Language}
+
+TODO: why choose Java and Java Spring
+
 \subsection{Model}
+In order to create the functionality required for me to meet my objectives in this project, I had to come up with a fitting design that allowed lots of different tasks to work together. This often meant creating a Java Object with a sole use of solving one of the problems I set out to achieve. I tried to separate the different parts of my code base into obvious classes which would make the code easy to read for any third party.
 
 \subsubsection{Component}
+In both Propositional and First Order Predicate logics, logical expressions can be made up of two different components, Propositions (or Predicates for Predicate logic) and Operators. For this project both of these components require some common functionality such as how they are converted to Strings, how they are interpreted when input and how equality between them is worked out. Due to this common functionality I decided to create an interface called Component which encompasses all the commonly used functions for each of these components. I then created a Proposition and an Operator class which would each represent a component type. Each of these classes would inherit from the Component interface. This set-up was very useful in other parts of the code base as it allows me to pass in a component and then check what type of component I am dealing with.  
+
+The Proposition class, as well as inheriting and implementing the common toString and equals methods from the Components interface, contains functionality to set and retrieve the name of a Proposition. A proposition is just made up of a String field which represents the name of the Proposition. This is one of the main components of expressions that are used in this logical system.
+
+The Operator class is used to represent one of the seven operators used in this logical system, as described in the Background section above. This class also inherits to toString and equals methods from Components, making it much easier to use when building expressions. Each Operator object is made of a string which represents its name and an enum value corresponding to each operator. I have created an enum called OperatorType, which contains all of the different operator types used in this logical environment. The reason that I set operators up in this way is that it easily allows me to check what operator is being used in an expression at any time due to its uniquely identified enum value. The rest of this class is filled with getters and setters that help with the general functionality of this logical system. Here is a diagram of how this part of the code base is set up:
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/ComponentsUML}}
+	\caption{Component class structure}
+\end{figure}
+
+TODO: talk about quantifiers for predicate logic when done
+
 \subsubsection{Expression}
+
+In Natural Deduction, a proof is made up of a set of expressions each derived from previous expressions based on the Natural Deduction rule set (see Appendix \ref{appendix:nd}). I therefore made an Expression class which was made up of a number of components. Firstly, each expression contains a list of Components, making up the expression itself in terms of propositions and operators. An expression also keeps track of its line number in a proof. This is very useful when applying rules that depend on several different lines in a proof. Another key component of an expression is what rule was used to derive it. I therefore created a ruleType enum which enumerates all of the different rule types used in a natural deduction proof. This enum includes rules for premises and assumptions. This makes it very easy for the user to find out what rule was used when an expression is formed.
+
+The most important functionality that the Expression class carries out, is the parsing of expressions from their String inputs. When a user enters an expression into the front end of the programme,  the expression is immediately tokenised by spaces and then each token is checked to see what type of component it is. While this tokenization is occurring, the expression is checked for any syntax errors that may have been input by the user. If one is found, the entire process is halted and the syntax error that has occurred is outputted to the user. The tokens are then added to the list of components to make up the expression list. This process allows us to create an internal representation of the expression, making it easier to use when applying the various types of functionality used later on in the programme. 
+
+In order to carry out the tokenization correctly, and to help with the various operations that are carried out on the expression throughout the code base, a lot of extra functionality has been added to the Expression class. For example an equals method that allows the comparison of two expressions, and a contains method which allows a user to check whether a certain component is used inside a given expression. This functionality makes it easy to manipulate expressions as they are used to solve complex proofs. One really commonly used function that is implemented in this class is the splitExpressionBy function. This function takes an expression and splits it by the specified operator (assuming it contains this operator). This functionality is very useful when applying the various Natural Deduction rules to an expression, especially for elimination rules which require the specified operator to be split into one or two sub-expressions. A summary of the functionality included in the Expression class can be seen in the following diagram:
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/ExpressionUML}}
+	\caption{Expression Functionality}
+\end{figure}
+
 \subsubsection{Proof}
-\subsubsection{TruthTable}
+
+end today
+
+\subsubsection{Error Checking}
+\subsubsection{Validity Checking}
 \subsubsection{Hints}
 
 \subsection{View}
@@ -232,6 +269,20 @@ The design methodology that I decided to use for this project is the Model View 
 
 
 \section{Tools}
+
+\subsection{Git}
+
+\subsection{Github}
+
+\subsection{Maven}
+
+\subsection{Intellij}
+
+\subsection{JUnit}
+
+\subsection{Heroku}
+
+\subsection{Trello}
 
 
 
@@ -281,10 +332,14 @@ In this iteration I would also like to spend time adding some other extensions s
 
 From the start of this iteration I want to have stopped adding any new features. I will go through my code, tidy it up, add comments and ensure that all unnecessary code is removed. I will also look through and try to solve any remaining bugs that I have left in my code. At the same time I will complete my report noting how I carried out my project. I want to allow as much time as possible to do this, to make sure that I can create a high level and well written report. I will also use this iteration to create my presentation of the project making sure it looks professional and is able to inform the audience of exactly what my project can do.
 
+\subsection{Programming Methodologies}
+
 \subsection{Testing}
+
 
 \section{Evaluation}
 
+ideas: tableaux instead of truth tables, more realistic plans, Java good language to use, 
 \subsection{Expected Outcomes}
 
 By the end of the project there are a number of objectives that I want to fulfil in order to classify it as a successful project. I firstly want to make sure that the tool I have created is easy to use. It would be better for my software to have less features if it means that it is very easy to use by any user. This is one of the areas that I hope my software is better than other similar tools. I also by the end of the project want to have a working Natural Deduction proof checker, with the ability to give hints to the user at any point in the proof. This checker only needs to be for Propositional logic in order for me to fulfil my objectives. This would still mean that I have created an important and useful tool that can be used by anyone learning how to form Natural Deduction proofs. If however I have more time I would also like to extend this to Predicate logic. If I am able to complete these two tasks I will have succeeded in creating a useful tool for Natural Deduction students.

@@ -16,8 +16,6 @@ public class Expression {
 
     private List<Integer> lines;
 
-
-
     private RuleType ruleType;
 
     private boolean box;
@@ -28,7 +26,7 @@ public class Expression {
         expression = new LinkedList<>();
         lines = new LinkedList<>();
         this.ruleType = ruleType;
-        box =false;
+        box = false;
     }
 
     public Expression() {
@@ -294,10 +292,6 @@ public class Expression {
                 return ops[j];
             }
         }
-
-
-
-
         return 0;
     }
 
@@ -500,7 +494,6 @@ public class Expression {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -510,12 +503,6 @@ public class Expression {
 
     public Component getLastComp() {
         return expression.get(expression.size()-1);
-    }
-
-
-
-    public boolean isOperatorName(String str) {
-        return operatorNames.contains(str);
     }
 
 }
