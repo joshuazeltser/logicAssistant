@@ -6,6 +6,9 @@ import javassist.compiler.ast.IntConst;
 import javax.validation.constraints.Null;
 import java.util.*;
 
+import static model.OperatorType.CLOSE_BRACKET;
+import static model.OperatorType.OPEN_BRACKET;
+
 
 /**
  * Created by joshuazeltser on 03/01/2017.
@@ -364,7 +367,12 @@ public class Expression {
                       lhsExpr.expression = thisExpression.subList(0, i);
                       rhsExpr = new Expression(ruleType);
                       rhsExpr.expression = thisExpression.subList(i+1 , thisExpression.size());
-                     break;
+
+                      if (checkBracketValidity(lhsExpr) && checkBracketValidity(rhsExpr)) {
+                          break;
+                      } else {
+                          continue;
+                      }
                   }
              }
 
@@ -379,6 +387,12 @@ public class Expression {
         return result;
 
 
+    }
+    private boolean checkBracketValidity(Expression expr) {
+        return ((expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                expr.contains(new Operator("CLOSE", CLOSE_BRACKET))) ||
+                (!expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
+                        !expr.contains(new Operator("CLOSE", CLOSE_BRACKET))));
     }
 
 

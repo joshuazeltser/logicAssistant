@@ -628,7 +628,11 @@ public class Proof {
                         return "Proof already successfully solved";
                     }
 
-                    return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
+                    if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size()-1))) {
+                        return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
+                    } else {
+                        return "Hint: Go back a step, you are going in the wrong direction";
+                    }
                 } else {
                     return "Hint: ASSUMPTION";
                 }
@@ -651,7 +655,9 @@ public class Proof {
 
         if (!expressions.isEmpty()) {
             for (Expression expr : expressions) {
+                if (expr.getRuleType() == RuleType.GIVEN) {
                     list_proof.add(expr);
+                }
             }
         }
 
