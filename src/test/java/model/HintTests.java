@@ -560,7 +560,7 @@ public class HintTests {
         assertTrue(proof.solveProof().toString().equals("[NOT A, A AND B, A, FALSE]"));
     }
 
-    //TODO: to be fixed
+    //TODO: to be fixed with brackets around A ^ B
     @Test
     public void bracketsIntroTest() throws SyntaxException {
         String str = "A ^ C";
@@ -569,14 +569,14 @@ public class HintTests {
         expr.addToExpression(str);
         proof.addExpression(expr);
 
-        String result = "(A ^ B) -> C";
+        String result = "A ^ B -> C";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
 
 //        System.out.println(proof.solveProof());
-//        assertTrue(proof.solveProof().toString().equals("[A AND C, A, A AND B, C, A AND B IMPLIES C]"));
+        assertTrue(proof.solveProof().toString().equals("[A AND C, A AND B, A, C, A AND B IMPLIES C]"));
     }
 
     @Test
@@ -1231,7 +1231,7 @@ public class HintTests {
         proof.setResultString(result);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
+        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
         String str3 = "A";
         Expression expr3 = new Expression(RuleType.AND_ELIM);
@@ -1240,7 +1240,7 @@ public class HintTests {
         proof.addExpression(expr3);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
+        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
         String str4 = "B | C";
         Expression expr4 = new Expression(RuleType.AND_ELIM);
@@ -1249,7 +1249,7 @@ public class HintTests {
         proof.addExpression(expr4);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
+        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
         String str5 = "B";
         Expression expr5 = new Expression(RuleType.ASSUMPTION);
@@ -1257,7 +1257,7 @@ public class HintTests {
         proof.addExpression(expr5);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
+        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
         String str6 = "D";
         Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
@@ -1267,7 +1267,7 @@ public class HintTests {
         proof.addExpression(expr6);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
+        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
         String str7 = "C";
         Expression expr7 = new Expression(RuleType.ASSUMPTION);
@@ -1275,7 +1275,7 @@ public class HintTests {
         proof.addExpression(expr7);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
+        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
         String str8 = "D";
         Expression expr8 = new Expression(RuleType.IMPLIES_ELIM);
@@ -1285,7 +1285,7 @@ public class HintTests {
         proof.addExpression(expr8);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: OR_ELIM"));
+        assertTrue(proof.generateHint(result).equals("Hint: OR_ELIM"));
 
         String str9 = "D";
         Expression expr9 = new Expression(RuleType.OR_ELIM);
@@ -1298,6 +1298,15 @@ public class HintTests {
         proof.addExpression(expr9);
 
 //        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
+        assertTrue(proof.generateHint(result).equals("Hint: OR_INTRO"));
+
+        String str10 = "D | E";
+        Expression expr10 = new Expression(RuleType.OR_INTRO);
+        expr10.addToExpression(str10);
+        expr10.addReferenceLine("10");
+        proof.addExpression(expr10);
+
+//        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
 }
