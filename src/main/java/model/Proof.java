@@ -651,9 +651,7 @@ public class Proof {
 
         if (!expressions.isEmpty()) {
             for (Expression expr : expressions) {
-//                if (expr.getRuleType() == RuleType.GIVEN) {
                     list_proof.add(expr);
-//                }
             }
         }
 
@@ -673,8 +671,8 @@ public class Proof {
         }
 
         while (true) {
-
             if (checkIfExpressionsReached(current_goal)) {
+
                 if (orsLeft) {
                     if (list_goals.size() > 1) {
                         list_goals.remove(current_goal);
@@ -691,32 +689,42 @@ public class Proof {
                 }
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
+//                    System.out.println(list_proof);
                     return list_proof;
                 }
                 continue;
             } else {
-                if (eliminationRuleApplicable() && !specialCase) {
-                    specialCase = false;
+                if (!specialCase) {
+                    if (eliminationRuleApplicable()) {
+                        specialCase = false;
 
-                    continue;
+                        continue;
+                    }
                 }
+                specialCase = false;
                     //procedure 2
-                    if (!current_goal.toString().equals("FALSE")) {
+                if (!current_goal.toString().equals("FALSE")) {
                         //procedure 2.1
 
-                        setupIntroductionRules(current_goal);
+                    Expression temp = current_goal;
+                    setupIntroductionRules(current_goal);
+
+//                    if (!temp.equals(current_goal)) {
 
                         current_goal = list_goals.get(list_goals.size() - 1);
-                        continue;
+//                    }
+
+                    continue;
                     } else if (allMarked()) {
                         continue;
                     } else {
-                        //procedure 2.2
-                        falseRulesSetup();
+                    //procedure 2.2
+                    falseRulesSetup();
 
-                        current_goal = list_goals.get(list_goals.size() - 1);
-                        continue;
-                    }
+                    current_goal = list_goals.get(list_goals.size() - 1);
+
+                    continue;
+                }
             }
         }
     }
@@ -752,6 +760,36 @@ public class Proof {
 
     private void setupIntroductionRules(Expression expr) throws SyntaxException {
 
+
+        for (Expression e : list_proof) {
+            if (e.contains(new Operator("OR", OR)) && !e.isMarked()) {
+                e.setMarked(true);
+
+                List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
+                sides.get(0).setRuleType(RuleType.ASSUMPTION);
+                sides.get(1).setRuleType(RuleType.ASSUMPTION);
+                lhsStack.push(sides.get(0));
+                rhsStack.push(sides.get(1));
+
+
+                if (checkBracketValidity(sides.get(0)) && checkBracketValidity(sides.get(1))) {
+                    extra_list_proof = new LinkedList<>();
+
+                    rhsIndex = list_proof.size();
+
+                    extra_list_proof.addAll(list_proof);
+
+                    orsLeft = true;
+                    list_proof.add(lhsStack.pop());
+//                    if (!list_goals.contains(expr)) {
+                    list_goals.add(expr);
+//                    }
+                    orElimStack.push(expr);
+
+                    return;
+                }
+            }
+        }
 
         if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
@@ -795,8 +833,9 @@ public class Proof {
                 } else {
                     list_goals.add(rhs);
                 }
+                return;
             }
-            return;
+
         }
 
         if (expr.contains(new Operator("ONLY", ONLY))) {
@@ -829,39 +868,12 @@ public class Proof {
                     Expression subGoal = new Expression();
                     subGoal.addToExpression("FALSE");
                     list_goals.add(subGoal);
-                }
-                return;
-            }
-        }
-
-        for (Expression e : list_proof) {
-            if (e.contains(new Operator("OR", OR)) && !e.isMarked()) {
-                e.setMarked(true);
-
-                List<Expression> sides = e.splitExpressionBy(OperatorType.OR);
-                sides.get(0).setRuleType(RuleType.ASSUMPTION);
-                sides.get(1).setRuleType(RuleType.ASSUMPTION);
-                lhsStack.push(sides.get(0));
-                rhsStack.push(sides.get(1));
-
-                if (checkBracketValidity(sides.get(0)) && checkBracketValidity(sides.get(1))) {
-                    extra_list_proof = new LinkedList<>();
-
-                    rhsIndex = list_proof.size();
-
-                    extra_list_proof.addAll(list_proof);
-
-                    orsLeft = true;
-                    list_proof.add(lhsStack.pop());
-//                    if (!list_goals.contains(expr)) {
-                    list_goals.add(expr);
-//                    }
-                    orElimStack.push(expr);
-
                     return;
                 }
             }
         }
+
+
 
 
     }
@@ -971,9 +983,9 @@ public class Proof {
 
     private boolean checkBracketValidity(Expression expr) {
         return ((expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                expr.contains(new Operator("OPEN", OPEN_BRACKET))) ||
+                expr.contains(new Operator("CLOSE", CLOSE_BRACKET))) ||
                 (!expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                        !expr.contains(new Operator("OPEN", OPEN_BRACKET))));
+                        !expr.contains(new Operator("CLOSE", CLOSE_BRACKET))));
     }
 
     private boolean allMarked() {
@@ -1259,6 +1271,7 @@ public class Proof {
 
     private boolean checkIfExpressionsReached(Expression current) throws SyntaxException {
         for (Expression expr : list_proof) {
+
 
             if (expr.equals(current)) {
                 return true;
