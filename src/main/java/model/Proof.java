@@ -658,21 +658,24 @@ public class Proof {
         Expression current_goal = resultExpr;
 
         boolean specialCase = false;
-        //special case
-        if (resultExpr.contains(new Operator("IMPLIES", IMPLIES))) {
-
-            specialCase = true;
-
-            for (Expression e : list_proof) {
-                if (e.contains(new Operator("ONLY", ONLY))) {
-                    specialCase = false;
-                }
-            }
-        }
 
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
+
+
+            if (current_goal.contains(new Operator("IMPLIES", IMPLIES))) {
+
+                specialCase = true;
+                for (Expression e : list_proof) {
+                    if (e.contains(new Operator("ONLY", ONLY))) {
+                        specialCase = false;
+                    }
+                }
+
+            }
+
+
             if (checkIfExpressionsReached(current_goal)) {
 
                 if (orsLeft) {
@@ -686,7 +689,7 @@ public class Proof {
                 }
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
-//                    System.out.println("result " + list_proof);
+//                    printRuleType();
                     return list_proof;
                 }
                 continue;
@@ -697,22 +700,18 @@ public class Proof {
                         continue;
                     }
                 }
+
                 specialCase = false;
+
                     //procedure 2
                 if (!current_goal.toString().equals("FALSE")) {
                         //procedure 2.1
 
-                    Expression temp = current_goal;
                     setupIntroductionRules(current_goal);
 
-//                    if (!temp.equals(current_goal)) {
-
-                        current_goal = list_goals.get(list_goals.size() - 1);
-//                    }
+                    current_goal = list_goals.get(list_goals.size() - 1);
 
                     continue;
-                    } else if (allMarked()) {
-                        continue;
                     } else {
                     //procedure 2.2
                     falseRulesSetup();
@@ -725,6 +724,12 @@ public class Proof {
 
         }
         return null;
+    }
+
+    private void printRuleType() {
+        for (Expression expr : list_proof) {
+            System.out.println(expr.getRuleType());
+        }
     }
 
     private void falseRulesSetup() throws SyntaxException {
@@ -761,8 +766,12 @@ public class Proof {
 
 
 
+
         if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
-            List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+            Expression e = new Expression(expr.getRuleType());
+            e.addToExpression(expr.toString());
+            List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
+
 
             Expression lhs = sides.get(0);
             lhs.setRuleType(RuleType.ASSUMPTION);
@@ -770,6 +779,7 @@ public class Proof {
 
             if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
                 list_goals.add(rhs);
+
                 list_proof.add(lhs);
                 return;
             }
@@ -910,9 +920,12 @@ public class Proof {
         }
 
         if (list_goals.get(list_goals.size()-1).contains(new Operator("IMPLIES", IMPLIES))) {
-            List<Expression> sides = expr.splitExpressionBy(OperatorType.IMPLIES);
+            Expression e = new Expression(expr.getRuleType());
+            e.addToExpression(expr.toString());
+            List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
 
-            Expression rhs = sides.get(1);
+            Expression rhs = new Expression(sides.get(1).getRuleType());
+            rhs.addToExpression(sides.get(1).toString());
             if (list_proof.contains(rhs) && checkBracketValidity(rhs)) {
                 list_goals.get(list_goals.size()-1).setRuleType(RuleType.IMPLIES_INTRO);
                 list_proof.add(list_goals.get(list_goals.size()-1));
@@ -1000,12 +1013,16 @@ public class Proof {
 
         Proof newProof = new Proof();
         newProof.expressions = list_proof;
+        boolean and = tryAndElim(newProof);
+        newProof.expressions = list_proof;
+
 
         boolean implies = tryImpliesElim(newProof);
         newProof.expressions = list_proof;
 
-        boolean and = tryAndElim(newProof);
-        newProof.expressions = list_proof;
+
+
+
 
 
         boolean only = tryOnlyElim(newProof);
@@ -1018,6 +1035,7 @@ public class Proof {
         newProof.expressions = list_proof;
         boolean or = tryOrElim(newProof);
         newProof.expressions = list_proof;
+
 
         return and || implies || only || not || notNot || or;
     }
@@ -1196,12 +1214,15 @@ public class Proof {
         for (int i = 0; i < newProof.expressions.size(); i++) {
             if (newProof.expressions.get(i).contains(new Operator("AND", AND))) {
 
-                List<Expression> sides = newProof.expressions.get(i).splitExpressionBy(OperatorType.AND);
+                Expression e = new Expression(newProof.expressions.get(i).getRuleType());
+                e.addToExpression(newProof.expressions.get(i).toString());
+                List<Expression> sides = e.splitExpressionBy(OperatorType.AND);
 
                 Expression lhs = sides.get(0);
                 lhs.addReferenceLine(Integer.toString(count));
                 Expression rhs = sides.get(1);
                 rhs.addReferenceLine(Integer.toString(count));
+
 
                 if (newProof.isAndElimValid(lhs) &&
                         (lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
@@ -1216,7 +1237,7 @@ public class Proof {
                         doneLeft = true;
                         break;
                     }
-
+                    doneLeft =true;
                 }
 
                 if (newProof.isAndElimValid(rhs) &&
@@ -1276,10 +1297,11 @@ public class Proof {
     }
 
     private boolean checkIfExpressionsReached(Expression current) throws SyntaxException {
-        for (Expression expr : list_proof) {
+
+        for (int i = 0; i < list_proof.size(); i++) {
 
 
-            if (expr.equals(current)) {
+            if (list_proof.get(i).toString().equals(current.toString())) {
                 return true;
             }
 

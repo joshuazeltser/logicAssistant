@@ -333,17 +333,17 @@ public class Expression {
         Expression lhsExpr = new Expression();
         Expression rhsExpr = new Expression();
 
-        if (num > 1) {
-            int index = surroundedByBrackets(type);
-
-            lhsExpr = new Expression(ruleType);
-            lhsExpr.expression = thisExpression.subList(0, index);
-
-            rhsExpr = new Expression(ruleType);
-            rhsExpr.expression = thisExpression.subList(index+1 , thisExpression.size());
-
-
-        } else {
+//        if (num > 1) {
+//            int index = surroundedByBrackets(type);
+//
+//            lhsExpr = new Expression(ruleType);
+//            lhsExpr.expression = thisExpression.subList(0, index);
+//
+//            rhsExpr = new Expression(ruleType);
+//            rhsExpr.expression = thisExpression.subList(index+1 , thisExpression.size());
+//
+//
+//        } else {
             for (int i = 0; i < thisExpression.size(); i++) {
 
 
@@ -364,11 +364,14 @@ public class Expression {
                       lhsExpr.expression = thisExpression.subList(0, i);
                       rhsExpr = new Expression(ruleType);
                       rhsExpr.expression = thisExpression.subList(i+1 , thisExpression.size());
+                     break;
                   }
              }
 
             }
-        }
+
+//        }
+//        System.out.println(lhsExpr);
 
         result.add(lhsExpr);
         result.add(rhsExpr);
