@@ -192,6 +192,7 @@
 
                     <textarea class="lined" id="Text1" th:field="*{proofString}" cols="20" rows="8" onkeyup="if(this.textLength != 0)
 			{submit.disabled = false} else {submit.disabled = true}"></textarea>
+
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center">Rule</p>
@@ -203,7 +204,9 @@
                             width: 300px;
                         }
                     </style>
+
                 </div>
+
                <p></p>
                 <center>
 
@@ -269,7 +272,6 @@
             var mybutton12 = document.getElementById('b12');
             var mybutton13 = document.getElementById('b13');
 
-
             mybutton1.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
             }
@@ -310,7 +312,10 @@
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
             }
 
+
         </script>
+
+
     </div>
 
 </div>

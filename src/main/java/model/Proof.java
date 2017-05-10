@@ -25,6 +25,8 @@ public class Proof {
     private List<Expression> list_proof;
 
     private List<Expression> list_goals;
+    private List<Expression> solvedProof;
+
 
 
     public Proof() {
@@ -55,6 +57,7 @@ public class Proof {
         }
         return result;
     }
+
 
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
@@ -229,22 +232,8 @@ public class Proof {
             return false;
         }
 
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+        if (x != null) return x;
 
 
         if (!expressions.get(ref1).equals(lhs) && !expressions.get(ref1).equals(rhs)) {
@@ -262,6 +251,25 @@ public class Proof {
         return true;
     }
 
+    private Boolean checkReferencesInScope2(Expression e1, int ref1, int ref2) {
+        List<List<Integer>> boxes = findBoxIndexes(e1);
+
+        int index = findExpressionIndex(e1);
+
+        for (List<Integer> box : boxes) {
+            if (index <= box.get(1) && index >= box.get(0)) {
+                break;
+            }
+            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
+                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
+                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
+                        "that is inside a completed box");
+                return false;
+            }
+        }
+        return null;
+    }
 
 
     public boolean isAndElimValid(Expression e1) {
@@ -270,21 +278,8 @@ public class Proof {
         try {
             ref1 = e1.getReferenceLine().get(0) - 1;
 
-            List<List<Integer>> boxes = findBoxIndexes(e1);
-
-            int index = findExpressionIndex(e1);
-
-            for (List<Integer> box : boxes) {
-                if (index <= box.get(1) && index >= box.get(0)) {
-                    break;
-                }
-                if ((ref1 > box.get(0) && ref1 < box.get(1)) &&
-                        expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION) {
-                    errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                            "that is inside a completed box");
-                    return false;
-                }
-            }
+            Boolean x = checkReferenceInScope1(e1, ref1);
+            if (x != null) return x;
 
             if (!expressions.get(ref1).contains(new Operator("AND", OperatorType.AND))) {
                 errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: The line referenced cannot be " +
@@ -314,6 +309,25 @@ public class Proof {
         return false;
     }
 
+    private Boolean checkReferenceInScope1(Expression e1, int ref1) {
+        List<List<Integer>> boxes = findBoxIndexes(e1);
+
+        int index = findExpressionIndex(e1);
+
+        for (List<Integer> box : boxes) {
+            if (index <= box.get(1) && index >= box.get(0)) {
+                break;
+            }
+            if ((ref1 > box.get(0) && ref1 < box.get(1)) &&
+                    expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
+                        "that is inside a completed box");
+                return false;
+            }
+        }
+        return null;
+    }
+
     public boolean isOrIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("OR", OperatorType.OR))) {
@@ -336,21 +350,8 @@ public class Proof {
             return false;
         }
 
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) &&
-                    expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferenceInScope1(e1, ref1);
+        if (x != null) return x;
 
         if (expressions.get(ref1).equals(lhs) || expressions.get(ref1).equals(rhs)) {
                 return true;
@@ -387,25 +388,8 @@ public class Proof {
             return false;
         }
 
-
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+        if (x != null) return x;
 
         Expression assumption = expressions.get(ref1);
         Expression conclusion = expressions.get(ref2);
@@ -433,25 +417,8 @@ public class Proof {
             return false;
         }
 
-
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
-
+        Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+        if (x != null) return x;
 
         Expression a = expressions.get(ref1);
         Expression b = expressions.get(ref2);
@@ -500,21 +467,8 @@ public class Proof {
             return false;
         }
 
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) &&
-                    expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferenceInScope1(e1, ref1);
+        if (x != null) return x;
 
         Expression temp1 = new Expression();
         Expression expr = expressions.get(ref1);
@@ -565,22 +519,8 @@ public class Proof {
             return false;
         }
 
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+        if (x != null) return x;
 
         Expression a = expressions.get(ref1);
         Expression b = expressions.get(ref2);
@@ -617,21 +557,8 @@ public class Proof {
             return false;
         }
 
-        List<List<Integer>> boxes = findBoxIndexes(e1);
-
-        int index = findExpressionIndex(e1);
-
-        for (List<Integer> box : boxes) {
-            if (index <= box.get(1) && index >= box.get(0)) {
-                break;
-            }
-            if ((ref1 > box.get(0) && ref1 < box.get(1)) &&
-                    expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                        "that is inside a completed box");
-                return false;
-            }
-        }
+        Boolean x = checkReferenceInScope1(e1, ref1);
+        if (x != null) return x;
 
         Expression expr = expressions.get(ref1);
 
@@ -695,22 +622,8 @@ public class Proof {
             int ref2 = e1.getReferenceLine().get(1) - 1;
             expr1 = expressions.get(ref2);
 
-            List<List<Integer>> boxes = findBoxIndexes(e1);
-
-            int index = findExpressionIndex(e1);
-
-            for (List<Integer> box : boxes) {
-                if (index <= box.get(1) && index >= box.get(0)) {
-                    break;
-                }
-                if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                        || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                        expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-                    errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                            "that is inside a completed box");
-                    return false;
-                }
-            }
+            Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+            if (x != null) return x;
 
         } catch (IndexOutOfBoundsException e) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced " +
@@ -740,22 +653,9 @@ public class Proof {
             int ref2 = e1.getReferenceLine().get(1) - 1;
             expr1 = expressions.get(ref2);
 
-            List<List<Integer>> boxes = findBoxIndexes(e1);
+            Boolean x = checkReferencesInScope2(e1, ref1, ref2);
+            if (x != null) return x;
 
-            int index = findExpressionIndex(e1);
-
-            for (List<Integer> box : boxes) {
-                if (index <= box.get(1) && index >= box.get(0)) {
-                    break;
-                }
-                if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                        || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                        expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)) {
-                    errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                            "that is inside a completed box");
-                    return false;
-                }
-            }
 
         } catch (IndexOutOfBoundsException e) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two valid lines must be referenced " +
@@ -796,28 +696,8 @@ public class Proof {
             int ref5 = e1.getReferenceLine().get(4) - 1;
             expr5 = expressions.get(ref5);
 
-            List<List<Integer>> boxes = findBoxIndexes(e1);
-
-            int index = findExpressionIndex(e1);
-
-            for (List<Integer> box : boxes) {
-                if (index <= box.get(1) && index >= box.get(0)) {
-                    break;
-                }
-                if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
-                        || (ref2 > box.get(0) && ref2 < box.get(1) &&
-                        expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)
-                        || (ref3 > box.get(0) && ref3 < box.get(1) &&
-                        expressions.get(ref3).getRuleType() != RuleType.ASSUMPTION)
-                        || (ref4 > box.get(0) && ref4 < box.get(1) &&
-                        expressions.get(ref4).getRuleType() != RuleType.ASSUMPTION)
-                        || (ref5 > box.get(0) && ref5 < box.get(1) &&
-                        expressions.get(ref5).getRuleType() != RuleType.ASSUMPTION)) {
-                    errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
-                            "that is inside a completed box");
-                    return false;
-                }
-            }
+            Boolean x = checkReferencesScope5(e1, ref1, ref2, ref3, ref4, ref5);
+            if (x != null) return x;
 
         } catch(IndexOutOfBoundsException e) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Five valid lines must " +
@@ -844,8 +724,31 @@ public class Proof {
         return false;
     }
 
+    private Boolean checkReferencesScope5(Expression e1, int ref1, int ref2, int ref3, int ref4, int ref5) {
+        List<List<Integer>> boxes = findBoxIndexes(e1);
 
-    private List<Expression> solvedProof;
+        int index = findExpressionIndex(e1);
+
+        for (List<Integer> box : boxes) {
+            if (index <= box.get(1) && index >= box.get(0)) {
+                break;
+            }
+            if ((ref1 > box.get(0) && ref1 < box.get(1)) && expressions.get(ref1).getRuleType() != RuleType.ASSUMPTION
+                    || (ref2 > box.get(0) && ref2 < box.get(1) &&
+                    expressions.get(ref2).getRuleType() != RuleType.ASSUMPTION)
+                    || (ref3 > box.get(0) && ref3 < box.get(1) &&
+                    expressions.get(ref3).getRuleType() != RuleType.ASSUMPTION)
+                    || (ref4 > box.get(0) && ref4 < box.get(1) &&
+                    expressions.get(ref4).getRuleType() != RuleType.ASSUMPTION)
+                    || (ref5 > box.get(0) && ref5 < box.get(1) &&
+                    expressions.get(ref5).getRuleType() != RuleType.ASSUMPTION)) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
+                        "that is inside a completed box");
+                return false;
+            }
+        }
+        return null;
+    }
 
     public String generateHint(String resultString) throws SyntaxException {
 
