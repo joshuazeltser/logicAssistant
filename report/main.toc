@@ -16,35 +16,35 @@
 \contentsline {subsubsection}{\numberline {3.2.3}Proof}{10}{subsubsection.3.2.3}
 \contentsline {subsubsection}{\numberline {3.2.4}Error Checking}{10}{subsubsection.3.2.4}
 \contentsline {subsubsection}{\numberline {3.2.5}Validity Checking}{11}{subsubsection.3.2.5}
-\contentsline {subsubsection}{\numberline {3.2.6}Hints}{11}{subsubsection.3.2.6}
-\contentsline {subsection}{\numberline {3.3}View}{11}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Controller}{11}{subsection.3.4}
-\contentsline {section}{\numberline {4}Tools}{11}{section.4}
-\contentsline {subsection}{\numberline {4.1}Git}{11}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Github}{11}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Maven}{11}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Intellij}{11}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}JUnit}{11}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}Heroku}{11}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Trello}{11}{subsection.4.7}
-\contentsline {section}{\numberline {5}Project Plan and Management}{11}{section.5}
-\contentsline {subsection}{\numberline {5.1}Schedule}{11}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Iteration 1 - 1/12/2016 $\Rightarrow $ 8/1/2017}{11}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Iteration 2 - 9/1/2017 $\Rightarrow $ 10/2/2017}{12}{subsubsection.5.1.2}
-\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{12}{subsubsection.5.1.3}
-\contentsline {subsubsection}{\numberline {5.1.4}Iteration 4 - 27/3/2017 $\Rightarrow $ 21/4/2017}{12}{subsubsection.5.1.4}
-\contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{13}{subsubsection.5.1.5}
-\contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{13}{subsubsection.5.1.6}
-\contentsline {subsubsection}{\numberline {5.1.7}Iteration 7 - 3/6/2017 $\Rightarrow $ 30/6/2017}{13}{subsubsection.5.1.7}
-\contentsline {subsection}{\numberline {5.2}Programming Methodologies}{14}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Testing}{14}{subsection.5.3}
-\contentsline {section}{\numberline {6}Evaluation}{14}{section.6}
-\contentsline {subsection}{\numberline {6.1}Expected Outcomes}{14}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Testing}{14}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}User Feedback}{14}{subsection.6.3}
-\contentsline {subsection}{\numberline {6.4}Project Plan}{15}{subsection.6.4}
-\contentsline {section}{\numberline {7}Conclusion}{16}{section.7}
-\contentsline {section}{\numberline {A}Natural Deduction Rules}{16}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{16}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Predicate Rules}{16}{subsection.A.2}
-\contentsline {section}{References}{17}{section*.2}
+\contentsline {subsubsection}{\numberline {3.2.6}Hints}{12}{subsubsection.3.2.6}
+\contentsline {subsection}{\numberline {3.3}View}{12}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Controller}{12}{subsection.3.4}
+\contentsline {section}{\numberline {4}Development Tools}{12}{section.4}
+\contentsline {subsection}{\numberline {4.1}Git}{12}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Github}{12}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Maven}{12}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Intellij}{12}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}JUnit}{12}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Heroku}{12}{subsection.4.6}
+\contentsline {section}{\numberline {5}Project Plan and Management}{12}{section.5}
+\contentsline {subsection}{\numberline {5.1}Schedule}{12}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}Iteration 1 - 1/12/2016 $\Rightarrow $ 8/1/2017}{12}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Iteration 2 - 9/1/2017 $\Rightarrow $ 10/2/2017}{13}{subsubsection.5.1.2}
+\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{13}{subsubsection.5.1.3}
+\contentsline {subsubsection}{\numberline {5.1.4}Iteration 4 - 27/3/2017 $\Rightarrow $ 21/4/2017}{13}{subsubsection.5.1.4}
+\contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{14}{subsubsection.5.1.5}
+\contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{14}{subsubsection.5.1.6}
+\contentsline {subsubsection}{\numberline {5.1.7}Iteration 7 - 3/6/2017 $\Rightarrow $ 30/6/2017}{14}{subsubsection.5.1.7}
+\contentsline {subsection}{\numberline {5.2}Programming Methodologies}{15}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Testing}{15}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Trello}{15}{subsection.5.4}
+\contentsline {section}{\numberline {6}Evaluation}{15}{section.6}
+\contentsline {subsection}{\numberline {6.1}Expected Outcomes}{15}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Testing}{15}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}User Feedback}{15}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Project Plan}{16}{subsection.6.4}
+\contentsline {section}{\numberline {7}Conclusion}{17}{section.7}
+\contentsline {section}{\numberline {A}Natural Deduction Rules}{17}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{17}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Predicate Rules}{17}{subsection.A.2}
+\contentsline {section}{References}{18}{section*.2}

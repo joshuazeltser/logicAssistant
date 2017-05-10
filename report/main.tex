@@ -219,6 +219,8 @@ The design methodology that I decided to use for this project is the Model View 
 
 \subsection{Language}
 
+When embarking on a project such as this, the language that is chosen to implement all of the complex functionality is very important.
+
 TODO: why choose Java and Java Spring
 
 \subsection{Model}
@@ -262,11 +264,17 @@ In order to populate a Proof object based on user input, this class reads in exp
 When a user inputs each line of their proof along with the rule used, they also must include the lines that these rules used to create this expression. I therefore must, when reading in this information, check that the lines mentioned are valid and correspond to expressions that can be used for this rule. As a proof is represented by a list of expressions it is easy to traverse the list and find the required expression by line number. Another additional complexity that has to be taken into account here, is the scope that the current expression is in. Whenever an assumption is made a new scope (or box), is opened until it is closed by certain rules being completed. Once this has happened nothing after the scope can use any expressions inside the scope for any further steps of the proof (apart from the result of the scope). This is therefore another check that the code must make when checking whether a rule has been used correctly at certain points of the proof.
 
 \subsubsection{Error Checking}
+One of my main goals when conducting this project, was to make this Natural Deduction solver into a tool to help teach people how to successfully solve these types of problems. I therefore made sure to have very detailed error messages that allow a user to see exactly where they have gone wrong, so that they can learn from any mistakes they may have made. In order to make this as easy as possible every error message that is displayed contains the type of error that has occurred, the line that it was thrown on as well as some extra information about the associated problem. This makes it very easy for the user to immediately understand what they have done wrong. In the case where no errors are thrown the program will display the string "Proof is Valid", alerting the user to their valid proof. 
 
-syntax errors
+The first type of error check that occurs as soon as the parser starts to read the user input is a Syntax Error. This check ensures that each component is placed in a valid part of the expression, so that each expression is valid. For example if two operators are added to an expression in a row, this error will be thrown. Similarly if there are any mismatched brackets in an expression, a syntax error will immediately be thrown. This type of error is fundamental as the syntax of the proof must be completely correct in order for the user to move onto actually solving the proof at hand. This check is done right at the beginning of the parsing process for this very reason.
 
-rule errors
+The other type of error check which helps to make this an educational tool, is a Rule Error. Whenever a proof is entered by a user there is a function in the Proof class which goes through the proof and checks that each line is valid. It does this by going through the list of expressions (the proof), and checks whether the specified rule can be used in the proof at this point. It also checks that the lines referenced by this rule are valid and are not out of scope. If all of the rules used are used correctly then the user is notified that the proof is completely valid. If not the user will be alerted to the line and rule which was incorrectly used, helping them to learn from their mistake. In order to clearly show the user all of the rules that have been broken at the same time, the Proof class contains an error list which slowly builds up as the proof is checked. The list is then displayed after this process is complete. I decided to allow this accumulation of errors so that a user can fix several errors that exist at a time, rather than having to solve several over a long chain of trial and error. These error checks are done after any syntax errors that may cause expressions to be invalid have been remedied.
+
 \subsubsection{Validity Checking}
+Natural Deduction proofs can be quite long, adding an extra difficulty when trying to debug a mistake you have made in the proof. When solving a proof you are given it would be helpful to know that you can solve the proof with the given premises and result at all. It would be pointless to just start solving the proof if you will never reach the resulting expression. This is a major problem faced by even the more experienced solver of these problems.
+
+In order to remedy this potential issue I have added an extra validation stage before the main solver functionality. This stage allows the user to input their desired premises and result, and they will be used to check whether a proof using these expressions is valid. In order to implement this I have used the Truth Table validation method. This works by calculating the truth values of each premise and the result. The functionality then looks to see whether in the case when all of the premises evaluate to true, the result expression also evaluates to true. If this is true for every case of the premises all evaluating to true, then we know that the proof is valid and that there is a possible proof that can be used to solve it. I implemented this check by first creating a TruthTable object, which is represented by a 2D array. When the user submits their premises and result, this array get populated with the possible input values for each proposition, the truth values of each premise in each of the cases, and the truth value of the result in each case. This object then has functionality that checks that all of the truth values are true in the required cases, and if so designates this proof as valid. This whole mechanism will save a user a lot of time by allowing them to see immediately whether a proof they are about to try to solve is solvable.
+
 \subsubsection{Hints}
 
 \subsection{View}
@@ -276,7 +284,7 @@ rule errors
 
 
 
-\section{Tools}
+\section{Development Tools}
 
 \subsection{Git}
 
@@ -289,9 +297,6 @@ rule errors
 \subsection{JUnit}
 
 \subsection{Heroku}
-
-\subsection{Trello}
-
 
 
 
@@ -344,6 +349,7 @@ From the start of this iteration I want to have stopped adding any new features.
 
 \subsection{Testing}
 
+\subsection{Trello}
 
 \section{Evaluation}
 
