@@ -217,11 +217,6 @@ In Predicate Logic similar Natural Deduction proofs can be created. These proofs
 
 The design methodology that I decided to use for this project is the Model View Controller idea. This entails the separation of all the front end website components from the back-end where the actual required functionality of the system is created. These two areas are then controlled by various controller classes, which bring all of these components together to create the finished application. I chose this methodology as it makes the entire system easier to understand and work on. If I want to add an extra feature to this application I can just update the model part of the code base and then change the front-end view code. This is much simpler than having all of the code together in one large code base. This methodology therefore made the development of this application much easier.
 
-\subsection{Language}
-
-When embarking on a project such as this, the language that is chosen to implement all of the complex functionality is very important.
-
-TODO: why choose Java and Java Spring
 
 \subsection{Model}
 In order to create the functionality required for me to meet my objectives in this project, I had to come up with a fitting design that allowed lots of different tasks to work together. This often meant creating a Java Object with a sole use of solving one of the problems I set out to achieve. I tried to separate the different parts of my code base into obvious classes which would make the code easy to read for any third party.
@@ -286,15 +281,31 @@ In order to remedy this potential issue I have added an extra validation stage b
 
 \section{Development Tools}
 
-\subsection{Git}
+\subsection{Java}
 
-\subsection{Github}
+When embarking on a project such as this, the language that is chosen to implement all of the complex functionality is very important. In particular the language that is chosen must be able to be easily compatible with front-end infrastructures. Lots of languages also have extra features such as large testing frameworks and advanced IDE's that would make the whole process of making an application much easier. Also once a language has been chosen it would be a lot of work to then transfer to another language if I changed my mind. I therefore spent quite a long period of time deciding which language was best for this project.
+
+The first language that I considered using was Prolog. Prolog is already a language based on logical systems, and had I used it, representing logical statements would have been much simpler. I also found several user interface libraries that use Prolog itself to create a front-end website for applications. Based on these finds I could have built this application using Prolog. The main drawback for me if I had used this language, is that I am not as familiar at using it as other languages, meaning that I would have to waste a lot of time learning the language first before actually starting the application. Also, some of the more advanced features that I wanted to add, such as hints, would have been quite hard to implement using this language. I therefore in the end decided to look at other languages to use for this project. 
+
+The language I ended up settling on was Java. I chose to use Java as the main language for this project for a number of reasons. Firstly, Java is the language that I am most familiar with and I am able to use most of its advanced features and large array of libraries. This made it very easy for to create the representation of Proofs, as well as some of the more advanced functionality for this project. Another reason that I chose to use Java is the number of libraries and data structures it offers. I was able to use advanced lists and hashMaps throughout the code in order to ensure that all of the required functionality worked as efficiently as possible. Other languages like Prolog do not have these resources. On top of all of this, there are lots of tips and references available for the Java language for me to use whenever I needed them. The only drawback that I found of using Java, is that it meant writing quite a large amount of code to create simple functionality, which can be quite time consuming. However due to my knowledge of the language this did not hinder my progress too much. 
+
+
+\subsection{Java Spring}
+
+\subsection{JUnit}
+
+When carrying out large scale software projects such as this, one of the most important tasks that must be carried out is testing. There is no easy way to be able to tell whether your code is completing the task you created for without tests that put your code in realistic scenarios and see how they function. This is especially true for edge cases which in reality may never happen, but there is always the possibility. As I used Java for this project it was natural to use the very powerful JUnit test suite. JUnit allowed me to carry out individual tests on almost all of the functionality that I have created in the back end of the application. Through the use of Test Driven Development (see \ref{TDD}), I was able to use the test suite itself to help me work out how to implement some of the more complicated code. This also allowed me to keep track and ensure that any new code I added wasn't breaking any other parts of the code base. Using the JUnit assertTrue and assertFalse functionality, in each test case I was able to compare the computed result with the expected one, in order to ensure everything was working correctly. JUnit made this a smooth and easy process saving me a lot of time that I could dedicate to adding more features to the application.
 
 \subsection{Maven}
 
+This project involved me using a combination of different technologies in order to create the finished product. In order for the various software to work together effectively I decided to use Maven. Maven allowed me to bundle together the Java Spring capabilities with the Java code and JUnit tests to create an efficiently functioning system. I was able to add dependencies for each of the tools to the Maven project, and through using the standard Maven directory set up, I was able to also add my front end code to this package. By using  
+
 \subsection{Intellij}
 
-\subsection{JUnit}
+\subsection{Git}
+
+
+mention Github within
 
 \subsection{Heroku}
 
@@ -346,6 +357,7 @@ In this iteration I would also like to spend time adding some other extensions s
 From the start of this iteration I want to have stopped adding any new features. I will go through my code, tidy it up, add comments and ensure that all unnecessary code is removed. I will also look through and try to solve any remaining bugs that I have left in my code. At the same time I will complete my report noting how I carried out my project. I want to allow as much time as possible to do this, to make sure that I can create a high level and well written report. I will also use this iteration to create my presentation of the project making sure it looks professional and is able to inform the audience of exactly what my project can do.
 
 \subsection{Programming Methodologies}
+\subsubsection{Test Driven Development} \label{TDD}
 
 \subsection{Testing}
 
