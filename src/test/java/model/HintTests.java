@@ -1089,7 +1089,7 @@ public class HintTests {
         expr2.addToExpression(str2);
         proof.addExpression(expr2);
 
-        System.out.println(proof.generateHint(result));
+//        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
         String str3 = "A";
