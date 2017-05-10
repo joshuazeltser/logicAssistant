@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -978,5 +979,114 @@ public class RuleTests {
         assertTrue(proof.isProofValid());
     }
 
+    @Test
+    public void cannotUseExpressionInBox() throws SyntaxException {
+        String str = "A -> C";
+        String str1 = "C -> B";
+        String str2 = "A";
+        String str3 = "C";
+        String str4 = "B";
+        String str5 = "A -> B";
+        String str6 = "(A -> B) ^ C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine("1");
+        expr3.addReferenceLine("3");
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine("2");
+        expr4.addReferenceLine("4");
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addReferenceLine("3");
+        expr5.addReferenceLine("5");
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.AND_INTRO);
+        expr6.addReferenceLine("4");
+        expr6.addReferenceLine("6");
+        expr6.addToExpression(str6);
+
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+
+        assertFalse(proof.isProofValid());
+    }
+
+    @Test
+    public void canUseExpressionOutsideBox() throws SyntaxException {
+        String str = "A -> C";
+        String str1 = "C -> B";
+        String str7 = "C";
+        String str2 = "A";
+        String str3 = "C";
+        String str4 = "B";
+        String str5 = "A -> B";
+        String str6 = "(A -> B) ^ C";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.GIVEN);
+        expr1.addToExpression(str1);
+
+        Expression expr7 = new Expression(RuleType.GIVEN);
+        expr7.addToExpression(str7);
+
+        Expression expr2 = new Expression(RuleType.ASSUMPTION);
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
+        expr3.addReferenceLine("1");
+        expr3.addReferenceLine("4");
+        expr3.addToExpression(str3);
+
+        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
+        expr4.addReferenceLine("2");
+        expr4.addReferenceLine("5");
+        expr4.addToExpression(str4);
+
+        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
+        expr5.addReferenceLine("4");
+        expr5.addReferenceLine("6");
+        expr5.addToExpression(str5);
+
+        Expression expr6 = new Expression(RuleType.AND_INTRO);
+        expr6.addReferenceLine("3");
+        expr6.addReferenceLine("7");
+        expr6.addToExpression(str6);
+
+
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr7);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+
+        proof.addExpression(expr4);
+        proof.addExpression(expr5);
+        proof.addExpression(expr6);
+
+        assertTrue(proof.isProofValid());
+    }
 
 }

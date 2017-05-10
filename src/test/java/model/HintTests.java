@@ -1467,4 +1467,6 @@ public class HintTests {
 //        System.out.println(proof.generateHint(result));
 //        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
+
+    //TODO: remove multiple and_elim and only_elim in more cases
 }

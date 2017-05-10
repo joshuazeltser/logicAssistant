@@ -153,6 +153,7 @@ public class Proof {
             }
 //            expressions.remove(i);
         }
+        System.out.println(errors);
         return errors.isEmpty();
     }
 
@@ -179,6 +180,28 @@ public class Proof {
         return expressions.toString();
     }
 
+    private List<List<Integer>> findBoxIndexes() {
+        List<List<Integer>> boxes = new LinkedList<>();
+        for (int j = 0; j < expressions.size(); j++) {
+
+            if (expressions.get(j).getRuleType() == RuleType.ASSUMPTION) {
+                List<Integer> box = new LinkedList<>();
+                box.add(j);
+                for (int i = j+1; i < expressions.size(); i++) {
+                    if (expressions.get(i).getRuleType() == RuleType.IMPLIES_INTRO
+                            || expressions.get(i).getRuleType() == RuleType.OR_ELIM
+                            || expressions.get(i).getRuleType() == RuleType.NOT_ELIM ) {
+                        box.add(i);
+                        boxes.add(box);
+                        continue;
+                    }
+                }
+
+            }
+        }
+        return boxes;
+    }
+
     public boolean isAndIntroValid(Expression e1) {
 
         if (!e1.contains(new Operator("AND",OperatorType.AND))) {
@@ -201,6 +224,17 @@ public class Proof {
             return false;
         }
 
+        List<List<Integer>> boxes = findBoxIndexes();
+
+        for (List<Integer> box : boxes) {
+            if ((ref1 >= box.get(0) && ref1 < box.get(1)) || (ref2 >= box.get(0) && ref2 < box.get(1))) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: You cannot reference a line " +
+                        "that is inside a completed box");
+                return false;
+            }
+        }
+
+
         if (!expressions.get(ref1).equals(lhs) && !expressions.get(ref1).equals(rhs)) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
                     "this And Introduction");
@@ -215,6 +249,8 @@ public class Proof {
 
         return true;
     }
+
+
 
     public boolean isAndElimValid(Expression e1) {
 
