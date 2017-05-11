@@ -1496,4 +1496,8 @@ public class Proof {
         this.resultString = resultString;
     }
 
+    public String printTest() {
+        return "Hello World";
+    }
+
 }
