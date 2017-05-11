@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PropositionalController {
 
-	    @GetMapping("/propositional")
+	    @GetMapping("/")
 		public String expressionForm(Model model) {
 			model.addAttribute("proof", new Proof());
 			return "propositional";
 		}
 
-		@PostMapping("/propositional")
+		@PostMapping("/")
 		public String expressionSubmit(@ModelAttribute Proof proof) {
 	    	return "propositional";
 		}

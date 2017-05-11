@@ -54,10 +54,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/validity">Propositional</a>
-                </li>
-                <li>
-                    <a href="/" cols="20" rows="20">Predicate</a>
+                    <a href="/validity">Validity Checker</a>
                 </li>
                 <li>
                     <a href="/" cols="20" rows="20">User Guide</a>
@@ -112,7 +109,7 @@
         </table>
 
         <p></p>
-        <a href="/propositional" id="submit" class="btn btn-success" type="submit">Skip Validity Check</a>
+        <a href="/" id="submit" class="btn btn-success" type="submit">Back to Proof Checker</a>
 
 
     </div>
@@ -148,12 +145,7 @@
         <div id="error" class="panel panel-default">
             <div class="panel-body">
                 <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
-                <script>
-                    var x = document.getElementById('errorBox');
-                    if (x.value  == 'Proof is Valid' ) {
-                        window.location.replace('/propositional');
-                    }
-                </script>
+
             </div>
 
         </div>
