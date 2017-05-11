@@ -199,12 +199,18 @@
 
                     <script>
                         function call_function() {
-                            document.getElementById('Text1').setAttribute("th:text", "${proof.printTest()}");
-                            /*<![CDATA[*/
-                            for (var i = 0; i < 5; i++) {
+                            var proof = document.getElementById('Text1');
+                            var proofArray = proof.value.split("\n");
 
-                                alert(i);
+                            proof.value = "";
+                            /*<![CDATA[*/
+                            for (var i = 0; i < proofArray.length; i++) {
+
+                                proof.value = proof.value + '\n\t' + proofArray[i];
+//                                alert(proofArray[i]);
+
                             }
+
                             /*]]>*/
                         }
                     </script>
