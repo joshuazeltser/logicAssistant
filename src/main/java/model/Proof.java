@@ -74,15 +74,27 @@ public class Proof {
             for (int i = 0; i < expr.length; i++) {
                 String toAdd = "";
                 for (int j = 0; j < expr[i].length(); j++) {
-                    if (expr[i].charAt(j) != '\t') {
+                    if (expr[i].charAt(j) != '-') {
+                        if (expr[i].charAt(j) == ' ' && expr[i].charAt(j+1) == ' ') {
+                           for (int k = j+2; k < expr[i].length(); k++) {
+                               toAdd += expr[i].charAt(k);
+                           }
+                           break;
+                        }
                         toAdd += expr[i].charAt(j);
+
+                    } else {
+                        if (j < expr[i].length()-1) {
+                            if (expr[i].charAt(j + 1) == '>') {
+                                toAdd += expr[i].charAt(j);
+                            }
+                        }
                     }
 
                 }
                 expr[i] = toAdd;
             }
-
-
+            
             for (int i = 0; i < expr.length; i++) {
                 // split rules by space
                 String[] components = exprRule[i].split(" ");

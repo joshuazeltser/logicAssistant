@@ -226,27 +226,35 @@
                                 }
 //
                                 if (rulesArray[i].indexOf("Implies-Intro") >= 0
-                                    || rulesArray[i].indexOf("Not-Elim") >= 0
                                     || rulesArray[i].indexOf("Or-Elim") >= 0) {
                                     indentArray.pop();
-
                                 }
 
 
                                 if (indentArray.length > 0) {
+                                    var added = false;
                                     for (var j = 0; j < indentArray.length; j++) {
-                                        if (proofArray[i].charAt(j) == '\t') {
+                                        if (proofArray[i].charAt(j) == '-' || proofArray[i].charAt(j) == ' ') {
                                             continue;
                                         }
-                                        proof.value = proof.value + '\t';
-
+                                        proof.value = proof.value + '----';
+                                        added = true;
                                     }
-                                    proof.value = proof.value + proofArray[i];
+                                    if (added) {
+                                        proof.value = proof.value + '  ' + proofArray[i];
+                                    } else {
+                                        proof.value = proof.value + proofArray[i];
+                                    }
+                                    if (rulesArray[i].indexOf("Not-Elim") >= 0) {
+                                        indentArray.pop();
+                                    }
                                 } else {
                                     proof.value = proof.value + proofArray[i];
                                 }
 
                             }
+
+
 
                             /*]]>*/
                         }
@@ -254,7 +262,7 @@
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center">Rule</p>
-                    <textarea oninput='call_function()' onclick="call_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
+                    <textarea onclick="call_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
 			</textarea>
                     <style>
                         textarea {
@@ -280,7 +288,7 @@
                 </div>
 
                     <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                    <button href="/" type="reset" class="btn btn-primary">Reset</button>
+                    <a id="resetButton" href="/" type="reset" class="btn btn-primary">Reset</a>
                 </center>
                 <p></p>
                 <div id="error" class="panel panel-default">
@@ -293,6 +301,8 @@
 
 
             </form>
+
+
         </center>
     </div>
 
