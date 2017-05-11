@@ -1468,5 +1468,42 @@ public class HintTests {
 //        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
 
+    @Test
+    public void hintTest15() throws SyntaxException {
+
+        String result = "A -> A | C";
+        proof.setResultString(result);
+
+//        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
+
+        String str = "A";
+        Expression expr = new Expression(RuleType.ASSUMPTION);
+        expr.addToExpression(str);
+        proof.addExpression(expr);
+
+        //        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Hint: OR_INTRO"));
+
+        String str1 = "A | C";
+        Expression expr1 = new Expression(RuleType.OR_INTRO);
+        expr1.addToExpression(str1);
+        expr1.addReferenceLine("1");
+        proof.addExpression(expr1);
+
+        //        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
+
+        String str2 = "A -> A | C";
+        Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
+        expr2.addToExpression(str2);
+        expr2.addReferenceLine("1");
+        expr2.addReferenceLine("2");
+        proof.addExpression(expr2);
+
+        //        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
+
+    }
     //TODO: remove multiple and_elim and only_elim in more cases
 }

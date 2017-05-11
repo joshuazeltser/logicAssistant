@@ -765,6 +765,12 @@ public class Proof {
                     if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
+                    System.out.println(solvedProof);
+                    int index = 0;
+
+                    if (expressions.isEmpty()) {
+                        return "Hint: " + solvedProof.get(0).getRuleType().toString();
+                    }
 
                     if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size()-1))) {
                         return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
@@ -1441,6 +1447,10 @@ public class Proof {
     }
 
     private boolean checkIfExpressionsReached(Expression current) throws SyntaxException {
+
+        if (list_proof.isEmpty()) {
+            return false;
+        }
 
         for (int i = 0; i < list_proof.size(); i++) {
 
