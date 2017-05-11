@@ -194,20 +194,57 @@
                 <div class="inline-div">
                     <p class="lead" align="center">Proof</p>
 
-                    <textarea onchange='call_function()' class="lined" id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
-			{submit.disabled = false} else {submit.disabled = true}" th:inline="text">[[${resultString}]]</textarea>
+                    <textarea class="lined" id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
+			{submit.disabled = false} else {submit.disabled = true}" th:inline="text"></textarea>
 
                     <script>
+
+
+
                         function call_function() {
                             var proof = document.getElementById('Text1');
+                            var rules = document.getElementById('Text2');
+
                             var proofArray = proof.value.split("\n");
+                            var rulesArray = rules.value.split("\n");
 
                             proof.value = "";
+
+                            var indentArray = new Array();
+
                             /*<![CDATA[*/
                             for (var i = 0; i < proofArray.length; i++) {
+                                if (i > 0) {
+                                    proof.value = proof.value + '\n';
 
-                                proof.value = proof.value + '\n\t' + proofArray[i];
-//                                alert(proofArray[i]);
+                                }
+
+
+                                if (rulesArray[i] === "ASSUMPTION") {
+////                                    indentArray.add(true);
+                                    indentArray.push(1)
+                                }
+//
+                                if (rulesArray[i].indexOf("Implies-Intro") >= 0
+                                    || rulesArray[i].indexOf("Not-Elim") >= 0
+                                    || rulesArray[i].indexOf("Or-Elim") >= 0) {
+                                    indentArray.pop();
+
+                                }
+
+
+                                if (indentArray.length > 0) {
+                                    for (var j = 0; j < indentArray.length; j++) {
+                                        if (proofArray[i].charAt(j) == '\t') {
+                                            continue;
+                                        }
+                                        proof.value = proof.value + '\t';
+
+                                    }
+                                    proof.value = proof.value + proofArray[i];
+                                } else {
+                                    proof.value = proof.value + proofArray[i];
+                                }
 
                             }
 
@@ -217,7 +254,7 @@
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center">Rule</p>
-                    <textarea id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
+                    <textarea oninput='call_function()' onclick="call_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
 			</textarea>
                     <style>
                         textarea {
@@ -243,7 +280,7 @@
                 </div>
 
                     <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                    <button href="/" type="submit" class="btn btn-primary">Reset</button>
+                    <button href="/" type="reset" class="btn btn-primary">Reset</button>
                 </center>
                 <p></p>
                 <div id="error" class="panel panel-default">
@@ -276,6 +313,8 @@
                     <button id="b11" type="button" class="btn btn-primary" value="Not-Intro (?)">&not; Introduction</button>
                     <button id="b12" type="button" class="btn btn-primary" value="Not-Elim (?)">&not; Eliminiation</button>
                     <button id="b13" type="button" class="btn btn-primary" value="DoubleNot-Elim (?)">&not;&not; Elimination</button>
+                    <button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>
+
                 </span>
         </center>
         <script type="text/javascript">
@@ -296,43 +335,61 @@
 
             mybutton1.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton2.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton3.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton4.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton5.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton6.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton7.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton8.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton9.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton10.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton11.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton12.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
             mybutton13.onclick = function(){
                 mytextbox2.value = mytextbox2.value  + this.value + '\n';
+                
             }
+
+            var mybutton14 = document.getElementById('b14');
+            mybutton14.onclick = function() {
+                $("#Text2").click();
+            };
 
 
         </script>
