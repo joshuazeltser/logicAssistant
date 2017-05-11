@@ -293,7 +293,7 @@
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
-                        <output th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
+                        <output id="errorBox" name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
                         <output th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
                     </div>
 
