@@ -762,7 +762,7 @@ public class Proof {
 
             if (isProofValid()) {
                 if (solvedProof != null) {
-                    if (solvedProof.size() == expressions.size()) {
+                    if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
 
