@@ -72,7 +72,7 @@ public class FrontEndTests  {
         refreshElements();
 //        refreshValidityElements();
     }
-
+@Ignore
     private void refreshElements() {
         int attempts = 0;
         while  (attempts < 5) {
