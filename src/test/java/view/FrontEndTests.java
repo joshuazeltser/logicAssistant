@@ -72,7 +72,7 @@ public class FrontEndTests  {
         refreshElements();
 //        refreshValidityElements();
     }
-@Ignore
+
     private void refreshElements() {
         int attempts = 0;
         while  (attempts < 5) {
@@ -109,6 +109,7 @@ public class FrontEndTests  {
     }
 
 
+@Ignore
     @Test
     public void simpleProofTest() throws InterruptedException {
 
