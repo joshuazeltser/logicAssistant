@@ -137,12 +137,12 @@
         <p></p>
         <div class="input-group">
             <p class="lead" align="center">Result</p>
-            <textarea class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
+            <textarea id="resultBox" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
 
         </div>
         <p></p>
         <div>
-            <input id="submit2" class="btn btn-primary" type="submit" value="Check Validity" />
+            <input id="submit2" name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
         </div>
         <p></p>
         <div id="error" class="panel panel-default">

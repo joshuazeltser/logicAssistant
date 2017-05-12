@@ -280,9 +280,9 @@
 
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
+                        <input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
                         <span class="input-group-btn">
-                            <button class="btn btn-warning" type="submit">Hint</button>
+                            <button id="hintButton" class="btn btn-warning" type="submit">Hint</button>
                      </span>
                     </div>
                 </div>
@@ -294,7 +294,7 @@
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
                         <output id="errorBox" name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
-                        <output th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
+                        <output id="hintBox" th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
                     </div>
 
                 </div>
