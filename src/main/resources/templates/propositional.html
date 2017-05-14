@@ -198,7 +198,14 @@
             <form id="proof" action="/"  th:object="${proof}" method="post">
 
                 <div class="inline-div">
-                    <p class="lead" align="center">Proof</p>
+                    <p class="lead" align="center">Proof
+                    <i class="icon-info-sign" data-toggle="tooltip" title="first tooltip" id='example'></i>
+                    <script>
+                        $(document).ready(function() {
+                            $('#example').tooltip();
+                        });
+                    </script>
+                    </p>
 
                     <textarea class="lined" id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
 			{submit.disabled = false} else {submit.disabled = true}" th:inline="text"></textarea>
@@ -227,10 +234,9 @@
 
 
                                 if (rulesArray[i] === "ASSUMPTION") {
-////                                    indentArray.add(true);
                                     indentArray.push(1)
                                 }
-//
+
                                 if (rulesArray[i].indexOf("Implies-Intro") >= 0
                                     || rulesArray[i].indexOf("Or-Elim") >= 0) {
                                     indentArray.pop();
@@ -282,30 +288,18 @@
 
                <p></p>
 
+            <div id="options" class="col-md-10">
+            <style>
+                #options {
+                    /*position: absolute;*/
+                    left: 50%;
+                    margin-left: -305px;
+                }
+            </style>
 
-                <!--<div class="col-lg-6">-->
-                    <!--<div class="input-group">-->
-                        <!--<input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>-->
-                        <!--<div class="input-group-btn">-->
-                            <!---->
-                           <!---->
-                             <!--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                            <!--<span class="caret"></span>-->
-                            <!--<span class="sr-only">Toggle Dropdown</span>-->
-                        <!--</button>-->
-                            <!--<ul class="dropdown-menu">-->
-                                <!--<li></li>-->
-                            <!--<li><a id="validityCheck" type="button" href="/validity"  value="Check">-->
-                                <!--Check Proof Validity</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li><a href="#">Save Proof As</a></li>-->
-                        <!--</ul>-->
-
-                     <!--</div>-->
-                    <!--</div>-->
-
-
+                <center>
                 <div class="input-group br">
+
         <span class="input-group-btn">
 
             <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
@@ -338,33 +332,11 @@
                     <li><a  href="#">Save Proof As</a></li>
                 </ul>
             </div>
+
         </span>
 
                 </div>
-
-                <!--<style>-->
-                    <!--input {-->
-                        <!--width: 150px;-->
-                    <!--}-->
-
-                <!--</style>-->
-                <!--</div>-->
-
-
-
-                    <!--&lt;!&ndash; Split button &ndash;&gt;-->
-                    <!--<div class="btn-group">-->
-                        <!---->
-                        <!--<button id="resetButton" href="/" type="reset">Reset</button>-->
-
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a id="validityCheck" type="button" href="/validity"  value="Check">-->
-                                <!--Check Proof Validity</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li><a href="#">Save Proof As</a></li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-
+        </center>
 
                 <p></p>
                 <div id="error" class="panel panel-default">
@@ -374,8 +346,7 @@
                     </div>
 
                 </div>
-
-
+                </div>
 
             </form>
 
