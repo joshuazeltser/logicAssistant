@@ -26,8 +26,6 @@ public class Proof {
 
     private List<Expression> list_goals;
     private List<Expression> solvedProof;
-    private boolean hintsOn;
-    //    private List<List<Integer>> boxes;
 
 
     public Proof() {
@@ -39,7 +37,6 @@ public class Proof {
         resultExpr = new Expression();
         list_goals = new LinkedList<>();
         list_proof = new LinkedList<>();
-        hintsOn = true;
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
@@ -176,24 +173,7 @@ public class Proof {
             }
         }
     }
-
-    public String frontEndFunctionality(String proof, String rules, String resultString) throws SyntaxException {
-        if (hintsOn) {
-            return generateHint(resultString);
-
-        } else  {
-            return frontEndFunctionality(proof,rules);
-        }
-    }
-
-    public void hintSwitch() {
-        if (hintsOn) {
-            hintsOn = false;
-        } else {
-            hintsOn = true;
-        }
-    }
-
+    
     public boolean isProofValid() throws SyntaxException {
 
 
