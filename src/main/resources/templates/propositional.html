@@ -21,6 +21,8 @@
     <link href="../static/css/normalize.css" th:href="@{/css/normalize.css}" rel="stylesheet"/>
 
 
+    <script src="../static/js/tether.min.js"></script>
+
     <!-- jQuery -->
     <script src="webjars/jquery/3.1.1-1/jquery.js"></script>
     <script src="webjars/jquery/3.1.1-1/jquery.min.js"></script>
@@ -30,7 +32,11 @@
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
     <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
 
-
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 
 
     <script type="text/javascript">
@@ -82,8 +88,8 @@
     <h1 class="jumbotron" align="center">LogicAssistant</h1>
 
     <div class="col-md-2">
-        <p class="lead" align="center">Key</p>
-        <table class="table">
+        <p class="lead" align="center" data-toggle="tooltip" data-placement="top" title="Operator Key">Key</p>
+        <table class="table"  >
             <thead>
             <tr>
                 <th>Symbol</th>
@@ -128,12 +134,13 @@
 
         <p class="lead" align="center">Upload Proof</p>
 
-        <input type="file" id="files" name="file" />
+        <input type="file" id="files" name="file"/>
 
         <p></p>
         <center>
             <span class="readBytesButtons">
-                <button id="bfile" type="button" class="btn btn-primary" value="Upload">Upload</button>
+                <button id="bfile" type="button" class="btn btn-primary" value="Upload"
+                        data-toggle="tooltip" data-placement="bottom" title="Upload your chosen file">Upload</button>
             </span>
         </center>
         <script>
@@ -195,16 +202,15 @@
 
     <div class="col-md-8">
         <center>
-            <form id="proof" action="/"  th:object="${proof}" method="post">
+            <form id="proof" onsubmit="postSubmit()" th:object="${proof}" method="post">
 
                 <div class="inline-div">
-                    <p class="lead" align="center">Proof
-                    <i class="icon-info-sign" data-toggle="tooltip" title="first tooltip" id='example'></i>
-                    <script>
-                        $(document).ready(function() {
-                            $('#example').tooltip();
+                    <p class="lead" align="center" data-original-title="Type your proof here">Proof
+                        <script>
+                        $(".lead").tooltip({
+                            placement: "top"
                         });
-                    </script>
+                        </script>
                     </p>
 
                     <textarea class="lined" id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
@@ -273,7 +279,12 @@
                     </script>
                 </div>
                 <div class="inline-div">
-                    <p class="lead" align="center">Rule</p>
+                    <p class="lead" align="center" data-original-title="Type your rules here">Rule</p>
+                    <script>
+                        $(".lead").tooltip({
+                            placement: "top"
+                        });
+                    </script>
                     <textarea onclick="call_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
 			</textarea>
                     <style>
@@ -303,9 +314,10 @@
         <span class="input-group-btn">
 
             <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-            <button id="hintButton" onclick="changeColour()" class="btn btn-primary" type="button">Hint</button>
+            <button id="hintButton" onclick="changeColour()" class="btn btn-primary" type="button"
+                    data-toggle="tooltip" data-placement="top" title="Turn hints on/off">Hint</button>
             <script>
-                var hint = document.getElementById('hintButton');
+
 
                 function changeColour() {
                     if (hint.getAttribute('class') == 'btn btn-primary') {
@@ -316,15 +328,24 @@
                 }
             </script>
 
+
+
+
+
         </span>
                     <input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
                     <span class="input-group-btn">
             <div class="btn-group">
 
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-original-title="Type your rules here">
     <span class="caret"></span>
 
     <span class="sr-only">Toggle Dropdown</span>
+                    <script>
+                        $(".btn btn-primary dropdown-toggle").tooltip({
+                            placement: "top"
+                        });
+                    </script>
   </button>
                 <ul class="dropdown-menu">
                     <li><a id="resetButton"  href="/" type="reset">Reset </a></li>
@@ -341,9 +362,38 @@
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
-                        <output id="errorBox" name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
-                        <output id="hintBox" th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
+                        <script>
+                            var hint = document.getElementById('hintButton');
+
+                            function hideHelper() {
+                                if (hint.getAttribute('class') == 'btn btn-primary') {
+                                    $("#hintBox").hide();
+                                    $("#errorBox").show();
+                                } else {
+                                    $("#hintBox").show();
+                                    $("#errorBox").hide();
+                                }
+                            }
+
+
+
+                            function postSubmit() {
+//                                e.preventDefault();
+//                                this.submit();
+
+                                setTimeout(hideHelper()
+                                    , 100);
+                            };
+
+//                            window.onload = postSubmit();
+
+                        </script>
+
+                        <output id="errorBox"  name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
+                        <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
+
                     </div>
+
 
                 </div>
                 </div>
@@ -355,9 +405,9 @@
     </div>
 
     <div class="col-md-2">
-        <p class="lead" align="center">Rule Selection</p>
+        <p class="lead" align="center" data-toggle="tooltip" data-placement="top" title="Choose a rule">Rule Selection</p>
         <center>
-                <span id='buttonGroup' align="center" class="btn-group-vertical">
+                <span id='buttonGroup' align="center" class="btn-group-vertical" >
                     <button id="b1" type="button" class="btn btn-primary" value="GIVEN">GIVEN</button>
                     <button id="b2" type="button" class="btn btn-primary" value="ASSUMPTION">ASSUMPTION</button>
                     <button id="b3" type="button" class="btn btn-primary" value="And-Intro (?)">&and; Introduction</button>
