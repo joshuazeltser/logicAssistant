@@ -1089,4 +1089,34 @@ public class RuleTests {
         assertTrue(proof.isProofValid());
     }
 
+    @Test
+    public void tickRuleTest1() throws SyntaxException {
+        String str = "B";
+        String str1 = "A";
+        String str2 = "B";
+        String str3 = "A -> B";
+
+        Expression expr = new Expression(RuleType.GIVEN);
+        expr.addToExpression(str);
+
+        Expression expr1 = new Expression(RuleType.ASSUMPTION);
+        expr1.addToExpression(str1);
+
+        Expression expr2 = new Expression(RuleType.TICK);
+        expr2.addReferenceLine("1");
+        expr2.addToExpression(str2);
+
+        Expression expr3 = new Expression(RuleType.IMPLIES_INTRO);
+        expr3.addReferenceLine("2");
+        expr3.addReferenceLine("3");
+        expr3.addToExpression(str3);
+
+        proof.addExpression(expr);
+        proof.addExpression(expr1);
+        proof.addExpression(expr2);
+        proof.addExpression(expr3);
+
+        assertTrue(proof.isProofValid());
+    }
+
 }

@@ -24,6 +24,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 @SpringApplicationConfiguration(classes = Component.Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
+@Ignore
 public class FrontEndTests  {
 
     @Value("${local.server.port}")
@@ -122,7 +123,6 @@ public class FrontEndTests  {
 
     }
 
-    @Ignore
     @Test
     public void complexProofTest1() throws InterruptedException {
 
@@ -151,8 +151,6 @@ public class FrontEndTests  {
         assertTrue(errorBox.getText().equals("Proof is Valid"));
     }
 
-    @Ignore
-
     @Test
     public void complexProofTest2() throws InterruptedException {
 
@@ -178,7 +176,6 @@ public class FrontEndTests  {
 
         assertTrue(errorBox.getText().equals("Proof is Valid"));
     }
-    @Ignore
 
     @Test
     public void checkIndentationButton() throws InterruptedException {
@@ -214,7 +211,6 @@ public class FrontEndTests  {
                 "!!(A | !A)\n" +
                 "A | !A\n"));
     }
-    @Ignore
 
     @Test
     public void checkIndentationButton2() throws InterruptedException {
@@ -247,7 +243,6 @@ public class FrontEndTests  {
                 "----  B -> C\n" +
                 "A -> (B -> C)"));
     }
-    @Ignore
 
     @Test
     public void syntaxErrorTest1() throws InterruptedException {
@@ -270,7 +265,6 @@ public class FrontEndTests  {
         assertTrue(errorBox.getText().equals("LINE 1 - Syntax Error: You cannot use | operator at " +
                 "this part of an expression"));
     }
-    @Ignore
 
     @Test
     public void syntaxErrorTest2() throws InterruptedException {
@@ -296,7 +290,6 @@ public class FrontEndTests  {
 
         assertTrue(errorBox.getText().equals("LINE 4 - Syntax Error: Mismatched brackets"));
     }
-    @Ignore
 
     @Test
     public void ruleErrorTest1() throws InterruptedException {
@@ -323,7 +316,6 @@ public class FrontEndTests  {
         assertTrue(errorBox.getText().equals("LINE 7 - RULE ERROR: You cannot reference a line that is i" +
                 "nside a completed box\nLINE 6 - RULE ERROR: This reference cannot be used for Implies Elimination"));
     }
-    @Ignore
 
     @Test
     public void ruleErrorTest2() throws InterruptedException {
@@ -352,7 +344,6 @@ public class FrontEndTests  {
         assertTrue(errorBox.getText().equals("LINE 7 - RULE ERROR: Two valid lines must be referenced " +
                 "to use this rule"));
     }
-    @Ignore
 
     @Test
     public void simpleHintTest() throws InterruptedException {
@@ -368,7 +359,6 @@ public class FrontEndTests  {
 
         assertTrue(hintBox.getText().equals("Hint: AND_ELIM"));
     }
-    @Ignore
 
     @Test
     public void complexHintsTest() throws InterruptedException {
@@ -453,7 +443,6 @@ public class FrontEndTests  {
 
         assertTrue(hintBox.getText().equals("Proof already successfully solved"));
     }
-    @Ignore
 
     @Test
     public void checkValidityTest1() throws InterruptedException {
@@ -474,7 +463,6 @@ public class FrontEndTests  {
 
         assertTrue(validityOutpurBox.getText().equals("Proof is Valid"));
     }
-    @Ignore
 
     @Test
     public void checkValidityTest2() throws InterruptedException {

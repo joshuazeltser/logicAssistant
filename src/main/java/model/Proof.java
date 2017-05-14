@@ -26,7 +26,7 @@ public class Proof {
 
     private List<Expression> list_goals;
     private List<Expression> solvedProof;
-
+//    private List<List<Integer>> boxes;
 
 
     public Proof() {
@@ -109,13 +109,24 @@ public class Proof {
                    return;
                 }
 
-                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
-                    String comps = removeBracketsFromString(components[1]);
-                    String[] lines = comps.split(",");
-                    for (int j = 0; j < lines.length; j++) {
-                        newExpr.addReferenceLine(lines[j]);
+
+
+                    if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
+                        if (components.length == 1) {
+                            String comps = removeBracketsFromString(components[0]);
+                            String[] lines = comps.split(",");
+                            for (int j = 0; j < lines.length; j++) {
+                                newExpr.addReferenceLine(lines[j]);
+                            }
+                        } else {
+                            String comps = removeBracketsFromString(components[1]);
+                            String[] lines = comps.split(",");
+                            for (int j = 0; j < lines.length; j++) {
+                                newExpr.addReferenceLine(lines[j]);
+                            }
+                        }
                     }
-                }
+
                 addExpression(newExpr);
             }
 
@@ -155,11 +166,17 @@ public class Proof {
             case "Only-Intro": return RuleType.ONLY_INTRO;
             case "Only-Elim": return RuleType.ONLY_ELIM;
             case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIM;
-            default: return RuleType.INVALID;
+
+            default: if (rule.charAt(0) == '(') {
+                return RuleType.TICK;
+            } else {
+                return RuleType.INVALID;
+            }
         }
     }
 
     public boolean isProofValid() throws SyntaxException {
+
 
         for (int i = expressions.size()-1; i >= 0; i--) {
             switch (expressions.get(i).getRuleType()) {
@@ -174,10 +191,10 @@ public class Proof {
                 case ONLY_ELIM: isOnlyEliminationValid(expressions.get(i)); break;
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
+                case TICK: isTickRuleValid(expressions.get(i)); break;
                 case INVALID: return false;
                 default: break;
             }
-//            expressions.remove(i);
         }
         return errors.isEmpty();
     }
@@ -205,7 +222,9 @@ public class Proof {
         return expressions.toString();
     }
 
-    private List<List<Integer>> findBoxIndexes(Expression expr) {
+
+
+    private List<List<Integer>> findBoxIndexes() {
         List<List<Integer>> boxes = new LinkedList<>();
         for (int j = 0; j < expressions.size(); j++) {
 
@@ -231,6 +250,30 @@ public class Proof {
             }
         }
         return boxes;
+    }
+
+    public boolean isTickRuleValid(Expression e1) {
+        int ref1;
+
+        try {
+            ref1 = e1.getReferenceLine().get(0) - 1;
+        } catch (IndexOutOfBoundsException ioe) {
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two lines must be referenced when " +
+                    "using this rule");
+            return false;
+        }
+
+        Boolean x = checkReferenceInScope1(e1, ref1);
+        if (x != null) return x;
+
+        if (!e1.equals(expressions.get(ref1))) {
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
+                    "this rule");
+            return false;
+        }
+
+        return true;
+
     }
 
     public boolean isAndIntroValid(Expression e1) {
@@ -275,8 +318,8 @@ public class Proof {
     }
 
     private Boolean checkReferencesInScope2(Expression e1, int ref1, int ref2) {
-        List<List<Integer>> boxes = findBoxIndexes(e1);
 
+        List<List<Integer>> boxes = findBoxIndexes();
         int index = findExpressionIndex(e1);
 
         for (List<Integer> box : boxes) {
@@ -333,7 +376,7 @@ public class Proof {
     }
 
     private Boolean checkReferenceInScope1(Expression e1, int ref1) {
-        List<List<Integer>> boxes = findBoxIndexes(e1);
+        List<List<Integer>> boxes = findBoxIndexes();
 
         int index = findExpressionIndex(e1);
 
@@ -748,7 +791,7 @@ public class Proof {
     }
 
     private Boolean checkReferencesScope5(Expression e1, int ref1, int ref2, int ref3, int ref4, int ref5) {
-        List<List<Integer>> boxes = findBoxIndexes(e1);
+        List<List<Integer>> boxes = findBoxIndexes();
 
         int index = findExpressionIndex(e1);
 
@@ -788,8 +831,6 @@ public class Proof {
                     if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
-                    System.out.println(solvedProof);
-                    int index = 0;
 
                     if (expressions.isEmpty()) {
                         return "Hint: " + solvedProof.get(0).getRuleType().toString();
