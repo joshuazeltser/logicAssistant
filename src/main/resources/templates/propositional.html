@@ -23,11 +23,15 @@
 
     <!-- jQuery -->
     <script src="webjars/jquery/3.1.1-1/jquery.js"></script>
+    <script src="webjars/jquery/3.1.1-1/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
     <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+
+
+
 
     <script type="text/javascript">
         $(function() {
@@ -116,10 +120,12 @@
         </table>
 
         <center>
-        <a id="validityCheck" type="button" href="/validity"  class="btn btn-success" value="Check">
-            Check Proof Validity</a>
+            <a id="validityCheck" type="button" href="/validity"  class="btn btn-success" value="Check">
+                Check Proof Validity</a>
         </center>
+
         <p></p>
+
         <p class="lead" align="center">Upload Proof</p>
 
         <input type="file" id="files" name="file" />
@@ -275,21 +281,91 @@
                 </div>
 
                <p></p>
-                <center>
 
 
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
-                        <span class="input-group-btn">
-                            <button id="hintButton" class="btn btn-warning" type="submit">Hint</button>
-                     </span>
-                    </div>
+                <!--<div class="col-lg-6">-->
+                    <!--<div class="input-group">-->
+                        <!--<input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>-->
+                        <!--<div class="input-group-btn">-->
+                            <!---->
+                           <!---->
+                             <!--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                            <!--<span class="caret"></span>-->
+                            <!--<span class="sr-only">Toggle Dropdown</span>-->
+                        <!--</button>-->
+                            <!--<ul class="dropdown-menu">-->
+                                <!--<li></li>-->
+                            <!--<li><a id="validityCheck" type="button" href="/validity"  value="Check">-->
+                                <!--Check Proof Validity</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Save Proof As</a></li>-->
+                        <!--</ul>-->
+
+                     <!--</div>-->
+                    <!--</div>-->
+
+
+                <div class="input-group br">
+        <span class="input-group-btn">
+
+            <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
+            <button id="hintButton" onclick="changeColour()" class="btn btn-primary" type="button">Hint</button>
+            <script>
+                var hint = document.getElementById('hintButton');
+
+                function changeColour() {
+                    if (hint.getAttribute('class') == 'btn btn-primary') {
+                        hint.setAttribute('class', 'btn btn-success');
+                    } else {
+                        hint.setAttribute('class', 'btn btn-primary');
+                    }
+                }
+            </script>
+
+        </span>
+                    <input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
+                    <span class="input-group-btn">
+            <div class="btn-group">
+
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+                <ul class="dropdown-menu">
+                    <li><a id="resetButton"  href="/" type="reset">Reset </a></li>
+                    <li class="divider"></li>
+                    <li><a  href="#">Save Proof As</a></li>
+                </ul>
+            </div>
+        </span>
+
                 </div>
 
-                    <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                    <a id="resetButton" href="/" type="reset" class="btn btn-primary">Reset</a>
-                </center>
+                <!--<style>-->
+                    <!--input {-->
+                        <!--width: 150px;-->
+                    <!--}-->
+
+                <!--</style>-->
+                <!--</div>-->
+
+
+
+                    <!--&lt;!&ndash; Split button &ndash;&gt;-->
+                    <!--<div class="btn-group">-->
+                        <!---->
+                        <!--<button id="resetButton" href="/" type="reset">Reset</button>-->
+
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a id="validityCheck" type="button" href="/validity"  value="Check">-->
+                                <!--Check Proof Validity</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Save Proof As</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+
+
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
@@ -298,6 +374,7 @@
                     </div>
 
                 </div>
+
 
 
             </form>
