@@ -173,7 +173,7 @@ public class Proof {
             }
         }
     }
-    
+
     public boolean isProofValid() throws SyntaxException {
 
 
