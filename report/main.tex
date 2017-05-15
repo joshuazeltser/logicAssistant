@@ -272,6 +272,12 @@ In order to remedy this potential issue I have added an extra validation stage b
 
 \subsubsection{Hints}
 
+One of the advanced features that I set out to implement during this project is hints. I wanted to allow a user to start a proof and if they became stuck at any step, they could use my software to gain a hint as to what rule to apply next. This feature is something that is lacking in similar software such as Pandora. When first planning to include this feature in this project,  I felt that I would first implement a simple form of hints, where when a hint was requested I would try each of the rules and reply to the user with any rules that didn't throw any errors. Obviously, this is quite a short-sighted way of implementing this as a user could be sent off in a completely wrong direction. Also when it comes to introduction rules there can be quite a lot of different possible cases to consider. I therefore decided that this methodology for generating hints is not useful for a user.
+
+Based on this discovery, I decided that the best way to implement this feature would be to actually apply an algorithm which solves the proof first. This would mean that when a hint is requested the system compares the users proof so far to the solved proof, in order to generate a hint for the next step. The first algorithm that I tried was one which took the premises that were given by the user and firstly tries each of the elimination rules on them several times. As this was happening the algorithm built up a list of possible proof makeups up to this point. The algorithm then tried some introduction rules in order to move further into the proof. This process would continue in a loop until either the resulting expression was reached, or a timeout was met. I also added a few enhancements to the algorithm that meant right at the beginning the algorithm looked at the resulting expression to see whether it, for example, contained an implications operator, meaning that an assumption needed to be added to the proof in order to form part of the implies introduction rule. Although this algorithm was able to solve the proofs in order for hints to be generated, in proofs which include any introduction rules, the algorithm took quite a long time. In some cases that I tested, a proof took over thirty seconds to be solved. This is due to the large number of options that needed to be tried for each introduction rule, adding even more possible combinations to the list of possible proofs. Obviously, this algorithm would not be able to scale very well. I therefore decided to search for some more efficient algorithms to solve this problem.
+
+After much research I found a very effective algorithm in a paper called Automated First Order Natural Deduction \cite{ndAlgo}. 
+
 \subsection{View}
 
 
@@ -292,23 +298,28 @@ The language I ended up settling on was Java. I chose to use Java as the main la
 
 \subsection{Java Spring}
 
+\subsection{Javascript}
+
 \subsection{JUnit}
 
 When carrying out large scale software projects such as this, one of the most important tasks that must be carried out is testing. There is no easy way to be able to tell whether your code is completing the task you created for without tests that put your code in realistic scenarios and see how they function. This is especially true for edge cases which in reality may never happen, but there is always the possibility. As I used Java for this project it was natural to use the very powerful JUnit test suite. JUnit allowed me to carry out individual tests on almost all of the functionality that I have created in the back end of the application. Through the use of Test Driven Development (see \ref{TDD}), I was able to use the test suite itself to help me work out how to implement some of the more complicated code. This also allowed me to keep track and ensure that any new code I added wasn't breaking any other parts of the code base. Using the JUnit assertTrue and assertFalse functionality, in each test case I was able to compare the computed result with the expected one, in order to ensure everything was working correctly. JUnit made this a smooth and easy process saving me a lot of time that I could dedicate to adding more features to the application.
 
 \subsection{Maven}
 
-This project involved me using a combination of different technologies in order to create the finished product. In order for the various software to work together effectively I decided to use Maven. Maven allowed me to bundle together the Java Spring capabilities with the Java code and JUnit tests to create an efficiently functioning system. I was able to add dependencies for each of the tools to the Maven project, and through using the standard Maven directory set up, I was able to also add my front end code to this package. By using  
+This project involved me using a combination of different technologies in order to create the finished product. In order for these tools to work together effectively I decided to use Maven. Maven allowed me to bundle together the Java Spring capabilities with the Java code and JUnit tests to create an efficiently functioning system. I was able to add dependencies for each of the tools to the Maven project, and through using the standard Maven directory set up, I was able to also add my front end code to this package. By using this containerisation I was able to easily deploy my application at any part of the development process to check that it was working correctly. Maven also allowed me to ensure that all of the JUnit and front end tests that I had set up were run before the programme was deployed, allowing me to make sure all parts of the code base were functioning correctly. Maven also helped me to set-up other tools such as Github and Heroku for this project, with each of these tools being compatible with the Maven infrastructure.
 
 \subsection{Intellij}
 
+When writing Java code it is very easy to make small syntactic mistakes in the code without realising. Whether its a missed semicolon or even the wrong number of curly brackets. This is especially poignant in larger code bases. The easiest way to avoid having to spend large amounts of time looking for these bugs and continually rerunning the code as you slowly fix them, is by using an IDE. There are many IDE's to choose from for the Java language, but I decided to use Intellij for a number of reasons. Firstly, Intellij has a very large range of features that would make coding this project much easier. For example on top of just alerting me to syntax errors, there is a code duplication error system, as well as built-in re-factoring functionality that allows me to make my code much more readable and efficient. On top of this, Intellij is compatible with Maven meaning that I can even build my Maven project inside Intellij, making the entire process much smoother. This compatibility goes so far that Intellij also downloads any dependencies that I have added to the Maven pom file. All of these reasons and more make Intellij the ideal IDE to use for this project.
+
 \subsection{Git}
 
+A key area that needs to be considered when carrying out a large scale project such as this is version control. One cannot afford to lose their projects source code, and it is really useful to have previous versions of the code-base that can be returned to at any point in the project. For this project, I decided to use Git as I am very familiar with its functionality and so would be able to effectively utilise all of its useful features. In order to manage my git repository, I decided to use Github. Github has a really easy to use interface and is compatible with Maven making it very easy for me to upload my project. I was able to create a private project on Github and using its easy to use website I was able to look up previous versions of my code base whenever necessary. Github also provides some very useful statistics about how the version control side of my project is progressing. I used these statistics to try to keep up a good level of Software Engineering practise.
 
-mention Github within
+One git feature that was really useful for me throughout the project was the use of git hooks. I have create a git hook which whenever I commit my work, runs all of my unit tests over the code and ensures that they all pass. If any fail the commit is halted and I must fix the associated errors before being able to commit. This is a very useful feature as often after changing one part of the code-base, you may accidentally break the code somewhere else. Without git hooks these errors may not be picked up on, meaning that broken code is committed to git.  This is obviously not a good technique to follow, so I made sure to add these hooks as early as possible in the project to avoid this from happening.
 
 \subsection{Heroku}
-
+As my project is a web based application I wanted to find and easy way to deploy it to a real website. Heroku allowed me to easily do this, as well as offering me many useful features. Heroku allowed me to easily connect my Maven project to its services through my Github account. It then allowed me to set it up so that whenever I pushed my changes to master, my Heroku site would be updated. I therefore used my site on Heroku to house my latest fully functioning version of the app. This allowed me to show others and gain feedback on the parts of the functionality that I had already created. Deploying my app in this way also allowed me to test it on other browsers and operating systems, to ensure that all of the required functionality functioned correctly. Once the project was completed, I permanently deployed the application to this free service.
 
 
 \section{Project Plan and Management}
@@ -365,7 +376,7 @@ From the start of this iteration I want to have stopped adding any new features.
 
 \section{Evaluation}
 
-ideas: tableaux instead of truth tables, more realistic plans, Java good language to use, 
+ideas: tableaux instead of truth tables, more realistic plans, Java good language to use, differences to pandora
 \subsection{Expected Outcomes}
 
 By the end of the project there are a number of objectives that I want to fulfil in order to classify it as a successful project. I firstly want to make sure that the tool I have created is easy to use. It would be better for my software to have less features if it means that it is very easy to use by any user. This is one of the areas that I hope my software is better than other similar tools. I also by the end of the project want to have a working Natural Deduction proof checker, with the ability to give hints to the user at any point in the proof. This checker only needs to be for Propositional logic in order for me to fulfil my objectives. This would still mean that I have created an important and useful tool that can be used by anyone learning how to form Natural Deduction proofs. If however I have more time I would also like to extend this to Predicate logic. If I am able to complete these two tasks I will have succeeded in creating a useful tool for Natural Deduction students.
@@ -582,6 +593,9 @@ Pandora (Proof Assistant for Natural Deduction using Organised Rectangular Areas
 
 \bibitem{ndBook}
 Software Engineering Mathematics by Jim Woodcock and Martin Loomes, 1989 edition
+
+\bibitem{ndAlgo}
+Alexander Bolotov, Vyacheslav Bocharov, Alexander Gorchakov, Vasilyi Shangin \textit{Automated First Order Natural Deduction}. Conference Paper, January 2005
 
 
 \end{thebibliography}
