@@ -114,6 +114,21 @@
         <p></p>
         <a href="/" id="submit" class="btn btn-success" type="submit">Back to Proof Checker</a>
 
+        <script>
+            var sub = document.getElementById('submit');
+            
+            sub.onclick = function () {
+                var premises = document.getElementById('Text1');
+                var result = document.getElementById('resultBox');
+
+                var items = [];
+
+                items.push(premises.value);
+                items.push(result.value);
+
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+        </script>
 
     </div>
     <div class="col-md-8">
