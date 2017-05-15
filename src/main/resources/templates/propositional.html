@@ -229,6 +229,8 @@
 
                             proof.value = "";
 
+
+
                             var indentArray = new Array();
 
                             /*<![CDATA[*/
@@ -350,13 +352,56 @@
                 <ul class="dropdown-menu">
                     <li><a id="resetButton"  href="/" type="reset">Reset </a></li>
                     <li class="divider"></li>
-                    <li><a  href="#">Save Proof As</a></li>
+                    <li><a id="save" href="#">Save Proof As</a></li>
                 </ul>
             </div>
 
         </span>
 
                 </div>
+                    <a download="proof.la" id="downloadlink" style="display: none">Download</a>
+                <script>
+                    var textFile = null,
+                        makeTextFile = function (text) {
+                            var data = new Blob([text], {type: 'text/plain'});
+
+                            // If we are replacing a previously generated file we need to
+                            // manually revoke the object URL to avoid memory leaks.
+                            if (textFile !== null) {
+                                window.URL.revokeObjectURL(textFile);
+                            }
+
+                            textFile = window.URL.createObjectURL(data);
+
+                            return textFile;
+                        };
+                    
+                    var saveButton = document.getElementById('save');
+                    saveButton.onclick = function() {
+                        var proof = document.getElementById('Text1');
+                        var rules = document.getElementById('Text2');
+
+                        var proofArray = proof.value.split("\n");
+                        var rulesArray = rules.value.split("\n");
+                        var output = "";
+                        /*<![CDATA[*/
+                        for (var i = 0; i < proofArray.length; i++) {
+                            output = output + proofArray[i] + ' , ' + rulesArray[i];
+                            if (i < proofArray.length-1) {
+                                output = output + '\n';
+                            }
+
+                        }
+//                        alert(output);
+                        var link = document.getElementById('downloadlink');
+                        link.href = makeTextFile(output);
+                        link.click();
+                        /*]]>*/
+                    }
+
+
+                </script>
+
         </center>
 
                 <p></p>

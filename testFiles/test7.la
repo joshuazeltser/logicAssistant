@@ -1,0 +1,6 @@
+A ^ B , GIVEN
+C , GIVEN
+----  D , ASSUMPTION
+----  B , And-Elim (1)
+----  B ^ C , And-Intro (2,4)
+D -> B ^ C , Implies-Intro (3,5)
