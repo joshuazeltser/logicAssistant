@@ -1,5 +1,7 @@
 package model;
 
+import javassist.expr.Expr;
+
 import java.util.*;
 
 import static model.OperatorType.*;
@@ -839,26 +841,37 @@ public class Proof {
 
         if (!resultString.equals("")) {
 
-            if (!solved) {
-                resultExpr = new Expression();
-                resultExpr.addToExpression(resultString);
-                solved = true;
+            resultExpr = new Expression();
+            resultExpr.addToExpression(resultString);
 
+
+
+
+            if (solvedProof == null) {
                 solvedProof = solveProof();
+
+            } else {
+                try {
+                    if (!expressions.get(expressions.size() - 1).equals(solvedProof.get(expressions.size() - 1))) {
+                        solvedProof = solveProof();
+                    }
+                } catch (IndexOutOfBoundsException e) {
+
+                }
             }
+
 
             if (isProofValid()) {
                 if (solvedProof != null) {
 
                     for (int i = 0; i < expressions.size(); i++) {
                         if (expressions.get(i).toString().equals("")) {
-                            if (expressions.get(i+1).equals(solvedProof.get(i+1))) {
-                                expressions.remove(i);
-                            }
+
                             return "Hint: " + solvedProof.get(i).getRuleType().toString();
                         }
 
                         if (expressions.get(i).getRuleType() == RuleType.EMPTY) {
+
                             return "Hint: " + solvedProof.get(i).getRuleType();
                         }
                     }
@@ -881,7 +894,7 @@ public class Proof {
                     return "Hint: ASSUMPTION";
                 }
             } else {
-                System.out.println(errors);
+
                 removeErrorDuplicates();
                 return printErrors();
             }
@@ -911,22 +924,20 @@ public class Proof {
 
         if (!expressions.isEmpty()) {
             for (int i = 0; i < expressions.size(); i++) {
-//                if (expr.getRuleType() == RuleType.GIVEN) {
 
+                    if (expressions.get(i).toString().equals("")) {
 
-                    if (expressions.get(i).toString().equals("...")) {
-                        if (expressions.get(i+1).equals("...")) {
-                            continue;
-                        }
-                        list_goals.add(expressions.get(i+1));
+                        Expression e = new Expression(RuleType.EMPTY);
+                        e.addToExpression(expressions.get(i+1).toString());
+                        list_goals.add(e);
+                        break;
                     } else {
-                        if (expressions.get(i).getRuleType() == RuleType.GIVEN) {
-                            list_proof.add(expressions.get(i));
-                        }
+                        list_proof.add(expressions.get(i));
+
                     }
-//                }
             }
         }
+
 
         Expression current_goal = new Expression();
         current_goal.addToExpression(list_goals.get(list_goals.size()-1).toString());
@@ -948,6 +959,7 @@ public class Proof {
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
+
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     && !current_goal.equals(resultExpr)) {
@@ -976,7 +988,7 @@ public class Proof {
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
 //                    printRuleType();
-//                    System.out.println(list_proof);
+//                    System.out.println("SOLVED PROOF: " + list_proof);
                     return list_proof;
                 }
                 continue;
@@ -1015,8 +1027,9 @@ public class Proof {
 
     private void printRuleType() {
         for (Expression expr : list_proof) {
-            System.out.println(expr.getRuleType());
+            System.out.print(expr.getRuleType() + ", ");
         }
+        System.out.println();
     }
 
     private void falseRulesSetup() throws SyntaxException {
