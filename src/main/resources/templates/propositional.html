@@ -347,12 +347,16 @@
                     data-toggle="tooltip" data-placement="top" title="Turn hints on/off">Hint</button>
             <script>
 
-
+                var colour = [];
                 function changeColour() {
                     if (hint.getAttribute('class') == 'btn btn-primary') {
                         hint.setAttribute('class', 'btn btn-success');
+                        colour.push('btn btn-success');
+                        localStorage.setItem('colour', JSON.stringify(colour));
                     } else {
                         hint.setAttribute('class', 'btn btn-primary');
+                        colour.push('btn btn-primary');
+                        localStorage.setItem('colour', JSON.stringify(colour));
                     }
                 }
             </script>
@@ -437,14 +441,31 @@
                         <script>
                             var hint = document.getElementById('hintButton');
 
+                            window.onload = hideHelper;
+
+
                             function hideHelper() {
-                                if (hint.getAttribute('class') == 'btn btn-primary') {
-                                    $("#hintBox").hide();
-                                    $("#errorBox").show();
-                                } else {
+
+                                var list = JSON.parse(localStorage.getItem('colour'));
+
+                                if (list.pop() == 'btn btn-success') {
+                                    hint.setAttribute('class', 'btn btn-success');
                                     $("#hintBox").show();
                                     $("#errorBox").hide();
+                                } else {
+                                    hint.setAttribute('class', 'btn btn-primary');
+                                    $("#hintBox").hide();
+                                    $("#errorBox").show();
                                 }
+                                localStorage.clear();
+
+//                                if (hint.getAttribute('class') == 'btn btn-primary') {
+//                                    $("#hintBox").hide();
+//                                    $("#errorBox").show();
+//                                } else {
+//                                    $("#hintBox").show();
+//                                    $("#errorBox").hide();
+//                                }
                             }
 
 

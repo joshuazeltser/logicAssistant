@@ -1,8 +1,6 @@
 package model;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import static model.OperatorType.*;
 
@@ -815,6 +813,13 @@ public class Proof {
         return null;
     }
 
+    private void removeErrorDuplicates() {
+        Set<String> hs = new HashSet<>();
+        hs.addAll(errors);
+        errors.clear();
+        errors.addAll(hs);
+    }
+
     public String generateHint(String resultString) throws SyntaxException {
 
         if (!resultString.equals("")) {
@@ -845,12 +850,14 @@ public class Proof {
                 }
             } else {
                 System.out.println(errors);
-                return "PROOF IS INVALID";
+                removeErrorDuplicates();
+                return printErrors();
             }
         } else {
             return "";
         }
     }
+
 
     private boolean solved = false;
     public List<Expression> solveProof() throws SyntaxException {
