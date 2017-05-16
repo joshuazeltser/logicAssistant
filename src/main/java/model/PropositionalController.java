@@ -12,6 +12,7 @@ public class PropositionalController {
 	    @GetMapping("/")
 		public String expressionForm(Model model) {
 			model.addAttribute("proof", new Proof());
+
 			return "propositional";
 		}
 

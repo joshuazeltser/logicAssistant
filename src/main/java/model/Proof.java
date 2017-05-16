@@ -13,8 +13,8 @@ public class Proof {
 
     private List<String> errors;
 
-    private String proofString;
-    private String proofLabels;
+    protected String proofString;
+    protected String proofLabels;
 
     private String resultString;
 
@@ -35,9 +35,12 @@ public class Proof {
         resultExpr = new Expression();
         list_goals = new LinkedList<>();
         list_proof = new LinkedList<>();
+        extra_list_proof = new LinkedList<>();
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
+
+
         String result = "";
 
         try {
@@ -825,13 +828,19 @@ public class Proof {
         if (!resultString.equals("")) {
 
             if (!solved) {
+                resultExpr = new Expression();
                 resultExpr.addToExpression(resultString);
                 solved = true;
+
                 solvedProof = solveProof();
             }
 
+
+
+
             if (isProofValid()) {
                 if (solvedProof != null) {
+                    System.out.println(solvedProof);
                     if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
@@ -839,6 +848,7 @@ public class Proof {
                     if (expressions.isEmpty()) {
                         return "Hint: " + solvedProof.get(0).getRuleType().toString();
                     }
+
 
                     if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size()-1))) {
                         return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
@@ -863,6 +873,16 @@ public class Proof {
     public List<Expression> solveProof() throws SyntaxException {
         list_proof.clear();
         list_goals.clear();
+//        extra_list_proof.clear();
+//
+//        firstOrRound = true;
+//        lhsStack.clear();
+//        rhsStack.clear();
+//        orElimStack.clear();
+//        orsLeft = false;
+////        rhsIndex = 0;
+//        temp1.clear();
+
 
         list_goals.add(resultExpr);
         solved = true;
@@ -870,18 +890,21 @@ public class Proof {
         if (!expressions.isEmpty()) {
             for (Expression expr : expressions) {
                 if (expr.getRuleType() == RuleType.GIVEN) {
+                    expr.setMarked(false);
                     list_proof.add(expr);
                 }
             }
         }
 
-        Expression current_goal = resultExpr;
+        Expression current_goal = new Expression();
+        current_goal.addToExpression(resultExpr.toString());
 
         boolean specialCase = false;
 
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
+
 
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))) {
@@ -932,7 +955,7 @@ public class Proof {
                     current_goal = list_goals.get(list_goals.size() - 1);
 
                     continue;
-                    } else {
+                } else {
                     //procedure 2.2
                     falseRulesSetup();
 
@@ -1086,7 +1109,8 @@ public class Proof {
 
 
                 if (checkBracketValidity(sides.get(0)) && checkBracketValidity(sides.get(1))) {
-                    extra_list_proof = new LinkedList<>();
+//                    extra_list_proof = new LinkedList<>();
+
 
                     rhsIndex = list_proof.size();
 
@@ -1099,6 +1123,7 @@ public class Proof {
 //                    }
                     orElimStack.push(expr);
 
+//                    temp1.clear();
                     return;
                 }
             }
@@ -1108,7 +1133,7 @@ public class Proof {
 
     }
 
-    List<Expression> temp = new LinkedList<>();
+    private List<Expression> temp1 = new LinkedList<>();
     private int rhsIndex;
 
     private void applyIntroductionRule(Expression expr) throws SyntaxException {
@@ -1118,20 +1143,21 @@ public class Proof {
         if (!orElimStack.isEmpty()) {
             if (list_goals.get(list_goals.size() - 1).equals(orElimStack.peek())) {
                 if (lhsStack.size() < rhsStack.size()) {
-                    temp.addAll(list_proof);
+//                    temp1.clear();
+                    temp1.addAll(list_proof);
                     list_proof = extra_list_proof;
                     list_proof.add(rhsStack.pop());
                 } else {
 
                     for (int i = rhsIndex; i < list_proof.size(); i++) {
-                        temp.add(list_proof.get(i));
+                        temp1.add(list_proof.get(i));
                     }
 
 
                     Expression expr1 = list_goals.get(list_goals.size() - 1);
                     expr1.setRuleType(RuleType.OR_ELIM);
-                    temp.add(expr1);
-                    list_proof = temp;
+                    temp1.add(expr1);
+                    list_proof = temp1;
                     orsLeft = false;
                     orElimStack.pop();
                     return;
@@ -1253,25 +1279,14 @@ public class Proof {
 
         boolean notNot = tryDoubleNotElim(newProof);
         newProof.expressions = list_proof;
-        boolean or = tryOrElim(newProof);
-        newProof.expressions = list_proof;
 
 
-        return and || implies || only || not || notNot || or;
+
+        return and || implies || only || not || notNot ;
     }
 
-    private boolean tryOrElim(Proof newProof) {
-        int count = 1;
-        boolean changed = false;
-        for (int i = 0; i < newProof.expressions.size(); i++) {
-            if (newProof.expressions.get(i).contains(new Operator("OR", OR))) {
-                //complex case to be thought about
-            }
 
-            count++;
-        }
-        return changed;
-    }
+
 
     private boolean tryNotElim(Proof newProof) throws SyntaxException {
         int count = 1;
