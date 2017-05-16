@@ -58,6 +58,10 @@ public class Proof {
         return result;
     }
 
+    public void addAt(Expression expr, int index) {
+        expressions.add(index, expr);
+    }
+
 
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
@@ -200,6 +204,7 @@ public class Proof {
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
                 case TICK: isTickRuleValid(expressions.get(i)); break;
                 case INVALID: return false;
+                case EMPTY: return true;
                 default: break;
             }
         }
@@ -842,11 +847,22 @@ public class Proof {
                 solvedProof = solveProof();
             }
 
-
-
-
             if (isProofValid()) {
                 if (solvedProof != null) {
+
+                    for (int i = 0; i < expressions.size(); i++) {
+                        if (expressions.get(i).toString().equals("")) {
+                            if (expressions.get(i+1).equals(solvedProof.get(i+1))) {
+                                expressions.remove(i);
+                            }
+                            return "Hint: " + solvedProof.get(i).getRuleType().toString();
+                        }
+
+                        if (expressions.get(i).getRuleType() == RuleType.EMPTY) {
+                            return "Hint: " + solvedProof.get(i).getRuleType();
+                        }
+                    }
+
                     if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
