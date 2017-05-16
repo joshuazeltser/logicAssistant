@@ -100,7 +100,10 @@ public class Proof {
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
-                    newExpr.addToExpression(expr[i]);
+                    if (expr[i].charAt(0) != '.') {
+                        newExpr.addToExpression(expr[i]);
+                    }
+
 
                 } catch (SyntaxException s) {
                     errors = new LinkedList<>();
@@ -113,10 +116,14 @@ public class Proof {
 
                     if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
                         if (components.length == 1) {
+
                             String comps = removeBracketsFromString(components[0]);
                             String[] lines = comps.split(",");
+
                             for (int j = 0; j < lines.length; j++) {
-                                newExpr.addReferenceLine(lines[j]);
+                                if (!lines[j].equals("")) {
+                                    newExpr.addReferenceLine(lines[j]);
+                                }
                             }
                         } else {
                             String comps = removeBracketsFromString(components[1]);
@@ -166,7 +173,7 @@ public class Proof {
             case "Only-Intro": return RuleType.ONLY_INTRO;
             case "Only-Elim": return RuleType.ONLY_ELIM;
             case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIM;
-
+            case "": return RuleType.EMPTY;
             default: if (rule.charAt(0) == '(') {
                 return RuleType.TICK;
             } else {
@@ -840,7 +847,6 @@ public class Proof {
 
             if (isProofValid()) {
                 if (solvedProof != null) {
-                    System.out.println(solvedProof);
                     if (solvedProof.size() <= expressions.size()) {
                         return "Proof already successfully solved";
                     }
@@ -888,26 +894,47 @@ public class Proof {
         solved = true;
 
         if (!expressions.isEmpty()) {
-            for (Expression expr : expressions) {
-                if (expr.getRuleType() == RuleType.GIVEN) {
-                    expr.setMarked(false);
-                    list_proof.add(expr);
-                }
+            for (int i = 0; i < expressions.size(); i++) {
+//                if (expr.getRuleType() == RuleType.GIVEN) {
+
+
+                    if (expressions.get(i).toString().equals("...")) {
+                        if (expressions.get(i+1).equals("...")) {
+                            continue;
+                        }
+                        list_goals.add(expressions.get(i+1));
+                    } else {
+                        if (expressions.get(i).getRuleType() == RuleType.GIVEN) {
+                            list_proof.add(expressions.get(i));
+                        }
+                    }
+//                }
             }
         }
 
         Expression current_goal = new Expression();
-        current_goal.addToExpression(resultExpr.toString());
+        current_goal.addToExpression(list_goals.get(list_goals.size()-1).toString());
 
         boolean specialCase = false;
+
+        if (current_goal.contains(new Operator("IMPLIES", IMPLIES))) {
+
+            specialCase = true;
+            for (Expression e : list_proof) {
+                if (e.contains(new Operator("ONLY", ONLY))) {
+                    specialCase = false;
+                }
+            }
+
+        }
+
 
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
 
-
-
-            if (current_goal.contains(new Operator("IMPLIES", IMPLIES))) {
+            if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
+                    && !current_goal.equals(resultExpr)) {
 
                 specialCase = true;
                 for (Expression e : list_proof) {
@@ -933,6 +960,7 @@ public class Proof {
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
 //                    printRuleType();
+//                    System.out.println(list_proof);
                     return list_proof;
                 }
                 continue;
@@ -1259,17 +1287,12 @@ public class Proof {
 
         Proof newProof = new Proof();
         newProof.expressions = list_proof;
-        boolean and = tryAndElim(newProof);
-        newProof.expressions = list_proof;
-
 
         boolean implies = tryImpliesElim(newProof);
         newProof.expressions = list_proof;
 
-
-
-
-
+        boolean and = tryAndElim(newProof);
+        newProof.expressions = list_proof;
 
         boolean only = tryOnlyElim(newProof);
         newProof.expressions = list_proof;
@@ -1459,11 +1482,21 @@ public class Proof {
                 rhs.addReferenceLine(Integer.toString(count));
 
 
+                if (!resultString.toLowerCase().contains(lhs.toString().toLowerCase())
+                        && !lhs.toString().toLowerCase().contains(resultString.toLowerCase()) ) {
+                    doneLeft = true;
+                } else {
+                    doneLeft = false;
+                }
+
+
+
+
                 if (newProof.isAndElimValid(lhs) &&
                         (lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
                                 lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
                         (!lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                !lhs.contains(new Operator("CLOSE",CLOSE_BRACKET)))) {
+                                !lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) && !doneLeft) {
                     Expression result = new Expression(RuleType.AND_ELIM);
                     result.addToExpression(lhs.toString());
                     if (!newProof.expressions.contains(result)) {

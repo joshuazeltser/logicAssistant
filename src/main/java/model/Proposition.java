@@ -42,4 +42,5 @@ public class Proposition implements Component{
 
         return toString().equals(expr2.toString());
     }
+
 }
