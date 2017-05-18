@@ -1,1 +1,0 @@
-Use selenium to test front end. Link in favourites
