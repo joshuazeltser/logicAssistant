@@ -42,6 +42,7 @@ public class Proof {
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
 
+        expressions.clear();
 
         String result = "";
 
@@ -132,6 +133,9 @@ public class Proof {
                                 }
                             }
                         } else {
+                            if (components[1].equals("")) {
+                                continue;
+                            }
                             String comps = removeBracketsFromString(components[1]);
                             String[] lines = comps.split(",");
                             for (int j = 0; j < lines.length; j++) {
@@ -306,6 +310,8 @@ public class Proof {
         try {
            ref1 = e1.getReferenceLine().get(0) - 1;
            ref2 = e1.getReferenceLine().get(1) - 1;
+
+
         } catch (IndexOutOfBoundsException ioe) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Two lines must be referenced when " +
                     "using this rule");
@@ -844,13 +850,11 @@ public class Proof {
             resultExpr = new Expression();
             resultExpr.addToExpression(resultString);
 
-
-
-
             if (solvedProof == null) {
                 solvedProof = solveProof();
 
             } else {
+
                 try {
                     if (!expressions.get(expressions.size() - 1).equals(solvedProof.get(expressions.size() - 1))) {
                         solvedProof = solveProof();
@@ -908,16 +912,6 @@ public class Proof {
     public List<Expression> solveProof() throws SyntaxException {
         list_proof.clear();
         list_goals.clear();
-//        extra_list_proof.clear();
-//
-//        firstOrRound = true;
-//        lhsStack.clear();
-//        rhsStack.clear();
-//        orElimStack.clear();
-//        orsLeft = false;
-////        rhsIndex = 0;
-//        temp1.clear();
-
 
         list_goals.add(resultExpr);
         solved = true;
@@ -927,17 +921,26 @@ public class Proof {
 
                     if (expressions.get(i).toString().equals("")) {
 
-                        Expression e = new Expression(RuleType.EMPTY);
+                        Expression e = new Expression();
                         e.addToExpression(expressions.get(i+1).toString());
                         list_goals.add(e);
-                        break;
-                    } else {
-                        list_proof.add(expressions.get(i));
 
+                        for (Expression e1 : expressions) {
+                            if (e1.getRuleType() == RuleType.ASSUMPTION && !e1.isMarked()) {
+                                e1.setMarked(true);
+                                list_proof.add(e1);
+                                break;
+                            }
+                        }
+                    } else {
+                        if (expressions.get(i).getRuleType() == RuleType.GIVEN) {
+                            list_proof.add(expressions.get(i));
+                        }
                     }
+
+
             }
         }
-
 
         Expression current_goal = new Expression();
         current_goal.addToExpression(list_goals.get(list_goals.size()-1).toString());
@@ -987,8 +990,6 @@ public class Proof {
                 }
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
-//                    printRuleType();
-//                    System.out.println("SOLVED PROOF: " + list_proof);
                     return list_proof;
                 }
                 continue;

@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -13,26 +14,17 @@ public class HintTests {
 //
     @Test
     public void andEliminationSolverTest() throws SyntaxException {
-        String str = "A ^ B";
-        String str1 = "C";
-
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A ^ B\nC";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "B";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+        proof.setResultExpr(res);
 
-//        System.out.println(proof.solveProof());
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println("result " + res);
         assertTrue(proof.solveProof().toString().equals("[A AND B, C, B]"));
@@ -40,18 +32,9 @@ public class HintTests {
 //
     @Test
     public void impliesEliminationSolverTest() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "A";
+        String str = "A -> B\nA";
+        String rules = "GIVEN\nGIVEN";
 
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
 
         String result = "B";
         proof.setResultString(result);
@@ -59,6 +42,7 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println("result " + res);
         assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, A, B]"));
@@ -66,23 +50,16 @@ public class HintTests {
 
     @Test
     public void impliesAndEliminationSolverTest() throws SyntaxException {
-        String str = "A ^ B";
-        String str1 = "B -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A ^ B\nB -> C";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "C";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println("result " + res);
         assertTrue(proof.solveProof().toString().equals("[A AND B, B IMPLIES C, B, C]"));
@@ -92,12 +69,7 @@ public class HintTests {
     @Test
     public void onlyEliminationSolverTest() throws SyntaxException {
         String str = "A <-> B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "B -> A";
         proof.setResultString(result);
@@ -105,24 +77,16 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A ONLY B, B IMPLIES A]"));
     }
 
 //
     @Test
     public void notEliminationSolverTest() throws SyntaxException {
-        String str = "!A";
-        String str1 = "A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "!A\nA";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "FALSE";
         proof.setResultString(result);
@@ -130,6 +94,7 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println("result " + res);
         assertTrue(proof.solveProof().toString().equals("[NOT A, A, FALSE]"));
@@ -139,17 +104,15 @@ public class HintTests {
     @Test
     public void simpleNotNotEliminationSolverTest() throws SyntaxException {
         String str = "!!A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "A";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.solveProof().toString().equals("[NOT NOT A, A]"));
     }
@@ -158,17 +121,8 @@ public class HintTests {
 //
     @Test
     public void simpleAndIntroSolverTest() throws SyntaxException {
-        String str = "A";
-        String str1 = "B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A\nB";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A ^ B";
         proof.setResultString(result);
@@ -176,23 +130,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.solveProof().toString().equals("[A, B, A AND B]"));
     }
 
     @Test
     public void harderAndIntroSolverTest() throws SyntaxException {
-        String str = "A";
-        String str1 = "A -> B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A\nA -> B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A ^ B";
         proof.setResultString(result);
@@ -200,65 +146,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A, A IMPLIES B, B, A AND B]"));
     }
 
-
-
     @Test
     public void largeAndIntroSolverTest() throws SyntaxException {
-        String str = "A";
-        String str1 = "B";
-        String str2 = "C";
-        String str3 = "D";
-        String str4 = "E -> F";
-        String str5 = "O";
-        String str6 = "S";
-        String str7 = "Y -> F";
-        String str8 = "X";
-        String str9 = "P";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.GIVEN);
-        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression(RuleType.GIVEN);
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.GIVEN);
-        expr5.addToExpression(str5);
-
-        Expression expr6 = new Expression(RuleType.GIVEN);
-        expr6.addToExpression(str6);
-
-        Expression expr7 = new Expression(RuleType.GIVEN);
-        expr7.addToExpression(str7);
-
-        Expression expr8 = new Expression(RuleType.GIVEN);
-        expr8.addToExpression(str8);
-
-        Expression expr9 = new Expression(RuleType.GIVEN);
-        expr9.addToExpression(str9);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
-        proof.addExpression(expr5);
-        proof.addExpression(expr6);
-        proof.addExpression(expr7);
-        proof.addExpression(expr8);
-        proof.addExpression(expr9);
-
+        String str = "A\nB\nC\nD\nE -> F\nO\nS\nY -> F\nX\nP";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN";
 
         String result = "S ^ P";
         proof.setResultString(result);
@@ -266,33 +162,23 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, P, S AND P]"));
     }
 //
     @Test
     public void iffImpliesAndSolverTest() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "B -> C";
-        String str2 = "A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
+        String str = "A -> B\nB -> C\nA";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "C";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, B IMPLIES C, A, B, C]"));
     }
@@ -301,15 +187,15 @@ public class HintTests {
     public void fullProofTest() throws SyntaxException {
 
         String str = "!(A | B)";
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "!A";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.solveProof().toString().equals("[NOT OPEN A OR B CLOSE, A, A OR B, FALSE, NOT A]"));
     }
@@ -318,11 +204,7 @@ public class HintTests {
     @Test
     public void simpleOrIntroSolverTest() throws SyntaxException {
         String str = "A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "A | B";
         proof.setResultString(result);
@@ -330,58 +212,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A, A OR B]"));
     }
 
     @Test
     public void largeOrIntroSolverTest() throws SyntaxException {
-        String str = "A";
-        String str1 = "B";
-        String str2 = "C";
-        String str3 = "D";
-        String str4 = "E -> F";
-        String str5 = "O";
-        String str6 = "S";
-        String str7 = "Y -> F";
-        String str8 = "X";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.GIVEN);
-        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression(RuleType.GIVEN);
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.GIVEN);
-        expr5.addToExpression(str5);
-
-        Expression expr6 = new Expression(RuleType.GIVEN);
-        expr6.addToExpression(str6);
-
-        Expression expr7 = new Expression(RuleType.GIVEN);
-        expr7.addToExpression(str7);
-
-        Expression expr8 = new Expression(RuleType.GIVEN);
-        expr8.addToExpression(str8);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
-        proof.addExpression(expr5);
-        proof.addExpression(expr6);
-        proof.addExpression(expr7);
-        proof.addExpression(expr8);
-
+        String str = "A\nB\nC\nD\nE -> F\nO\nS\nY -> F\nX";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN";
 
         String result = "S | P";
         proof.setResultString(result);
@@ -389,22 +228,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A, B, C, D, E IMPLIES F, O, S, Y IMPLIES F, X, S OR P]"));
     }
 
     @Test
     public void OrImpliesAndSolverTest() throws SyntaxException {
-        String str = "A ^ B";
-        String str1 = "A -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A ^ B\nA -> C";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A ^ B | C";
         proof.setResultString(result);
@@ -412,17 +244,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A AND B, A IMPLIES C, A, C, B, B OR C, A AND B OR C]"));
     }
 
     @Test
     public void simpleImpliesAtEndIntroSolverTest() throws SyntaxException {
         String str = "C ^ B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "A -> B";
         proof.setResultString(result);
@@ -430,23 +260,16 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[C AND B, A, B, A IMPLIES B]"));
     }
 
 //
     @Test
     public void harderImpliesAtEndIntroSolverTest() throws SyntaxException {
-        String str = "A -> C";
-        String str1 = "C -> D";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A -> C\nC -> D";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A -> D";
         proof.setResultString(result);
@@ -454,27 +277,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A IMPLIES C, C IMPLIES D, A, C, D, A IMPLIES D]"));
     }
 //
     @Test
     public void orEliminationSolverTest() throws SyntaxException {
-        String str = "A | B";
-        String str1 = "A -> C";
-        String str2 = "B -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
+        String str = "A | B\nA -> C\nB -> C";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "C";
         proof.setResultString(result);
@@ -482,23 +293,16 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString().equals("[A OR B, A IMPLIES C, B IMPLIES C, A, C, B, C, C]"));
     }
 
     @Test
     public void orEliminationSolverTest2() throws SyntaxException {
-        String str = "A | B ^ D";
-        String str1 = "A -> B ";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A | B ^ D\nA -> B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "B";
         proof.setResultString(result);
@@ -506,25 +310,15 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A OR B AND D, A IMPLIES B, A OR B, D, A, B, B AND D, B, B]"));
     }
 //
     @Test
     public void notIntroSolverTest() throws SyntaxException {
-        String str = "S -> B";
-        String str1 = "B -> W";
-        String str2 = "!W";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
+        String str = "S -> B\nB -> W\n!W";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "!S";
         proof.setResultString(result);
@@ -532,27 +326,23 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[S IMPLIES B, B IMPLIES W, NOT W, S, B, W, FALSE, NOT S]"));
     }
 
     @Test
     public void notElimolverTest() throws SyntaxException {
-        String str = "!A";
-        String str1 = "A ^ B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "!A\nA ^ B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "FALSE";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.solveProof().toString().equals("[NOT A, A AND B, A, FALSE]"));
     }
@@ -561,10 +351,7 @@ public class HintTests {
     @Test
     public void bracketsIntroTest() throws SyntaxException {
         String str = "A ^ C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "(A ^ B) -> C";
         proof.setResultString(result);
@@ -572,22 +359,16 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str,rules);
+
 //        System.out.println(proof.solveProof());
 //        assertTrue(proof.solveProof().toString().equals("[A AND C, A AND B, A, C, A AND B IMPLIES C]"));
     }
 
     @Test
     public void simpleOnlyIntroSolverTest() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "B -> A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A -> B\nB -> A";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A <-> B";
         proof.setResultString(result);
@@ -595,23 +376,16 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
+        proof.frontEndFunctionality(str, rules);
+
         assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, B IMPLIES A, A ONLY B]"));
     }
 
 
     @Test
     public void simpleHintTest1() throws SyntaxException {
-        String str = "!!A";
-        String str1 = "A -> B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "!!A\nA -> B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "B";
         proof.setResultString(result);
@@ -619,8 +393,9 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
-        assertTrue(proof.solveProof().toString().equals("[NOT NOT A, A IMPLIES B, A, B]"));
+        proof.frontEndFunctionality(str, rules);
 
+        assertTrue(proof.solveProof().toString().equals("[NOT NOT A, A IMPLIES B, A, B]"));
     }
 
     @Test
@@ -1495,68 +1270,37 @@ public class HintTests {
     @Test
     public void multipleGoalHintTest1() throws SyntaxException {
 
-        String str = "A ^ B";
-        String str1 = "C";
-        String str2 = "D";
-        String str3 = "...";
-        String str4 = "B ^ C";
+        String str = "A ^ B\nC\nD\n...\nB ^ C\nD -> B ^ C";
 
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.EMPTY);
-//        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression(RuleType.EMPTY);
-        expr4.addToExpression(str4);
-
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
+        String rules = "GIVEN\nGIVEN\nASSUMPTION\n\n\nImplies-Intro (3,5)";
 
         String result = "D -> B ^ C";
+
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
 
-//                System.out.println(proof.generateHint(result));
+//        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        str3 = "B";
-        expr3.addToExpression(str3);
-        expr3.setRuleType(RuleType.AND_ELIM);
-        expr3.addReferenceLine("1");
+        String str1 = "A ^ B\nC\nD\nB\nB ^ C\nD -> B ^ C";
+        String rules1 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\n\nImplies-Intro (3,5)";
 
-//                System.out.println(proof.generateHint(result));
+        proof.frontEndFunctionality(str1, rules1);
+
+//        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_INTRO"));
 
-        expr4.setRuleType(RuleType.AND_INTRO);
-        expr4.addReferenceLine("2");
-        expr4.addReferenceLine("4");
+        String rules2 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\nAnd-Intro (2,4)\nImplies-Intro (3,5)";
 
-//                System.out.println(proof.generateHint(result));
-        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
+        proof.frontEndFunctionality(str1, rules2);
 
-        String str7 = "D -> B ^ C";
-        Expression expr7 = new Expression(RuleType.IMPLIES_INTRO);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("3");
-        expr7.addReferenceLine("5");
-        proof.addExpression(expr7);
-
-//                System.out.println(proof.generateHint(result));
+//        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
+
     }
 
+    @Ignore
     @Test
     public void multipleGoalHintTest2() throws SyntaxException {
 
@@ -1677,12 +1421,13 @@ public class HintTests {
         System.out.println(proof.generateHint(result));
     }
 
+    @Ignore
     @Test
     public void multiComboTest2() throws SyntaxException {
 
         String str = "A";
         String str1 = "B";
-        String str2 = "A -> C";
+        String str2 = "A -> B";
 
         Expression expr = new Expression(RuleType.GIVEN);
         expr.addToExpression(str);
@@ -1752,7 +1497,7 @@ public class HintTests {
         expr2.setRuleType(RuleType.OR_INTRO);
         expr2.addReferenceLine("2");
 
-//        System.out.println(proof.generateHint(result));
+        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: NOT_ELIM"));
 
         expr3.setRuleType(RuleType.NOT_ELIM);
@@ -1762,6 +1507,7 @@ public class HintTests {
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
 
+    @Ignore
     @Test
     public void multipleGoalHintTest4() throws SyntaxException {
 
