@@ -366,7 +366,7 @@
 
 
         </span>
-                    <input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>
+                    <!--<input id="resultBox" type="text" class="form-control" th:field="*{resultString}" placeholder="Add result Expression..."></input>-->
                     <span class="input-group-btn">
             <div class="btn-group">
 
@@ -475,7 +475,7 @@
                         </script>
 
                         <output id="errorBox"  name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
-                        <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint(proof.resultString)}"></output>
+                        <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint()}"></output>
 
                     </div>
 

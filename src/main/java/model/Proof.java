@@ -145,10 +145,11 @@ public class Proof {
                 addExpression(newExpr);
             }
 
-            System.out.println(expressions);
             Expression res = new Expression();
             res.addToExpression(expr[expr.length-1]);
             setResultExpr(res);
+        } else {
+            return;
         }
 
     }
@@ -848,6 +849,9 @@ public class Proof {
 
     public String generateHint() throws SyntaxException {
 
+        if (resultExpr.toString().equals("")) {
+            return "";
+        }
 
         if (solvedProof == null) {
             solvedProof = solveProof();
