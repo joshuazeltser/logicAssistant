@@ -383,7 +383,7 @@ public class HintTests {
 
 
     @Test
-    public void simpleHintTest1() throws SyntaxException {
+    public void notNotImpliesTest() throws SyntaxException {
         String str = "!!A\nA -> B";
         String rules = "GIVEN\nGIVEN";
 
@@ -399,72 +399,66 @@ public class HintTests {
     }
 
     @Test
+    public void falseTest() throws SyntaxException {
+        String str = "A -> B\nA\n!B";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
+
+        String result = "FALSE";
+        proof.setResultString(result);
+        Expression res = new Expression();
+        res.addToExpression(result);
+        proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
+
+        assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, A, NOT B, B, FALSE]"));
+
+    }
+
+    @Test
     public void hintTest2() throws SyntaxException {
-        String str = "S -> B";
-        String str1 = "B -> W";
-        String str2 = "!W";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
+        String str = "S -> B\nB -> W\n!W";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "!S";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str3 = "S";
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
-        expr3.addToExpression(str3);
-        proof.addExpression(expr3);
+        str += "\nS";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str4 = "B";
-        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        expr4.addReferenceLine("4");
-        proof.addExpression(expr4);
+        str += "\nB";
+        rules +="\nImplies-Elim (1,4)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str5 = "W";
-        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("2");
-        expr5.addReferenceLine("5");
-        proof.addExpression(expr5);
+        str += "\nW";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: NOT_ELIM"));
 
-        String str6 = "FALSE";
-        Expression expr6 = new Expression(RuleType.NOT_ELIM);
-        expr6.addToExpression(str6);
-        expr6.addReferenceLine("3");
-        expr6.addReferenceLine("6");
-        proof.addExpression(expr6);
+        str += "\nFALSE";
+        rules +="\nNot-Elim (3,6)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: NOT_INTRO"));
 
-        String str7 = "NOT S";
-        Expression expr7 = new Expression(RuleType.NOT_INTRO);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("4");
-        expr7.addReferenceLine("7");
-        proof.addExpression(expr7);
+        str += "\n!S";
+        rules +="\nNot-Intro (4,7)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -473,147 +467,78 @@ public class HintTests {
 //
     @Test
     public void hintTest3() throws SyntaxException {
-        String str = "A | B";
-        String str1 = "A -> C";
-        String str2 = "B -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
+        String str = "A | B\nA -> C\nB -> C";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "C";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str3 = "A";
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
-        expr3.addToExpression(str3);
-        proof.addExpression(expr3);
+        str += "\nA";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str4 = "C";
-        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("2");
-        expr4.addReferenceLine("4");
-        proof.addExpression(expr4);
+        str += "\nC";
+        rules +="\nImplies-Elim (2,4)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str5 = "B";
-        Expression expr5 = new Expression(RuleType.ASSUMPTION);
-        expr5.addToExpression(str5);
-        proof.addExpression(expr5);
+        str += "\nB";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str6 = "C";
-        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
-        expr6.addToExpression(str6);
-        expr6.addReferenceLine("3");
-        expr6.addReferenceLine("6");
-        proof.addExpression(expr6);
+        str += "\nC";
+        rules +="\nImplies-Elim (3,6)";
+        proof.frontEndFunctionality(str, rules);
 
 //                 System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_ELIM"));
 
-        String str7 = "C";
-        Expression expr7 = new Expression(RuleType.OR_ELIM);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("1");
-        expr7.addReferenceLine("4");
-        expr7.addReferenceLine("5");
-        expr7.addReferenceLine("6");
-        expr7.addReferenceLine("7");
-//        expr7.addReferenceLine("6");
-        proof.addExpression(expr7);
+        str += "\nC";
+        rules +="\nOr-Elim (1,4,5,6,7)";
+        proof.frontEndFunctionality(str, rules);
 
 //                         System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
 
     }
-//
-    @Test
-    public void hintTest4() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "A";
-        String str2 = "!B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-
-        String result = "FALSE";
-        proof.setResultString(result);
-        Expression res = new Expression();
-        res.addToExpression(result);
-        proof.setResultExpr(res);
-
-        assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, A, NOT B, B, FALSE]"));
-
-    }
-
 
     @Test
     public void hintTest5() throws SyntaxException {
-        String str = "!!A";
-        String str1 = "A -> B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "!!A\nA -> B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "B";
         proof.setResultString(result);
+
+        proof.frontEndFunctionality(str, rules);
+
 //                System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: DOUBLE_NOT_ELIM"));
 
-        String str2 = "A";
-        Expression expr2 = new Expression(RuleType.DOUBLE_NOT_ELIM);
-        expr2.addToExpression(str2);
-        expr2.addReferenceLine("1");
-        proof.addExpression(expr2);
+        str += "\nA";
+        rules +="\nDoubleNot-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
 
 //                        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str3 = "B";
-        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
-        expr3.addToExpression(str3);
-        expr3.addReferenceLine("2");
-        expr3.addReferenceLine("3");
-        proof.addExpression(expr3);
+        str += "\nB";
+        rules +="\nImplies-Elim (2,3)";
+        proof.frontEndFunctionality(str, rules);
 
-//        System.out.println(proof.generateHint(false));
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
 
@@ -621,30 +546,20 @@ public class HintTests {
 
     @Test
     public void hintTest6() throws SyntaxException {
-        String str = "A -> B";
-        String str1 = "B -> A";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A -> B\nB -> A";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A <-> B";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint(result).equals("Hint: ONLY_INTRO"));
 
-        String str2 = "A <-> B";
-        Expression expr2 = new Expression(RuleType.ONLY_INTRO);
-        expr2.addToExpression(str2);
-        expr2.addReferenceLine("1");
-        expr2.addReferenceLine("2");
-        proof.addExpression(expr2);
-
+        str += "\nA <-> B";
+        rules +="\nOnly-Intro (1,2)";
+        proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -652,86 +567,62 @@ public class HintTests {
 
     @Test
     public void hintTest7() throws SyntaxException {
-        String str = "A | B ^ D";
-        String str1 = "A -> B ";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A | B ^ D\nA -> B";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "B";
         proof.setResultString(result);
 
-//        System.out.println(proof.generateHint(result));
-        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
-
-        String str2 = "A | B";
-        Expression expr2 = new Expression(RuleType.AND_ELIM);
-        expr2.addToExpression(str2);
-        expr2.addReferenceLine("1");
-        proof.addExpression(expr2);
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str3 = "D";
-        Expression expr3 = new Expression(RuleType.AND_ELIM);
-        expr3.addToExpression(str3);
-        expr3.addReferenceLine("1");
-        proof.addExpression(expr3);
+        str += "\nA | B";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
+
+        str += "\nD";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str4 = "A";
-        Expression expr4 = new Expression(RuleType.ASSUMPTION);
-        expr4.addToExpression(str4);
-        proof.addExpression(expr4);
+        str += "\nA";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str5 = "B";
-        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("2");
-        expr5.addReferenceLine("5");
-        proof.addExpression(expr5);
+        str += "\nB";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str6 = "B ^ D";
-        Expression expr6 = new Expression(RuleType.ASSUMPTION);
-        expr6.addToExpression(str6);
-        proof.addExpression(expr6);
+        str += "\nB ^ D";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str7 = "B";
-        Expression expr7 = new Expression(RuleType.AND_ELIM);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("7");
-        proof.addExpression(expr7);
+        str += "\nB";
+        rules +="\nAnd-Elim (7)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_ELIM"));
 
-        String str8 = "B";
-        Expression expr8 = new Expression(RuleType.OR_ELIM);
-        expr8.addToExpression(str7);
-        expr8.addReferenceLine("1");
-        expr8.addReferenceLine("5");
-        expr8.addReferenceLine("6");
-        expr8.addReferenceLine("7");
-        expr8.addReferenceLine("8");
-        proof.addExpression(expr8);
+        str += "\nB";
+        rules +="\nOr-Elim (1,5,6,7,8)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -740,136 +631,103 @@ public class HintTests {
 
     @Test
     public void hintTest8() throws SyntaxException {
-        String str = "A ^ (B -> D)";
-        String str1 = "B";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "A ^ (B -> D)\nB";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "D";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str4 = "B -> D";
-        Expression expr4 = new Expression(RuleType.AND_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        proof.addExpression(expr4);
+        str += "\nB -> D";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
 
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str3 = "D";
-        Expression expr3 = new Expression(RuleType.IMPLIES_ELIM);
-        expr3.addToExpression(str3);
-        expr3.addReferenceLine("2");
-        expr3.addReferenceLine("3");
-        proof.addExpression(expr3);
+        str += "\nD";
+        rules +="\nImplies-Elim (2,3)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
-////
+
     @Test
-    //This test takes a lot of time due to OR_INTRO
     public void hintTest9() throws SyntaxException {
         String str = "!(A | B)";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "!A";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str1 = "A";
-        Expression expr1 = new Expression(RuleType.ASSUMPTION);
-        expr1.addToExpression(str1);
-        proof.addExpression(expr1);
+        str += "\nA";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_INTRO"));
 
-        String str2 = "A | B";
-        Expression expr2 = new Expression(RuleType.OR_INTRO);
-        expr2.addToExpression(str2);
-        expr2.addReferenceLine("2");
-        proof.addExpression(expr2);
+        str += "\nA | B";
+        rules +="\nOr-Intro (2)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(false));
         assertTrue(proof.generateHint(result).equals("Hint: NOT_ELIM"));
 
-        String str3 = "FALSE";
-        Expression expr3 = new Expression(RuleType.NOT_ELIM);
-        expr3.addToExpression(str3);
-        expr3.addReferenceLine("1");
-        expr3.addReferenceLine("3");
-        proof.addExpression(expr3);
+        str += "\nFALSE";
+        rules +="\nNot-Elim (1,3)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(false));
         assertTrue(proof.generateHint(result).equals("Hint: NOT_INTRO"));
 
-        String str4 = "!A";
-        Expression expr4 = new Expression(RuleType.NOT_INTRO);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("2");
-        expr4.addReferenceLine("4");
-        proof.addExpression(expr4);
+        str += "\n!A";
+        rules +="\nNot-Intro (2,4)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(false));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
 
-
     @Test
     public void hintTest11() throws SyntaxException {
         String str = "A -> (B -> C)";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-        proof.addExpression(expr);
+        String rules = "GIVEN";
 
         String result = "A ^ B -> C";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str2 = "A ^ B";
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-        proof.addExpression(expr2);
+        str += "\nA ^ B";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str3 = "A";
-        Expression expr3 = new Expression(RuleType.AND_ELIM);
-        expr3.addToExpression(str3);
-        expr3.addReferenceLine("2");
-        proof.addExpression(expr3);
+        str += "\nA";
+        rules +="\nAnd-Elim (2)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str4 = "B -> C";
-        Expression expr4 = new Expression(RuleType.IMPLIES_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        expr4.addReferenceLine("3");
-        proof.addExpression(expr4);
+        str += "\nB -> C";
+        rules +="\nImplies-Elim (1,3)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
@@ -877,93 +735,62 @@ public class HintTests {
 
     @Test
     public void hintTest12() throws SyntaxException {
-        String str = "A ^ (B | C)";
-        String str1 = "B -> D ";
-        String str2 = "C -> D";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.GIVEN);
-        expr2.addToExpression(str2);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-
+        String str = "A ^ (B | C)\nB -> D\nC -> D";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "D | E";
         proof.setResultString(result);
 
+        proof.frontEndFunctionality(str, rules);
+
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str4 = "B | C";
-        Expression expr4 = new Expression(RuleType.AND_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        proof.addExpression(expr4);
+        str += "\nB | C";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str5 = "B";
-        Expression expr5 = new Expression(RuleType.ASSUMPTION);
-        expr5.addToExpression(str5);
-        proof.addExpression(expr5);
+        str += "\nB";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str6 = "D";
-        Expression expr6 = new Expression(RuleType.IMPLIES_ELIM);
-        expr6.addToExpression(str6);
-        expr6.addReferenceLine("2");
-        expr6.addReferenceLine("5");
-        proof.addExpression(expr6);
+        str += "\nD";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str7 = "C";
-        Expression expr7 = new Expression(RuleType.ASSUMPTION);
-        expr7.addToExpression(str7);
-        proof.addExpression(expr7);
+        str += "\nC";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str8 = "D";
-        Expression expr8 = new Expression(RuleType.IMPLIES_ELIM);
-        expr8.addToExpression(str8);
-        expr8.addReferenceLine("3");
-        expr8.addReferenceLine("7");
-        proof.addExpression(expr8);
+        str += "\nD";
+        rules +="\nImplies-Elim (3,7)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_ELIM"));
 
-        String str9 = "D";
-        Expression expr9 = new Expression(RuleType.OR_ELIM);
-        expr9.addToExpression(str9);
-        expr9.addReferenceLine("4");
-        expr9.addReferenceLine("5");
-        expr9.addReferenceLine("6");
-        expr9.addReferenceLine("7");
-        expr9.addReferenceLine("8");
-        proof.addExpression(expr9);
+        str += "\nD";
+        rules +="\nOr-Elim (4,5,6,7,8)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_INTRO"));
 
-        String str10 = "D | E";
-        Expression expr10 = new Expression(RuleType.OR_INTRO);
-        expr10.addToExpression(str10);
-        expr10.addReferenceLine("9");
-        proof.addExpression(expr10);
+        str += "\nD | E";
+        rules +="\nOr-Intro (9)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -971,75 +798,55 @@ public class HintTests {
 
     @Test
     public void hintTest13() throws SyntaxException {
-        String str = "B ^ E";
-        String str1 = "E -> C ";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
+        String str = "B ^ E\nE -> C";
+        String rules = "GIVEN\nGIVEN";
 
         String result = "A -> (B -> C)";
         proof.setResultString(result);
 
-//        System.out.println(proof.generateHint(result));
-        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
-
-        String str2 = "A";
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-        proof.addExpression(expr2);
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str3 = "B";
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
-        expr3.addToExpression(str3);
-        proof.addExpression(expr3);
+        str += "\nA";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint(result));
+        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
+
+        str += "\nB";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
 
-        String str4 = "E";
-        Expression expr4 = new Expression(RuleType.AND_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        proof.addExpression(expr4);
+        str += "\nE";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
 
-        String str5 = "C";
-        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("2");
-        expr5.addReferenceLine("5");
-        proof.addExpression(expr5);
+        str += "\nC";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
 
-        String str6 = "B -> C";
-        Expression expr6 = new Expression(RuleType.IMPLIES_INTRO);
-        expr6.addToExpression(str6);
-        expr6.addReferenceLine("4");
-        expr6.addReferenceLine("6");
-        proof.addExpression(expr6);
+        str += "\nB -> C";
+        rules +="\nImplies-Intro (4,6)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
 
-        String str7 = "A -> (B -> C)";
-        Expression expr7 = new Expression(RuleType.IMPLIES_INTRO);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("3");
-        expr7.addReferenceLine("7");
-        proof.addExpression(expr7);
+        str += "\nA -> (B -> C)";
+        rules +="\nImplies-Intro (3,7)";
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -1049,83 +856,17 @@ public class HintTests {
     //TODO: fix this case
     @Test
     public void hintTest14() throws SyntaxException {
-        String str = "A";
-        String str1 = "A -> B";
-        String str10 = "B -> C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr10 = new Expression(RuleType.GIVEN);
-        expr10.addToExpression(str10);
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr10);
+        String str = "A\nA -> B\nB -> C";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
 
         String result = "(A ^ B) ^ C";
         proof.setResultString(result);
 
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
-
-        String str2 = "A";
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-        proof.addExpression(expr2);
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint(result));
 //        assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
-        String str3 = "B";
-        Expression expr3 = new Expression(RuleType.ASSUMPTION);
-        expr3.addToExpression(str3);
-        proof.addExpression(expr3);
-
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: AND_ELIM"));
-
-        String str4 = "E";
-        Expression expr4 = new Expression(RuleType.AND_ELIM);
-        expr4.addToExpression(str4);
-        expr4.addReferenceLine("1");
-        proof.addExpression(expr4);
-
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_ELIM"));
-
-        String str5 = "C";
-        Expression expr5 = new Expression(RuleType.IMPLIES_ELIM);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("2");
-        expr5.addReferenceLine("5");
-        proof.addExpression(expr5);
-
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
-
-        String str6 = "B -> C";
-        Expression expr6 = new Expression(RuleType.IMPLIES_INTRO);
-        expr6.addToExpression(str6);
-        expr6.addReferenceLine("4");
-        expr6.addReferenceLine("6");
-        proof.addExpression(expr6);
-
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
-
-        String str7 = "A -> (B -> C)";
-        Expression expr7 = new Expression(RuleType.IMPLIES_INTRO);
-        expr7.addToExpression(str7);
-        expr7.addReferenceLine("3");
-        expr7.addReferenceLine("7");
-        proof.addExpression(expr7);
-
-//        System.out.println(proof.generateHint(result));
-//        assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
     }
 
     @Test
@@ -1138,28 +879,22 @@ public class HintTests {
         assertTrue(proof.generateHint(result).equals("Hint: ASSUMPTION"));
 
         String str = "A";
-        Expression expr = new Expression(RuleType.ASSUMPTION);
-        expr.addToExpression(str);
-        proof.addExpression(expr);
+        String rules ="ASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
 
         //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: OR_INTRO"));
 
-        String str1 = "A | C";
-        Expression expr1 = new Expression(RuleType.OR_INTRO);
-        expr1.addToExpression(str1);
-        expr1.addReferenceLine("1");
-        proof.addExpression(expr1);
+        str += "\nA | C";
+        rules +="\nOr-Intro (1)";
+        proof.frontEndFunctionality(str, rules);
 
         //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Hint: IMPLIES_INTRO"));
 
-        String str2 = "A -> A | C";
-        Expression expr2 = new Expression(RuleType.IMPLIES_INTRO);
-        expr2.addToExpression(str2);
-        expr2.addReferenceLine("1");
-        expr2.addReferenceLine("2");
-        proof.addExpression(expr2);
+        str += "\nA -> A | C";
+        rules +="\nImplies-Intro (1,2)";
+        proof.frontEndFunctionality(str, rules);
 
         //        System.out.println(proof.generateHint(result));
         assertTrue(proof.generateHint(result).equals("Proof already successfully solved"));
@@ -1169,39 +904,8 @@ public class HintTests {
     @Test
     public void multipleGoalTest1() throws SyntaxException {
 
-        String str = "A ^ B";
-        String str1 = "C";
-        String str2 = "D";
-        String str3 = "...";
-        String str4 = "B ^ C";
-        String str5 = "D -> B ^ C";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.EMPTY);
-//        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression();
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("3");
-        expr5.addReferenceLine("5");
-
-        proof.addExpression(expr);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
-        proof.addExpression(expr5);
+        String str = "A ^ B\nC\nD\n...\nB ^ C\nD -> B ^ C";
+        String rules = "GIVEN\nGIVEN\nASSUMPTION\nEMPTY\n\nImplies-Intro (3,5)";
 
         String result = "D -> B ^ C";
         proof.setResultString(result);
@@ -1209,58 +913,26 @@ public class HintTests {
         res.addToExpression(result);
         proof.setResultExpr(res);
 
-        System.out.println(proof.solveProof());
-//        assertTrue(proof.solveProof().toString().equals("[A AND B, C, D, B, B AND C, D IMPLIES B AND C]"));
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.solveProof());
+        assertTrue(proof.solveProof().toString().equals("[A AND B, C, D, B, B AND C, D IMPLIES B AND C]"));
 
     }
 
     @Test
     public void multipleGoalTest2() throws SyntaxException {
 
-        String str = "A ^ B";
-        String str6 = "D -> E";
-        String str1 = "C";
-        String str2 = "D";
-        String str3 = "...";
-        String str4 = "B ^ C ^ E";
-        String str5 = "D -> B ^ C ^ E";
-
-        Expression expr = new Expression(RuleType.GIVEN);
-        expr.addToExpression(str);
-
-        Expression expr6 = new Expression(RuleType.GIVEN);
-        expr6.addToExpression(str6);
-
-        Expression expr1 = new Expression(RuleType.GIVEN);
-        expr1.addToExpression(str1);
-
-        Expression expr2 = new Expression(RuleType.ASSUMPTION);
-        expr2.addToExpression(str2);
-
-        Expression expr3 = new Expression(RuleType.EMPTY);
-//        expr3.addToExpression(str3);
-
-        Expression expr4 = new Expression();
-        expr4.addToExpression(str4);
-
-        Expression expr5 = new Expression(RuleType.IMPLIES_INTRO);
-        expr5.addToExpression(str5);
-        expr5.addReferenceLine("3");
-        expr5.addReferenceLine("5");
-
-        proof.addExpression(expr);
-        proof.addExpression(expr6);
-        proof.addExpression(expr1);
-        proof.addExpression(expr2);
-        proof.addExpression(expr3);
-        proof.addExpression(expr4);
-//        proof.addExpression(expr5);
+        String str = "A ^ B\nD -> E\nC\nD\n...\nB ^ C ^ E\nD -> B ^ C ^ E";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nEMPTY\n\nImplies-Elim (3,5)";
 
         String result = "D -> B ^ C ^ E";
         proof.setResultString(result);
         Expression res = new Expression();
         res.addToExpression(result);
         proof.setResultExpr(res);
+
+        proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString()
