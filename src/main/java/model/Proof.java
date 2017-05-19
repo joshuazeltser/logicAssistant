@@ -1,7 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
-
 import java.util.*;
 
 import static model.OperatorType.*;
@@ -18,8 +16,6 @@ public class Proof {
     protected String proofString;
     protected String proofLabels;
 
-    private String resultString;
-
     private Expression resultExpr;
 
     private List<Expression> list_proof;
@@ -33,7 +29,6 @@ public class Proof {
         errors = new LinkedList<>();
         proofString = "";
         proofLabels = "";
-        resultString = "";
         resultExpr = new Expression();
         list_goals = new LinkedList<>();
         list_proof = new LinkedList<>();
@@ -68,17 +63,17 @@ public class Proof {
 
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
 
-        if (!proof.equals("") && !rule.equals("")) {
+        if (!proof.equals("")) {
             String[] expr = proof.split("\\r?\\n");
             String[] exprRule = rule.split("\\r?\\n");
 
             //check rules are all present
-            if (expr.length != exprRule.length) {
-                errors.add("ERROR: A rule is missing on a line of the proof");
-                return;
-            }
+//            if (expr.length != exprRule.length) {
+//                errors.add("ERROR: A rule is missing on a line of the proof");
+//                return;
+//            }
 
-            for (int i = 0; i < expr.length; i++) {
+            for (int i = 0; i < expr.length-1; i++) {
                 String toAdd = "";
                 for (int j = 0; j < expr[i].length(); j++) {
                     if (expr[i].charAt(j) != '-') {
@@ -101,53 +96,61 @@ public class Proof {
                 }
                 expr[i] = toAdd;
             }
+
             
-            for (int i = 0; i < expr.length; i++) {
+            for (int i = 0; i < exprRule.length; i++) {
                 // split rules by space
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
-                    if (expr[i].charAt(0) != '.') {
-                        newExpr.addToExpression(expr[i]);
+                    if (expr[i] != "") {
+                        if (expr[i].charAt(0) != '.') {
+                            newExpr.addToExpression(expr[i]);
+                        }
                     }
+
 
 
                 } catch (SyntaxException s) {
                     errors = new LinkedList<>();
-                    errors.add("LINE " + (i+1) + " - " + s.getMessage());
+                    errors.add("LINE " + (i + 1) + " - " + s.getMessage());
                     //if there is a syntax error don't display other error messages
-                   return;
+                    return;
                 }
 
 
+                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
+                    if (components.length == 1) {
 
-                    if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
-                        if (components.length == 1) {
+                        String comps = removeBracketsFromString(components[0]);
+                        String[] lines = comps.split(",");
 
-                            String comps = removeBracketsFromString(components[0]);
-                            String[] lines = comps.split(",");
-
-                            for (int j = 0; j < lines.length; j++) {
-                                if (!lines[j].equals("")) {
-                                    newExpr.addReferenceLine(lines[j]);
-                                }
-                            }
-                        } else {
-                            if (components[1].equals("")) {
-                                continue;
-                            }
-                            String comps = removeBracketsFromString(components[1]);
-                            String[] lines = comps.split(",");
-                            for (int j = 0; j < lines.length; j++) {
+                        for (int j = 0; j < lines.length; j++) {
+                            if (!lines[j].equals("")) {
                                 newExpr.addReferenceLine(lines[j]);
                             }
                         }
+                    } else {
+                        if (components[1].equals("")) {
+                            continue;
+                        }
+                        String comps = removeBracketsFromString(components[1]);
+                        String[] lines = comps.split(",");
+                        for (int j = 0; j < lines.length; j++) {
+                            newExpr.addReferenceLine(lines[j]);
+                        }
                     }
+                }
 
                 addExpression(newExpr);
             }
 
+            System.out.println(expressions);
+            Expression res = new Expression();
+            res.addToExpression(expr[expr.length-1]);
+            setResultExpr(res);
         }
+
     }
 
     private String removeBracketsFromString(String str) {
@@ -843,69 +846,63 @@ public class Proof {
         errors.addAll(hs);
     }
 
-    public String generateHint(String resultString) throws SyntaxException {
+    public String generateHint() throws SyntaxException {
 
-        if (!resultString.equals("")) {
 
-            resultExpr = new Expression();
-            resultExpr.addToExpression(resultString);
+        if (solvedProof == null) {
+            solvedProof = solveProof();
 
-            if (solvedProof == null) {
-                solvedProof = solveProof();
+        } else {
 
-            } else {
-
-                try {
-                    if (!expressions.get(expressions.size() - 1).equals(solvedProof.get(expressions.size() - 1))) {
-                        solvedProof = solveProof();
-                    }
-                } catch (IndexOutOfBoundsException e) {
-
+            try {
+                if (!expressions.get(expressions.size() - 1).equals(solvedProof.get(expressions.size() - 1))) {
+                    solvedProof = solveProof();
                 }
+            } catch (IndexOutOfBoundsException e) {
+
             }
+        }
 
 
-            if (isProofValid()) {
-                if (solvedProof != null) {
+        if (isProofValid()) {
+            if (solvedProof != null) {
 
-                    for (int i = 0; i < expressions.size(); i++) {
-                        if (expressions.get(i).toString().equals("")) {
+                for (int i = 0; i < expressions.size(); i++) {
+                    if (expressions.get(i).toString().equals("")) {
 
-                            return "Hint: " + solvedProof.get(i).getRuleType().toString();
-                        }
-
-                        if (expressions.get(i).getRuleType() == RuleType.EMPTY) {
-
-                            return "Hint: " + solvedProof.get(i).getRuleType();
-                        }
+                        return "Hint: " + solvedProof.get(i).getRuleType().toString();
                     }
 
-                    if (solvedProof.size() <= expressions.size()) {
-                        return "Proof already successfully solved";
-                    }
+                    if (expressions.get(i).getRuleType() == RuleType.EMPTY) {
 
-                    if (expressions.isEmpty()) {
-                        return "Hint: " + solvedProof.get(0).getRuleType().toString();
+                        return "Hint: " + solvedProof.get(i).getRuleType();
                     }
+                }
+
+                if (solvedProof.size() <= expressions.size()) {
+                    return "Proof already successfully solved";
+                }
+
+                if (expressions.isEmpty()) {
+                    return "Hint: " + solvedProof.get(0).getRuleType().toString();
+                }
 
 
-                    if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size()-1))) {
-                        return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
-                    } else {
-                        return "Hint: Go back a step, you are going in the wrong direction";
-                    }
+                if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size() - 1))) {
+                    return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
                 } else {
-                    return "Hint: ASSUMPTION";
+                    return "Hint: Go back a step, you are going in the wrong direction";
                 }
             } else {
-
-                removeErrorDuplicates();
-                return printErrors();
+                return "Hint: ASSUMPTION";
             }
         } else {
-            return "";
+
+            removeErrorDuplicates();
+            return printErrors();
         }
     }
+
 
 
     private boolean solved = false;
@@ -919,7 +916,7 @@ public class Proof {
         if (!expressions.isEmpty()) {
             for (int i = 0; i < expressions.size(); i++) {
 
-                    if (expressions.get(i).toString().equals("")) {
+                    if (expressions.get(i).toString().equals("") && i < expressions.size()-1) {
 
                         Expression e = new Expression();
                         e.addToExpression(expressions.get(i+1).toString());
@@ -1512,8 +1509,8 @@ public class Proof {
                 rhs.addReferenceLine(Integer.toString(count));
 
 
-                if (!resultString.toLowerCase().contains(lhs.toString().toLowerCase())
-                        && !lhs.toString().toLowerCase().contains(resultString.toLowerCase()) ) {
+                if (!resultExpr.toString().toLowerCase().contains(lhs.toString().toLowerCase())
+                        && !lhs.toString().toLowerCase().contains(resultExpr.toString().toLowerCase()) ) {
                     doneLeft = true;
                 } else {
                     doneLeft = false;
@@ -1634,14 +1631,6 @@ public class Proof {
 
     public void setResultExpr(Expression resultExpr) {
         this.resultExpr = resultExpr;
-    }
-
-    public String getResultString() {
-        return resultString;
-    }
-
-    public void setResultString(String resultString) {
-        this.resultString = resultString;
     }
 
     public String printTest() {
