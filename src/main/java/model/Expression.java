@@ -66,6 +66,12 @@ public class Expression {
             throw new SyntaxException("Syntax Error: Mismatched brackets");
         }
 
+        for (int i = 0; i < input.length()-1; i++) {
+            if (input.charAt(i) == ' ' && input.charAt(i+1) == ' ') {
+                throw new SyntaxException("Syntax Error: You cannot use a space twice in a row in an expression ");
+            }
+        }
+
         String[] tokens = input.split(" ");
 
         syntaxCheck(tokens);

@@ -281,11 +281,13 @@
                                 if (indentArray.length > 0) {
                                     var added = false;
                                     for (var j = 0; j < indentArray.length; j++) {
-                                        if (proofArray[i].charAt(j) == '-' || proofArray[i].charAt(j) == ' ') {
+                                        if (proofArray[i].charAt(j) == '-') {
                                             continue;
                                         }
-                                        proof.value = proof.value + '----';
-                                        added = true;
+                                        if (proofArray[i].charAt(j) != ' ') {
+                                            proof.value = proof.value + '----';
+                                            added = true;
+                                        }
                                     }
                                     if (added) {
                                         proof.value = proof.value + '  ' + proofArray[i];
@@ -314,7 +316,7 @@
                             placement: "top"
                         });
                     </script>
-                    <textarea onclick="call_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
+                    <textarea  id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
 			</textarea>
                     <style>
                         textarea {
