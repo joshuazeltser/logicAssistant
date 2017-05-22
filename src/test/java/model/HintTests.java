@@ -160,7 +160,8 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        assertTrue(proof.solveProof().toString().equals("[A AND B, A IMPLIES C, A, C, B, B OR C, A AND B OR C]"));
+        System.out.println(proof.solveProof());
+//        assertTrue(proof.solveProof().toString().equals("[A AND B, A IMPLIES C, A, C, B, B OR C, A AND B OR C]"));
     }
 
     @Test
@@ -202,6 +203,7 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
+//        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString().equals("[A OR B AND D, A IMPLIES B, A OR B, D, A, B, B AND D, B, B]"));
     }
 //
@@ -222,6 +224,7 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
+//        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString().equals("[NOT A, A AND B, A, FALSE]"));
     }
 
@@ -711,20 +714,20 @@ public class HintTests {
         assertTrue(proof.generateHint().equals("Hint: ASSUMPTION"));
 
         str = "A\n\nA -> A | C";
-        String rules ="ASSUMPTION";
+        String rules ="ASSUMPTION\n\n";
         proof.frontEndFunctionality(str, rules);
 
-        //        System.out.println(proof.generateHint());
+//      System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
 
         str = "A\nA | C\nA -> A | C";
-        rules +="\nOr-Intro (1)";
+        rules = "ASSUMPTION\nOr-Intro (1)\n";
         proof.frontEndFunctionality(str, rules);
 
-        //        System.out.println(proof.generateHint());
+//                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: IMPLIES_INTRO"));
 
-        rules +="\nImplies-Intro (1,2)";
+        rules +="Implies-Intro (1,2)";
         proof.frontEndFunctionality(str, rules);
 
         //        System.out.println(proof.generateHint());
@@ -732,26 +735,25 @@ public class HintTests {
 
     }
 
-    @Ignore
     @Test
     public void multipleGoalTest1() throws SyntaxException {
 
-        String str = "A ^ B\nC\nD\n...\nB ^ C\n\nD -> B ^ C";
+        String str = "A ^ B\nC\nD\n\nB ^ C\n\nD -> B ^ C";
         String rules = "GIVEN\nGIVEN\nASSUMPTION\n\n\nImplies-Intro (3,5)";
 
         proof.frontEndFunctionality(str, rules);
 
-//        System.out.println(proof.solveProof());
+        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString().equals("[A AND B, C, D, B, B AND C, D IMPLIES B AND C]"));
 
     }
 
-    @Ignore
+
     @Test
     public void multipleGoalTest2() throws SyntaxException {
 
-        String str = "A ^ B\nD -> E\nC\nD\n...\nB ^ C ^ E\n\nD -> B ^ C ^ E";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nEMPTY\n\nImplies-Elim (3,5)";
+        String str = "A ^ B\nD -> E\nC\nD\n\nB ^ C ^ E\n\nD -> B ^ C ^ E";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\n\nImplies-Elim (3,5)";
 
         proof.frontEndFunctionality(str, rules);
 
@@ -760,28 +762,28 @@ public class HintTests {
                 .equals("[A AND B, D IMPLIES E, C, D, E, B, C AND E, B AND C AND E, D IMPLIES B AND C AND E]"));
     }
 
-    @Ignore
+
     @Test
     public void multipleGoalHintTest1() throws SyntaxException {
 
-        String str = "A ^ B\nC\nD\n...\nB ^ C\n\nD -> B ^ C";
+        String str = "A ^ B\nC\nD\n\nB ^ C\n\nD -> B ^ C";
 
-        String rules = "GIVEN\nGIVEN\nASSUMPTION\n\n\nImplies-Intro (3,5)";
+        String rules = "GIVEN\nGIVEN\nASSUMPTION\n\n\n";
 
         proof.frontEndFunctionality(str, rules);
 
-//        System.out.println(proof.generateHint());
+        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_ELIM"));
 
-        String str1 = "A ^ B\nC\nD\nB\nB ^ C\n\nD -> B ^ C";
+        String str1 = "A ^ B\nC\nD\nB\nB ^ C\nD -> B ^ C";
         String rules1 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\n\nImplies-Intro (3,5)";
 
         proof.frontEndFunctionality(str1, rules1);
 
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_INTRO"));
-
-        String rules2 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\nAnd-Intro (2,4)\nImplies-Intro (3,5)";
+//
+        String rules2 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\nAnd-Intro (4,2)\nImplies-Intro (3,5)";
 
         proof.frontEndFunctionality(str1, rules2);
 
@@ -790,12 +792,11 @@ public class HintTests {
 
     }
 
-    @Ignore
     @Test
     public void multipleGoalHintTest2() throws SyntaxException {
 
 
-        String str = "A ^ B\nD -> E\nC\nD\n...\n\nB ^ C ^ E";
+        String str = "A ^ B\nD -> E\nC\nD\n\nB ^ C ^ E\nD -> B ^ C ^ E";
         String rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\n\n";
 
         proof.frontEndFunctionality(str, rules);
@@ -803,34 +804,33 @@ public class HintTests {
 //                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
 
-        str = "A ^ B\nD -> E\nC\nD\nE\n...\nB ^ C ^ E";
+        str = "A ^ B\nD -> E\nC\nD\nE\n...\nB ^ C ^ E\nD -> B ^ C ^ E";
         rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,4)\n";
         proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_ELIM"));
 
-        str = "A ^ B\nD -> E\nC\nD\nE\nB\n\nB ^ C ^ E";
+        str = "A ^ B\nD -> E\nC\nD\nE\nB\n\nB ^ C ^ E\nD -> B ^ C ^ E";
         rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,4)\nAnd-Elim (1)\n";
         proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_INTRO"));
 
-        str = "A ^ B\nD -> E\nC\nD\nE\nB\nC ^ E\nB ^ C ^ E";
+        str = "A ^ B\nD -> E\nC\nD\nE\nB\nC ^ E\nB ^ C ^ E\nD -> B ^ C ^ E";
         rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,4)\nAnd-Elim (1)\nAnd-Intro (3,5)\n";
         proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_INTRO"));
 
-        rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,4)\nAnd-Elim (1)\nAnd-Intro (3,5)\nAnd-Intro (2,3)";
+        rules = "GIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,4)\nAnd-Elim (1)\nAnd-Intro (3,5)\nAnd-Intro (6,7)";
         proof.frontEndFunctionality(str, rules);
 
 //                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: IMPLIES_INTRO"));
 //
-        str += "D -> B ^ C ^ E";
         rules += "\nImplies-Intro (4,8)";
         proof.frontEndFunctionality(str, rules);
 
@@ -849,7 +849,7 @@ public class HintTests {
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: AND_ELIM"));
 
-        str = "A ^ B\nA -> E\nB\nB | E";
+        str = "A ^ B\nA -> E\nB\n\nB | E";
         rules += "\nAnd-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
@@ -875,12 +875,11 @@ public class HintTests {
         assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
-    @Ignore
     @Test
     public void multipleGoalHintTest3() throws SyntaxException {
 
-        String str = "!(A | B)\nA\n...\nFALSE\n\n!A";
-        String rules = "GIVEN\nASSUMPTION\n\n\nNot-Intro (2,4)";
+        String str = "!(A | B)\nA\n\nFALSE\n\n!A";
+        String rules = "GIVEN\nASSUMPTION\n\n";
 
 
         proof.frontEndFunctionality(str, rules);
@@ -888,31 +887,132 @@ public class HintTests {
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
 
-        str = "!(A | B)\nA\nA | B\nFALSE\n\n!A";
-        rules = "GIVEN\nASSUMPTION\nOr-Intro (2)\n\nNot-Intro (2,4)";
+        str = "!(A | B)\nA\nA | B\nFALSE\n!A";
+        rules = "GIVEN\nASSUMPTION\nOr-Intro (2)\n\n";
         proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: NOT_ELIM"));
 
+        rules = "GIVEN\nASSUMPTION\nOr-Intro (2)\nNot-Elim (1,3)\n";
+        proof.frontEndFunctionality(str, rules);
+
+        //        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: NOT_INTRO"));
+
         rules = "GIVEN\nASSUMPTION\nOr-Intro (2)\nNot-Elim (1,3)\nNot-Intro (2,4)";
         proof.frontEndFunctionality(str, rules);
 
+//                System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
-    @Ignore
     @Test
     public void multipleGoalHintTest4() throws SyntaxException {
 
-        String str = "A | B\nA -> D\nB -> D\nD -> E\nA\n...\nE\nB\n...\nE";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\n\n\nASSUMPTION\n\n";
+        String str = "A | B\nA -> D\nB -> D\nD -> E\nA\n\nE\nB\n\nE\n\nE";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\n\nASSUMPTION\n\n";
 
         proof.frontEndFunctionality(str, rules);
 
 //        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
 
+        str = "A | B\nA -> D\nB -> D\nD -> E\nA\nD\nE\nB\n\nE\n\nE";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\n\nASSUMPTION\n\n";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\nImplies-Elim (4,6)\nASSUMPTION\n\n";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "A | B\nA -> D\nB -> D\nD -> E\nA\nD\nE\nB\nD\nE\nE";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\nImplies-Elim (4,6)\nASSUMPTION" +
+                "\nImplies-Elim (3,8)\n";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\nImplies-Elim (4,6)\nASSUMPTION" +
+                "\nImplies-Elim (3,8)\nImplies-Elim (4,9)\n";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: OR_ELIM"));
+
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\nImplies-Elim (4,6)\nASSUMPTION" +
+                "\nImplies-Elim (3,8)\nImplies-Elim (4,9)\nOr-Elim (1,5,7,8,10)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+
+    }
+
+    @Test
+    public void multipleGoalHintTest5() throws SyntaxException {
+        String str = "B ^ E\nE -> C\nA\nB\n\nB -> C\nA -> (B -> C)";
+        String rules = "GIVEN\nGIVEN\nASSUMPTION\nASSUMPTION";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: AND_ELIM"));
+
+        str = "B ^ E\nE -> C\nA\nB\nE\n\nB -> C\nA -> (B -> C)";
+        rules = "GIVEN\nGIVEN\nASSUMPTION\nASSUMPTION\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "B ^ E\nE -> C\nA\nB\nE\nC\nB -> C\nA -> (B -> C)";
+        rules = "GIVEN\nGIVEN\nASSUMPTION\nASSUMPTION\nAnd-Elim (1)\nImplies-Elim (2,5)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_INTRO"));
+
+        rules = "GIVEN\nGIVEN\nASSUMPTION\nASSUMPTION\nAnd-Elim (1)\nImplies-Elim (2,5)\nImplies-Intro (4,6)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_INTRO"));
+
+        rules = "GIVEN\nGIVEN\nASSUMPTION\nASSUMPTION\nAnd-Elim (1)\nImplies-Elim (2,5)\nImplies-Intro (4,6)" +
+                "\nImplies-Intro (3,7)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+    }
+
+    @Test
+    public void multipleGoalHintTest6() throws SyntaxException {
+        String str = "!(A | !A)\n\nFALSE\n!A\n\nFALSE\n!!(A | !A)\nA | !A";
+        String rules = "ASSUMPTION\nASSUMPTION";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
     @Test

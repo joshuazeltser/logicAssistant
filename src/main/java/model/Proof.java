@@ -53,6 +53,7 @@ public class Proof {
         if (errors.size() > 0) {
             result = printErrors();
         }
+
         return result;
     }
 
@@ -62,21 +63,24 @@ public class Proof {
 
 
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
+        int count = 0;
 
         if (!proof.equals("")) {
-            String[] expr = proof.split("\\r?\\n");
+            String[] steps = proof.split("\\r?\\n");
             String[] exprRule = rule.split("\\r?\\n");
 
-            //check rules are all present
-//            if (expr.length != exprRule.length) {
-//                errors.add("ERROR: A rule is missing on a line of the proof");
-//                return;
-//            }
+            String expr[] = new String[steps.length];
+            for (int i = 0; i < steps.length; i++) {
+                if (!steps[i].equals("") && steps[i].charAt(0) == '-') {
+                    expr[i] = steps[i].substring(6);
+                } else {
+                    expr[i] = steps[i];
+                }
+            }
 
             for (int i = 0; i < expr.length-1; i++) {
                 String toAdd = "";
                 for (int j = 0; j < expr[i].length(); j++) {
-                    if (expr[i].charAt(j) != '-') {
                         if (expr[i].charAt(j) == ' ' && expr[i].charAt(j+1) == ' ') {
                            for (int k = j+2; k < expr[i].length(); k++) {
                                toAdd += expr[i].charAt(k);
@@ -85,28 +89,17 @@ public class Proof {
                         }
                         toAdd += expr[i].charAt(j);
 
-                    } else {
-                        if (j < expr[i].length()-1) {
-                            if (expr[i].charAt(j + 1) == '>') {
-                                toAdd += expr[i].charAt(j);
-                            }
-                        }
-                    }
-
                 }
                 expr[i] = toAdd;
             }
 
-            
             for (int i = 0; i < exprRule.length; i++) {
                 // split rules by space
                 String[] components = exprRule[i].split(" ");
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
                     if (expr[i] != "") {
-                        if (expr[i].charAt(0) != '.') {
-                            newExpr.addToExpression(expr[i]);
-                        }
+                        newExpr.addToExpression(expr[i]);
                     }
 
 
@@ -132,6 +125,7 @@ public class Proof {
                         }
                     } else {
                         if (components[1].equals("")) {
+                            count++;
                             continue;
                         }
                         String comps = removeBracketsFromString(components[1]);
@@ -145,8 +139,9 @@ public class Proof {
                 addExpression(newExpr);
             }
 
+            System.out.println(expressions);
             Expression res = new Expression();
-            res.addToExpression(expr[expr.length-1]);
+            res.addToExpression(expr[expr.length-1-count]);
             setResultExpr(res);
         } else {
             return;
@@ -200,6 +195,9 @@ public class Proof {
 
 
         for (int i = expressions.size()-1; i >= 0; i--) {
+            if (expressions.get(i).toString().equals("")) {
+                continue;
+            }
             switch (expressions.get(i).getRuleType()) {
                 case AND_ELIM: isAndElimValid(expressions.get(i)); break;
                 case AND_INTRO: isAndIntroValid(expressions.get(i)); break;
@@ -898,7 +896,7 @@ public class Proof {
                     return "Hint: Go back a step, you are going in the wrong direction";
                 }
             } else {
-                return "Hint: ASSUMPTION";
+                return "NULL ERROR!!!";
             }
         } else {
 
@@ -907,41 +905,48 @@ public class Proof {
         }
     }
 
+    private boolean endAssumes(RuleType type) {
+        return type == RuleType.IMPLIES_INTRO || type == RuleType.NOT_INTRO || type == RuleType.OR_ELIM;
+    }
 
 
-    private boolean solved = false;
     public List<Expression> solveProof() throws SyntaxException {
         list_proof.clear();
         list_goals.clear();
 
         list_goals.add(resultExpr);
-        solved = true;
 
-        if (!expressions.isEmpty()) {
+        if (!expressions.isEmpty() && !expressions.get(0).toString().equals("")) {
             for (int i = 0; i < expressions.size(); i++) {
 
-                    if (expressions.get(i).toString().equals("") && i < expressions.size()-1) {
-
-                        Expression e = new Expression();
-                        e.addToExpression(expressions.get(i+1).toString());
-                        list_goals.add(e);
-
-                        for (Expression e1 : expressions) {
-                            if (e1.getRuleType() == RuleType.ASSUMPTION && !e1.isMarked()) {
-                                e1.setMarked(true);
-                                list_proof.add(e1);
+                if (expressions.get(i).getRuleType() != RuleType.ASSUMPTION ) {
+                    list_proof.add(expressions.get(i));
+                } else {
+                    for (int j = expressions.size()-2; j > i; j--) {
+                        System.out.println(expressions.get(j));
+                        if (!expressions.get(j).toString().equals("") && (endAssumes(expressions.get(j).getRuleType())
+                                || !expressions.get(j).isMarked())) {
+                            System.out.println(expressions.get(j));
+                            list_goals.add(expressions.get(j));
+                            expressions.get(j).setMarked(true);
+                            if (expressions.get(i+1).getRuleType() == RuleType.ASSUMPTION) {
+                                continue;
+                            } else {
                                 break;
                             }
                         }
-                    } else {
-                        if (expressions.get(i).getRuleType() == RuleType.GIVEN) {
-                            list_proof.add(expressions.get(i));
-                        }
+
                     }
+                    break;
+
+                }
 
 
             }
         }
+
+        System.out.println(list_goals);
+        System.out.println(list_proof);
 
         Expression current_goal = new Expression();
         current_goal.addToExpression(list_goals.get(list_goals.size()-1).toString());
@@ -963,7 +968,6 @@ public class Proof {
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
-
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     && !current_goal.equals(resultExpr)) {
@@ -1082,7 +1086,9 @@ public class Proof {
             if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
                 list_goals.add(rhs);
 
+
                 list_proof.add(lhs);
+
                 return;
             }
         }
@@ -1347,6 +1353,9 @@ public class Proof {
         boolean changed = false;
 
         for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).toString().equals("")) {
+                continue;
+            }
             if (newProof.expressions.get(i).getFirstComp().equals(new Operator("NOT", NOT))) {
                 Expression notResult = new Expression();
                 notResult.addToExpression("FALSE");
@@ -1382,6 +1391,9 @@ public class Proof {
         int count = 1;
         boolean changed = false;
         for (int i = 0; i < newProof.expressions.size(); i++) {
+            if (newProof.expressions.get(i).toString().equals("")) {
+                continue;
+            }
             if (newProof.expressions.get(i).getFirstComp().equals(new Operator("NOT", NOT))) {
                 Expression temp = new Expression();
                 temp.addToExpression(newProof.expressions.get(i).toString());
@@ -1404,6 +1416,8 @@ public class Proof {
             count++;
 
         }
+
+
 
         return changed;
     }
@@ -1513,8 +1527,10 @@ public class Proof {
                 rhs.addReferenceLine(Integer.toString(count));
 
 
-                if (!resultExpr.toString().toLowerCase().contains(lhs.toString().toLowerCase())
-                        && !lhs.toString().toLowerCase().contains(resultExpr.toString().toLowerCase()) ) {
+                if (!resultExpr.listPropositions().toString().toLowerCase()
+                        .contains(lhs.toString().toLowerCase())
+                        && !lhs.listPropositions().toString().toLowerCase()
+                        .contains(resultExpr.toString().toLowerCase()) && !resultExpr.toString().equals("FALSE")) {
                     doneLeft = true;
                 } else {
                     doneLeft = false;
@@ -1567,33 +1583,6 @@ public class Proof {
     }
 
 
-
-
-
-
-
-    private boolean checkIfFalseExpressionReached() throws SyntaxException {
-        boolean exprApresent = false;
-        boolean exprNotBpresent = false;
-        for (Expression expr : list_proof) {
-            Expression temp = new Expression();
-
-            if (expr.getFirstComp().equals(new Operator("NOT", NOT))) {
-                temp.addToExpression(expr.toString());
-                temp.removeNcomponents(1);
-                exprNotBpresent = true;
-            } else {
-                temp.addToExpression("!" + expr.toString());
-                exprApresent = true;
-            }
-            for (Expression expr1 : list_proof) {
-                if (expr1.equals(temp)) {
-                    return false;
-                }
-            }
-        }
-        return exprApresent && exprNotBpresent;
-    }
 
     private boolean checkIfExpressionsReached(Expression current) throws SyntaxException {
 
