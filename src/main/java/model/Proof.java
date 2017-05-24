@@ -221,6 +221,25 @@ public class Proof {
         }
     }
 
+    private String ruleFormatting(String rule) {
+        switch (rule) {
+            case "GIVEN": return "Given";
+            case "ASSUMPTION": return "Assumption";
+            case "AND_INTRO": return "And Introduction";
+            case "AND_ELIM": return "And Elimination";
+            case "OR_INTRO": return "Or Introduction";
+            case "OR_ELIM": return "Or Elimination";
+            case "NOT_INTRO": return "Not Introduction";
+            case "NOT_ELIM": return "Not Elimination";
+            case "IMPLIES_INTRO": return "Implies Introduction";
+            case "IMPLIES_ELIM": return "Implies Elimination";
+            case "ONLY_INTRO": return "Only Introduction";
+            case "ONLY_ELIM": return "Only Elimination";
+            case "DOUBLE_NOT_ELIM": return "Not Not Elimination";
+            default: return "";
+        }
+    }
+
     public boolean isProofValid() throws SyntaxException {
 
         for (Expression expr : expressions) {
@@ -887,26 +906,7 @@ public class Proof {
         if (resultExpr.toString().equals("")) {
             return "";
         }
-
-
-//        if (solvedProof == null) {
-//            solvedProof = solveProof();
-//
-//        } else {
-
-//            try {
-//                    for (int i = 0; i < expressions.size(); i++) {
-//                        if (!expressions.get(i).equals(solvedProof.get(i))) {
         solvedProof = solveProof();
-//                            break;
-//                        }
-//                    }
-
-//
-//            } catch (IndexOutOfBoundsException e) {
-//
-//            }
-//        }
 
         if (isProofValid()) {
 
@@ -916,9 +916,8 @@ public class Proof {
 
                 for (int i = 0; i < expressions.size(); i++) {
                     if (expressions.get(i).getRuleType() == RuleType.EMPTY || expressions.get(i).getRuleType() == null) {
-                        int index;
 
-                        return "Hint: " + solvedProof.get(i).getRuleType();
+                        return "Hint: " + ruleFormatting(solvedProof.get(i).getRuleType().toString());
                     }
                     if (expressions.get(i).toString().equals("")) {
                         int index;
@@ -928,7 +927,7 @@ public class Proof {
                             index = i;
                         }
 
-                        return "Hint: " + solvedProof.get(index).getRuleType().toString();
+                        return "Hint: " + ruleFormatting(solvedProof.get(index).getRuleType().toString());
                     }
 
 
@@ -939,12 +938,12 @@ public class Proof {
                 }
 
                 if (expressions.isEmpty()) {
-                    return "Hint: " + solvedProof.get(0).getRuleType().toString();
+                    return "Hint: " + ruleFormatting(solvedProof.get(0).getRuleType().toString());
                 }
 
 
                 if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size() - 1))) {
-                    return "Hint: " + solvedProof.get(expressions.size()).getRuleType().toString();
+                    return "Hint: " + ruleFormatting(solvedProof.get(expressions.size()).getRuleType().toString());
                 } else {
                     return "Hint: Go back a step, you are going in the wrong direction";
                 }

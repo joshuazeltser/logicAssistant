@@ -478,6 +478,12 @@
                         <output id="errorBox"  name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
                         <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint()}"></output>
 
+                        <style>
+                            output {
+                                font-size: 16px;
+                            }
+                        </style>
+
                     </div>
 
 
