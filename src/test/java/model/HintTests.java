@@ -839,36 +839,6 @@ public class HintTests {
     }
 
     @Test
-    public void multiComboTest1() throws SyntaxException {
-
-        String str = "A ^ B\nA -> E\nA\n\nE | B";
-        String rules = "GIVEN\nGIVEN\nAnd-Elim (1)";
-
-        proof.frontEndFunctionality(str, rules);
-
-        System.out.println(proof.solveProof());
-    }
-
-    @Test
-    public void multiComboTest2() throws SyntaxException {
-
-        String str = "A\nA -> B\nD ^ E\nB -> E\n\nE | Z";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN";
-
-        proof.frontEndFunctionality(str, rules);
-
-//        System.out.println(proof.generateHint());
-        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
-
-        str = "A\nA -> B\nD ^ E\nB -> E\nE\n\nE | Z";
-        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (3)";
-
-        proof.frontEndFunctionality(str, rules);
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
-    }
-
-    @Test
     public void multipleGoalHintTest3() throws SyntaxException {
 
         String str = "!(A | B)\nA\n\nFALSE\n!A";
@@ -1007,6 +977,75 @@ public class HintTests {
 
 //        System.out.println(proof.solveProof());
         assertTrue(proof.solveProof().toString().equals("[A IMPLIES B, B IMPLIES C, A, B, C]"));
+
+    }
+
+    @Test
+    public void multiCombinationTest1() throws SyntaxException {
+
+        String str = "A ^ B\nA -> E\nA\n\nE | B";
+        String rules = "GIVEN\nGIVEN\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "A ^ B\nA -> E\nB\nE | B";
+        rules = "GIVEN\nGIVEN\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
+
+    }
+
+    @Test
+    public void multiCombinationTest2() throws SyntaxException {
+
+        String str = "A\nA -> B\nD ^ E\nB -> E\n\nE | Z";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "A\nA -> B\nD ^ E\nB -> E\nE\n\nE | Z";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (3)";
+
+        proof.frontEndFunctionality(str, rules);
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
+    }
+
+    @Test
+    public void multiCombinationTest3() throws SyntaxException {
+
+        String str = "A ^ B\nA -> E\nE -> B\nD\n\nB ^ D";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: AND_ELIM"));
+
+        str = "A ^ B\nA -> E\nE -> B\nD\nA\n\nB ^ D";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "A ^ B\nA -> E\nE -> B\nD\nB\n\nB ^ D";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: AND_INTRO"));
 
     }
 

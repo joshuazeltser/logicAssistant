@@ -1007,17 +1007,14 @@ public class Proof {
             }
         }
 
-        System.out.println("start lp " +list_proof );
-        System.out.println("start lg " +list_goals );
-
-
         Expression current_goal = new Expression();
         current_goal.addToExpression(list_goals.get(0).toString());
 
         boolean specialCase = false;
 
         if (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) ||
-                resultExpr.getFirstComp().equals(new Operator("NOT", NOT))) {
+                resultExpr.getFirstComp().equals(new Operator("NOT", NOT))
+                || resultExpr.contains(new Operator("OR", OR))) {
 
             specialCase = true;
             for (Expression e : list_proof) {
@@ -1035,9 +1032,6 @@ public class Proof {
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
-
-            System.out.println(list_goals);
-            System.out.println(list_proof);
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
@@ -1066,7 +1060,6 @@ public class Proof {
                 }
 
                 if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
-                    System.out.println("finish: " + list_proof);
                     return list_proof;
                 }
                 continue;
@@ -1211,9 +1204,17 @@ public class Proof {
             Expression rhs = sides.get(1);
 
             if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
+                if (list_proof.contains(lhs)) {
+                    list_goals.add(lhs);
+                    return;
+                }
+                if (list_proof.contains(rhs)) {
+                    list_goals.add(rhs);
+                    return;
+                }
+
                 if (firstOrRound) {
                     list_goals.add(lhs);
-                    firstOrRound = false;
                 } else {
                     list_goals.add(rhs);
                 }
