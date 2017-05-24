@@ -1,33 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-
 <head>
-
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-
     <title>LogicAssistant</title>
-
     <!-- Bootstrap Core CSS -->
     <link href="webjars/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
-
     <!-- Custom CSS -->
     <link href="../static/css/shop-homepage.css" th:href="@{/css/shop-homepage.css}" rel="stylesheet"/>
-
     <!--Normalisation CSS -->
     <link href="../static/css/normalize.css" th:href="@{/css/normalize.css}" rel="stylesheet"/>
-
     <!-- jQuery -->
     <script src="webjars/jquery/3.1.1-1/jquery.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
     <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
-
     <script type="text/javascript">
         $(function() {
             $(".lined").linedtextarea(
@@ -36,10 +27,7 @@
         });
     </script>
 </head>
-
 <body>
-
-
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -68,11 +56,8 @@
     </div>
     <!-- /.container -->
 </nav>
-
 <div class="container">
-
     <h1 class="jumbotron" align="center">Validity Checker</h1>
-
     <div class="col-md-2">
         <p class="lead" align="center">Key</p>
         <table class="table">
@@ -90,7 +75,6 @@
             <tr>
                 <th scope="row">|</th>
                 <td>OR</td>
-
             </tr>
             <tr>
                 <th scope="row">-&gt;</th>
@@ -110,13 +94,11 @@
             </tr>
             </tbody>
         </table>
-
         <p></p>
         <a href="/" id="submit" class="btn btn-success" type="submit">Back to Proof Checker</a>
-
         <script>
             var sub = document.getElementById('submit');
-            
+
             sub.onclick = function () {
                 var premises = document.getElementById('Text1');
                 var result = document.getElementById('resultBox');
@@ -129,50 +111,41 @@
                 localStorage.setItem('items', JSON.stringify(items));
             }
         </script>
-
     </div>
     <div class="col-md-8">
-
         <center>
-    <form id="tt" action="/validity" th:object="${truthTable}" method="post">
-        <div class="input-group">
-            <p class="lead" align="center">Premises</p>
-             <textarea class="lined" th:field="*{ttPremises}" id="Text1" cols="20" rows="5"></textarea>
-            <style>
-                .linedtextarea textarea {
-                    padding-right:0.3em;
-                    padding-top:0.3em;
-                    border: 0;
-                    height: 240px;
-                    width: 300px;
-                }
-            </style>
-
-        </div>
-        <p></p>
-        <div class="input-group">
-            <p class="lead" align="center">Result</p>
-            <textarea id="resultBox" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
-
-        </div>
-        <p></p>
-        <div>
-            <input id="submit2" name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
-        </div>
-        <p></p>
-        <div id="error" class="panel panel-default">
-            <div class="panel-body">
-                <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
-
-            </div>
-
-        </div>
-    </form>
-    </center>
+            <form id="tt" action="/validity" th:object="${truthTable}" method="post">
+                <div class="input-group">
+                    <p class="lead" align="center">Premises</p>
+                    <textarea class="lined" th:field="*{ttPremises}" id="Text1" cols="20" rows="5"></textarea>
+                    <style>
+                        .linedtextarea textarea {
+                            padding-right:0.3em;
+                            padding-top:0.3em;
+                            border: 0;
+                            height: 240px;
+                            width: 300px;
+                        }
+                    </style>
+                </div>
+                <p></p>
+                <div class="input-group">
+                    <p class="lead" align="center">Result</p>
+                    <textarea id="resultBox" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
+                </div>
+                <p></p>
+                <div>
+                    <input id="submit2" name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
+                </div>
+                <p></p>
+                <div id="error" class="panel panel-default">
+                    <div class="panel-body">
+                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
+                    </div>
+                </div>
+            </form>
+        </center>
     </div>
-
 </div>
-
 </body>
-
 </html>
