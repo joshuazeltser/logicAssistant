@@ -325,7 +325,7 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
+//        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: ASSUMPTION"));
 
         str = "A | B\nA -> C\nB -> C\nA\n\nC";
@@ -359,7 +359,7 @@ public class HintTests {
         rules +="\nOr-Elim (1,4,5,6,7)";
         proof.frontEndFunctionality(str, rules);
 
-                         System.out.println(proof.generateHint());
+//                         System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Proof already successfully solved"));
 
     }
@@ -852,19 +852,20 @@ public class HintTests {
     @Test
     public void multiComboTest2() throws SyntaxException {
 
-        String str = "A\nA -> B\nD ^ E\nB -> E\nE\n\nE | Z";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (3)";
+        String str = "A\nA -> B\nD ^ E\nB -> E\n\nE | Z";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN";
 
         proof.frontEndFunctionality(str, rules);
 
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+
+        str = "A\nA -> B\nD ^ E\nB -> E\nE\n\nE | Z";
+        rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nAnd-Elim (3)";
+
+        proof.frontEndFunctionality(str, rules);
         System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: AND_INTRO"));
-//
-//        rules += "\nAnd-Intro (1,2)";
-//        proof.frontEndFunctionality(str, rules);
-//
-////        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        assertTrue(proof.generateHint().equals("Hint: OR_INTRO"));
     }
 
     @Test
@@ -915,8 +916,8 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-//        System.out.println(proof.generateHint());
-        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
 
         rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nASSUMPTION\nImplies-Elim (2,5)\nImplies-Elim (4,6)\nASSUMPTION";
 
@@ -968,7 +969,7 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-//        System.out.println(proof.generateHint());
+        System.out.println(proof.generateHint());
         assertTrue(proof.generateHint().equals("Hint: IMPLIES_ELIM"));
 //
         str = "B ^ E\nE -> C\nA\nB\nE\nC\nB -> C\nA -> (B -> C)";
