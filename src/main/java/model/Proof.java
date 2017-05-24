@@ -1,7 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
-
 import java.util.*;
 
 import static model.OperatorType.*;
@@ -212,12 +210,10 @@ public class Proof {
             case "Only-Intro": return RuleType.ONLY_INTRO;
             case "Only-Elim": return RuleType.ONLY_ELIM;
             case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIM;
+            case "Available": return RuleType.AVAILABLE;
             case "": return RuleType.EMPTY;
-            default: if (rule.charAt(0) == '(') {
-                return RuleType.TICK;
-            } else {
-                return RuleType.INVALID;
-            }
+            default: return RuleType.INVALID;
+
         }
     }
 
@@ -266,7 +262,7 @@ public class Proof {
                 case ONLY_ELIM: isOnlyEliminationValid(expressions.get(i)); break;
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
-                case TICK: isTickRuleValid(expressions.get(i)); break;
+                case AVAILABLE: isAvailableRuleValid(expressions.get(i)); break;
                 case INVALID: return false;
                 case EMPTY: return true;
                 default: break;
@@ -328,7 +324,7 @@ public class Proof {
         return boxes;
     }
 
-    public boolean isTickRuleValid(Expression e1) {
+    public boolean isAvailableRuleValid(Expression e1) {
         int ref1;
 
         try {

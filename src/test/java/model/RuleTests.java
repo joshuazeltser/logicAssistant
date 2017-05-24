@@ -1102,7 +1102,7 @@ public class RuleTests {
         Expression expr1 = new Expression(RuleType.ASSUMPTION);
         expr1.addToExpression(str1);
 
-        Expression expr2 = new Expression(RuleType.TICK);
+        Expression expr2 = new Expression(RuleType.AVAILABLE);
         expr2.addReferenceLine("1");
         expr2.addToExpression(str2);
 
