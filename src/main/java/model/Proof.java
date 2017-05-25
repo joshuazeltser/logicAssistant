@@ -1027,7 +1027,6 @@ public class Proof {
         int timeOutCount = 0;
         while (timeOutCount < 20) {
             timeOutCount++;
-
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
                     && !current_goal.equals(resultExpr)) {
