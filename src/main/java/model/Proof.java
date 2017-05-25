@@ -1,5 +1,7 @@
 package model;
 
+import javassist.expr.Expr;
+
 import java.util.*;
 
 import static model.OperatorType.*;
@@ -23,6 +25,11 @@ public class Proof {
     private List<Expression> list_goals;
     private List<Expression> solvedProof;
 
+    private List<Expression> assumptions;
+
+    private Map<RuleType, Expression> introductions;
+    private boolean terminate;
+
 
     public Proof() {
         expressions = new LinkedList<>();
@@ -33,6 +40,8 @@ public class Proof {
         list_goals = new LinkedList<>();
         list_proof = new LinkedList<>();
         extra_list_proof = new LinkedList<>();
+        assumptions = new LinkedList<>();
+        introductions = new LinkedHashMap<>();
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
@@ -957,6 +966,12 @@ public class Proof {
         return type == RuleType.IMPLIES_INTRO || type == RuleType.NOT_INTRO || type == RuleType.OR_ELIM;
     }
 
+    private void unmarkExpressions() {
+        for (Expression expr : list_proof) {
+            expr.setMarked(false);
+        }
+    }
+
 
     public List<Expression> solveProof() throws SyntaxException {
         list_proof.clear();
@@ -1023,10 +1038,17 @@ public class Proof {
 
 
 
+        unmarkExpressions();
+        terminate = false;
+        assumptions.clear();
 
         int timeOutCount = 0;
-        while (timeOutCount < 20) {
+        while (!terminate) {
             timeOutCount++;
+
+            System.out.println(timeOutCount + " proof: " + list_proof);
+            System.out.println(timeOutCount + " goals: " + list_goals);
+
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
                     && !current_goal.equals(resultExpr)) {
@@ -1048,6 +1070,7 @@ public class Proof {
                     if (list_goals.size() > 1) {
                         list_goals.remove(current_goal);
                         current_goal = list_goals.get(list_goals.size() - 1);
+                        unmarkExpressions();
                         applyIntroductionRule(current_goal);
                         current_goal = list_goals.get(list_goals.size() - 1);
                     }
@@ -1132,30 +1155,34 @@ public class Proof {
 
 
 
-
-
         if (expr.contains(new Operator("IMPLIES", IMPLIES))) {
             Expression e = new Expression(expr.getRuleType());
             e.addToExpression(expr.toString());
             List<Expression> sides = e.splitExpressionBy(OperatorType.IMPLIES);
 
 
+
             Expression lhs = sides.get(0);
             lhs.setRuleType(RuleType.ASSUMPTION);
             Expression rhs = sides.get(1);
 
-            if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
-                if (!list_goals.contains(rhs)) {
-                    list_goals.add(rhs);
-                } else {
-                    list_goals.remove(rhs);
-                    list_goals.add(rhs);
+            if (!assumptions.contains(lhs)) {
+
+                assumptions.add(lhs);
+
+                if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
+                    if (!list_goals.contains(rhs)) {
+                        list_goals.add(rhs);
+                    } else {
+                        list_goals.remove(rhs);
+                        list_goals.add(rhs);
+                    }
+
+
+                    list_proof.add(lhs);
+
+                    return;
                 }
-
-
-                list_proof.add(lhs);
-
-                return;
             }
         }
 
@@ -1167,11 +1194,14 @@ public class Proof {
 
             if (checkBracketValidity(temp)) {
                 if (!list_proof.contains(temp)) {
-                    list_proof.add(temp);
-                    Expression subGoal = new Expression();
-                    subGoal.addToExpression("FALSE");
-                    list_goals.add(subGoal);
-                    return;
+                    if (!assumptions.contains(temp)) {
+                        assumptions.add(temp);
+                        list_proof.add(temp);
+                        Expression subGoal = new Expression();
+                        subGoal.addToExpression("FALSE");
+                        list_goals.add(subGoal);
+                        return;
+                    }
                 }
             }
         }
@@ -1240,7 +1270,6 @@ public class Proof {
 
         for (Expression e : list_proof) {
             if (e.contains(new Operator("OR", OR)) && !e.isMarked()) {
-                e.setMarked(true);
                 extra_list_proof.clear();
                 temp1 = new LinkedList<>();
                 orElimStack.clear();
@@ -1270,6 +1299,21 @@ public class Proof {
             }
         }
 
+        //Negate the result round
+        Expression newExpr = new Expression(RuleType.ASSUMPTION);
+        newExpr.addToExpression("!" + expr.toString());
+        System.out.println(assumptions);
+        if (!assumptions.contains(newExpr)) {
+            assumptions.add(newExpr);
+            list_proof.add(newExpr);
+
+            Expression falseExpression = new Expression(RuleType.NOT_ELIM);
+            falseExpression.addToExpression("FALSE");
+            list_goals.add(falseExpression);
+
+        } else {
+            terminate = true;
+        }
 
 
     }
@@ -1313,7 +1357,9 @@ public class Proof {
             Expression rhs = new Expression(sides.get(1).getRuleType());
             rhs.addToExpression(sides.get(1).toString());
             if (list_proof.contains(rhs) && checkBracketValidity(rhs)) {
-//                list_goals.get(list_goals.size()-1).setRuleType(RuleType.IMPLIES_INTRO);
+
+
+
                 Expression e1 = new Expression(RuleType.IMPLIES_INTRO);
                 e1.addToExpression(list_goals.get(list_goals.size()-1).toString());
                 list_goals.remove(list_goals.size()-1);
@@ -1599,6 +1645,7 @@ public class Proof {
         int count = 1;
         for (int i = 0; i < newProof.expressions.size(); i++) {
             if (newProof.expressions.get(i).contains(new Operator("AND", AND))) {
+
 
                 Expression e = new Expression(newProof.expressions.get(i).getRuleType());
                 e.addToExpression(newProof.expressions.get(i).toString());

@@ -21,9 +21,9 @@ public class Expression {
 
     private RuleType ruleType;
 
-    private boolean box;
-
     private boolean marked;
+
+    private boolean introMarked;
 
 
 
@@ -31,7 +31,7 @@ public class Expression {
         expression = new LinkedList<>();
         lines = new LinkedList<>();
         this.ruleType = ruleType;
-        box = false;
+        introMarked = false;
         marked = false;
     }
 
