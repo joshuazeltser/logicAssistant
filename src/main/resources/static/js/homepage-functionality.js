@@ -217,7 +217,7 @@ $(function () {
 function hideHelper() {
 
     var list = JSON.parse(localStorage.getItem('colour'));
-
+    var hint = document.getElementById('hintButton');
     if (list.pop() == 'btn btn-success') {
         hint.setAttribute('class', 'btn btn-success');
         $("#hintBox").show();
