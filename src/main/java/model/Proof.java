@@ -29,6 +29,7 @@ public class Proof {
 
     private Map<RuleType, Expression> introductions;
     private boolean terminate;
+    private List<Expression> inscope;
 
 
     public Proof() {
@@ -970,6 +971,15 @@ public class Proof {
         for (Expression expr : list_proof) {
             expr.setMarked(false);
         }
+
+        for (Expression expr : expressions) {
+            expr.setMarked(false);
+        }
+    }
+
+    private boolean elimType(RuleType type) {
+        return type == RuleType.AND_ELIM || type == RuleType.ONLY_ELIM || type == RuleType.IMPLIES_ELIM ||
+                type == RuleType.NOT_ELIM || type == RuleType.DOUBLE_NOT_ELIM;
     }
 
 
@@ -977,11 +987,18 @@ public class Proof {
         list_proof.clear();
         list_goals.clear();
 
+        inscope = new LinkedList<>();
+        inscope.clear();
+
         firstOrRound = true;
+        unmarkExpressions();
+
 
         list_goals.add(resultExpr);
 
-        if (!expressions.isEmpty() && !expressions.get(0).toString().equals("")) {
+
+        if (!expressions.isEmpty() && !expressions.get(0).toString().equals("")
+                && expressions.get(0).getRuleType() == RuleType.GIVEN) {
             for (int i = 0; i < expressions.size(); i++) {
 
                 if (expressions.get(i).getRuleType() != RuleType.ASSUMPTION
@@ -991,12 +1008,20 @@ public class Proof {
                     int count = -1;
                     for (int j = expressions.size()-1; j > i; j--) {
 
+                        System.out.println("j " + expressions.get(j));
+                        if (expressions.get(j).toString().equals("")) {
+                            break;
+                        }
 
                         if (!expressions.get(j).toString().equals("") && (endAssumes(expressions.get(j).getRuleType())
                                 || !expressions.get(j).isMarked())) {
 
-                            if (expressions.get(j).getRuleType() != RuleType.ASSUMPTION) {
-                                list_goals.add( list_goals.size() - 1 - count, expressions.get(j));
+                            if (elimType(expressions.get(j).getRuleType())) {
+                                break;
+                            }
+
+                            if (expressions.get(j).getRuleType() != RuleType.ASSUMPTION ) {
+                                list_goals.add(  expressions.get(j));
 
                                 count++;
                                 expressions.get(j).setMarked(true);
@@ -1017,14 +1042,31 @@ public class Proof {
             }
         }
 
+        for (Expression e : list_proof) {
+
+            if (e.getRuleType() == RuleType.NOT_INTRO || e.getRuleType() == RuleType.IMPLIES_INTRO) {
+                for (int j = inscope.size() - 1; j > -1; j--) {
+                    if (inscope.get(j).getRuleType() == RuleType.ASSUMPTION && !inscope.get(j).isMarked()) {
+                        inscope.get(j).setMarked(true);
+                        break;
+                    }
+                    inscope.remove(j);
+                }
+            }
+
+            inscope.add(e);
+        }
+
+        System.out.println("first " + list_proof);
+        System.out.println("first " + list_goals);
+
         Expression current_goal = new Expression();
         current_goal.addToExpression(list_goals.get(0).toString());
 
         boolean specialCase = false;
 
         if (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) ||
-                resultExpr.getFirstComp().equals(new Operator("NOT", NOT))
-                || resultExpr.contains(new Operator("OR", OR))) {
+                resultExpr.getFirstComp().equals(new Operator("NOT", NOT))) {
 
             specialCase = true;
             for (Expression e : list_proof) {
@@ -1041,13 +1083,21 @@ public class Proof {
         unmarkExpressions();
         terminate = false;
         assumptions.clear();
+        introductions.clear();
 
         int timeOutCount = 0;
         while (!terminate) {
             timeOutCount++;
 
+            if (timeOutCount == 30) {
+                break;
+            }
+
             System.out.println(timeOutCount + " proof: " + list_proof);
             System.out.println(timeOutCount + " goals: " + list_goals);
+            if (!list_proof.isEmpty()) {
+                System.out.println(list_proof.get(list_proof.size() - 1).getRuleType());
+            }
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
@@ -1068,15 +1118,18 @@ public class Proof {
                     applyIntroductionRule(current_goal);
                 } else {
                     if (list_goals.size() > 1) {
-                        list_goals.remove(current_goal);
+                        list_goals.remove(list_goals.size()-1);
                         current_goal = list_goals.get(list_goals.size() - 1);
-                        unmarkExpressions();
                         applyIntroductionRule(current_goal);
                         current_goal = list_goals.get(list_goals.size() - 1);
                     }
                 }
 
-                if (current_goal.equals(list_goals.get(0))  && !orsLeft) {
+                if (current_goal.equals(list_goals.get(0)) && list_proof.get(list_proof.size()-1).equals(current_goal)
+                        && list_goals.size() == 1 && !orsLeft) {
+                    System.out.println(inscope);
+                    System.out.println("result " + list_proof);
+                    printRuleType();
                     return list_proof;
                 }
                 continue;
@@ -1084,7 +1137,7 @@ public class Proof {
                 if (!specialCase) {
                     if (eliminationRuleApplicable()) {
 
-                            specialCase = false;
+                        specialCase = false;
 
                         continue;
                     }
@@ -1151,6 +1204,8 @@ public class Proof {
     private List<Expression> extra_list_proof;
 
 
+
+
     private void setupIntroductionRules(Expression expr) throws SyntaxException {
 
 
@@ -1173,14 +1228,15 @@ public class Proof {
                 if (checkBracketValidity(lhs) && checkBracketValidity(rhs)) {
                     if (!list_goals.contains(rhs)) {
                         list_goals.add(rhs);
-                    } else {
-                        list_goals.remove(rhs);
-                        list_goals.add(rhs);
-                    }
+                    } //else {
+//                        list_goals.remove(rhs);
+//                        list_goals.add(rhs);
+//                    }
 
 
                     list_proof.add(lhs);
 
+                    inscope.add(lhs);
                     return;
                 }
             }
@@ -1193,16 +1249,18 @@ public class Proof {
             temp.removeNcomponents(1);
 
             if (checkBracketValidity(temp)) {
-                if (!list_proof.contains(temp)) {
+//                if (!list_proof.contains(temp)) {
                     if (!assumptions.contains(temp)) {
+
                         assumptions.add(temp);
                         list_proof.add(temp);
+                        inscope.add(temp);
                         Expression subGoal = new Expression();
                         subGoal.addToExpression("FALSE");
                         list_goals.add(subGoal);
                         return;
                     }
-                }
+//                }
             }
         }
 
@@ -1220,8 +1278,19 @@ public class Proof {
 
         }
 
+        boolean skip = true;
+        if (firstOrRound) {
+            for (Expression expr1 : list_proof) {
+                if (expr1.getRuleType() == RuleType.GIVEN || resultExpr.contains(new Operator("IMPLIES", IMPLIES))) {
+                    skip = false;
+                }
+            }
+            firstOrRound = false;
+        } else {
+            skip = false;
+        }
 
-        if (expr.contains(new Operator("OR", OR))) {
+        if (expr.contains(new Operator("OR", OR)) && !skip) {
             List<Expression> sides = expr.splitExpressionBy(OperatorType.OR);
 
             Expression lhs = sides.get(0);
@@ -1236,6 +1305,7 @@ public class Proof {
                     list_goals.add(rhs);
                     return;
                 }
+
 
                 if (firstOrRound) {
                     list_goals.add(lhs);
@@ -1290,6 +1360,7 @@ public class Proof {
 
                     orsLeft = true;
                     list_proof.add(lhsStack.pop());
+                    inscope.add(list_proof.get(list_proof.size()-1));
 
                     list_goals.add(expr);
                     orElimStack.push(expr);
@@ -1301,15 +1372,23 @@ public class Proof {
 
         //Negate the result round
         Expression newExpr = new Expression(RuleType.ASSUMPTION);
-        newExpr.addToExpression("!" + expr.toString());
-        System.out.println(assumptions);
+
+        newExpr.addToExpression("!(" + expr.toString() + ")");
         if (!assumptions.contains(newExpr)) {
             assumptions.add(newExpr);
             list_proof.add(newExpr);
+            inscope.add(newExpr);
 
-            Expression falseExpression = new Expression(RuleType.NOT_ELIM);
+            Expression introExpr = new Expression();
+            introExpr.addToExpression("!!(" + expr.toString() + ")");
+            list_goals.add(introExpr);
+
+            Expression falseExpression = new Expression(RuleType.DOUBLE_NOT_ELIM);
             falseExpression.addToExpression("FALSE");
             list_goals.add(falseExpression);
+
+
+
 
         } else {
             terminate = true;
@@ -1332,6 +1411,14 @@ public class Proof {
                     temp1.addAll(list_proof);
                     list_proof = extra_list_proof;
                     list_proof.add(rhsStack.pop());
+                    for (int j = inscope.size()-1; j > -1; j--) {
+                        if (inscope.get(j).getRuleType() == RuleType.ASSUMPTION && !inscope.get(j).isMarked()) {
+                            inscope.get(j).setMarked(true);
+                            break;
+                        }
+                        inscope.remove(j);
+                    }
+                    inscope.add(list_proof.get(list_proof.size()-1));
                 } else {
 
                     for (int i = rhsIndex; i < list_proof.size(); i++) {
@@ -1341,6 +1428,7 @@ public class Proof {
                     Expression expr1 = list_goals.get(list_goals.size() - 1);
                     expr1.setRuleType(RuleType.OR_ELIM);
                     temp1.add(expr1);
+                    inscope.add(expr1);
                     list_proof = temp1;
                     orsLeft = false;
                     orElimStack.pop();
@@ -1348,6 +1436,8 @@ public class Proof {
                 }
             }
         }
+
+
 
         if (list_goals.get(list_goals.size()-1).contains(new Operator("IMPLIES", IMPLIES))) {
             Expression e = new Expression(expr.getRuleType());
@@ -1358,13 +1448,33 @@ public class Proof {
             rhs.addToExpression(sides.get(1).toString());
             if (list_proof.contains(rhs) && checkBracketValidity(rhs)) {
 
+//                if (introductions.containsKey(RuleType.IMPLIES_INTRO) &&
+//                        introductions.get(RuleType.IMPLIES_INTRO).equals(list_goals.get(list_goals.size()-1))) {
+//                    terminate = true;
+//                    return;
+//                }
 
+                introductions.put(RuleType.IMPLIES_INTRO, list_goals.get(list_goals.size()-1));
 
                 Expression e1 = new Expression(RuleType.IMPLIES_INTRO);
                 e1.addToExpression(list_goals.get(list_goals.size()-1).toString());
                 list_goals.remove(list_goals.size()-1);
                 list_goals.add(e1);
-                list_proof.add(list_goals.get(list_goals.size()-1));
+                if (!list_proof.get(list_proof.size()-1).equals(list_goals.get(list_goals.size()-1)) &&
+                        !inscope.contains(list_goals.get(list_goals.size() - 1))) {
+                    list_proof.add(list_goals.get(list_goals.size() - 1));
+
+
+                    inscope.add(list_goals.get(list_goals.size()-1));
+                    for (int j = inscope.size()-2; j > -1; j--) {
+                        if (inscope.get(j).getRuleType() == RuleType.ASSUMPTION && !inscope.get(j).isMarked()) {
+                            inscope.get(j).setMarked(true);
+                            break;
+                        }
+                        inscope.remove(j);
+                    }
+
+                }
                 return;
             }
         }
@@ -1378,21 +1488,54 @@ public class Proof {
             if (list_proof.contains(lhs) && list_proof.contains(rhs) && checkBracketValidity(lhs)
                     && checkBracketValidity(rhs)) {
 
-                Expression e1 = new Expression(RuleType.AND_INTRO);
-                e1.addToExpression(list_goals.get(list_goals.size()-1).toString());
-                list_goals.remove(list_goals.size()-1);
-                list_goals.add(e1);
-                list_proof.add(list_goals.get(list_goals.size()-1));
+//                if (introductions.containsKey(RuleType.AND_INTRO) &&
+//                        introductions.get(RuleType.AND_INTRO).equals(list_goals.get(list_goals.size()-1))) {
+//                    terminate = true;
+//                    return;
+//                }
+                if (inscope.contains(lhs) || inscope.contains(rhs)) {
+                    introductions.put(RuleType.AND_INTRO, list_goals.get(list_goals.size() - 1));
+
+                    Expression e1 = new Expression(RuleType.AND_INTRO);
+                    e1.addToExpression(list_goals.get(list_goals.size() - 1).toString());
+                    list_goals.remove(list_goals.size() - 1);
+                    list_goals.add(e1);
+                    list_proof.add(list_goals.get(list_goals.size() - 1));
+                    inscope.add(list_goals.get(list_goals.size() - 1));
+                }
 
                 return;
             }
         }
 
-        if (list_goals.get(list_goals.size()-1).getFirstComp().equals(new Operator("NOT", NOT))) {
+
+
+        if (list_goals.get(list_goals.size()-1).getFirstComp().toString().equals("NOT")) {
             if (list_proof.get(list_proof.size()-1).toString().equals("FALSE")
                     && checkBracketValidity(list_proof.get(list_proof.size()-1))) {
+
+//                if (introductions.containsKey(RuleType.NOT_INTRO) &&
+//                        introductions.get(RuleType.NOT_INTRO).toString()
+//                                .equals(list_goals.get(list_goals.size()-1).toString())) {
+//                    System.out.println("TERMINATED");
+//                    terminate = true;
+//                    return;
+//                }
+
+                introductions.put(RuleType.NOT_INTRO, list_goals.get(list_goals.size() -1));
+
                 list_goals.get(list_goals.size()-1).setRuleType(RuleType.NOT_INTRO);
                 list_proof.add(list_goals.get(list_goals.size()-1));
+
+                inscope.add(list_goals.get(list_goals.size()-1));
+                for (int j = inscope.size()-2; j > -1; j--) {
+                    if (inscope.get(j).getRuleType() == RuleType.ASSUMPTION && !inscope.get(j).isMarked()) {
+                        inscope.get(j).setMarked(true);
+                        break;
+                    }
+                    inscope.remove(j);
+                }
+
                 return;
             }
         }
@@ -1403,12 +1546,32 @@ public class Proof {
             Expression lhs = sides.get(0);
             Expression rhs = sides.get(1);
 
-            if ((list_proof.contains(lhs) || list_proof.contains(rhs)) && checkBracketValidity(lhs)
-                    && checkBracketValidity(rhs)) {
-                list_goals.get(list_goals.size()-1).setRuleType(RuleType.OR_INTRO);
-                list_proof.add(list_goals.get(list_goals.size()-1));
 
-                return;
+
+            if (!list_proof.get(list_proof.size()-1).equals(list_goals.get(list_goals.size()-1))) {
+                if ((list_proof.contains(lhs) || list_proof.contains(rhs)) && checkBracketValidity(lhs)
+                        && checkBracketValidity(rhs)) {
+//                    if (introductions.containsKey(RuleType.OR_INTRO) &&
+//                            introductions.get(RuleType.OR_INTRO).equals(list_goals.get(list_goals.size()-1))) {
+//                        terminate = true;
+//                        return;
+//                    }
+
+
+
+
+                    if (inscope.contains(lhs) || inscope.contains(rhs)) {
+
+
+                        introductions.put(RuleType.OR_INTRO, list_goals.get(list_goals.size() - 1));
+
+                        list_goals.get(list_goals.size() - 1).setRuleType(RuleType.OR_INTRO);
+                        list_proof.add(list_goals.get(list_goals.size() - 1));
+                        inscope.add(list_goals.get(list_goals.size()-1));
+
+                        return;
+                    }
+                }
             }
         }
 
@@ -1425,8 +1588,17 @@ public class Proof {
                 result1.addToExpression(rhs + " -> " + lhs);
 
                 if (list_proof.contains(result) && list_proof.contains(result1)) {
-                    list_goals.get(list_goals.size() - 1).setRuleType(RuleType.ONLY_INTRO);
-                    list_proof.add(list_goals.get(list_goals.size() - 1));
+//                    if (introductions.containsKey(RuleType.ONLY_INTRO) &&
+//                            introductions.get(RuleType.ONLY_INTRO).equals(list_goals.get(list_goals.size()-1))) {
+//                        terminate = true;
+//                        return;
+//                    }
+                    if (!list_proof.get(list_proof.size()-1).equals(list_goals.get(list_goals.size()-1))) {
+                        introductions.put(RuleType.ONLY_INTRO, list_goals.get(list_goals.size() - 1));
+
+                        list_goals.get(list_goals.size() - 1).setRuleType(RuleType.ONLY_INTRO);
+                        list_proof.add(list_goals.get(list_goals.size() - 1));
+                    }
 
                     return;
                 }
@@ -1447,9 +1619,12 @@ public class Proof {
 
     private void applyEliminationRule(Expression expr) {
             list_proof.add(expr);
+            inscope.add(expr);
     }
 
     private boolean eliminationRuleApplicable() throws SyntaxException {
+
+        System.out.println("ELIMINATION RULES");
 
         Proof newProof = new Proof();
         newProof.expressions = list_proof;
@@ -1463,11 +1638,17 @@ public class Proof {
         boolean only = tryOnlyElim(newProof);
         newProof.expressions = list_proof;
 
-        boolean not = tryNotElim(newProof);
-        newProof.expressions = list_proof;
 
         boolean notNot = tryDoubleNotElim(newProof);
         newProof.expressions = list_proof;
+
+        boolean not = false;
+        if (!notNot) {
+            not = tryNotElim(newProof);
+            newProof.expressions = list_proof;
+        }
+
+
 
 
 
@@ -1501,7 +1682,7 @@ public class Proof {
                         notResult.addReferenceLine(Integer.toString(count1));
                         if (newProof.isNotElimValid(notResult)) {
                             notResult.setRuleType(RuleType.NOT_ELIM);
-                            if (!list_proof.contains(notResult)) {
+                            if (!list_proof.get(list_proof.size()-1).toString().equals("FALSE")) {
                                 applyEliminationRule(notResult);
                                 changed = true;
                             }
@@ -1519,6 +1700,10 @@ public class Proof {
     private boolean tryDoubleNotElim(Proof newProof) throws SyntaxException {
         int count = 1;
         boolean changed = false;
+
+
+
+
         for (int i = 0; i < newProof.expressions.size(); i++) {
             if (newProof.expressions.get(i).toString().equals("")) {
                 continue;
@@ -1533,11 +1718,14 @@ public class Proof {
                     temp1.removeNcomponents(1);
                     temp1.addReferenceLine(Integer.toString(count));
                     if (newProof.isDoubleNotElimValid(temp1)) {
+                        if (inscope.contains(temp1)) {
+                            break;
+                        }
                         temp1.setRuleType(RuleType.DOUBLE_NOT_ELIM);
-                        if (!list_proof.contains(temp1)) {
+//                        if (!list_proof.contains(temp1)) {
                             applyEliminationRule(temp1);
                             changed = true;
-                        }
+//                        }
                     }
 
                 }
@@ -1628,6 +1816,8 @@ public class Proof {
                             if (!newProof.expressions.contains(rhs)) {
                                 applyEliminationRule(rhs);
                                 changed = true;
+                                System.out.println("ELIMMED");
+
                             }
                         }
                     }
@@ -1720,15 +1910,26 @@ public class Proof {
             return false;
         }
 
-        for (int i = 0; i < list_proof.size(); i++) {
+
+//        if (current.getRuleType() == RuleType.NOT_ELIM || current.getRuleType() == RuleType.NOT_INTRO
+//                || current.getRuleType() == RuleType.OR_INTRO) {
+//            if (list_proof.get(list_proof.size() - 1).equals(current)) {
+//                return true;
+//            }
+//        }
+//
+//
+//
+//        for (int i = 0; i < list_proof.size(); i++) {
+//
+//            if (list_proof.get(i).equals(current)) {
+//                return true;
+//            }
+//        }
 
 
-            if (list_proof.get(i).toString().equals(current.toString())) {
-                return true;
-            }
-
-        }
-        return false;
+        System.out.println(inscope);
+        return inscope.contains(current);
     }
 
 

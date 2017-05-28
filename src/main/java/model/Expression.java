@@ -154,7 +154,7 @@ public class Expression {
                         " operator at this part of an expression");
             }
 
-            if ((i == (tokens.length - 1)) && (tokens[i].contains("(") || tokens[i].equals("!"))) {
+            if ((i == (tokens.length - 1)) && (tokens[i].equals("(") || tokens[i].equals("!"))) {
                 throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
                         "operator at this part of an expression");
             }
