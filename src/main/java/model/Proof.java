@@ -1094,6 +1094,10 @@ public class Proof {
         while (!terminate) {
             timeOutCount++;
 
+            if (timeOutCount > 20) {
+                break;
+            }
+
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
                     && !current_goal.equals(resultExpr)) {
