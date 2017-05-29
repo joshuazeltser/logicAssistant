@@ -42,12 +42,24 @@
 \BOOKMARK [3][-]{subsubsection.5.2.3}{Front-End}{subsection.5.2}% 42
 \BOOKMARK [2][-]{subsection.5.3}{Trello}{section.5}% 43
 \BOOKMARK [1][-]{section.6}{Evaluation}{}% 44
-\BOOKMARK [2][-]{subsection.6.1}{Expected Outcomes}{section.6}% 45
-\BOOKMARK [2][-]{subsection.6.2}{Testing}{section.6}% 46
-\BOOKMARK [2][-]{subsection.6.3}{User Feedback}{section.6}% 47
-\BOOKMARK [2][-]{subsection.6.4}{Project Plan}{section.6}% 48
-\BOOKMARK [1][-]{section.7}{Conclusion}{}% 49
-\BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 50
-\BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 51
-\BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 52
-\BOOKMARK [1][-]{section*.2}{References}{}% 53
+\BOOKMARK [2][-]{subsection.6.1}{Realistic Objectives}{section.6}% 45
+\BOOKMARK [2][-]{subsection.6.2}{Project Plan}{section.6}% 46
+\BOOKMARK [2][-]{subsection.6.3}{Language}{section.6}% 47
+\BOOKMARK [3][-]{subsubsection.6.3.1}{Java}{subsection.6.3}% 48
+\BOOKMARK [3][-]{subsubsection.6.3.2}{Java Spring}{subsection.6.3}% 49
+\BOOKMARK [2][-]{subsection.6.4}{Testing}{section.6}% 50
+\BOOKMARK [2][-]{subsection.6.5}{Front-End Design}{section.6}% 51
+\BOOKMARK [2][-]{subsection.6.6}{Efficiency}{section.6}% 52
+\BOOKMARK [3][-]{subsubsection.6.6.1}{Proof Checking Algorithm}{subsection.6.6}% 53
+\BOOKMARK [3][-]{subsubsection.6.6.2}{ND Solver Algorithm}{subsection.6.6}% 54
+\BOOKMARK [3][-]{subsubsection.6.6.3}{Validity Algorithm}{subsection.6.6}% 55
+\BOOKMARK [2][-]{subsection.6.7}{Difficulties}{section.6}% 56
+\BOOKMARK [3][-]{subsubsection.6.7.1}{ND Solver Algorithm}{subsection.6.7}% 57
+\BOOKMARK [3][-]{subsubsection.6.7.2}{Bracketed Expressions}{subsection.6.7}% 58
+\BOOKMARK [2][-]{subsection.6.8}{User Feedback}{section.6}% 59
+\BOOKMARK [2][-]{subsection.6.9}{Competitor Comparisons}{section.6}% 60
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 61
+\BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 62
+\BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 63
+\BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 64
+\BOOKMARK [1][-]{section*.2}{References}{}% 65
