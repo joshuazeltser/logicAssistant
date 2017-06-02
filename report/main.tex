@@ -478,10 +478,6 @@ Overall, although I chose to change the direction of the project midway I was ab
 
 \subsection{Language}
 
-\subsubsection{Java}
-
-\subsubsection{Java Spring}
-
 \subsection{Testing}
 As mentioned previously (see \ref{testing}), testing was a key component of this project as a whole. I used Test Driven Development whilst developing the back-end of the system to ensure that all parts of the system were working well as new features were added. This led to a large test-suite being created. I also created several front-end test cases which test the actual functionality that a user would utilise in order to access their required features. All of this testing greatly helped towards the carrying out of this project.
 
@@ -495,24 +491,38 @@ In summary, the testing carried out for this project was relatively thorough in 
 
 \subsection{Front-End Design}
 
+One of the most important parts of LogicAssistant is the front-end user interface. This is the component of this application which the users themselves will be using to access the useful features, and therefore must look as good as possible. As well as being aesthetically pleasing, the front-end must also boast features which are easy to use and could be used by anyone. I therefore put a lot of thought into how I was to design the front-end of the application.
+
+Looking back at the end design of this application, a few points can be made. Firstly, I think that the application has been created with an interface that is very easy to use. As soon as you arrive at the website you are immediately provided with the main functionality of the website, and it is immediately clear as to what the user needs to do first. All buttons are clearly labelled, with tooltips explaining certain features. This overall functionality is also quite simplistic, so that any user, no matter what their level of knowledge of this subject is, can use this application. The presence of a detailed user guide on the website also ensures that the website is as user friendly as possible. The ease of use of the user interface therefore mirrors the amount of time spent perfecting it. However, despite the large amount of time spent perfecting the front-end usability, one could argue that the design itself could be improved. When designing the website I used a very basic Bootstrap template. The reason I did this is that I felt it would be easy to add additional features to this web-page without too much of a hassle. It would also be very easy for me to make these extra features look good on the page. The entire design of the web-page could have been improved by using a better looking template in the first place. This would have made the user experience on the website even better, as it is often the design of a website that draws people into using its features. If I had more time to work on this project, this would definitely be a part of the project that I would redo, giving the web-page that slightly better aesthetic appeal.
+
+The front-end design of this application has been created to be easy to use for users, and looks good enough to be released as a functioning website. However the overall design could still be improved, giving users an attractive website that helps them with all of their Natural Deduction proof solving needs.
+
 \subsection{Efficiency}
 
+In order to provide a useful service to the user, it is important that each of the features that are provided are as efficient as possible. The average user of this service will not have time to waste waiting for an algorithm to complete its processing, so the most efficient methods must be found for each feature.
+
 \subsubsection{Proof Checking Algorithm}
+
+
 
 \subsubsection{ND Solver Algorithm}
 
 \subsubsection{Validity Algorithm}
+use tableaux method????
 
 \subsection{Difficulties}
 
-\subsubsection{ND Solver Algorithm}
+Throughout my implementation of this project I was faced with a number of difficulties which hindered my overall progress. In order to solve them I had to spend large amounts of time debugging the code trying to find the route of the problem. In the end I was able to fix most of these difficulties, but a large amount of time was wasted trying to solve them.
 
-\subsubsection{Bracketed Expressions}
+A very large difficulty that I was faced with was when implementing the proof solving algorithm in order to generate hints. As mentioned above (see \ref{hints}), in order to generate hints for the user I implemented a proof solving algorithm to solve the proof and then based on this result generate a hint. The first problem with this was that the algorithm that I used, specified some of the Natural Deduction rules differently to how I specified them in this project. For example, for Or Elimination rather than splitting the proof into two boxes and proving the same result from each, the algorithm would prove an expression containing an Or operator and one containing the negation of one side of this Or containing expression. On top of this some rules were completely missed out of the algorithm such as all of the Only rules. In order to add in the missed in rules it was not too difficult as they followed a similar pattern to other rules. However, when it came to adding Or Elimination I had to think of a completely different method to apply this rule. This took me a very long time to perfect, wasting other time that I could have spent on adding extra features. One could argue that due to the difficulties associated with this algorithm, it may have been more beneficial for me to have used another algorithm completely. I decided not to do this because I realised that if I was able to solve the issues I would find with this algorithm, I would be able to create a very efficient way to generate hints for the user. The benefits definitely outweighed the costs, and I decided to stick with it. I was eventually able to solve these problems, thereby completing the algorithm.  
 
-\subsection{User Feedback}
+Another difficulty that I was faced with towards the beginning of this project was to do with brackets in expressions. 
+
+Java Spring
 
 \subsection{Competitor Comparisons}
 
+\subsection{User Feedback}
 
 \section{Conclusion}
 

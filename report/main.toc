@@ -46,22 +46,18 @@
 \contentsline {subsection}{\numberline {6.1}Realistic Objectives}{24}{subsection.6.1}
 \contentsline {subsection}{\numberline {6.2}Project Plan}{25}{subsection.6.2}
 \contentsline {subsection}{\numberline {6.3}Language}{26}{subsection.6.3}
-\contentsline {subsubsection}{\numberline {6.3.1}Java}{26}{subsubsection.6.3.1}
-\contentsline {subsubsection}{\numberline {6.3.2}Java Spring}{26}{subsubsection.6.3.2}
 \contentsline {subsection}{\numberline {6.4}Testing}{26}{subsection.6.4}
 \contentsline {subsection}{\numberline {6.5}Front-End Design}{27}{subsection.6.5}
 \contentsline {subsection}{\numberline {6.6}Efficiency}{27}{subsection.6.6}
 \contentsline {subsubsection}{\numberline {6.6.1}Proof Checking Algorithm}{27}{subsubsection.6.6.1}
 \contentsline {subsubsection}{\numberline {6.6.2}ND Solver Algorithm}{27}{subsubsection.6.6.2}
 \contentsline {subsubsection}{\numberline {6.6.3}Validity Algorithm}{27}{subsubsection.6.6.3}
-\contentsline {subsection}{\numberline {6.7}Difficulties}{27}{subsection.6.7}
-\contentsline {subsubsection}{\numberline {6.7.1}ND Solver Algorithm}{27}{subsubsection.6.7.1}
-\contentsline {subsubsection}{\numberline {6.7.2}Bracketed Expressions}{27}{subsubsection.6.7.2}
-\contentsline {subsection}{\numberline {6.8}User Feedback}{27}{subsection.6.8}
-\contentsline {subsection}{\numberline {6.9}Competitor Comparisons}{27}{subsection.6.9}
-\contentsline {section}{\numberline {7}Conclusion}{27}{section.7}
-\contentsline {section}{\numberline {A}Natural Deduction Rules}{28}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{28}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Predicate Rules}{28}{subsection.A.2}
-\contentsline {section}{\numberline {B}User Guide}{29}{appendix.B}
-\contentsline {section}{References}{30}{section*.2}
+\contentsline {subsection}{\numberline {6.7}Difficulties}{28}{subsection.6.7}
+\contentsline {subsection}{\numberline {6.8}Competitor Comparisons}{28}{subsection.6.8}
+\contentsline {subsection}{\numberline {6.9}User Feedback}{28}{subsection.6.9}
+\contentsline {section}{\numberline {7}Conclusion}{28}{section.7}
+\contentsline {section}{\numberline {A}Natural Deduction Rules}{29}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{29}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Predicate Rules}{29}{subsection.A.2}
+\contentsline {section}{\numberline {B}User Guide}{30}{appendix.B}
+\contentsline {section}{References}{31}{section*.2}
