@@ -359,11 +359,11 @@ When a project involves creating a front-end user interface in order to access i
 
 This project involved me using a combination of different technologies in order to create the finished product. In order for these tools to work together effectively I decided to use Maven. Maven allowed me to bundle together the Java Spring capabilities with the Java code and JUnit tests to create an efficiently functioning system. I was able to add dependencies for each of the tools to the Maven project, and through using the standard Maven directory set up, I was able to also add my front end code to this package. By using this containerisation I was able to easily deploy my application at any part of the development process to check that it was working correctly. Maven also allowed me to ensure that all of the JUnit and front end tests that I had set up were run before the programme was deployed, allowing me to make sure all parts of the code-base were functioning correctly. Maven also helped me to set-up other tools such as Github and Heroku for this project, with each of these tools being compatible with the Maven infrastructure.
 
-\subsection{Intellij}
+\subsection{Intellij \label{intellij}}
 
 When writing Java code it is very easy to make small syntactic mistakes in the code without realising. Whether its a missed semicolon or even the wrong number of curly brackets. This is especially poignant in larger code bases. The easiest way to avoid having to spend large amounts of time looking for these bugs and continually rerunning the code as you slowly fix them, is by using an IDE. There are many IDE's to choose from for the Java language, but I decided to use Intellij for a number of reasons. Firstly, Intellij has a very large range of features that would make coding this project much easier. For example on top of just alerting me to syntax errors, there is a code duplication error system, as well as built-in re-factoring functionality that allows me to make my code much more readable and efficient at the click of a button. On top of this, Intellij is compatible with Maven meaning that I can even build my Maven project inside Intellij, making the entire process much smoother. This compatibility goes so far that Intellij also downloads any dependencies that I have added to the Maven "pom" file. All of these reasons and more make Intellij the ideal IDE to use for this project.
 
-\subsection{Git}
+\subsection{Git \label{git}}
 
 A key area that needs to be considered when carrying out any large scale project such as this is version control. One cannot afford to lose their projects source code, and it is really useful to have previous versions of the code-base that can be returned to at any point in the project. For this project, I decided to use Git for this as I am very familiar with its functionality and so would be able to effectively utilise all of its useful features. In order to manage my git repository, I decided to use Github. Github has a really easy to use interface and is compatible with Maven making it very easy for me to upload my project. I was able to create a private project on Github and using its easy to use website I was able to look up previous versions of my code base whenever necessary. Github also provides some very useful statistics about how the version control side of my project is progressing. I used these statistics to try to keep up a good level of Software Engineering practise.
 
@@ -420,7 +420,7 @@ In this iteration I would also like to spend time adding some other extensions s
 
 From the start of this iteration, I want to have stopped adding any new features. I will go through my code, tidy it up, add comments and ensure that all unnecessary code is removed. I will also look through and try to solve any remaining bugs left in my code-base. At the same time I will complete my report noting how the various parts of the project were carried out. I want to allow as much time as possible to do this, to make sure that I can create a high level and well written report. This iteration will also be used to create a presentation of the project making sure it looks professional and is able to inform the audience of exactly what my project can do.
 
-\subsection{Testing}
+\subsection{Testing \label{testing}}
 
 In order to efficiently carry out a software project in any area, a fundamental programming tool to use is testing. By building large test suites that are able to cover most of the possible cases that the software will deal with, a programmer can ensure that their entire code-base is working to its full potential. I therefore spent a large amount of time on this component of my project.
 
@@ -483,6 +483,15 @@ Overall, although I chose to change the direction of the project midway I was ab
 \subsubsection{Java Spring}
 
 \subsection{Testing}
+As mentioned previously (see \ref{testing}), testing was a key component of this project as a whole. I used Test Driven Development whilst developing the back-end of the system to ensure that all parts of the system were working well as new features were added. This led to a large test-suite being created. I also created several front-end test cases which test the actual functionality that a user would utilise in order to access their required features. All of this testing greatly helped towards the carrying out of this project.
+
+Although I was able to keep up the use of Test Driven Development for the back-end throughout the project, one could say that the amount of tests created in this area was a bit lacking. The test suite checks most of the basic cases for the various features as well as some of the edge cases. However more testing could have been done for these edge cases in order to ensure that this software works in every case. As well as this, testing was mainly carried out on relatively short proofs. This means that during the project either large proofs had to be manually tested or just assumed to work based on the smaller proof tests passing. The main reason for this was due to time constraints. Writing tests for large proofs is very time consuming and I decided to create a large number of smaller tests, which cover most of the edge cases I could think of instead. If more time was available I would spend time adding a lot more complex test-cases to this test-suite.
+
+Another missed opportunity that I had with testing in this project was when it came to the front-end. It was only quite late into the project that I decided to add these tests. It took me a while to find an effective way to create these tests, but once I had created one successfully, I was able to easily add several more. Due to the time it took for me to work out an easy way to do this, it was not until midway through the project that I actually carried this out. This meant that in order to test the front-end of the software, I had to manually keep redeploying it. This was quite a time consuming process. Had I started to develop these tests earlier I would have been able to use them to help me with the development process itself. When I eventually created these tests I ended up deciding not to create that many of them for a number of reasons. Firstly most of the functionality had already been tested in the back-end and so had been proven to work in a lot of cases. Also the time it takes to run one of these tests is a few seconds, as they actually load the web-page and perform click and input events. This meant the test-suite as a whole would take minutes rather than seconds. It would therefore be very time consuming for me to run this test suite every time a change was made. I therefore decided to have only a limited number of these tests to prove that the front-end of this application is functioning properly.
+
+Before starting this project, as I had done in previous projects, I considered using Continuous Integration to continuously manage the test-suite for my project. This would allow me to keep constant track of my tests and would alert me when any of them fail when subsequent features are added. This can be a very helpful tool when conducting a software project with a large set of tests like this. However, in the end I decided that I would not use a Continuous Integration tool. The main reason for this was the number of other tools that I would be using that constantly alert me to whether all of my tests are passing. Firstly, by using Intellij (see \ref{intellij}), I was provided with an easy-to-use interface for running lots of test-cases with just the click of a button. This made it easy to just run specific test-cases after a piece of code has been changed. Also by using Maven (see \ref{maven}), and in particular git hooks (see \ref{git}), I was able to run all of my tests before any changes were pushed to git, thereby ensuring that all of my code in functioning correctly. Based on the use of these two technologies, I felt that I would always be kept up to date of the health of my code, and therefore the use of Continuous Development would be unnecessary.
+
+In summary, the testing carried out for this project was relatively thorough in the back-end, but could have been improved through an increase in testing of longer and more complex proofs. In the front-end, more tests could have also been added but a balance had to be maintained between the rigour of testing and the time they take to run. I also still agree with the premise that Continuous Integration was not necessary for this project. Despite some small short-falls, I feel that the testing I carried out through this project, greatly assisted me in its development into its completed product.
 
 \subsection{Front-End Design}
 
@@ -693,6 +702,10 @@ Overall, although I chose to change the direction of the project midway I was ab
 \end{bprooftree}
 
 \end{namedthm}
+
+\pagebreak
+
+\section{User Guide}
 
 \pagebreak
 

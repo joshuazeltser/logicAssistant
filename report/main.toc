@@ -25,8 +25,8 @@
 \contentsline {subsection}{\numberline {4.4}JUnit}{17}{subsection.4.4}
 \contentsline {subsection}{\numberline {4.5}Selenium }{18}{subsection.4.5}
 \contentsline {subsection}{\numberline {4.6}Maven }{18}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Intellij}{18}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Git}{18}{subsection.4.8}
+\contentsline {subsection}{\numberline {4.7}Intellij }{18}{subsection.4.7}
+\contentsline {subsection}{\numberline {4.8}Git }{18}{subsection.4.8}
 \contentsline {subsection}{\numberline {4.9}Heroku}{19}{subsection.4.9}
 \contentsline {section}{\numberline {5}Project Management}{19}{section.5}
 \contentsline {subsection}{\numberline {5.1}Schedule }{19}{subsection.5.1}
@@ -37,7 +37,7 @@
 \contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{21}{subsubsection.5.1.5}
 \contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{21}{subsubsection.5.1.6}
 \contentsline {subsubsection}{\numberline {5.1.7}Iteration 7 - 3/6/2017 $\Rightarrow $ 30/6/2017}{22}{subsubsection.5.1.7}
-\contentsline {subsection}{\numberline {5.2}Testing}{22}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.2}Testing }{22}{subsection.5.2}
 \contentsline {subsubsection}{\numberline {5.2.1}Test Driven Development}{22}{subsubsection.5.2.1}
 \contentsline {subsubsection}{\numberline {5.2.2}Back-End}{22}{subsubsection.5.2.2}
 \contentsline {subsubsection}{\numberline {5.2.3}Front-End}{23}{subsubsection.5.2.3}
@@ -49,18 +49,19 @@
 \contentsline {subsubsection}{\numberline {6.3.1}Java}{26}{subsubsection.6.3.1}
 \contentsline {subsubsection}{\numberline {6.3.2}Java Spring}{26}{subsubsection.6.3.2}
 \contentsline {subsection}{\numberline {6.4}Testing}{26}{subsection.6.4}
-\contentsline {subsection}{\numberline {6.5}Front-End Design}{26}{subsection.6.5}
-\contentsline {subsection}{\numberline {6.6}Efficiency}{26}{subsection.6.6}
-\contentsline {subsubsection}{\numberline {6.6.1}Proof Checking Algorithm}{26}{subsubsection.6.6.1}
-\contentsline {subsubsection}{\numberline {6.6.2}ND Solver Algorithm}{26}{subsubsection.6.6.2}
-\contentsline {subsubsection}{\numberline {6.6.3}Validity Algorithm}{26}{subsubsection.6.6.3}
-\contentsline {subsection}{\numberline {6.7}Difficulties}{26}{subsection.6.7}
-\contentsline {subsubsection}{\numberline {6.7.1}ND Solver Algorithm}{26}{subsubsection.6.7.1}
-\contentsline {subsubsection}{\numberline {6.7.2}Bracketed Expressions}{26}{subsubsection.6.7.2}
-\contentsline {subsection}{\numberline {6.8}User Feedback}{26}{subsection.6.8}
-\contentsline {subsection}{\numberline {6.9}Competitor Comparisons}{26}{subsection.6.9}
-\contentsline {section}{\numberline {7}Conclusion}{26}{section.7}
-\contentsline {section}{\numberline {A}Natural Deduction Rules}{27}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{27}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Predicate Rules}{27}{subsection.A.2}
-\contentsline {section}{References}{28}{section*.2}
+\contentsline {subsection}{\numberline {6.5}Front-End Design}{27}{subsection.6.5}
+\contentsline {subsection}{\numberline {6.6}Efficiency}{27}{subsection.6.6}
+\contentsline {subsubsection}{\numberline {6.6.1}Proof Checking Algorithm}{27}{subsubsection.6.6.1}
+\contentsline {subsubsection}{\numberline {6.6.2}ND Solver Algorithm}{27}{subsubsection.6.6.2}
+\contentsline {subsubsection}{\numberline {6.6.3}Validity Algorithm}{27}{subsubsection.6.6.3}
+\contentsline {subsection}{\numberline {6.7}Difficulties}{27}{subsection.6.7}
+\contentsline {subsubsection}{\numberline {6.7.1}ND Solver Algorithm}{27}{subsubsection.6.7.1}
+\contentsline {subsubsection}{\numberline {6.7.2}Bracketed Expressions}{27}{subsubsection.6.7.2}
+\contentsline {subsection}{\numberline {6.8}User Feedback}{27}{subsection.6.8}
+\contentsline {subsection}{\numberline {6.9}Competitor Comparisons}{27}{subsection.6.9}
+\contentsline {section}{\numberline {7}Conclusion}{27}{section.7}
+\contentsline {section}{\numberline {A}Natural Deduction Rules}{28}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{28}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Predicate Rules}{28}{subsection.A.2}
+\contentsline {section}{\numberline {B}User Guide}{29}{appendix.B}
+\contentsline {section}{References}{30}{section*.2}

@@ -24,8 +24,8 @@
 \BOOKMARK [2][-]{subsection.4.4}{JUnit}{section.4}% 24
 \BOOKMARK [2][-]{subsection.4.5}{Selenium }{section.4}% 25
 \BOOKMARK [2][-]{subsection.4.6}{Maven }{section.4}% 26
-\BOOKMARK [2][-]{subsection.4.7}{Intellij}{section.4}% 27
-\BOOKMARK [2][-]{subsection.4.8}{Git}{section.4}% 28
+\BOOKMARK [2][-]{subsection.4.7}{Intellij }{section.4}% 27
+\BOOKMARK [2][-]{subsection.4.8}{Git }{section.4}% 28
 \BOOKMARK [2][-]{subsection.4.9}{Heroku}{section.4}% 29
 \BOOKMARK [1][-]{section.5}{Project Management}{}% 30
 \BOOKMARK [2][-]{subsection.5.1}{Schedule }{section.5}% 31
@@ -36,7 +36,7 @@
 \BOOKMARK [3][-]{subsubsection.5.1.5}{Iteration 5 - 22/4/2017 \04012/5/2017}{subsection.5.1}% 36
 \BOOKMARK [3][-]{subsubsection.5.1.6}{Iteration 6 - 13/5/2017 \0402/6/2017}{subsection.5.1}% 37
 \BOOKMARK [3][-]{subsubsection.5.1.7}{Iteration 7 - 3/6/2017 \04030/6/2017}{subsection.5.1}% 38
-\BOOKMARK [2][-]{subsection.5.2}{Testing}{section.5}% 39
+\BOOKMARK [2][-]{subsection.5.2}{Testing }{section.5}% 39
 \BOOKMARK [3][-]{subsubsection.5.2.1}{Test Driven Development}{subsection.5.2}% 40
 \BOOKMARK [3][-]{subsubsection.5.2.2}{Back-End}{subsection.5.2}% 41
 \BOOKMARK [3][-]{subsubsection.5.2.3}{Front-End}{subsection.5.2}% 42
@@ -62,4 +62,5 @@
 \BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 62
 \BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 63
 \BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 64
-\BOOKMARK [1][-]{section*.2}{References}{}% 65
+\BOOKMARK [1][-]{appendix.B}{User Guide}{}% 65
+\BOOKMARK [1][-]{section*.2}{References}{}% 66
