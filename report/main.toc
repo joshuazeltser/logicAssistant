@@ -53,11 +53,11 @@
 \contentsline {subsubsection}{\numberline {6.6.2}ND Solver Algorithm}{27}{subsubsection.6.6.2}
 \contentsline {subsubsection}{\numberline {6.6.3}Validity Algorithm}{27}{subsubsection.6.6.3}
 \contentsline {subsection}{\numberline {6.7}Difficulties}{28}{subsection.6.7}
-\contentsline {subsection}{\numberline {6.8}Competitor Comparisons}{28}{subsection.6.8}
-\contentsline {subsection}{\numberline {6.9}User Feedback}{28}{subsection.6.9}
-\contentsline {section}{\numberline {7}Conclusion}{28}{section.7}
-\contentsline {section}{\numberline {A}Natural Deduction Rules}{29}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{29}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Predicate Rules}{29}{subsection.A.2}
-\contentsline {section}{\numberline {B}User Guide}{30}{appendix.B}
-\contentsline {section}{References}{31}{section*.2}
+\contentsline {subsection}{\numberline {6.8}Competitor Analysis}{29}{subsection.6.8}
+\contentsline {subsection}{\numberline {6.9}User Feedback}{29}{subsection.6.9}
+\contentsline {section}{\numberline {7}Conclusion}{29}{section.7}
+\contentsline {section}{\numberline {A}Natural Deduction Rules}{30}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{30}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Predicate Rules}{30}{subsection.A.2}
+\contentsline {section}{\numberline {B}User Guide}{31}{appendix.B}
+\contentsline {section}{References}{32}{section*.2}
