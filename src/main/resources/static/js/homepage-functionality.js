@@ -97,7 +97,7 @@ function getVariables() {
 
 
 
-function call_function() {
+function indent_function() {
     var proof = document.getElementById('Text1');
     var rules = document.getElementById('Text2');
 
@@ -109,12 +109,19 @@ function call_function() {
 
 
     var indentArray = new Array();
+    
+    var length = proofArray.length;
 
     /*<![CDATA[*/
     for (var i = 0; i < proofArray.length; i++) {
         if (i > 0) {
             proof.value = proof.value + '\n';
 
+        }
+
+        if (i >= rulesArray.length) {
+            proof.value = proof.value + proofArray.subarray(i, length);
+            break;
         }
 
         if (rulesArray[i] === "ASSUMPTION") {

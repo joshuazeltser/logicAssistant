@@ -92,7 +92,17 @@ public class Proof {
             String expr[] = new String[steps.length];
             for (int i = 0; i < steps.length; i++) {
                 if (!steps[i].equals("") && steps[i].charAt(0) == '-') {
-                    expr[i] = steps[i].substring(6);
+                    int count1 = 0;
+                    for (int j = 0; j < steps[i].length(); j++) {
+
+                        if (steps[i].charAt(j) != '-') {
+                            break;
+                        }
+                        count1++;
+                    }
+
+                    expr[i] = steps[i].substring(count1);
+
                 } else {
                     expr[i] = steps[i];
                 }
