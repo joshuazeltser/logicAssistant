@@ -105,9 +105,7 @@ function indent_function() {
     var rulesArray = rules.value.split("\n");
 
     proof.value = "";
-
-
-
+    
     var indentArray = new Array();
     
     var length = proofArray.length;
