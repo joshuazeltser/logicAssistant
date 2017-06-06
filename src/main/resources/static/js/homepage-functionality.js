@@ -165,6 +165,10 @@ function changeColour() {
     var colour = [];
     var hint = document.getElementById('hintButton');
     if (hint.getAttribute('class') == 'btn btn-primary') {
+        hint.setAttribute('class', 'btn btn-warning');
+        colour.push('btn btn-warning');
+        localStorage.setItem('colour', JSON.stringify(colour));
+    } else if (hint.getAttribute('class') == 'btn btn-warning') {
         hint.setAttribute('class', 'btn btn-success');
         colour.push('btn btn-success');
         localStorage.setItem('colour', JSON.stringify(colour));
@@ -223,15 +227,21 @@ function hideHelper() {
 
     var list = JSON.parse(localStorage.getItem('colour'));
     var hint = document.getElementById('hintButton');
-    if (list.pop() == 'btn btn-success') {
-        hint.setAttribute('class', 'btn btn-success');
+    if (list.pop() == 'btn btn-warning') {
+        hint.setAttribute('class', 'btn btn-warning');
         $("#hintBox").show();
         $("#errorBox").hide();
+    } else if (list.pop() == 'btn btn-success') {
+        hint.setAttribute('class', 'btn btn-success');
+        $("#hintBox").show();
+        $("#errorBox").show();
     } else {
         hint.setAttribute('class', 'btn btn-primary');
         $("#hintBox").hide();
         $("#errorBox").show();
     }
+
+    checkHintStatus();
 //
 }
 

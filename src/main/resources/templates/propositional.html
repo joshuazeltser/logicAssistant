@@ -106,6 +106,31 @@
                </span>
         </center>
         <p></p>
+
+        <output id="hintStatus" onload="checkHintStatus()" value="Hints are Off"></output>
+
+        <script>
+
+
+            $(function () {
+                window.onload = checkHintStatus;
+            });
+
+
+            function checkHintStatus() {
+                var status = document.getElementById('hintStatus');
+                var hint = document.getElementById('hintButton');
+
+                if (hint.getAttribute('class') == 'btn btn-primary') {
+                    status.value = 'Hints are Off';
+                } else if (hint.getAttribute('class') == 'btn btn-warning') {
+                    status.value = 'Simple Hints are On';
+                } else {
+                    status.value = 'Advanced Hints are On';
+                }
+            }
+
+        </script>
     </div>
     <div class="col-md-8">
         <center>
@@ -139,7 +164,7 @@
                     </style>
                     <div class="btn-group">
                         <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                        <button id="hintButton" onclick="changeColour()" class="btn btn-primary" type="button"
+                        <button id="hintButton" onclick="changeColour(); checkHintStatus()" class="btn btn-primary" type="button"
                                 data-toggle="tooltip" data-placement="top" title="Turn hints on/off">Hint</button>
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-original-title="Type your rules here">
                             <span class="caret"></span>
