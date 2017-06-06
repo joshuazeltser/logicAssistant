@@ -51,6 +51,8 @@ In order to ensure that my project is as easy to use and as useful as possible I
 \item Add the ability to save and load Natural Deduction proofs
 \end{itemize}
 
+\pagebreak
+
 \section{Background \label{Background}}
 
 \subsection{Propositional Logic}
@@ -325,6 +327,8 @@ The final and most important page of the application is the User Guide. This pag
 
 In order to coordinate and control the model and view parts of this web-app, it was necessary to add some controller classes. As I used the Java Spring framework to build this application (see \ref{JavaSpring}), I was provided with some special controller functionality that can be used to control the entire programme. Therefore, each page has its own controller class which retrieves a mapping based on the url, and allows the passing of Java objects into the front end of the application. For example the main page receives a mapping of "/", as it is the home page, and the controller passes in a Proof object so that the associated functionality can be applied. This controller also has a post mapping which returns to this same page after the form has been submitted. Similarly, the validity page has its own controller which receives a mapping of "/validity" as the browser enters that page. The controller then provides a TruthTable object to the front end, so that it can be used to carry out the validation checks. These two controllers are therefore really important as they allow the various pages to communicate with each other, as well as to the back-end of the programme. This therefore completes the set up of the Model View Controller infrastructure that I have built for this application.
 
+\pagebreak
+
 \section{Development Tools}
 
 \subsection{Java}
@@ -375,6 +379,7 @@ I structured my Git network by mainly working off a branch called backEnd. In ge
 \subsection{Heroku\label{heroku}}
 As my project is a web based application, I wanted to find an easy way to deploy it as a real website. Heroku allowed me to easily do this, as well as offering me many useful features. I was able to easily connect my Maven project to its services through my Github account, setting it up so that whenever I pushed my changes to master, my Heroku site would be updated. I therefore used my site on Heroku to house my latest fully functioning version of the app. This allowed me to show others and gain feedback on the parts of the functionality that I had already successfully created. Deploying my application in this way also allowed me to test it on other browsers and operating systems, to ensure that all of the required functionality functioned correctly. Once the project was completed, I permanently deployed the application to this free service for anyone to use.
 
+\pagebreak
 
 \section{Project Management}
 
@@ -453,6 +458,8 @@ I setup my Trello board by creating four different lists. I created a list for a
 	\caption{My Trello Board}
 \end{figure}
 
+\pagebreak
+
 \section{Evaluation}
 
 After carrying out a large-scale project such as this, it is always good practise to evaluate how the project went as a whole. Were the objectives set out at the beginning of the project realistic, were you able to create all of your planned functionality, could you have avoided any set-backs that you were faced with. These ideas among others are all items to consider after having completed a project like this. By successfully evaluating a completed project, you will be able to use any lessons learnt to improve future projects.
@@ -528,6 +535,34 @@ To conclude, both LogicAssistant and Pandora are useful tools for anyone learnin
 
 \subsection{User Feedback}
 
+One of the best ways to judge how well my project is going is by gaining some user feedback. This feedback will give me a window into the minds of potential users, helping me to improve the overall user experience. In order to gain some user feedback, I carried out a survey at the beginning of June, using the current stable version of the website. I used SurveyCrest (see \cite{surveyCrest}) to create a survey containing some questions in important areas of the project that I wanted feedback on. This survey can be seen in Appendix \ref{appendix:surveyCrest}. In order to gain data from this survey, I personally met with fifteen people to show them what LogicAssistant has to offer and let them try it out for themselves. Of the people I surveyed ten were Computing students who were well versed in Natural Deduction practises, while the other other five had a very basic knowledge of Natural Deduction but had never studied it in detail. After they had tried out the various features I asked them to fill out a survey. The survey contained questions first finding out the users background in Natural Deduction, then asking about how they found using LogicAssistant, what features were good and bad and finally whether they liked the user interfaces design. I used a lot of the data gathered to further improve my project.
+
+Looking at the results of the survey a number of conclusions can be drawn, some of which I worked on in order to improve the overall product. Firstly of those surveyed 60\% of users already use some kind of tool to help them with their Natural Deduction proofs. LogicAssistant for these people is therefore a competing product, which I will have to prove to be superior to the ones they are currently using. For the rest of the people surveyed, LogicAssistant will need to show these people the benefits of using such a tool, especially how it will make the entire proof solving process much simpler. Another question that was asked in the survey was how LogicAssistant compares to other similar products that those surveyed had used. All of them replied that it was at least slightly better than other software they had experienced. This showed me that LogicAssistant must be doing something right, especially as even those who don't commonly use this type of software support its achievements.
+
+One of the main goals that I wanted to achieve by the end of this project was to make this application as easy to use as possible. This would allow LogicAssistant to attract users at lots of different levels of knowledge of Natural Deduction, as they try to solve their complex proofs. In order to test how successfully I had done this, I asked in the survey for people to rate how easy to use LogicAssistant was out of ten. The results can be seen on the graph below. This graph shows how all of the people surveyed thought that the website was relatively easy to use. In another of the survey questions I asked what is missing from this tool as a whole. Several people answered that it was a bit difficult to figure out exactly what to do upon arriving at the website. They especially said this regarding the hints option. In response to these comments I made sure to make it very clear using extra tooltips and by making some of the features more simple, exactly how to use the application. I would hope that the finished product today now has resolved these issues and is therefore very easy for any user to use.
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/easeOfUseGraph}}
+	\caption{Ease of use survey results}
+\end{figure}
+
+Another key component that I wanted to gain feedback on, was the design of the front-end of the application. This is the part of the application that the users will actually see, so must be aesthetically pleasing as well as having features that are displayed clearly. I again asked the people I surveyed to rate how they find the design of the user interface. The results of this question can be seen on the graph below. This graph similarly shows that most people surveyed thought the design of the website was quite good as well as just being easy to use. A few gave a slightly lower score, and in answering what is missing from this application they say that how the proof itself is displayed is a bit lacking. They add it would be nice to have proper boxes around new scopes, as well as more of a notification when a proof is found to be valid. I did not in the end have time to work on these constructive points, but these items would definitely be on the agenda to implement next if I was to continue working on this project. 
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/websiteDesignGraph}}
+	\caption{Website Design survey results}
+\end{figure}
+
+In order to see whether the features that I had implemented were demanded by potential users, I also asked people which features were most important for this tool to have. A majority of those surveyed answered that hints were the most important, and are a fundamental tool to have on an application such as this. Other important features that were mentioned were the validation of proofs and having a clear user interface. These results show me that users recognise how useful the various features provided are for solving these problems. As mentioned above I also asked which features users thought were missing from LogicAssistant. As well as an increase in user help, which I made sure to work on, users suggested support for Predicate Logic and the addition of undo and redo buttons to the user interface. As mentioned many times in this report the addition of Predicate Logic to this tool was not included due to time restraints. If more time was on offer this would definitely be an extension that could be added to this application. Similarly, redo and undo buttons could be easily added in the future. These were the main places where users felt this software was lacking.
+
+The user feedback that I gained provided me with invaluable information about my application as a whole. However, the way I carried out the retrieval of this feedback could have been improved in several ways. Firstly, I left it very late on in the project before I carried out this survey, meaning that there was only so much I could do in the remaining time to work on the feedback that I gained. It would have been much more useful to have done this towards the middle of the project where I could use the data gained to ensure that the project was heading in the right direction. In addition to this, it would have been helpful if I had asked a bigger range of people to answer my survey. Not just by asking more people but people with a whole spread of different knowledge levels of the topic of Natural Deduction. This would have given me an even clearer picture of how my tool can help the needs of each of those ability levels. Finally, I could have also included a larger number of questions in the survey to find out even more information about my application. I could have gone into a lot more detail, and the data gained could have helped to tailor my application to the demands of users even more. By doing this I would be able to provide the best experience possible for any user.
+
+Overall, I have conducted a survey in order to gain user feedback for my application. The data gained was very useful for me as I made the final touches to the user interface and back-end functionality. Although in several areas the way I retrieved user feedback could have been improved, in the end I was able to gain a clear image of what a user really wanted to get out of my application and which features really help them to do this. 
+
+
+\pagebreak
 \section{Conclusion}
 
 \pagebreak
@@ -720,8 +755,14 @@ To conclude, both LogicAssistant and Pandora are useful tools for anyone learnin
 \pagebreak
 
 \section{User Guide}
+ \label{appendix:userGuide}
+ 
+ asdsd
 
 \pagebreak
+
+ \includepdf[scale=0.75,pagecommand=\section{User Survey \cite{surveyCrest}}]{figures/SurveyApplication.pdf}
+ \label{appendix:surveyCrest}
 
 \begin{thebibliography}{9}
 
@@ -733,6 +774,9 @@ Software Engineering Mathematics by Jim Woodcock and Martin Loomes, 1989 edition
 
 \bibitem{ndAlgo}
 Alexander Bolotov, Vyacheslav Bocharov, Alexander Gorchakov, Vasilyi Shangin \textit{Automated First Order Natural Deduction}. Conference Paper, January 2005
+
+\bibitem{surveyCrest}
+SurveyCrest, Free online survey creator. Found at \url{ https://www.surveycrest.com/}, last retrieved 6/6/2017
 
 
 \end{thebibliography}
