@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  4 JUN 2017 17:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  6 JUN 2017 13:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -987,7 +987,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 420.
 
-[21] [22] <figures/trelloBoard.jpeg, id=454, 2258.4375pt x 1108.14pt>
+[21] [22] <figures/trelloBoard.jpeg, id=457, 2258.4375pt x 1108.14pt>
 File: figures/trelloBoard.jpeg Graphic file (type jpg)
 
 <use figures/trelloBoard.jpeg>
@@ -1038,7 +1038,7 @@ Here is how much of TeX's memory you used:
  21747 multiletter control sequences out of 15000+600000
  16304 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,10n,56p,2369b,483s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,10n,56p,2372b,483s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
@@ -1056,10 +1056,10 @@ live/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texli
 ve/2016/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive
 /2016/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2
 016/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (33 pages, 1661181 bytes).
+Output written on main.pdf (33 pages, 1661718 bytes).
 PDF statistics:
- 610 PDF objects out of 1000 (max. 8388607)
- 546 compressed objects within 6 object streams
+ 613 PDF objects out of 1000 (max. 8388607)
+ 549 compressed objects within 6 object streams
  126 named destinations out of 1000 (max. 500000)
  502 words of extra memory for PDF output out of 10000 (max. 10000000)
 
