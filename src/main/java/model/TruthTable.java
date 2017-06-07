@@ -24,7 +24,7 @@ public class TruthTable {
 
     public String frontEndFunctionality(String prems, String res) throws SyntaxException {
 
-        if (!prems.equals("") && !res.equals("")) {
+        if (!res.equals("")) {
             readPremisesFromInput(prems, res);
 
             boolean result = validateProof();
@@ -51,7 +51,13 @@ public class TruthTable {
             }
             result = temp2;
 
+            if (prems.equals("")) {
+                return;
+            }
+
             String[] premList = prems.split("\\r?\\n");
+
+
 
             for (int i = 0; i < premList.length; i++) {
                 Expression temp = new Expression(RuleType.GIVEN);
@@ -103,15 +109,28 @@ public class TruthTable {
         for (int i = 0; i < premises.size(); i++) {
            addExpressionValues(truthTable, propositions, premises.get(i), i);
         }
-        addExpressionValues(truthTable,propositions, result, premises.size());
-
+        addExpressionValues(truthTable, propositions, result, premises.size());
 
         // Check that in all rows that every premise evaluates to true the result also evaluates to true
-        if (checkRowValidity(propositions, truthTable)) {
+        if (premises.size() == 0) {
+            if (!checkResultValues(propositions, truthTable)) {
+//                printTruthTable(propositions, truthTable);
+                return false;
+            }
+        } else if (checkRowValidity(propositions, truthTable)) {
 //            printTruthTable(propositions, truthTable);
             return false;
         }
 //        printTruthTable(propositions, truthTable);
+        return true;
+    }
+
+    private boolean checkResultValues(List<String> propositions, String[][] truthTable) {
+        for (int i = 1; i < (int) Math.pow(2, propositions.size())+1; i++) {
+            if (Integer.parseInt(truthTable[i][propositions.size() + premises.size()]) != 1) {
+                return false;
+            }
+        }
         return true;
     }
 

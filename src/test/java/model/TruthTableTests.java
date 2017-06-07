@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -289,6 +290,53 @@ public class TruthTableTests {
         assertTrue(tt.validateProof());
     }
 
+    @Test
+    public void proofValidationTest7() throws SyntaxException {
+        String str = "A | !A";
+
+        Expression expr = new Expression();
+        expr.addToExpression(str);
+
+        TruthTable tt = new TruthTable();
+
+        tt.setResult(expr);
+
+//        System.out.println(tt.validateProof());
+
+        assertTrue(tt.validateProof());
+    }
+
+    @Test
+    public void proofValidationTest8() throws SyntaxException {
+        String str = "A ^ !A";
+
+        Expression expr = new Expression();
+        expr.addToExpression(str);
+
+        TruthTable tt = new TruthTable();
+
+        tt.setResult(expr);
+
+//        System.out.println(tt.validateProof());
+
+        assertFalse(tt.validateProof());
+    }
+
+    @Test
+    public void proofValidationTest9() throws SyntaxException {
+        String str = "B";
+
+        Expression expr = new Expression();
+        expr.addToExpression(str);
+
+        TruthTable tt = new TruthTable();
+
+        tt.setResult(expr);
+
+//        System.out.println(tt.validateProof());
+
+        assertFalse(tt.validateProof());
+    }
 }
 
 
