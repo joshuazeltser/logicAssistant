@@ -382,17 +382,89 @@ The second advanced feature that I have added is the tailoring of hints towards 
 
 This example shows you two proofs with the same premises and goals, yet one is slightly longer than the other. The red boxes indicate the differences. Depending on which way the user takes, this algorithm will now learn from this and continue to follow in this direction. I was able to do this by, in step 1 of the algorithm (see \ref{solveAlgo}), when the premises and results are added to the two lists, also adding the steps of the proof that had already been entered by the user. This means that when the algorithm starts to run it continues on from where the user is up to, thereby helping to tailor the generated proof and hints to the users method. These two extra features together make this programme an invaluable tool when learning to solve these complex problems. 
 
+
 \subsection{View}
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/wholePageImage}}
+	\caption{Website homepage}
+\end{figure}
 
 One of the key components of this project is the design of the front-end. I wanted to make the application as easy to use and as appealing as possible to users looking for help in solving their Natural Deduction proofs. I therefore spent a long time perfecting this part of the application. As mentioned below (see \ref{JavaSpring}), I used Java Spring to create a front end that uses the Java back-end of this project. This meant using Thymeleaf together with HTML and Javascript to create an easy to use, but powerful user interface. In order to perfect the website I carried out several iterations before deciding on this final design.
 
-The website itself is made up of three pages. The first of which is the home page, which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page. The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on that rule is added to the next line of the proof. If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, this left text area will automatically indent itself to represent any boxes (scopes) included in the proof. Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns green. This means that hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. All of these front end features together make up the main functionality of this programme.
+
+
+The website itself is made up of three pages. The first of which is the home page (see image above), which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page. 
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/textareas}}
+	\caption{Proof input boxes}
+\end{figure}
+
+
+The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on that rule is added to the next line of the proof. 
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=10cm]{figures/key&rules}}
+	\caption{Symbol Key \& Rule Buttons}
+\end{figure}
+
+If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, this left text area will automatically indent itself to represent any boxes (scopes) included in the proof. 
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/indentation}}
+	\caption{Full proof with references and indentation}
+\end{figure}
+
+
+Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. 
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/errorsAndSubmit}}
+	\caption{Error Message examples}
+\end{figure}
+
+If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns orange. This means that basic hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. All of these front-end features together make up the main functionality of this programme.
+\pagebreak
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/hintProof}}
+	\caption{Hint requested for a proof}
+\end{figure}
+
+
 
 This page also contains some other features that assist a user when using this software. Firstly, there is a drop-down menu towards the bottom of the page, that contains two useful options. An option to reset the page in order to type a new proof, and also a save proof as option. This allows the user to save any proofs they have, so that they can be revisited again on a later occasion. On the left hand side of the page there is also functionality that allows the user to upload their own proofs. This programme has its own file type (.la) and files of this type can be uploaded to this solver. The proof then can either be checked or added to and then saved again for future use. All of these small features together make using this system much simpler and straightforward for users to use.
 
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/extraFunctionality}}
+	\caption{Additional Functionality}
+\end{figure}
+
+
+
 The next page of the web-app is the proof validation page. This can be accessed using a button on the left hand side of the home page. This page allows the user to type in their chosen premises and the resulting expression that they want to use in their proof. Then by clicking the "Check Validity" button, the validity algorithm will be triggered alerting the user as to whether the proof will be valid. This step saves the user a lot of time by allowing them to see whether the proof they are about to solve is solvable before they even start the proof solving process. Once this check has been completed the user can navigate back to the home page in order to actually solve their proof step by step.
 
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/validityChecker}}
+	\caption{Validity Checker}
+\end{figure}
+
 The final and most important page of the application is the User Guide. This page contains a detailed analysis of how to use all of the features mentioned above. With the help of this page I believe that almost any user will be able to work out how to use most of the functionality on the website. In addition to this, throughout the website I have added tooltips onto some of the key pieces of functionality. This means that when a user puts their mouse over one of these tooltips they will be shown a small speech bubble explaining what that piece of functionality is used for. This will increase the ease at which new users are able to benefit from this software. This is therefore how the front end (or view) part of my application has been created.
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/tooltips}}
+	\caption{Homepage Tooltips}
+\end{figure}
 
 \subsection{Controller}
 

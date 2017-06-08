@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  8 JUN 2017 18:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  8 JUN 2017 22:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -945,7 +945,7 @@ es/imperial.pdf> <./figures/imperial2.pdf>])
 ge.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.32 ...berline {4.10}Heroku}{23}{subsection.4.10}
+l.32 ...berline {4.10}Heroku}{27}{subsection.4.10}
                                                    [1] [2])
 \tf@toc=\write5
 \openout5 = `main.toc'.
@@ -988,125 +988,188 @@ File: figures/proofComparison.jpeg Graphic file (type jpg)
 <use figures/proofComparison.jpeg>
 Package pdftex.def Info: figures/proofComparison.jpeg used on input line 379.
 (pdftex.def)             Requested size: 426.79135pt x 184.58614pt.
- [18 <./figures/proofComparison.jpeg>]
-[19] [20]
 
-LaTeX Warning: Reference `TDD' on page 21 undefined on input line 429.
+<figures/wholePageImage.jpeg, id=465, 1221.56375pt x 811.03pt>
+File: figures/wholePageImage.jpeg Graphic file (type jpg)
 
-[21] [22] [23]
+<use figures/wholePageImage.jpeg>
+Package pdftex.def Info: figures/wholePageImage.jpeg used on input line 390.
+(pdftex.def)             Requested size: 369.88582pt x 245.57555pt.
+ [18 <./figures/proofComparison.jpeg> <./figures/wholePageImage.jpeg>]
+<figures/textareas.jpeg, id=474, 666.49pt x 439.6425pt>
+File: figures/textareas.jpeg Graphic file (type jpg)
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 463.
+<use figures/textareas.jpeg>
+Package pdftex.def Info: figures/textareas.jpeg used on input line 402.
+(pdftex.def)             Requested size: 369.88582pt x 243.99776pt.
 
+<figures/key&rules.jpeg, id=475, 1195.46625pt x 672.5125pt>
+File: figures/key&rules.jpeg Graphic file (type jpg)
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 463.
+<use figures/key&rules.jpeg>
+Package pdftex.def Info: figures/key&rules.jpeg used on input line 411.
+(pdftex.def)             Requested size: 284.52756pt x 160.06201pt.
+ [19 <./figures/textareas.jpeg> <./figures/key&rules.jpeg>] <figures/indentatio
+n.jpeg, id=482, 647.41875pt x 420.57124pt>
+File: figures/indentation.jpeg Graphic file (type jpg)
 
+<use figures/indentation.jpeg>
+Package pdftex.def Info: figures/indentation.jpeg used on input line 419.
+(pdftex.def)             Requested size: 369.88582pt x 240.2864pt.
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 463.
+<figures/errorsAndSubmit.jpeg, id=483, 1678.27pt x 803.0pt>
+File: figures/errorsAndSubmit.jpeg Graphic file (type jpg)
 
+<use figures/errorsAndSubmit.jpeg>
+Package pdftex.def Info: figures/errorsAndSubmit.jpeg used on input line 428.
+(pdftex.def)             Requested size: 369.88582pt x 176.97911pt.
+ [20 <./figures/indentation.jpeg> <./figures/errorsAndSubmit.jpeg>]
+<figures/hintProof.jpeg, id=490, 644.4075pt x 552.0625pt>
+File: figures/hintProof.jpeg Graphic file (type jpg)
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 467.
+<use figures/hintProof.jpeg>
+Package pdftex.def Info: figures/hintProof.jpeg used on input line 437.
+(pdftex.def)             Requested size: 369.88582pt x 316.89435pt.
 
+<figures/extraFunctionality.jpeg, id=491, 1025.8325pt x 357.335pt>
+File: figures/extraFunctionality.jpeg Graphic file (type jpg)
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 467.
+<use figures/extraFunctionality.jpeg>
+Package pdftex.def Info: figures/extraFunctionality.jpeg used on input line 447
+.
+(pdftex.def)             Requested size: 369.88582pt x 128.84224pt.
+ [21 <./figures/hintProof.jpeg> <./figures/extraFunctionality.jpeg>]
+<figures/validityChecker.jpeg, id=498, 1676.2625pt x 835.12pt>
+File: figures/validityChecker.jpeg Graphic file (type jpg)
 
+<use figures/validityChecker.jpeg>
+Package pdftex.def Info: figures/validityChecker.jpeg used on input line 457.
+(pdftex.def)             Requested size: 426.79135pt x 212.62784pt.
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 467.
+<figures/tooltips.jpeg, id=499, 1549.79pt x 889.3225pt>
+File: figures/tooltips.jpeg Graphic file (type jpg)
 
+<use figures/tooltips.jpeg>
+Package pdftex.def Info: figures/tooltips.jpeg used on input line 465.
+(pdftex.def)             Requested size: 426.79135pt x 244.8969pt.
+ [22 <./figures/validityChecker.jpeg> <./figures/tooltips.jpeg>] [23] [24]
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 473.
+LaTeX Warning: Reference `TDD' on page 25 undefined on input line 501.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 473.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 473.
-
-[24]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 479.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 479.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 479.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 485.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 485.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 485.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 491.
-
+[25] [26] [27]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 491.
+(hyperref)                removing `math shift' on input line 535.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 491.
-
-[25]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 497.
+(hyperref)                removing `\Rightarrow' on input line 535.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 497.
+(hyperref)                removing `math shift' on input line 535.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 497.
+(hyperref)                removing `math shift' on input line 539.
 
-[26] [27] <figures/trelloBoard.jpeg, id=519, 2258.4375pt x 1108.14pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 539.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 539.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 545.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 545.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 545.
+
+[28]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 551.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 551.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 551.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 557.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 557.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 557.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 563.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 563.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 563.
+
+[29]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 569.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 569.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 569.
+
+[30] [31] <figures/trelloBoard.jpeg, id=554, 2258.4375pt x 1108.14pt>
 File: figures/trelloBoard.jpeg Graphic file (type jpg)
 
 <use figures/trelloBoard.jpeg>
-Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 529.
+Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 601.
 (pdftex.def)             Requested size: 426.79135pt x 209.39899pt.
- [28 <./figures/trelloBoard.jpeg>] [29] [30]
-[31] [32] [33] [34] [35]
-<figures/easeOfUseGraph.jpg, id=567, 361.35pt x 215.80624pt>
+ [32 <./figures/trelloBoard.jpeg>] [33] [34]
+[35] [36] [37] [38] [39]
+<figures/easeOfUseGraph.jpg, id=602, 361.35pt x 215.80624pt>
 File: figures/easeOfUseGraph.jpg Graphic file (type jpg)
 
 <use figures/easeOfUseGraph.jpg>
-Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 618.
+Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 690.
 (pdftex.def)             Requested size: 369.88582pt x 220.90646pt.
 
-<figures/websiteDesignGraph.jpg, id=568, 361.35pt x 217.81375pt>
+<figures/websiteDesignGraph.jpg, id=603, 361.35pt x 217.81375pt>
 File: figures/websiteDesignGraph.jpg Graphic file (type jpg)
 
 <use figures/websiteDesignGraph.jpg>
-Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 626.
+Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 698.
 
 (pdftex.def)             Requested size: 369.88582pt x 222.9614pt.
- [36 <./figures/easeOfUseGraph.jpg>]
-[37 <./figures/websiteDesignGraph.jpg>] [38]
+ [40 <./figures/easeOfUseGraph.jpg>]
+[41 <./figures/websiteDesignGraph.jpg>] [42]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 645.
+(hyperref)                removing `\@ifnextchar' on input line 717.
 
 \myBox1=\box58
 \myScoreStart1=\dimen267
@@ -1120,81 +1183,81 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 \myScoreStart3=\dimen273
 \myCenter3=\dimen274
 \myScoreEnd3=\dimen275
-[39] [40] <figures/SurveyApplication.pdf, id=609, 585.73775pt x 788.65001pt>
+[43] [44] <figures/SurveyApplication.pdf, id=644, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 836.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 908.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
  <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 836.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 908.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 
-<figures/SurveyApplication.pdf, id=612, page=1, 585.73775pt x 788.65001pt>
+<figures/SurveyApplication.pdf, id=647, page=1, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 836.
+e 908.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 836.
+e 908.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 836.
+e 908.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 836.
+e 908.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 836.
+(hyperref)                removing `\@ifnextchar' on input line 908.
 
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 836.
+e 908.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
- [41 <./figures/SurveyApplication.pdf>]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 842.
+ [45 <./figures/SurveyApplication.pdf>]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 914.
 
  (/usr/local/texlive/2016/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [42]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 858.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 858.
+) [46]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 930.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 930.
 
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 858.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 858.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 930.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 930.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: B582A7E190E303AEAE36672806F15C77;3947.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 858.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 930.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 20317 strings out of 493014
- 366387 string characters out of 6133351
+ 20375 strings out of 493014
+ 367709 string characters out of 6133351
  568997 words of memory out of 5000000
- 23272 multiletter control sequences out of 15000+600000
+ 23308 multiletter control sequences out of 15000+600000
  16304 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,19n,56p,2372b,2966s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1216,10 +1279,10 @@ sr/local/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr
 /local/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/l
 ocal/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/loc
 al/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (43 pages, 1995259 bytes).
+Output written on main.pdf (47 pages, 2617078 bytes).
 PDF statistics:
- 789 PDF objects out of 1000 (max. 8388607)
- 681 compressed objects within 7 object streams
- 159 named destinations out of 1000 (max. 500000)
- 558 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 826 PDF objects out of 1000 (max. 8388607)
+ 704 compressed objects within 8 object streams
+ 172 named destinations out of 1000 (max. 500000)
+ 603 words of extra memory for PDF output out of 10000 (max. 10000000)
 
