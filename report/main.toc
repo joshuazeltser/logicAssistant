@@ -17,8 +17,8 @@
 \contentsline {subsubsection}{\numberline {3.1.5}Workflow}{14}{subsubsection.3.1.5}
 \contentsline {subsubsection}{\numberline {3.1.6}Validity Checking}{14}{subsubsection.3.1.6}
 \contentsline {subsubsection}{\numberline {3.1.7}Hints }{15}{subsubsection.3.1.7}
-\contentsline {subsection}{\numberline {3.2}View}{16}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Controller}{17}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.2}View}{17}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Controller}{18}{subsection.3.3}
 \contentsline {section}{\numberline {4}Development Tools}{19}{section.4}
 \contentsline {subsection}{\numberline {4.1}Java}{19}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Java Spring }{19}{subsection.4.2}
