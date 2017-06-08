@@ -12,12 +12,12 @@ public class PropositionalController {
 	    @GetMapping("/")
 		public String expressionForm(Model model) {
 			model.addAttribute("proof", new Proof());
-
+			model.addAttribute("truthTable", new TruthTable());
 			return "propositional";
 		}
 
 		@PostMapping("/")
-		public String expressionSubmit(@ModelAttribute Proof proof) {
+		public String expressionSubmit(@ModelAttribute Proof proof, @ModelAttribute TruthTable truthTable) {
 	    	return "propositional";
 		}
 
