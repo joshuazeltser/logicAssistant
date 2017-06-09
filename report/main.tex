@@ -22,9 +22,35 @@
 % load title page
 \input{titlepage}
 
+\pagenumbering{roman}
+
+\vspace*{\fill}
+\renewcommand{\abstractname}{\large Abstract}
+\begin{abstract}
+	\noindent
+	Natural Deduction proofs can be quite complex and it can often be quite difficult to learn how to solve them effectively. A Natural Deduction proof can be completed and the author not know whether what they have created is valid. Alternatively they may become stuck midway through a proof and not know what to do next. This project aimed to create LogicAssistant, a tool to assist users at all levels of knowledge of this subject area with their proofs. This project started by creating an internal representation of these proofs before moving on to solving the many problems associated with these proofs. This meant focussing on creating a system which checks whether a users proof is valid, and also produces hints when a user is stuck in the middle of their proof. LogicAssistant focused on Propositional Logic Natural Deduction problems, which are the main basis that this type of problem is built on. Together with an easy-to-use front-end user interface this project led to the creation of a fundamental tool that can be used by anyone attempting to solve these problems. This tool boasts more advanced and useful features than its competitors, making it the tool to use when learning to use Natural Deduction.
+\end{abstract}
+
+\vspace*{\fill}
+
 \pagebreak
+\vspace*{\fill}
+
+\renewcommand{\abstractname}{\large Acknowledgements}
+
+\begin{abstract}
+	\noindent
+	My sincere thanks to my supervisor Romain Barnoud, for all his support, time and guidance throughout the project. I would also like to thank Dr. Krysia Broda for suggesting this project.
+\end{abstract}
+\vspace*{\fill}
+
+\pagebreak
+
+
 \tableofcontents
 \pagebreak
+\pagenumbering{arabic}
+
 
 \section{Introduction}
 
@@ -89,6 +115,7 @@ Propositions can be grouped together to form sentences using these operators. Th
 
 We have now defined a Propositional Logic language for this project. We have added brackets into our rules in order to ensure that we fully understand what a Propositional statement is saying and is therefore unambiguous. Without brackets some statements may become a bit ambiguous and difficult to understand. Truth tables can be used to interpret all of the possible results of a logical sentence. This helps users to plan for any possible outcomes of a set of propositions occurring.
 
+\pagebreak
 \begin{exmp}Examples of Propositional Statements using our language
 \begin{itemize}
 \item A $\Rightarrow$ B
@@ -161,7 +188,7 @@ The next two examples require an assumption to be made at some point in the proo
 
 \end{exmp}
 
-
+\pagebreak
 \begin{exmp} Show that $A, A \Leftrightarrow B \vdash B$
 
 \begin{fitch}
@@ -924,7 +951,7 @@ To conclude, in order to improve and further develop this project, I would imple
 \section{User Guide}
  \label{appendix:userGuide}
  
- asdsd
+To be created
 
 \pagebreak
 
