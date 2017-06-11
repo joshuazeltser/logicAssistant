@@ -57,7 +57,7 @@
     <!-- /.container -->
 </nav>
 <div class="container">
-    <h1 class="jumbotron" align="center">Validity Checker</h1>
+    <h1 class="jumbotron" align="center">Lemma Checker</h1>
     <div class="col-md-2">
         <p class="lead" align="center">Key</p>
         <table class="table">
@@ -95,60 +95,61 @@
             </tbody>
         </table>
         <p></p>
-        <a href="/" id="submit"  class="btn btn-success" type="submit">Back to Proof Checker</a>
+        <a href="/" id="submit" class="btn btn-success" type="submit">Back to Proof Checker</a>
+        <script>
+            var sub = document.getElementById('submit');
 
+            sub.onclick = function () {
+                var premises = document.getElementById('Text1');
+                var result = document.getElementById('resultBox');
+
+                var items = [];
+
+                items.push(premises.value);
+                items.push(result.value);
+
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+        </script>
     </div>
     <div class="col-md-8">
         <center>
-            <form id="tt" action="/validity" th:object="${truthTable}" method="post">
+            <form id="tt" action="/lemma" th:object="${truthTable}" method="post">
+
                 <div class="input-group">
-                    <p class="lead" align="center">Premises</p>
-                    <textarea class="lined" th:field="*{ttPremises}" id="premises" cols="20" rows="5"></textarea>
+                    <p class="lead" align="center">Lemma</p>
+                    <textarea id="resultBox"  th:field="*{ttResults}" rows="1" style="overflow: hidden"></textarea>
                     <style>
-                        .linedtextarea textarea {
-                            padding-right:0.3em;
-                            padding-top:0.3em;
-                            border: 0;
-                            height: 240px;
-                            width: 300px;
+                        textarea {
+                            font-size: 40px;
+                            height: 70px;
+                            vertical-align: top;
                         }
                     </style>
                 </div>
                 <p></p>
-                <div class="input-group">
-                    <p class="lead" align="center">Result</p>
-                    <textarea id="resultBox" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
-                </div>
-                <p></p>
                 <div>
-                    <input id="submit2" onclick="addVariables()" name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
+                    <input id="submit2" name= "submit2" class="btn btn-primary" type="submit" value="Add Lemma" />
                 </div>
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
-                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
+                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndLemmaFunctionality(truthTable.ttResults)}"></output>
                         <script>
                             var x = document.getElementById('errorBox');
-                            if (x.value  == 'Proof is Valid' ) {
+                            if (x.value  == 'Lemma is Valid' ) {
                                 window.location.replace('/');
                             }
-                        </script>
-                        <script>
 
-
-
-                            function addVariables() {
-//                var sub = document.getElementById('submit');
-
-                                var premises = document.getElementById('premises');
+                            var sub = document.getElementById('submit2');
+                            sub.onclick = function () {
                                 var result = document.getElementById('resultBox');
 
-                                var items = [];
+                                var lemmas = [];
 
-                                items.push(premises.value);
-                                items.push(result.value);
+                                lemmas.push(result.value);
 
-                                localStorage.setItem('items', JSON.stringify(items));
+                                localStorage.setItem('lemmas', JSON.stringify(lemmas));
                                 alert('ADDED');
                             }
                         </script>

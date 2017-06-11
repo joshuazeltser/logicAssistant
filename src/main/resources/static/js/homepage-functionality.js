@@ -4,6 +4,7 @@
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
+
 });
 
 $(function() {
@@ -65,35 +66,8 @@ $(".lead").tooltip({
     placement: "top"
 });
 
-$(function () {
-    window.onload = getVariables;
-});
-
-function getVariables() {
-    var proof = document.getElementById('Text1');
-    var rules = document.getElementById('Text2');
-    var res = document.getElementById('resultBox');
 
 
-    if (localStorage.getItem('items') != []) {
-        var vals = JSON.parse(localStorage.getItem('items'));
-
-        res.value = res.value + vals.pop();
-        proof.value = proof.value + vals.pop();
-
-        var proofArray = proof.value.split('\n');
-        /*<![CDATA[*/
-        for (var i = 0; i < proofArray.length; i++) {
-            rules.value = rules.value + 'GIVEN';
-            if (i < proofArray.length-1) {
-                rules.value = rules.value + '\n';
-            }
-        }
-        /*]]>*/
-    }
-
-//                                localStorage.clear();
-}
 
 
 

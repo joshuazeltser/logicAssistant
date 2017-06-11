@@ -112,9 +112,11 @@
         <script>
 
 
-            $(function () {
-                window.onload = checkHintStatus;
-            });
+//            $(function () {
+//                window.onload = checkHintStatus;
+
+
+
 
 
             function checkHintStatus() {
@@ -140,6 +142,52 @@
                     </p>
                     <textarea class="lined"  id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
                         {submit.disabled = false} else {submit.disabled = true}" th:inline="text"></textarea>
+
+                    <script>
+                        window.onload = getVariables();
+
+                        //            });
+                        function getVariables() {
+                            var proof = document.getElementById('Text1');
+                            var rules = document.getElementById('Text2');
+                            /*<![CDATA[*/
+//                            alert('here');
+                            if (localStorage.getItem('items') != []) {
+//                                alert('here');
+                                var vals = JSON.parse(localStorage.getItem('items'));
+
+
+                                alert('vals ' + vals);
+//                                res.value = res.value + vals.pop();
+                                proof.value = proof.value + vals.pop() + '\n';
+
+
+
+//                                var proofArray = proof.value.split('\n');
+
+                                for (var i = 0; i < 2; i++) {
+                                    alert('rule num ' + rules.value);
+                                    rules.value = rules.value + 'GIVEN';
+
+                                    if (i < 1) {
+                                        rules.value = rules.value + '\n';
+                                    }
+                                }
+                                alert('fin');
+
+
+                            }
+                            if (localStorage.getItem('lemmas') != []) {
+                                var lemmas =JSON.parse(localStorage.getItem('lemmas'));
+                                proof.value = proof.value + lemmas.value;
+                                rules.value = rules.value + 'Lemma';
+                            }
+
+                            localStorage.clear();
+                            /*]]>*/
+                        }
+
+                    </script>
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center" data-original-title="Type your rules here">Rule</p>
@@ -216,65 +264,11 @@
                <button id="b15" type="button" class="btn btn-primary" value="Available (?)">&#10004; Available</button>
                <button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>
                    <!-- Button trigger modal -->
-<button id="lemma" class="btn btn-primary"  data-toggle="modal" data-target="#myModalNorm">
+<button id="lemma" class="btn btn-primary"  data-toggle="modal" data-target="#myModalNorm" onclick="location.href='/lemma'">
     Add Lemma
 </button>
 
-                   <!-- Modal -->
-<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close"
-                        data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    Add a Lemma
-                </h4>
-            </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body">
-
-                <form id="lemmaForm" onsubmit="checkLemma();" th:object="${truthTable}" method="post" >
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Lemma</label>
-                      <textarea class="form-control custom-control"
-                                id="exampleInputEmail1" th:field="*{ttResults}" placeholder="Enter Lemma"></textarea>
-                  </div>
-
-                  <input type="submit" class="btn btn-default">Add Lemma</input>
-                    <textarea id="errorBox2" hidden="true" th:name="result2" th:utext="${truthTable.frontEndFunctionality('', truthTable.ttResults)}"></textarea>
-
-
-
-                </form>
-
-
-                <script>
-
-                    function checkLemma() {
-                        var lemmaValue = document.getElementById('errorBox2');
-                        alert(lemmaValue.value);
-                        if (lemmaValue.value == 'Proof is Invalid') {
-                            var out = document.getElementById('errorbox');
-                            out.value = out.value + lemmaValue.value;
-                        }
-                    }
-
-
-                </script>
-
-
-            </div>
-
-        </div>
-    </div>
-</div>
                </span>
         </center>
     </div>

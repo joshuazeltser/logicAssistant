@@ -40,6 +40,24 @@ public class TruthTable {
         }
     }
 
+    public String frontEndLemmaFunctionality(String res) throws SyntaxException {
+
+        if (!res.equals("")) {
+            readPremisesFromInput("", res);
+
+            boolean result = validateProof();
+
+            if (result) {
+                return "Lemma is Valid";
+            } else {
+                return "This lemma cannot be proven by itself, so can't be used!\nTry adding it as a premise instead?";
+            }
+        }
+        else {
+            return "";
+        }
+    }
+
     public void readPremisesFromInput(String prems, String res) {
 
             Expression temp2 = new Expression(RuleType.GIVEN);
