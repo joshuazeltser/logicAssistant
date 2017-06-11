@@ -121,7 +121,7 @@
                 </div>
                 <p></p>
                 <div>
-                    <input id="submit2" onclick="addVariables()" name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
+                    <input id="submit2"  name= "submit2" class="btn btn-primary" type="submit" value="Check Validity" />
                 </div>
                 <p></p>
                 <div id="error" class="panel panel-default">
@@ -137,20 +137,7 @@
 
 
 
-                            function addVariables() {
-//                var sub = document.getElementById('submit');
 
-                                var premises = document.getElementById('premises');
-                                var result = document.getElementById('resultBox');
-
-                                var items = [];
-
-                                items.push(premises.value);
-                                items.push(result.value);
-
-                                localStorage.setItem('items', JSON.stringify(items));
-                                alert('ADDED');
-                            }
                         </script>
 
                     </div>

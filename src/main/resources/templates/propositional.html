@@ -92,7 +92,7 @@
             </tbody>
         </table>
         <center>
-            <a id="validityCheck" type="button" href="/validity"  class="btn btn-success" value="Check">
+            <a id="validityCheck" onclick="addVariables()" type="button" href="/validity"  class="btn btn-success" value="Check">
                 Check Proof Validity</a>
         </center>
         <p></p>
@@ -143,51 +143,7 @@
                     <textarea class="lined"  id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
                         {submit.disabled = false} else {submit.disabled = true}" th:inline="text"></textarea>
 
-                    <script>
-                        window.onload = getVariables();
 
-                        //            });
-                        function getVariables() {
-                            var proof = document.getElementById('Text1');
-                            var rules = document.getElementById('Text2');
-                            /*<![CDATA[*/
-//                            alert('here');
-                            if (localStorage.getItem('items') != []) {
-//                                alert('here');
-                                var vals = JSON.parse(localStorage.getItem('items'));
-
-
-                                alert('vals ' + vals);
-//                                res.value = res.value + vals.pop();
-                                proof.value = proof.value + vals.pop() + '\n';
-
-
-
-//                                var proofArray = proof.value.split('\n');
-
-                                for (var i = 0; i < 2; i++) {
-                                    alert('rule num ' + rules.value);
-                                    rules.value = rules.value + 'GIVEN';
-
-                                    if (i < 1) {
-                                        rules.value = rules.value + '\n';
-                                    }
-                                }
-                                alert('fin');
-
-
-                            }
-                            if (localStorage.getItem('lemmas') != []) {
-                                var lemmas =JSON.parse(localStorage.getItem('lemmas'));
-                                proof.value = proof.value + lemmas.value;
-                                rules.value = rules.value + 'Lemma';
-                            }
-
-                            localStorage.clear();
-                            /*]]>*/
-                        }
-
-                    </script>
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center" data-original-title="Type your rules here">Rule</p>
@@ -201,6 +157,42 @@
                         }
                     </style>
                 </div>
+
+                <script>
+                    window.onload = getVariables();
+                    window.onload = getLemmas();
+//
+                    function getLemmas() {
+                        var proof = document.getElementById('Text1');
+                        var rules = document.getElementById('Text2');
+
+                        if (localStorage.getItem('lemmas') != []) {
+                            var vals = JSON.parse(localStorage.getItem('lemmas'));
+                            proof.value = proof.value + vals.pop();
+                            rules.value = rules.value + 'Lemma';
+                        }
+
+                        localStorage.removeItem('lemmas');
+                    }
+
+                    //            });
+                    function getVariables() {
+                        var proof = document.getElementById('Text1');
+                        var rules = document.getElementById('Text2');
+//                            var res = document.getElementById('resultBox');
+                        if (localStorage.getItem('items') != []) {
+                            var vals = JSON.parse(localStorage.getItem('items'));
+
+                            proof.value = proof.value + vals.pop();
+                            rules.value = rules.value + vals.pop();
+
+                            localStorage.removeItem('items');
+                        }
+
+
+                    }
+
+                </script>
                 <p></p>
                 <div id="options" class="col-md-10">
                     <style>
@@ -237,6 +229,20 @@
                             </style>
                             <script>
                                 window.onload = hideHelper;
+
+                                function addVariables() {
+//                var sub = document.getElementById('submit');
+
+                                    var premises = document.getElementById('Text1');
+                                    var result = document.getElementById('Text2');
+
+                                    var items = [];
+
+                                    items.push(result.value);
+                                    items.push(premises.value);
+
+                                    localStorage.setItem('items', JSON.stringify(items));
+                                }
                             </script>
                         </div>
                     </div>
@@ -264,7 +270,7 @@
                <button id="b15" type="button" class="btn btn-primary" value="Available (?)">&#10004; Available</button>
                <button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>
                    <!-- Button trigger modal -->
-<button id="lemma" class="btn btn-primary"  data-toggle="modal" data-target="#myModalNorm" onclick="location.href='/lemma'">
+<button id="lemma" class="btn btn-primary"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">
     Add Lemma
 </button>
 
