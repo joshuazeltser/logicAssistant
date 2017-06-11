@@ -131,7 +131,6 @@ public class Proof {
             }
 
             for (int i = 0; i < limit; i++) {
-                // split rules by space
                 if (i >= exprRule.length) {
                     Expression newExpr = new Expression();
 
@@ -163,6 +162,7 @@ public class Proof {
 
 
                 } catch (SyntaxException s) {
+
                     errors = new LinkedList<>();
                     errors.add("LINE " + (i + 1) + " - " + s.getMessage());
                     //if there is a syntax error don't display other error messages
@@ -170,11 +170,13 @@ public class Proof {
                 }
 
 
-                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
+                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION") &&
+                        !components[0].equals("Lemma")) {
                     if (components.length == 1) {
 
                         String comps = removeBracketsFromString(components[0]);
                         String[] lines = comps.split(",");
+
 
                         for (int j = 0; j < lines.length; j++) {
                             if (!lines[j].equals("")) {
@@ -187,6 +189,7 @@ public class Proof {
                             continue;
                         }
                         String comps = removeBracketsFromString(components[1]);
+
                         String[] lines = comps.split(",");
                         for (int j = 0; j < lines.length; j++) {
                             newExpr.addReferenceLine(lines[j]);
@@ -227,6 +230,7 @@ public class Proof {
 
     private RuleType convertStringToRule(String rule) {
         switch (rule) {
+            case "Lemma":
             case "GIVEN": return RuleType.GIVEN;
             case "ASSUMPTION": return RuleType.ASSUMPTION;
             case "And-Intro": return RuleType.AND_INTRO;

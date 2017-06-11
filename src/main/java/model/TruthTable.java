@@ -14,6 +14,8 @@ public class TruthTable {
     private String ttPremises;
     private String ttResults;
 
+    private List<String> errors;
+
 
     public TruthTable() {
         ttPremises = "";

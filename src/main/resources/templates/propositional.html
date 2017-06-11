@@ -168,8 +168,8 @@
 
                         if (localStorage.getItem('lemmas') != []) {
                             var vals = JSON.parse(localStorage.getItem('lemmas'));
-                            proof.value = proof.value + vals.pop();
-                            rules.value = rules.value + 'Lemma';
+                            proof.value = proof.value + vals.pop() + '\n';
+                            rules.value = rules.value + 'Lemma\n';
                         }
 
                         localStorage.removeItem('lemmas');
@@ -214,6 +214,8 @@
                             <li><a id="resetButton"  href="/" type="reset">Reset </a></li>
                             <li class="divider"></li>
                             <li><a id="save" href="#">Save Proof As</a></li>
+                            <li><a id="b14" type="button">Refresh Indent</a></li>
+                            <!--<button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>-->
                         </ul>
                     </div>
                     <a download="proof.la" id="downloadlink" style="display: none">Download</a>
@@ -268,7 +270,7 @@
                <button id="b12" type="button" class="btn btn-primary" value="Not-Elim (?)">&not; Eliminiation</button>
                <button id="b13" type="button" class="btn btn-primary" value="DoubleNot-Elim (?)">&not;&not; Elimination</button>
                <button id="b15" type="button" class="btn btn-primary" value="Available (?)">&#10004; Available</button>
-               <button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>
+
                    <!-- Button trigger modal -->
 <button id="lemma" class="btn btn-primary"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">
     Add Lemma

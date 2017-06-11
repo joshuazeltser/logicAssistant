@@ -1149,5 +1149,19 @@ public class HintTests {
 
     }
 
+    @Test
+    public void lemmaTest1() throws SyntaxException {
+
+        String str = "A | !A\n\nA";
+        String rules = "Lemma\n";
+
+
+        proof.frontEndFunctionality(str, rules);
+
+//        System.out.println(proof.isProofValid());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+    }
+
 
 }
