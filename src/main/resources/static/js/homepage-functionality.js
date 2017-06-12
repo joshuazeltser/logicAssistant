@@ -88,11 +88,12 @@ function indent_function() {
     for (var i = 0; i < proofArray.length; i++) {
         if (i > 0) {
             proof.value = proof.value + '\n';
-
         }
 
         if (i >= rulesArray.length) {
-            proof.value = proof.value + proofArray.subarray(i, length);
+            for (var j = i; j < proofArray.length; j++) {
+                proof.value = proof.value + proofArray[j] + '\n';
+            }
             break;
         }
 

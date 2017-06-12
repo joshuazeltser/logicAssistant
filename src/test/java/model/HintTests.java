@@ -1163,5 +1163,15 @@ public class HintTests {
 
     }
 
+    @Test
+    public void lemmaTest2() throws SyntaxException {
+
+      Expression expr = new Expression();
+
+
+        System.out.println(expr.getRuleType());
+
+    }
+
 
 }

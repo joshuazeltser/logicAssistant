@@ -299,7 +299,11 @@ public class Proof {
                 case AVAILABLE: isAvailableRuleValid(expressions.get(i)); break;
                 case INVALID: return false;
                 case EMPTY: return true;
-                default: break;
+                default:
+                    if (expressions.get(i).getRuleType() == null) {
+                        errors.add("Proof validation not possible as some expressions do not have associated rules");
+                    }
+                    break;
             }
         }
         return errors.isEmpty();
@@ -307,8 +311,12 @@ public class Proof {
 
     public String frontEndProofValidity() throws SyntaxException {
         if (proofString.equals("") || proofLabels.equals("")) {
+            //change message???
             return "";
         } else if (isProofValid()) {
+            if (resultExpr.getRuleType() == null && !resultExpr.equals(expressions.get(expressions.size()-1))) {
+                return "Proof validation not possible as result has not been proven";
+            }
             return "Proof is Valid";
         }
         return "Proof is INVALID!";
