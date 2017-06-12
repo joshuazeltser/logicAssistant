@@ -109,6 +109,62 @@ public class ErrorTests {
     }
 
     @Test
+    public void syntaxErrorTest8() {
+        String str = "*P";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+//            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void syntaxErrorTest9() {
+        String str = "#P";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+//            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void syntaxErrorTest10() {
+        String str = "A % B";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+//            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void syntaxErrorTest11() {
+        String str = "A£ % B*£&@ 2ad";
+
+        Expression expr = new Expression();
+        try {
+            expr.addToExpression(str);
+            thrown.expect(SyntaxException.class);
+        } catch (SyntaxException e) {
+
+//            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     public void ruleErrorTest1() throws SyntaxException {
         String str = "A";
         String str1 = "B";

@@ -149,6 +149,7 @@ public class Expression {
                             + tokens[i] +" operator at this part of an expression");
                 }
             }
+
             if (i==0 && tokens[i].charAt(0) == ')') {
                 throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +"" +
                         " operator at this part of an expression");
@@ -174,8 +175,36 @@ public class Expression {
                 throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
                         "twice in a row as part of an expression");
             }
+
+
+
+            if (!inWhiteList(tokens[i])) {
+                throw new SyntaxException("Syntax Error: " + tokens[i] + " is an invalid" +
+                        " Component to use in an Expression");
+            }
+
+
+
             line++;
         }
+    }
+
+    private boolean inWhiteList(String str) {
+
+        char[] chars = str.toCharArray();
+
+        if (isOperator(str)) {
+            return true;
+        }
+
+        for (int i = 0; i < chars.length; i++) {
+
+            if (!Character.isLetter(chars[i]) && chars[i] != '(' && chars[i] != ')' && chars[i] != '!') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
