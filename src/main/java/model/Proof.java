@@ -1,5 +1,7 @@
 package model;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.*;
 
 import static model.OperatorType.*;
@@ -229,6 +231,75 @@ public class Proof {
     }
 
     private RuleType convertStringToRule(String rule) {
+
+        String and = StringEscapeUtils.unescapeHtml4("&and;");
+        String andElim = and + "-Elim";
+        if (rule.equals(andElim)) {
+            return RuleType.AND_ELIM;
+        }
+
+        String andIntro = and + "-Intro";
+        if (rule.equals(andIntro)) {
+            return RuleType.AND_INTRO;
+        }
+
+        String or = StringEscapeUtils.unescapeHtml4("&or;");
+        String orElim = or + "-Elim";
+        if (rule.equals(orElim)) {
+            return RuleType.OR_ELIM;
+        }
+
+        String orIntro = and + "-Intro";
+        if (rule.equals(orIntro)) {
+            return RuleType.OR_INTRO;
+        }
+
+        String implies = StringEscapeUtils.unescapeHtml4("&rarr;");
+        String impliesElim = implies + "-Elim";
+        if (rule.equals(impliesElim)) {
+            return RuleType.IMPLIES_ELIM;
+        }
+
+        String impliesIntro = implies + "-Intro";
+        if (rule.equals(impliesIntro)) {
+            return RuleType.IMPLIES_INTRO;
+        }
+
+        String only = StringEscapeUtils.unescapeHtml4("&harr;");
+        String onlyElim = only + "-Elim";
+        if (rule.equals(onlyElim)) {
+            return RuleType.ONLY_ELIM;
+        }
+
+        String onlyIntro = only + "-Intro";
+        if (rule.equals(onlyIntro)) {
+            return RuleType.ONLY_INTRO;
+        }
+
+        String not = StringEscapeUtils.unescapeHtml4("&not;");
+        String notElim = not + "-Elim";
+        if (rule.equals(notElim)) {
+            return RuleType.NOT_ELIM;
+        }
+
+        String notIntro = not + "-Intro";
+        if (rule.equals(notIntro)) {
+            return RuleType.NOT_INTRO;
+        }
+
+        String notNotElim = not + not + "-Elim";
+        if (rule.equals(notNotElim)) {
+            return RuleType.DOUBLE_NOT_ELIM;
+        }
+
+        String tick = StringEscapeUtils.unescapeHtml4("&#10004;");
+        String available = tick + "-Available";
+        if (rule.equals(available)) {
+            return RuleType.AVAILABLE;
+        }
+
+
+        //For testing purposes (HintTests.java)
         switch (rule) {
             case "Lemma":
             case "GIVEN": return RuleType.GIVEN;

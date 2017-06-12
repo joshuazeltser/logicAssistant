@@ -42,13 +42,47 @@ function readBlob(opt_startByte, opt_stopByte) {
             while (i != lines.length) {
                 var components = lines[i].split(' , ');
                 mytextbox1.value = mytextbox1.value + components[0] + '\n';
-                mytextbox2.value = mytextbox2.value + components[1] + '\n';
+
+                // alert(components[1].indexOf("A"));
+                if (components[1].indexOf("Available") != -1) {
+                    mytextbox2.value = mytextbox2.value + convertEntities("&#10004;") + "-" + components[1] + '\n';
+                    i++;
+                    continue;
+                }
+
+                var rule = components[1].split('-');
+
+                switch(rule[0]) {
+                    case "And": mytextbox2.value = mytextbox2.value + convertEntities('&and;') + "-" + rule[1] + '\n'; break;
+                    case "Or": mytextbox2.value = mytextbox2.value + convertEntities("&or;") + "-" + rule[1] + '\n'; break;
+                    case "Implies": mytextbox2.value = mytextbox2.value + convertEntities('&rarr;') + "-" + rule[1] + '\n'; break;
+                    case "Only": mytextbox2.value = mytextbox2.value + convertEntities('&harr;') + "-" + rule[1] + '\n'; break;
+                    case "Not": mytextbox2.value = mytextbox2.value + convertEntities('&not;') + "-" + rule[1] + '\n'; break;
+                    case "DoubleNot": mytextbox2.value = mytextbox2.value + convertEntities("&not;&not;") + "-" + rule[1] + '\n'; break;
+                    case "Available": mytextbox2.value = mytextbox2.value + convertEntities("&#10004;") + "-" + rule[1] + '\n'; break;
+                    default: mytextbox2.value = mytextbox2.value + components[1] + '\n';
+                }
+
                 i++;
             }
         }
     };
     var blob = file.slice(start, stop + 1);
     reader.readAsBinaryString(blob);
+}
+
+function convertEntities(html) {
+    var el = document.createElement("div");
+    el.innerHTML = html;
+    return el.firstChild.data;
+}
+
+function decodeEntities(s){
+    var str, temp= document.createElement('p');
+    temp.innerHTML= s;
+    str= temp.textContent || temp.innerText;
+    temp=null;
+    return str;
 }
 
 $(function () {
@@ -101,8 +135,8 @@ function indent_function() {
             indentArray.push(1)
         }
 
-        if (rulesArray[i].indexOf("Implies-Intro") >= 0
-            || rulesArray[i].indexOf("Or-Elim") >= 0) {
+        if (rulesArray[i].indexOf(decodeEntities('&rarr;') + "-Intro") >= 0
+            || rulesArray[i].indexOf(decodeEntities('&or;') + "-Elim") >= 0) {
             indentArray.pop();
         }
 
@@ -123,7 +157,7 @@ function indent_function() {
             } else {
                 proof.value = proof.value + proofArray[i];
             }
-            if (rulesArray[i].indexOf("Not-Elim") >= 0) {
+            if (rulesArray[i].indexOf(decodeEntities('&not;') + "-Elim") >= 0) {
                 indentArray.pop();
             }
         } else {
@@ -181,6 +215,7 @@ $(function () {
         /*<![CDATA[*/
         for (var i = 0; i < proofArray.length; i++) {
             output = output + proofArray[i] + ' , ' + rulesArray[i];
+
             if (i < proofArray.length - 1) {
                 output = output + '\n';
             }
