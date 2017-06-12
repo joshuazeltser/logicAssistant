@@ -97,18 +97,10 @@
         <p></p>
         <a href="/" id="submit" class="btn btn-success" type="submit">Back to Proof Checker</a>
         <script>
-            var sub = document.getElementById('submit');
+            var sub1 = document.getElementById('submit');
 
-            sub.onclick = function () {
-                var premises = document.getElementById('Text1');
-                var result = document.getElementById('resultBox');
-
-                var items = [];
-
-                items.push(premises.value);
-                items.push(result.value);
-
-                localStorage.setItem('items', JSON.stringify(items));
+            sub1.onclick = function () {
+                localStorage.removeItem('lemmas');
             }
         </script>
     </div>
@@ -143,6 +135,7 @@
 
                             var sub = document.getElementById('submit2');
                             sub.onclick = function () {
+
                                 var result = document.getElementById('resultBox');
 
                                 var lemmas = [];

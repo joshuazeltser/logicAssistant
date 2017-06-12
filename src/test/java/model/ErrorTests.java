@@ -45,7 +45,7 @@ public class ErrorTests {
 
     @Test
     public void syntaxErrorTest3() {
-        String str = ") B";
+        String str = ")B";
 
         Expression expr = new Expression();
         try {
@@ -58,7 +58,7 @@ public class ErrorTests {
 
     @Test
     public void syntaxErrorTest4() {
-        String str = "(A ^ B) !";
+        String str = "(A ^ B)!";
 
         Expression expr = new Expression();
         try {

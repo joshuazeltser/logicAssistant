@@ -22,12 +22,17 @@ public class TruthTable {
         ttResults = "";
         premises = new LinkedList<>();
         result = new Expression();
+        errors = new LinkedList<>();
     }
 
     public String frontEndFunctionality(String prems, String res) throws SyntaxException {
 
         if (!res.equals("")) {
             readPremisesFromInput(prems, res);
+
+            if (!errors.isEmpty()) {
+                return printErrors();
+            }
 
             boolean result = validateProof();
 
@@ -46,6 +51,9 @@ public class TruthTable {
 
         if (!res.equals("")) {
             readPremisesFromInput("", res);
+            if (!errors.isEmpty()) {
+                return printErrors();
+            }
 
             boolean result = validateProof();
 
@@ -60,13 +68,21 @@ public class TruthTable {
         }
     }
 
+    public String printErrors() {
+        String result = "";
+        for (String str : errors) {
+            result += str + "\n<br>";
+        }
+        return result;
+    }
+
     public void readPremisesFromInput(String prems, String res) {
 
             Expression temp2 = new Expression(RuleType.GIVEN);
             try {
                 temp2.addToExpression(res);
             } catch (SyntaxException se) {
-                System.out.println("Result - Syntax Error: " + se.toString());
+                errors.add(se.getMessage());
                 return;
             }
             result = temp2;
@@ -84,7 +100,7 @@ public class TruthTable {
                 try {
                     temp.addToExpression(premList[i]);
                 } catch (SyntaxException se) {
-                    System.out.println("Line " + (i + 1) + " - Syntax Error: " + se.toString());
+                    errors.add("Line " + (i + 1) + " - Syntax Error: " + se.getMessage());
                     return;
                 }
                 premises.add(temp);

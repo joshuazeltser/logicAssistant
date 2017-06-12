@@ -138,7 +138,6 @@ public class Expression {
 
     public void syntaxCheck(String[] tokens) throws SyntaxException {
 
-        int line = 1;
         for (int i = 0; i < tokens.length; i++) {
             if (i == 0 || i == tokens.length - 1) {
                 switch (tokens[i]) {
@@ -153,6 +152,11 @@ public class Expression {
             if (i==0 && tokens[i].charAt(0) == ')') {
                 throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +"" +
                         " operator at this part of an expression");
+            }
+
+            if (tokens[i].charAt(tokens[i].length()-1) == '!' || tokens[i].charAt(tokens[i].length()-1) == '(') {
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
+                        "operator at the end of an expression");
             }
 
             if ((i == (tokens.length - 1)) && (tokens[i].equals("(") || tokens[i].equals("!"))) {
@@ -179,13 +183,10 @@ public class Expression {
 
 
             if (!inWhiteList(tokens[i])) {
-                throw new SyntaxException("Syntax Error: " + tokens[i] + " is an invalid" +
-                        " Component to use in an Expression");
+                throw new SyntaxException("Syntax Error: " + tokens[i] + " contains invalid" +
+                        " Components for use in an Expression");
             }
 
-
-
-            line++;
         }
     }
 
