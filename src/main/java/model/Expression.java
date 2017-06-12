@@ -155,8 +155,8 @@ public class Expression {
             }
 
             if (tokens[i].charAt(tokens[i].length()-1) == '!' || tokens[i].charAt(tokens[i].length()-1) == '(') {
-                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i] +" " +
-                        "operator at the end of an expression");
+                throw new SyntaxException("Syntax Error: You cannot use " + tokens[i].charAt(tokens[i].length()-1)
+                        + " " + "operator at the end of an expression");
             }
 
             if ((i == (tokens.length - 1)) && (tokens[i].equals("(") || tokens[i].equals("!"))) {
