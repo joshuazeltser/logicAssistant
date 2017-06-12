@@ -84,11 +84,14 @@ public class Proof {
         return result;
     }
 
+
     public void separateByNewLine(String proof, String rule) throws SyntaxException {
         int count = 0;
 
         if (!proof.equals("")) {
             String[] steps = proof.split("\\r?\\n");
+//            steps = convertHTMLToChar(steps);
+
             String[] exprRule = rule.split("\\r?\\n");
 
             String expr[] = new String[steps.length];
@@ -249,7 +252,7 @@ public class Proof {
             return RuleType.OR_ELIM;
         }
 
-        String orIntro = and + "-Intro";
+        String orIntro = or + "-Intro";
         if (rule.equals(orIntro)) {
             return RuleType.OR_INTRO;
         }
@@ -317,9 +320,11 @@ public class Proof {
             case "DoubleNot-Elim": return RuleType.DOUBLE_NOT_ELIM;
             case "Available": return RuleType.AVAILABLE;
             case "": return RuleType.EMPTY;
-            default: return RuleType.INVALID;
+
 
         }
+        System.out.println("invalid");
+        return RuleType.INVALID;
     }
 
     private String ruleFormatting(String rule) {
@@ -353,6 +358,7 @@ public class Proof {
                 break;
             }
             if (expressions.get(i).getRuleType() == null) {
+
                 break;
             }
             switch (expressions.get(i).getRuleType()) {
@@ -368,15 +374,17 @@ public class Proof {
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
                 case AVAILABLE: isAvailableRuleValid(expressions.get(i)); break;
-                case INVALID: return false;
+                case INVALID: System.out.println("heree " + expressions.get(i)); return false;
                 case EMPTY: return true;
                 default:
                     if (expressions.get(i).getRuleType() == null) {
                         errors.add("Proof validation not possible as some expressions do not have associated rules");
                     }
+
                     break;
             }
         }
+
         return errors.isEmpty();
     }
 
@@ -390,6 +398,7 @@ public class Proof {
             }
             return "Proof is Valid";
         }
+        System.out.println(errors);
         return "Proof is INVALID!";
     }
 

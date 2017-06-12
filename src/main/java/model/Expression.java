@@ -2,6 +2,7 @@ package model;
 
 import javassist.compiler.ast.Expr;
 import javassist.compiler.ast.IntConst;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.validation.constraints.Null;
 import java.util.*;
@@ -74,7 +75,14 @@ public class Expression {
 
         String[] tokens = input.split(" ");
 
+        tokens = convertHTMLToChar(tokens);
+
         syntaxCheck(tokens);
+
+
+
+
+
         for (int i = 0; i < tokens.length; i++) {
 
             String token = tokens[i];
@@ -133,6 +141,46 @@ public class Expression {
         }
 
         return true;
+
+    }
+
+    private String[] convertHTMLToChar(String[] tokens) {
+
+        for (int i = 0; i < tokens.length; i++) {
+
+            String op = StringEscapeUtils.unescapeHtml4(tokens[i]);
+
+            System.out.println(StringEscapeUtils.escapeHtml4(tokens[i]));
+
+            if (op.equals(StringEscapeUtils.unescapeHtml4("&and;"))) {
+                tokens[i] = "^";
+            } else if (op.equals(StringEscapeUtils.unescapeHtml4("&or;"))) {
+                tokens[i] = "|";
+            } else if (op.equals(StringEscapeUtils.unescapeHtml4("&rarr;"))) {
+                tokens[i] = "->";
+            } else if (op.equals(StringEscapeUtils.unescapeHtml4("&harr;"))) {
+                tokens[i] = "<->";
+            } else if (op.equals(StringEscapeUtils.unescapeHtml4("&perp;"))) {
+                tokens[i] = "FALSE";
+            } else {
+                if (!tokens[i].equals("")) {
+                    if (StringEscapeUtils.unescapeHtml4(tokens[i].charAt(0) + "")
+                            .equals(StringEscapeUtils.unescapeHtml4("&not;"))) {
+                        if (StringEscapeUtils.unescapeHtml4(tokens[i].charAt(1) + "")
+                                .equals(StringEscapeUtils.unescapeHtml4("&not;"))) {
+                            tokens[i] = "!!" + tokens[i].substring(2);
+                        } else {
+                            tokens[i] = "!" + tokens[i].substring(1);
+                        }
+                    }
+                }
+            }
+
+            System.out.println(tokens[i]);
+        }
+
+
+        return tokens;
 
     }
 

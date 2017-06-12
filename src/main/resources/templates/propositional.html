@@ -136,12 +136,39 @@
     </div>
     <div class="col-md-8">
         <center>
-            <form id="proof" onsubmit="postSubmit()" th:object="${proof}" method="post">
+            <form id="proof" onsubmit="postSubmit();" th:object="${proof}" method="post">
                 <div class="inline-div">
                     <p class="lead" align="center" data-original-title="Type your proof here">Proof
                     </p>
-                    <textarea class="lined"  id="Text1" th:field="*{proofString}" cols="14" rows="8" onkeyup="if(this.textLength != 0)
-                        {submit.disabled = false} else {submit.disabled = true}" th:inline="text" style="overflow: hidden"></textarea>
+                    <textarea class="lined"  onkeyup="formatHTML()" id="Text1" th:field="*{proofString}" cols="14" rows="8"
+                              th:inline="text" style="overflow: hidden"></textarea>
+
+                    <script>
+
+                        function formatHTML() {
+                            var box = document.getElementById('Text1');
+
+
+                            /*<![CDATA[*/
+
+                            box.value = box.value.replace('^', convertEntities('&and;'));
+                            box.value = box.value.replace('|', convertEntities('&or;'));
+                            box.value = box.value.replace('->', convertEntities('&rarr;'));
+                            box.value = box.value.replace('<->', convertEntities('&harr;'));
+                            box.value = box.value.replace('!', convertEntities('&not;'));
+                            box.value = box.value.replace('FALSE', convertEntities('&bot;'));
+
+                        }
+
+
+
+
+                            /*]]>*/
+
+
+                    </script>
+
+
 
 
                 </div>

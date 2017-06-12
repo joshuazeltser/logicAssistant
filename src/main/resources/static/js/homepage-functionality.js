@@ -65,6 +65,9 @@ function readBlob(opt_startByte, opt_stopByte) {
 
                 i++;
             }
+            for (var k = 0; k < 10; k++) {
+                formatHTML();
+            }
         }
     };
     var blob = file.slice(start, stop + 1);
