@@ -150,8 +150,6 @@ public class Expression {
 
             String op = StringEscapeUtils.unescapeHtml4(tokens[i]);
 
-            System.out.println(StringEscapeUtils.escapeHtml4(tokens[i]));
-
             if (op.equals(StringEscapeUtils.unescapeHtml4("&and;"))) {
                 tokens[i] = "^";
             } else if (op.equals(StringEscapeUtils.unescapeHtml4("&or;"))) {
@@ -176,7 +174,6 @@ public class Expression {
                 }
             }
 
-            System.out.println(tokens[i]);
         }
 
 

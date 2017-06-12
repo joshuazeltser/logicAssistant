@@ -19,6 +19,7 @@
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
     <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+    <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
     <script type="text/javascript">
         $(function() {
             $(".lined").linedtextarea(
@@ -110,7 +111,24 @@
 
                 <div class="input-group">
                     <p class="lead" align="center">Lemma</p>
-                    <textarea id="resultBox"  th:field="*{ttResults}" rows="1" style="overflow: hidden"></textarea>
+                    <textarea id="resultBox" onkeyup="formatLemmaHTML()" th:field="*{ttResults}" rows="1" style="overflow: hidden"></textarea>
+
+                    <script>
+                        function formatLemmaHTML() {
+                            var box = document.getElementById('resultBox');
+
+                            /*<![CDATA[*/
+                            box.value = box.value.replace('^', convertEntities('&and;'));
+                            box.value = box.value.replace('|', convertEntities('&or;'));
+                            box.value = box.value.replace('->', convertEntities('&rarr;'));
+                            box.value = box.value.replace('<->', convertEntities('&harr;'));
+                            box.value = box.value.replace('!', convertEntities('&not;'));
+                            box.value = box.value.replace('FALSE', convertEntities('&bot;'));
+                            /*]]>*/
+                        }
+                    </script>
+
+
                     <style>
                         textarea {
                             font-size: 40px;
