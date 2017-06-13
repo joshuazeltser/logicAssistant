@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  13 JUN 2017 11:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  13 JUN 2017 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -774,7 +774,7 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@algocf=\count152
 \algocf@algoframe=\box52
 \algocf@algobox=\box53
-)) (/usr/local/texlive/2016/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/pdfpages/pdfpages.sty
 Package: pdfpages 2016/04/19 v0.5f Insert pages of external PDF documents (AM)
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/eso-pic/eso-pic.sty
@@ -792,6 +792,12 @@ File: pppdftex.def 2016/04/19 v0.5f Pdfpages driver for pdfTeX (AM)
 \c@AM@survey=\count153
 \AM@templatesizebox=\box55
 )
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tools/afterpage.sty
+Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
+\AP@output=\toks50
+\AP@partial=\box56
+\AP@footins=\box57
+))
 (./notation.tex) (./main.aux)
 \openout1 = `main.aux'.
 
@@ -851,15 +857,15 @@ File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count154
 \scratchdimen=\dimen265
-\scratchbox=\box56
+\scratchbox=\box58
 \nofMPsegments=\count155
 \nofMParguments=\count156
-\everyMPshowfont=\toks50
+\everyMPshowfont=\toks51
 \MPscratchCnt=\count157
 \MPscratchDim=\dimen266
 \MPnumerator=\count158
 \makeMPintoPDFobject=\count159
-\everyMPtoPDFconversion=\toks51
+\everyMPtoPDFconversion=\toks52
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -876,7 +882,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box57
+\AtBeginShipoutBox=\box59
 Package hyperref Info: Link coloring ON on input line 20.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -940,8 +946,28 @@ Package pdftex.def Info: figures/imperial2.pdf used on input line 47.
 
 
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figur
-es/imperial.pdf> <./figures/imperial2.pdf>])
-[1] [2] (./main.toc [3] [4])
+es/imperial.pdf> <./figures/imperial2.pdf>]pdfTeX warning (ext4): destination w
+ith the same identifier (name{page.1}) has been already used, duplicate ignored
+
+<to be read again> 
+                   \relax 
+l.61 \end{titlepage}
+                     [1])
+Underfull \hbox (badness 10000) in paragraph at lines 39--41
+
+ []
+
+[1]pdfTeX warning (ext4): destination with the same identifier (name{page.i}) h
+as been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.50 \vspace
+            *{\fill} [1] [2]pdfTeX warning (ext4): destination with the same id
+entifier (name{page.ii}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.62 
+      [2] (./main.toc [3] [4])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
@@ -949,318 +975,319 @@ es/imperial.pdf> <./figures/imperial2.pdf>])
 has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.70 
+l.84 
       [1]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 73.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 87.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 87.
 
-[2] <figures/PropositionalSentences.jpeg, id=396, 997.7275pt x 409.53pt>
+[2] <figures/PropositionalSentences.jpeg, id=405, 997.7275pt x 409.53pt>
 File: figures/PropositionalSentences.jpeg Graphic file (type jpg)
 
 <use figures/PropositionalSentences.jpeg>
 Package pdftex.def Info: figures/PropositionalSentences.jpeg used on input line
- 112.
+ 126.
 (pdftex.def)             Requested size: 284.52756pt x 116.786pt.
  [3 <./figures/PropositionalSentences.jpeg>] [4] [5] [6] [7]
-<figures/ComponentsUML.jpeg, id=438, 1417.295pt x 746.79pt>
+<figures/ComponentsUML.jpeg, id=447, 1417.295pt x 746.79pt>
 File: figures/ComponentsUML.jpeg Graphic file (type jpg)
 
 <use figures/ComponentsUML.jpeg>
-Package pdftex.def Info: figures/ComponentsUML.jpeg used on input line 296.
+Package pdftex.def Info: figures/ComponentsUML.jpeg used on input line 310.
 (pdftex.def)             Requested size: 426.79135pt x 224.88196pt.
  [8] [9 <./figures/ComponentsUML.jpeg>]
 [10] [11] [12] [13]
-<figures/hintInMiddle.jpeg, id=492, 1332.98pt x 857.2025pt>
+<figures/hintInMiddle.jpeg, id=501, 1332.98pt x 857.2025pt>
 File: figures/hintInMiddle.jpeg Graphic file (type jpg)
 
 <use figures/hintInMiddle.jpeg>
-Package pdftex.def Info: figures/hintInMiddle.jpeg used on input line 396.
+Package pdftex.def Info: figures/hintInMiddle.jpeg used on input line 410.
 (pdftex.def)             Requested size: 369.88582pt x 237.85689pt.
  [14 <./figures/hintInMiddle.jpeg>]
-<figures/proofComparison.jpeg, id=498, 1606.0pt x 694.595pt>
+<figures/proofComparison.jpeg, id=507, 1606.0pt x 694.595pt>
 File: figures/proofComparison.jpeg Graphic file (type jpg)
 
 <use figures/proofComparison.jpeg>
-Package pdftex.def Info: figures/proofComparison.jpeg used on input line 406.
+Package pdftex.def Info: figures/proofComparison.jpeg used on input line 420.
 (pdftex.def)             Requested size: 426.79135pt x 184.58614pt.
 
-<figures/wholePageImage.jpeg, id=500, 1221.56375pt x 811.03pt>
+<figures/wholePageImage.jpeg, id=509, 1221.56375pt x 811.03pt>
 File: figures/wholePageImage.jpeg Graphic file (type jpg)
 
 <use figures/wholePageImage.jpeg>
-Package pdftex.def Info: figures/wholePageImage.jpeg used on input line 417.
+Package pdftex.def Info: figures/wholePageImage.jpeg used on input line 431.
 (pdftex.def)             Requested size: 369.88582pt x 245.57555pt.
  [15 <./figures/proofComparison.jpeg> <./figures/wholePageImage.jpeg>]
-<figures/textareas.jpeg, id=508, 666.49pt x 439.6425pt>
+<figures/textareas.jpeg, id=517, 666.49pt x 439.6425pt>
 File: figures/textareas.jpeg Graphic file (type jpg)
 
 <use figures/textareas.jpeg>
-Package pdftex.def Info: figures/textareas.jpeg used on input line 429.
+Package pdftex.def Info: figures/textareas.jpeg used on input line 443.
 (pdftex.def)             Requested size: 369.88582pt x 243.99776pt.
 
-<figures/key&rules.jpeg, id=509, 1195.46625pt x 672.5125pt>
+<figures/key&rules.jpeg, id=518, 1195.46625pt x 672.5125pt>
 File: figures/key&rules.jpeg Graphic file (type jpg)
 
 <use figures/key&rules.jpeg>
-Package pdftex.def Info: figures/key&rules.jpeg used on input line 438.
+Package pdftex.def Info: figures/key&rules.jpeg used on input line 452.
 (pdftex.def)             Requested size: 284.52756pt x 160.06201pt.
  [16 <./figures/textareas.jpeg> <./figures/key&rules.jpeg>] <figures/indentatio
-n.jpeg, id=516, 647.41875pt x 420.57124pt>
+n.jpeg, id=526, 647.41875pt x 420.57124pt>
 File: figures/indentation.jpeg Graphic file (type jpg)
 
 <use figures/indentation.jpeg>
-Package pdftex.def Info: figures/indentation.jpeg used on input line 446.
+Package pdftex.def Info: figures/indentation.jpeg used on input line 460.
 (pdftex.def)             Requested size: 369.88582pt x 240.2864pt.
 
-<figures/errorsAndSubmit.jpeg, id=517, 1678.27pt x 803.0pt>
+<figures/errorsAndSubmit.jpeg, id=527, 1678.27pt x 803.0pt>
 File: figures/errorsAndSubmit.jpeg Graphic file (type jpg)
 
 <use figures/errorsAndSubmit.jpeg>
-Package pdftex.def Info: figures/errorsAndSubmit.jpeg used on input line 455.
+Package pdftex.def Info: figures/errorsAndSubmit.jpeg used on input line 469.
 (pdftex.def)             Requested size: 369.88582pt x 176.97911pt.
  [17 <./figures/indentation.jpeg> <./figures/errorsAndSubmit.jpeg>]
-<figures/hintProof.jpeg, id=524, 644.4075pt x 552.0625pt>
+<figures/hintProof.jpeg, id=534, 644.4075pt x 552.0625pt>
 File: figures/hintProof.jpeg Graphic file (type jpg)
 
 <use figures/hintProof.jpeg>
-Package pdftex.def Info: figures/hintProof.jpeg used on input line 464.
+Package pdftex.def Info: figures/hintProof.jpeg used on input line 478.
 (pdftex.def)             Requested size: 369.88582pt x 316.89435pt.
 
-<figures/extraFunctionality.jpeg, id=525, 1025.8325pt x 357.335pt>
+<figures/extraFunctionality.jpeg, id=535, 1025.8325pt x 357.335pt>
 File: figures/extraFunctionality.jpeg Graphic file (type jpg)
 
 <use figures/extraFunctionality.jpeg>
-Package pdftex.def Info: figures/extraFunctionality.jpeg used on input line 474
+Package pdftex.def Info: figures/extraFunctionality.jpeg used on input line 488
 .
 (pdftex.def)             Requested size: 369.88582pt x 128.84224pt.
  [18 <./figures/hintProof.jpeg> <./figures/extraFunctionality.jpeg>]
-<figures/validityChecker.jpeg, id=533, 1676.2625pt x 835.12pt>
+<figures/validityChecker.jpeg, id=543, 1676.2625pt x 835.12pt>
 File: figures/validityChecker.jpeg Graphic file (type jpg)
 
 <use figures/validityChecker.jpeg>
-Package pdftex.def Info: figures/validityChecker.jpeg used on input line 484.
+Package pdftex.def Info: figures/validityChecker.jpeg used on input line 498.
 (pdftex.def)             Requested size: 426.79135pt x 212.62784pt.
 
-<figures/tooltips.jpeg, id=534, 1549.79pt x 889.3225pt>
+<figures/tooltips.jpeg, id=544, 1549.79pt x 889.3225pt>
 File: figures/tooltips.jpeg Graphic file (type jpg)
 
 <use figures/tooltips.jpeg>
-Package pdftex.def Info: figures/tooltips.jpeg used on input line 492.
+Package pdftex.def Info: figures/tooltips.jpeg used on input line 506.
 (pdftex.def)             Requested size: 426.79135pt x 244.8969pt.
  [19 <./figures/validityChecker.jpeg> <./figures/tooltips.jpeg>] [20] [21]
 
-LaTeX Warning: Reference `TDD' on page 22 undefined on input line 528.
+LaTeX Warning: Reference `TDD' on page 22 undefined on input line 542.
 
 [22] [23] [24]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 562.
+(hyperref)                removing `math shift' on input line 576.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 562.
+(hyperref)                removing `\Rightarrow' on input line 576.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 562.
+(hyperref)                removing `math shift' on input line 576.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 566.
+(hyperref)                removing `math shift' on input line 580.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 566.
+(hyperref)                removing `\Rightarrow' on input line 580.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 566.
+(hyperref)                removing `math shift' on input line 580.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 572.
+(hyperref)                removing `math shift' on input line 586.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 572.
+(hyperref)                removing `\Rightarrow' on input line 586.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 572.
+(hyperref)                removing `math shift' on input line 586.
 
 [25]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 578.
+(hyperref)                removing `math shift' on input line 592.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 578.
+(hyperref)                removing `\Rightarrow' on input line 592.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 578.
+(hyperref)                removing `math shift' on input line 592.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 584.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 584.
+(hyperref)                removing `\Rightarrow' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 584.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 590.
+(hyperref)                removing `math shift' on input line 604.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 590.
+(hyperref)                removing `\Rightarrow' on input line 604.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 590.
+(hyperref)                removing `math shift' on input line 604.
 
 [26]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 596.
+(hyperref)                removing `math shift' on input line 610.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 596.
+(hyperref)                removing `\Rightarrow' on input line 610.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 596.
+(hyperref)                removing `math shift' on input line 610.
 
-[27] [28] <figures/trelloBoard.jpeg, id=590, 2258.4375pt x 1108.14pt>
+[27] [28] <figures/trelloBoard.jpeg, id=600, 2258.4375pt x 1108.14pt>
 File: figures/trelloBoard.jpeg Graphic file (type jpg)
 
 <use figures/trelloBoard.jpeg>
-Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 628.
+Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 642.
 (pdftex.def)             Requested size: 426.79135pt x 209.39899pt.
  [29 <./figures/trelloBoard.jpeg>] [30] [31]
 [32]
-\myBox1=\box58
+\myBox1=\box60
 \myScoreStart1=\dimen267
 \myCenter1=\dimen268
 \myScoreEnd1=\dimen269
-\myBox2=\box59
+\myBox2=\box61
 \myScoreStart2=\dimen270
 \myCenter2=\dimen271
 \myScoreEnd2=\dimen272
  [33] [34] [35] [36]
-<figures/easeOfUseGraph.jpg, id=637, 361.35pt x 215.80624pt>
+<figures/easeOfUseGraph.jpg, id=647, 361.35pt x 215.80624pt>
 File: figures/easeOfUseGraph.jpg Graphic file (type jpg)
 
 <use figures/easeOfUseGraph.jpg>
-Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 731.
+Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 745.
 (pdftex.def)             Requested size: 369.88582pt x 220.90646pt.
 
-<figures/websiteDesignGraph.jpg, id=638, 361.35pt x 217.81375pt>
+<figures/websiteDesignGraph.jpg, id=648, 361.35pt x 217.81375pt>
 File: figures/websiteDesignGraph.jpg Graphic file (type jpg)
 
 <use figures/websiteDesignGraph.jpg>
-Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 739.
+Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 753.
 
 (pdftex.def)             Requested size: 369.88582pt x 222.9614pt.
  [37 <./figures/easeOfUseGraph.jpg>]
 [38 <./figures/websiteDesignGraph.jpg>] [39] [40]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 783.
+(hyperref)                removing `\@ifnextchar' on input line 797.
 
-\myBox3=\box60
+\myBox3=\box62
 \myScoreStart3=\dimen273
 \myCenter3=\dimen274
 \myScoreEnd3=\dimen275
-[41] [42] <figures/SurveyApplication.pdf, id=694, 585.73775pt x 788.65001pt>
+[41] [42] <figures/SurveyApplication.pdf, id=704, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 975.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 989.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
  <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 975.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 989.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 
-<figures/SurveyApplication.pdf, id=697, page=1, 585.73775pt x 788.65001pt>
+<figures/SurveyApplication.pdf, id=707, page=1, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 975.
+e 989.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 975.
+e 989.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 975.
+e 989.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 975.
+e 989.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 975.
+(hyperref)                removing `\@ifnextchar' on input line 989.
 
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 975.
+e 989.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
  [43 <./figures/SurveyApplication.pdf>]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 981.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 995.
 
  (/usr/local/texlive/2016/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 ) [44]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 997.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 997.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1011.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1011.
 
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 997.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 997.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1011.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1011.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 3FCD34BE050826D3D409F3200D2D3C41;4325.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 997.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1011.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 20397 strings out of 493014
- 368006 string characters out of 6133351
- 569229 words of memory out of 5000000
- 23320 multiletter control sequences out of 15000+600000
+ 20416 strings out of 493014
+ 368308 string characters out of 6133351
+ 569757 words of memory out of 5000000
+ 23336 multiletter control sequences out of 15000+600000
  17845 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,19n,56p,2372b,2966s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,19n,56p,2372b,2983s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/cm-super/cm
 -super-t1.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -1280,10 +1307,10 @@ sr/local/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr
 ocal/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/loc
 al/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local
 /texlive/2016/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (50 pages, 2652029 bytes).
+Output written on main.pdf (53 pages, 2652598 bytes).
 PDF statistics:
- 880 PDF objects out of 1000 (max. 8388607)
- 754 compressed objects within 8 object streams
+ 889 PDF objects out of 1000 (max. 8388607)
+ 760 compressed objects within 8 object streams
  180 named destinations out of 1000 (max. 500000)
  643 words of extra memory for PDF output out of 10000 (max. 10000000)
 

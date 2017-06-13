@@ -52,3 +52,11 @@
 \usepackage[ruled,vlined]{algorithm2e}
 
 \usepackage{pdfpages}
+
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+	\null
+	\thispagestyle{empty}%
+	\addtocounter{page}{-1}%
+	\newpage}
