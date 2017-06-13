@@ -1173,5 +1173,88 @@ public class HintTests {
 
     }
 
+    @Test
+    public void advancedHintTest1() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "!!A\nA -> B\n\nB";
+        String rules = "GIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+                System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Not Not Elimination"));
+
+        str = "!!A\nA -> B\nA\nB";
+        rules +="\nDoubleNot-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+                        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+
+        rules +="\nImplies-Elim (2,3)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+    }
+
+    @Test
+    public void advancedHintTest2() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "B ^ E\nE -> C\n\nA -> (B -> C)";
+        String rules = "GIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "B ^ E\nE -> C\nA\n\nA -> (B -> C)";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "B ^ E\nE -> C\nA\nB\n\nA -> (B -> C)";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "B ^ E\nE -> C\nA\nB\nE\n\nA -> (B -> C)";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+
+        str = "B ^ E\nE -> C\nA\nB\nE\nC\n\nA -> (B -> C)";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+
+        str = "B ^ E\nE -> C\nA\nB\nE\nC\nB -> C\nA -> (B -> C)";
+        rules +="\nImplies-Intro (4,6)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+
+        rules +="\nImplies-Intro (3,7)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+    }
+
 
 }

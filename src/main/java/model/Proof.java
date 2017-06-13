@@ -42,6 +42,8 @@ public class Proof {
 
     private List<Expression> extra_list_proof;
 
+    boolean advancedHints;
+
 
     public Proof() {
         expressions = new LinkedList<>();
@@ -60,6 +62,7 @@ public class Proof {
         rhsStack = new Stack<>();
         orElimStack = new Stack<>();
         orsLeft = false;
+        advancedHints = false;
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
@@ -1035,7 +1038,7 @@ public class Proof {
                 for (int i = 0; i < expressions.size(); i++) {
                     if (expressions.get(i).getRuleType() == RuleType.EMPTY || expressions.get(i).getRuleType() == null) {
 
-                        return "Hint: " + ruleFormatting(solvedProof.get(i).getRuleType().toString());
+                        return generateHintOutput(i);
                     }
                     if (expressions.get(i).toString().equals("")) {
                         int index;
@@ -1045,7 +1048,7 @@ public class Proof {
                             index = i;
                         }
 
-                        return "Hint: " + ruleFormatting(solvedProof.get(index).getRuleType().toString());
+                       return generateHintOutput(index);
                     }
 
 
@@ -1061,7 +1064,8 @@ public class Proof {
 
 
                 if (solvedProof.get(expressions.size() - 1).equals(expressions.get(expressions.size() - 1))) {
-                    return "Hint: " + ruleFormatting(solvedProof.get(expressions.size()).getRuleType().toString());
+
+                    return generateHintOutput(expressions.size());
                 } else {
                     return "Hint: Go back a step, you are going in the wrong direction";
                 }
@@ -1072,6 +1076,26 @@ public class Proof {
 
             removeErrorDuplicates();
             return printErrors();
+        }
+    }
+
+    private String generateHintOutput(int i) {
+        if (advancedHints && solvedProof.get(i).getRuleType() != RuleType.ASSUMPTION) {
+            List<Integer> lines = solvedProof.get(i).getReferenceLine();
+
+            String str = "";
+            for (int j = 0; j < lines.size(); j++) {
+                str += lines.get(j);
+                if (j < lines.size()-1) {
+                    str += ", ";
+                }
+            }
+            return "Hint: " + ruleFormatting(solvedProof.get(i).getRuleType().toString()) + ", using " +
+                    "lines: " + str;
+        } else {
+
+
+            return "Hint: " + ruleFormatting(solvedProof.get(i).getRuleType().toString());
         }
     }
 
@@ -2006,5 +2030,10 @@ public class Proof {
     public String printTest() {
         return "Hello World";
     }
+
+    public void setAdvancedHints(boolean bool) {
+        advancedHints = bool;
+    }
+
 
 }
