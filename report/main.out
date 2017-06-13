@@ -49,14 +49,17 @@
 \BOOKMARK [2][-]{subsection.6.3}{Testing}{section.6}% 49
 \BOOKMARK [2][-]{subsection.6.4}{Front-End Design}{section.6}% 50
 \BOOKMARK [2][-]{subsection.6.5}{Difficulties }{section.6}% 51
-\BOOKMARK [2][-]{subsection.6.6}{Competitor Analysis}{section.6}% 52
-\BOOKMARK [2][-]{subsection.6.7}{User Feedback }{section.6}% 53
-\BOOKMARK [1][-]{section.7}{Conclusion}{}% 54
-\BOOKMARK [2][-]{subsection.7.1}{Learning Outcomes}{section.7}% 55
-\BOOKMARK [2][-]{subsection.7.2}{Future Work}{section.7}% 56
-\BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 57
-\BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 58
-\BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 59
-\BOOKMARK [1][-]{appendix.B}{User Guide}{}% 60
-\BOOKMARK [1][-]{appendix.C}{User Survey surveyCrest}{}% 61
-\BOOKMARK [1][-]{section*.2}{References}{}% 62
+\BOOKMARK [3][-]{subsubsection.6.5.1}{Algorithm Implementation}{subsection.6.5}% 52
+\BOOKMARK [3][-]{subsubsection.6.5.2}{Expression Bracketing}{subsection.6.5}% 53
+\BOOKMARK [3][-]{subsubsection.6.5.3}{Learning Java Spring}{subsection.6.5}% 54
+\BOOKMARK [2][-]{subsection.6.6}{Competitor Analysis}{section.6}% 55
+\BOOKMARK [2][-]{subsection.6.7}{User Feedback }{section.6}% 56
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 57
+\BOOKMARK [2][-]{subsection.7.1}{Learning Outcomes}{section.7}% 58
+\BOOKMARK [2][-]{subsection.7.2}{Future Work}{section.7}% 59
+\BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 60
+\BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 61
+\BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 62
+\BOOKMARK [1][-]{appendix.B}{User Guide}{}% 63
+\BOOKMARK [1][-]{appendix.C}{User Survey surveyCrest}{}% 64
+\BOOKMARK [1][-]{section*.2}{References}{}% 65
