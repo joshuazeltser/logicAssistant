@@ -442,17 +442,17 @@ In addition to the basic algorithm, I added a few features to optimise the speed
 
  The paper where I sourced this algorithm, defines its "Or Elimination" rule slightly differently to how I have in this project. In order to carry out an "Or Elimination", I split the two sides of the Or operator into two separate boxes and try to find the same resulting expression in each, thereby eliminating the original expression (rule taken from \cite{ndBook}). I therefore had to add some extra functionality for this case into the algorithm. I did this by first assuming the left hand side of the Or containing expression. I then created another temporary list to which I added the entirety of the proof so far, except that instead of assuming the left hand side expression, I assume the right hand side expression. The algorithm then continues, but whenever a new step is added to the main proof list, I attempt to add a new step to the temporary list. This continues until both lists reach the same expression. By implementing this rule in this way, I am able to use my definition for this rule whilst still benefiting from the use of this efficient algorithm. Using this algorithm I am able to solve any proof, and based on this provide the user with hints at any stage of a proof to help them learn how to solve Natural Deduction problems. 
 
-In order to make this part of the software as useful to the user as possible, I decided to add two advanced extensions. Firstly, it is now not just at the end of a proof that a user can ask for a hint, but also in the middle. Sometimes when solving a natural deduction problem you can work out some sub-goals that will appear later on in the proof by working backwards from the goal. However, you may not be able to work out how to get to this sub-goal. In order to help combat this problem I have adapted the hint algorithm to allow the user to leave gaps in the middle of the proofs, and when the proof is submitted, hints will be generated to fill these gaps. An example of this can be seen in the following image typed into LogicAssistant.
+In order to make this part of the software as useful to the user as possible, I decided to add two advanced extensions. Firstly, a user can ask for a hint not only at the end of a proof, but also in the middle. Sometimes when solving a natural deduction problem you can work out some sub-goals that will appear later on in the proof by working backwards from the goal. However, you may not be able to work out how to get to this sub-goal. In order to help combat this problem I have adapted the hint algorithm to allow the user to leave gaps in the middle of the proofs, and when the proof is submitted, hints will be generated to fill these gaps. An example of this can be seen in the following image typed into LogicAssistant.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/hintInMiddle}}
+	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/hintInMiddle}}
 	\caption{Example of hints in the middle of proofs}
 \end{figure}
 
-In this proof the user has been able to work out the first two steps, and has also been able to add a sub-goal as the second last step by working backwards. The user however does not know how to fill the gap that is left. By leaving a blank line, LogicAssistant will keep providing the user with hints until the proof has been completely solved. This feature is really important as a good technique to use when solving these proofs by hand is to work backwards, and now it is possible to continue using this method even when you get stuck midway. 
+In this proof the user has been able to work out the first two steps, and has also been able to add a sub-goal as the second last step by working backwards. The user however does not know how to fill the gap that is left. By leaving a blank line, LogicAssistant will keep providing the user with hints until the proof has been completely solved. This feature is really important as a good technique to use when solving these proofs by hand is to work backwards, and now it is possible to continue using this method even when stuck midway. It may sometimes be the case, especially for newer users of this proof system, that a user becomes stuck in the middle of a proof and cannot move further, even with a hint. They may not know how to use the rule hinted to, and will therefore be left stuck not knowing what to do next. In order to combat this, I have further extended the hint capabilities of this system, providing the user with an advanced hint option. By selecting this option, when a hint is requested at any stage of a proof, as well as just receiving a hint telling the user which rule to apply next, they will also be given references to the lines that should be used when applying this rule. This option therefore completely gives away to the user what to do next, ensuring that they are able to move on with their proof.
 
-The second advanced feature that I have added is the tailoring of hints towards how the user has input the proof. Often there are multiple ways to solve a proof using Natural Deduction. The solving algorithm that this software uses tries to find the shortest optimal solution for these proofs, but that doesn't mean that other longer methods are invalid. As this is a learning tool, I decided that the hints generated should try to, where possible, follow the route that the user has started to take. Even if this means a longer proof, at least the user will be learning how to create valid proofs; the main objective of this tool. An example of this can be seen in the image below.
+Another advanced feature that I have added is the tailoring of hints towards how the user has input the proof. Often there are multiple ways to solve a proof using Natural Deduction. The solving algorithm that this software uses tries to find the shortest optimal solution for these proofs, but that doesn't mean that other longer methods are invalid. As this is a learning tool, I decided that the hints generated should try to, where possible, follow the route that the user has started to take. Even if this means a longer proof, at least the user will be learning how to create valid proofs; the main objective of this tool. An example of this can be seen in the image below.
 
 \begin{figure}[!ht]
 	\centering
@@ -460,10 +460,12 @@ The second advanced feature that I have added is the tailoring of hints towards 
 	\caption{Comparison between possible proof make up}
 \end{figure}
 
-This example shows you two proofs with the same premises and goals, yet one is slightly longer than the other. The red boxes indicate the differences. Depending on which way the user takes, this algorithm will now learn from this and continue to follow in this direction. I was able to do this by, in step 1 of the algorithm (see \ref{solveAlgo}), when the premises and results are added to the two lists, also adding the steps of the proof that had already been entered by the user. This means that when the algorithm starts to run it continues on from where the user is up to, thereby helping to tailor the generated proof and hints to the users method. These two extra features together make this programme an invaluable tool when learning to solve these complex problems. 
+This example shows two proofs with the same premises and goals, yet one is slightly longer than the other. The red boxes indicate the differences. Depending on which way the user takes, this algorithm will now learn from this and continue to follow in this direction. I was able to do this by, in step 1 of the algorithm (see Algorithm \ref{solveAlgo}), when the premises and results are added to the two lists, also adding the steps of the proof that had already been entered by the user. This means that when the algorithm starts to run it continues on from where the user is up to, thereby helping to tailor the generated proof and hints to the user's method. These two extra features together make this programme an invaluable tool when learning to solve these complex problems. 
 
-
+\pagebreak\
 \subsection{View}
+
+One of the key components of this project is the design of the front-end. I wanted to make the application as easy-to-use and as appealing as possible to users looking for help in solving their Natural Deduction proofs. I therefore spent a long time perfecting this part of the application. As mentioned below (see \ref{JavaSpring}), I used Java Spring to create a front-end that uses the Java back-end of this project. This meant using Thymeleaf together with HTML and Javascript to create an easy to use, but powerful user interface. In order to perfect the website I carried out several iterations before deciding on this final design.
 
 \begin{figure}[!ht]
 	\centering
@@ -471,20 +473,16 @@ This example shows you two proofs with the same premises and goals, yet one is s
 	\caption{Website homepage}
 \end{figure}
 
-One of the key components of this project is the design of the front-end. I wanted to make the application as easy-to-use and as appealing as possible to users looking for help in solving their Natural Deduction proofs. I therefore spent a long time perfecting this part of the application. As mentioned below (see \ref{JavaSpring}), I used Java Spring to create a front-end that uses the Java back-end of this project. This meant using Thymeleaf together with HTML and Javascript to create an easy to use, but powerful user interface. In order to perfect the website I carried out several iterations before deciding on this final design.
-
-
-
-The website itself is made up of three pages. The first of which is the home page (see image above), which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page. 
+The website itself is made up of three pages. The first of which is the home page (see image above), which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page (see figure below). 
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/textareas}}
+	\makebox[\textwidth]{\includegraphics[width=9cm]{figures/textareas}}
 	\caption{Proof input boxes}
 \end{figure}
 
 
-The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on that rule is added to the next line of the proof. 
+The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on, that rule is added to the next line of the proof. These two components of the webpage can be seen in the figure below.
 
 \begin{figure}[!ht]
 	\centering
@@ -492,7 +490,7 @@ The left one includes line numbers and allows the user to type in each step of t
 	\caption{Symbol Key \& Rule Buttons}
 \end{figure}
 
-If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, this left text area will automatically indent itself to represent any boxes (scopes) included in the proof. 
+If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, the left text area will automatically indent itself to represent any boxes (scopes) included in the proof. An example of this formatting can be seen in the figure below.
 
 \begin{figure}[!ht]
 	\centering
@@ -501,7 +499,8 @@ If the rule needs references added to it regarding the lines in the proof it is 
 \end{figure}
 
 
-Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. 
+Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them as to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. The figure below shows some possible error messages that may be displayed.
+\pagebreak
 
 \begin{figure}[!ht]
 	\centering
@@ -509,8 +508,7 @@ Once the user has completed their proof they can click the submit button towards
 	\caption{Error Message examples}
 \end{figure}
 
-If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns orange. This means that basic hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. All of these front-end features together make up the main functionality of this programme.
-\pagebreak
+If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns orange. This means that basic hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above, if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. An example of a user requesting a hint in the middle of a proof can be seen in the figure below.
 
 \begin{figure}[!ht]
 	\centering
@@ -518,9 +516,15 @@ If the user becomes stuck at any part of their proof, they can click the "Hint" 
 	\caption{Hint requested for a proof}
 \end{figure}
 
+If a user is still stuck, even after having requested a hint, they can select the "Advanced Hints" mode by clicking the "Hint" button again, turning it green. Now, when the proof is submitted, as well as a hint informing the user which rule to apply next, the line numbers that this rule should reference are also displayed. This allows the user to easily add the next step of their proof and move on. The figure below shows an example of an "Advanced Hint" being requested.
 
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/hintProof}}
+	\caption{UPDATE IMAGE!!!!!!!!!!!!!}
+\end{figure}
 
-This page also contains some other features that assist a user when using this software. Firstly, there is a drop-down menu towards the bottom of the page, that contains two useful options. An option to reset the page in order to type a new proof, and also a save proof as option. This allows the user to save any proofs they have, so that they can be revisited again on a later occasion. On the left hand side of the page there is also functionality that allows the user to upload their own proofs. This programme has its own file type (.la) and files of this type can be uploaded to this solver. The proof then can either be checked or added to and then saved again for future use. All of these small features together make using this system much simpler and straightforward for users to use.
+This page also contains some other features that assist a user when using this software. Firstly, there is a drop-down menu towards the bottom of the page, that contains two useful options. An option to reset the page in order to type a new proof, and also a "save proof as" option. This allows the user to save any proofs they have, so that they can be revisited again on a later occasion. On the left hand side of the page there is also functionality that allows the user to upload their own proofs. This programme has its own file type (.la) and files of this type can be uploaded to this solver. The proof then can either be checked or added to and then saved again for future use. All of these small features together make using this system much simpler and straightforward for users. Some of these features can be seen in the figure below.
 
 \begin{figure}[!ht]
 	\centering
@@ -528,27 +532,25 @@ This page also contains some other features that assist a user when using this s
 	\caption{Additional Functionality}
 \end{figure}
 
-
-
-The next page of the web-app is the proof validation page. This can be accessed using a button on the left hand side of the home page. This page allows the user to type in their chosen premises and the resulting expression that they want to use in their proof. Then by clicking the "Check Validity" button, the validity algorithm will be triggered (see \ref{validity}), alerting the user as to whether the proof will be valid. This step saves the user a lot of time by allowing them to see whether the proof they are about to solve is solvable before they even start the proof solving process. Once this check has been completed the user can navigate back to the home page in order to actually solve their proof step by step.
+The next page of the web-app is the proof validation page. This can be accessed using a button on the left hand side of the home page. This page allows the user to type in their chosen premises and the resulting expression that they want to use in their proof. Then by clicking the "Check Validity" button, the validity algorithm will be triggered (see \ref{validity}), alerting the user as to whether the proof will be valid. This step saves the user a lot of time by allowing them to see whether the proof they are about to solve is solvable before they even start the proof solving process. Once this check has been completed the user can navigate back to the home page in order to actually solve their proof step by step. The figure below shows valid and invalid proofs that have been entered into the validity checker.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/validityChecker}}
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/validityChecker}}
 	\caption{Validity Checker}
 \end{figure}
 
-The final and most important page of the application is the User Guide. This page contains a detailed description of how to use all of the features mentioned above. With the help of this page I believe that almost any user will be able to work out how to use most of the functionality on the website. In addition to this, throughout the website I have added tooltips onto some of the key pieces of functionality. This means that when a user puts their mouse over one of these tooltips they will be shown a small speech bubble explaining what that piece of functionality is used for. This will increase the ease at which new users are able to benefit from this software. This is therefore how the front end (or view) part of my application has been created.
+The final and most important page of the application is the User Guide. This page contains a detailed description of how to use all of the features mentioned above. With the help of this page I believe that almost any user will be able to work out how to use most of the functionality on the website. In addition to this, throughout the website I have added tooltips onto some of the key pieces of functionality. This means that when a user puts their mouse over one of these tooltips they will be shown a small speech bubble explaining what that piece of functionality is used for. This will increase the ease at which new users are able to benefit from this software. Some tooltips used in this webpage can be seen in the figure below. This is therefore how the front-end (or view) part of my application has been created.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/tooltips}}
+	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/tooltips}}
 	\caption{Homepage Tooltips}
 \end{figure}
 
 \subsection{Controller}
 
-In order to coordinate and control the model and view parts of this web-app, it was necessary to add some controller classes. As I used the Java Spring framework to build this application (see \ref{JavaSpring}), I was provided with some special controller functionality that can be used to control the entire programme. Therefore, each page has its own controller class which retrieves a mapping based on the url, and allows the passing of Java objects into the front end of the application. For example the main page receives a mapping of "/", as it is the home page, and the controller passes in a Proof object so that the associated functionality can be applied. This controller also has a post mapping which returns to this same page after the form has been submitted. Similarly, the validity page has its own controller which receives a mapping of "/validity" as the browser enters that page. The controller then provides a TruthTable object to the front end, so that it can be used to carry out the validation checks. These two controllers are therefore really important as they allow the various pages to communicate with each other, as well as to the back-end of the programme. This setup means that unlike Ajax, interactions are only made between the front-end and back-end on a page reloading. Although this led to a few complications, in the end I was able to connect all of the required components successfully. This therefore completes the setup of the Model View Controller infrastructure that I have built for this application.
+In order to coordinate and control the model and view parts of this web-app, it was necessary to add some controller classes. As I used the Java Spring framework to build this application (see \ref{JavaSpring}), I was provided with some special controller functionality that can be used to control the entire programme. Therefore, each page has its own controller class which retrieves a mapping based on the url, and allows the passing of Java objects into the front end of the application. For example, the main page receives a mapping of "/", as it is the home page, and the controller passes in a Proof object so that the associated functionality can be applied. This controller also has a post mapping which returns to this same page after the form has been submitted. Similarly, the validity page has its own controller which receives a mapping of "/validity" as the browser enters that page. The controller then provides a TruthTable object to the front end, so that it can be used to carry out the validation checks. These two controllers are therefore really important as they allow the various pages to communicate with each other, as well as to the back-end of the programme. This setup means that unlike Ajax, interactions are only made between the front-end and back-end on a page reloading. Although this led to a few complications, in the end I was able to connect all of the required components successfully. This therefore completes the explanation of setup of the Model View Controller infrastructure that I have built for this application.
 
 \pagebreak
 
