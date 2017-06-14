@@ -618,4 +618,8 @@ public class Expression {
         this.marked = marked;
     }
 
+    public void removeRefs() {
+        lines.clear();
+    }
+
 }

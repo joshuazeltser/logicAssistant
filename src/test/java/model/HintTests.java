@@ -1256,5 +1256,158 @@ public class HintTests {
 //        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
+    @Test
+    public void advancedHintTest3() throws SyntaxException {
+        proof.setAdvancedHints(true);
+
+        String str = "!(A | B)\n\n!A";
+        String rules = "GIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "!(A | B)\nA\n\n!A";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Or Introduction"));
+
+        str = "!(A | B)\nA\nA | B\n\n!A";
+        rules +="\nOr-Intro (2)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Not Elimination"));
+
+        str = "!(A | B)\nA\nA | B\nFALSE\n!A";
+        rules +="\nNot-Elim (1,3)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Not Introduction"));
+
+        rules +="\nNot-Intro (2,4)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+    }
+
+    @Test
+    public void advancedHintTest4() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "A ^ (B | C)\nB -> D\nC -> D\n\nD | E";
+        String rules = "GIVEN\nGIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\n\nD | E";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\n\nD | E";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\n\nD | E";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\n\nD | E";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\nD\n\nD | E";
+        rules +="\nImplies-Elim (3,7)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Or Elimination"));
+
+        str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\nD\nD\nD | E";
+        rules +="\nOr-Elim (4,5,6,7,8)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Or Introduction"));
+
+        rules +="\nOr-Intro (9)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+    }
+
+    @Test
+    public void advancedHintTest5() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "A -> B\nB -> A\nA <-> B";
+        String rules = "GIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Only Introduction"));
+
+        rules +="\nOnly-Intro (1,2)";
+        proof.frontEndFunctionality(str, rules);
+
+                System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+    }
+
+    @Test
+    public void advancedHintTest6() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "A ^ B\nC\nD\n\nB ^ C\nD -> B ^ C";
+
+        String rules = "GIVEN\nGIVEN\nASSUMPTION";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        String str1 = "A ^ B\nC\nD\nB\nB ^ C\nD -> B ^ C";
+        String rules1 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str1, rules1);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Introduction"));
+//
+        String rules2 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\nAnd-Intro (4,2)";
+
+        proof.frontEndFunctionality(str1, rules2);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+
+    }
+
 
 }
