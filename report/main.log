@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  14 JUN 2017 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  14 JUN 2017 18:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -817,11 +817,39 @@ LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
 \l_MT_below_intertext_sep=\dimen269
 \l_MT_above_shortintertext_sep=\dimen270
 \l_MT_below_shortintertext_sep=\dimen271
-))
+)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/enumerate.sty
 Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
 \@enLab=\toks51
 )
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count155
+\lst@gtempboxa=\box58
+\lst@token=\toks52
+\lst@length=\count156
+\lst@currlwidth=\dimen272
+\lst@column=\count157
+\lst@pos=\count158
+\lst@lostspace=\dimen273
+\lst@width=\dimen274
+\lst@newlines=\count159
+\lst@lineno=\count160
+\lst@maxwidth=\dimen275
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count161
+\lst@skipnumbers=\count162
+\lst@framebox=\box59
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+))
 (./notation.tex) (./main.aux)
 \openout1 = `main.aux'.
 
@@ -879,17 +907,17 @@ File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count155
-\scratchdimen=\dimen272
-\scratchbox=\box58
-\nofMPsegments=\count156
-\nofMParguments=\count157
-\everyMPshowfont=\toks52
-\MPscratchCnt=\count158
-\MPscratchDim=\dimen273
-\MPnumerator=\count159
-\makeMPintoPDFobject=\count160
-\everyMPtoPDFconversion=\toks53
+\scratchcounter=\count163
+\scratchdimen=\dimen276
+\scratchbox=\box60
+\nofMPsegments=\count164
+\nofMParguments=\count165
+\everyMPshowfont=\toks53
+\MPscratchCnt=\count166
+\MPscratchDim=\dimen277
+\MPnumerator=\count167
+\makeMPintoPDFobject=\count168
+\everyMPtoPDFconversion=\toks54
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -906,7 +934,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box59
+\AtBeginShipoutBox=\box61
 Package hyperref Info: Link coloring ON on input line 20.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -915,7 +943,7 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count161
+\c@section@level=\count169
 )
 LaTeX Info: Redefining \ref on input line 20.
 LaTeX Info: Redefining \pageref on input line 20.
@@ -934,6 +962,8 @@ Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )
+\c@lstlisting=\count170
+
 (./titlepage.tex <./figures/imperial.pdf, id=268, 362.35374pt x 95.35625pt>
 File: ./figures/imperial.pdf Graphic file (type pdf)
 
@@ -1210,124 +1240,138 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 658.
 
-[28] [29] <figures/trelloBoard.jpeg, id=606, 2258.4375pt x 1108.14pt>
+<figures/elementsOfDesign.jpeg, id=592, 1423.3175pt x 1124.2pt>
+File: figures/elementsOfDesign.jpeg Graphic file (type jpg)
+
+<use figures/elementsOfDesign.jpeg>
+Package pdftex.def Info: figures/elementsOfDesign.jpeg used on input line 667.
+(pdftex.def)             Requested size: 199.16928pt x 157.30115pt.
+ [28 <./figures/elementsOfDesign.jpeg>]
+<figures/TDD.jpeg, id=602, 927.465pt x 937.5025pt>
+File: figures/TDD.jpeg Graphic file (type jpg)
+ <use figures/TDD.jpeg>
+Package pdftex.def Info: figures/TDD.jpeg used on input line 678.
+(pdftex.def)             Requested size: 199.16928pt x 201.31592pt.
+
+[29 <./figures/TDD.jpeg>]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 689.
+
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+) [30] [31]
+<figures/trelloBoard.jpeg, id=684, 2258.4375pt x 1108.14pt>
 File: figures/trelloBoard.jpeg Graphic file (type jpg)
 
 <use figures/trelloBoard.jpeg>
-Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 690.
+Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 772.
 (pdftex.def)             Requested size: 426.79135pt x 209.39899pt.
- [30 <./figures/trelloBoard.jpeg>] [31] [32]
-[33]
-\myBox1=\box60
-\myScoreStart1=\dimen274
-\myCenter1=\dimen275
-\myScoreEnd1=\dimen276
-\myBox2=\box61
-\myScoreStart2=\dimen277
-\myCenter2=\dimen278
-\myScoreEnd2=\dimen279
- [34] [35] [36] [37]
-<figures/easeOfUseGraph.jpg, id=653, 361.35pt x 215.80624pt>
+ [32 <./figures/trelloBoard.jpeg>] [33] [34]
+[35]
+\myBox1=\box62
+\myScoreStart1=\dimen278
+\myCenter1=\dimen279
+\myScoreEnd1=\dimen280
+\myBox2=\box63
+\myScoreStart2=\dimen281
+\myCenter2=\dimen282
+\myScoreEnd2=\dimen283
+ [36] [37] [38] [39]
+<figures/easeOfUseGraph.jpg, id=732, 361.35pt x 215.80624pt>
 File: figures/easeOfUseGraph.jpg Graphic file (type jpg)
 
 <use figures/easeOfUseGraph.jpg>
-Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 793.
+Package pdftex.def Info: figures/easeOfUseGraph.jpg used on input line 875.
 (pdftex.def)             Requested size: 369.88582pt x 220.90646pt.
 
-<figures/websiteDesignGraph.jpg, id=654, 361.35pt x 217.81375pt>
+<figures/websiteDesignGraph.jpg, id=733, 361.35pt x 217.81375pt>
 File: figures/websiteDesignGraph.jpg Graphic file (type jpg)
 
 <use figures/websiteDesignGraph.jpg>
-Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 801.
+Package pdftex.def Info: figures/websiteDesignGraph.jpg used on input line 883.
 
 (pdftex.def)             Requested size: 369.88582pt x 222.9614pt.
- [38 <./figures/easeOfUseGraph.jpg>]
-[39 <./figures/websiteDesignGraph.jpg>] [40] [41]
+ [40 <./figures/easeOfUseGraph.jpg>]
+[41 <./figures/websiteDesignGraph.jpg>] [42] [43]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 845.
+(hyperref)                removing `\@ifnextchar' on input line 927.
 
-\myBox3=\box62
-\myScoreStart3=\dimen280
-\myCenter3=\dimen281
-\myScoreEnd3=\dimen282
-[42] [43] <figures/SurveyApplication.pdf, id=710, 585.73775pt x 788.65001pt>
+\myBox3=\box64
+\myScoreStart3=\dimen284
+\myCenter3=\dimen285
+\myScoreEnd3=\dimen286
+[44] [45] <figures/SurveyApplication.pdf, id=788, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1037.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1119.
 
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
  <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1037.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1119.
 
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 
-<figures/SurveyApplication.pdf, id=713, page=1, 585.73775pt x 788.65001pt>
+<figures/SurveyApplication.pdf, id=791, page=1, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1037.
+e 1119.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1037.
+e 1119.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1037.
+e 1119.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1037.
+e 1119.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 1037.
+(hyperref)                removing `\@ifnextchar' on input line 1119.
 
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1037.
+e 1119.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
- [44 <./figures/SurveyApplication.pdf>]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 1043
-.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [45]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1059.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1059.
-
-(./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1059.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1059.
+ [46 <./figures/SurveyApplication.pdf>] [47]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1150.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1150.
+ (./main.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1150.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1150.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: C172E189EC3B974B534DD43345E026AC;4326.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1059.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1150.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 20906 strings out of 493014
- 377104 string characters out of 6133351
- 584420 words of memory out of 5000000
- 23815 multiletter control sequences out of 15000+600000
- 17845 words of font info for 42 fonts, out of 8000000 for 9000
+ 22707 strings out of 493014
+ 400870 string characters out of 6133351
+ 654700 words of memory out of 5000000
+ 25532 multiletter control sequences out of 15000+600000
+ 18158 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,24n,56p,2372b,3563s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,24n,72p,2372b,4851s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/cm-super/cm
 -super-t1.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -1347,11 +1391,12 @@ local/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/lo
 cal/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/loca
 l/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/te
-xlive/2016/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (54 pages, 2804658 bytes).
+xlive/2016/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb></usr/local/texl
+ive/2016/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on main.pdf (56 pages, 3061923 bytes).
 PDF statistics:
- 900 PDF objects out of 1000 (max. 8388607)
- 768 compressed objects within 8 object streams
- 181 named destinations out of 1000 (max. 500000)
- 648 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 998 PDF objects out of 1000 (max. 8388607)
+ 860 compressed objects within 9 object streams
+ 246 named destinations out of 1000 (max. 500000)
+ 658 words of extra memory for PDF output out of 10000 (max. 10000000)
 
