@@ -51,7 +51,7 @@
 \contentsline {subsection}{\numberline {6.4}Front-End Design}{35}{subsection.6.4}
 \contentsline {subsection}{\numberline {6.5}Difficulties }{36}{subsection.6.5}
 \contentsline {subsubsection}{\numberline {6.5.1}Algorithm Implementation}{36}{subsubsection.6.5.1}
-\contentsline {subsubsection}{\numberline {6.5.2}Expression Bracketing}{36}{subsubsection.6.5.2}
+\contentsline {subsubsection}{\numberline {6.5.2}Expression Structure}{36}{subsubsection.6.5.2}
 \contentsline {subsubsection}{\numberline {6.5.3}Learning Java Spring}{37}{subsubsection.6.5.3}
 \contentsline {subsection}{\numberline {6.6}Competitor Analysis}{37}{subsection.6.6}
 \contentsline {subsection}{\numberline {6.7}User Feedback }{39}{subsection.6.7}
@@ -61,6 +61,11 @@
 \contentsline {section}{\numberline {A}Natural Deduction Rules}{44}{appendix.A}
 \contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{44}{subsection.A.1}
 \contentsline {subsection}{\numberline {A.2}Predicate Rules}{44}{subsection.A.2}
-\contentsline {section}{\numberline {B}User Guide}{45}{appendix.B}
-\contentsline {section}{\numberline {C}User Survey \cite {surveyCrest}}{46}{appendix.C}
-\contentsline {section}{References}{47}{section*.2}
+\contentsline {section}{\numberline {B}User Survey \cite {surveyCrest} }{45}{appendix.B}
+\contentsline {section}{\numberline {C}User Guide }{46}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}Check Proof Validity}{46}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}Goal Validity}{48}{subsection.C.2}
+\contentsline {subsection}{\numberline {C.3}Hints}{50}{subsection.C.3}
+\contentsline {subsection}{\numberline {C.4}Lemmas}{50}{subsection.C.4}
+\contentsline {subsection}{\numberline {C.5}Saving \& Loading Proofs}{50}{subsection.C.5}
+\contentsline {section}{References}{51}{section*.2}

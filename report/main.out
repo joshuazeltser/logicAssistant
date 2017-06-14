@@ -50,7 +50,7 @@
 \BOOKMARK [2][-]{subsection.6.4}{Front-End Design}{section.6}% 50
 \BOOKMARK [2][-]{subsection.6.5}{Difficulties }{section.6}% 51
 \BOOKMARK [3][-]{subsubsection.6.5.1}{Algorithm Implementation}{subsection.6.5}% 52
-\BOOKMARK [3][-]{subsubsection.6.5.2}{Expression Bracketing}{subsection.6.5}% 53
+\BOOKMARK [3][-]{subsubsection.6.5.2}{Expression Structure}{subsection.6.5}% 53
 \BOOKMARK [3][-]{subsubsection.6.5.3}{Learning Java Spring}{subsection.6.5}% 54
 \BOOKMARK [2][-]{subsection.6.6}{Competitor Analysis}{section.6}% 55
 \BOOKMARK [2][-]{subsection.6.7}{User Feedback }{section.6}% 56
@@ -60,6 +60,11 @@
 \BOOKMARK [1][-]{appendix.A}{Natural Deduction Rules}{}% 60
 \BOOKMARK [2][-]{subsection.A.1}{Propositional Rules \(adapted from ndBook\)}{appendix.A}% 61
 \BOOKMARK [2][-]{subsection.A.2}{Predicate Rules}{appendix.A}% 62
-\BOOKMARK [1][-]{appendix.B}{User Guide}{}% 63
-\BOOKMARK [1][-]{appendix.C}{User Survey surveyCrest}{}% 64
-\BOOKMARK [1][-]{section*.2}{References}{}% 65
+\BOOKMARK [1][-]{appendix.B}{User Survey surveyCrest }{}% 63
+\BOOKMARK [1][-]{appendix.C}{User Guide }{}% 64
+\BOOKMARK [2][-]{subsection.C.1}{Check Proof Validity}{appendix.C}% 65
+\BOOKMARK [2][-]{subsection.C.2}{Goal Validity}{appendix.C}% 66
+\BOOKMARK [2][-]{subsection.C.3}{Hints}{appendix.C}% 67
+\BOOKMARK [2][-]{subsection.C.4}{Lemmas}{appendix.C}% 68
+\BOOKMARK [2][-]{subsection.C.5}{Saving \046 Loading Proofs}{appendix.C}% 69
+\BOOKMARK [1][-]{section*.2}{References}{}% 70
