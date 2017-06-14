@@ -358,12 +358,10 @@ Although this algorithm was able to solve the proofs in order for hints to be ge
 After further research of this topic, I found a resource containing a proof solving algorithm that could easily be adapted to use in this tool in a paper called Automated First Order Natural Deduction \cite{ndAlgo}.  This algorithm works in a completely different way to the one I devised above as it actually takes into account the goals and sub-goals of the proof. Using two lists, the algorithm keeps track of the current state of the proof, which is initially just the premises, and of the current sub-goal that the algorithm is trying to achieve, which is initially the resulting expression. As the algorithm proceeds new sub-goals are added to the list of goals in order to direct the proof towards its ultimate resulting goal. Both lists are expanded using the Natural Deduction rules until one of the premises can be unified with one of the goals. If this is the case that goal will be removed from this list. Eventually the resulting goal will be unified and the algorithm will terminate. The rules that are applied at each step are dependent on the structure of the expressions in the proof so far. Elimination rules are applied first and as a last resort an introduction rule will be applied. This algorithm has been proven to always terminate if a valid proof has been given. A summary of exactly how this algorithm functions can be seen in Algorithm \ref{solveAlgo}. The main benefit of this algorithm, is that by setting up sub-goals, the algorithm does not have to spend large amounts of time looking for possible combinations of expressions for introduction rules. Rather it takes into account the goals of the introduction rules and will apply the appropriate rules in order to meet it. This algorithm therefore works relatively efficiently in all cases and can scale very well. This makes this algorithm much better for my purposes and is why I chose to use it for this part of LogicAssistant's functionality. 
 
 \begin{algorithm} \label{solveAlgo}
-	\caption{Automated First Order Natural Deduction Proof Solver (adapted from \cite{ndAlgo})}\label{euclid}
+	\caption{Automated First Order Natural Deduction Proof Solver (my implementation based on~\cite{ndAlgo})}\label{euclid}
 		\noindent\makebox[\textwidth][c]{%
 		\begin{minipage}{.92\linewidth}
-		In this algorithm I represent a proof as $P \vdash G$, where the set \textit{P} are the premises and \textit{G} is the goal of a proof. The two lists used in the algorithm are \textit{list\_proof}, to store the current state of the proof and \textit{list\_goal}, to store the current goals and sub-goals of the proof. $G_{n}$ will also be used to keep track of the current goal.
-		
-		Reachability of the current goal shows whether an expression is in scope and can therefore be accessed at a stage in the proof.
+		In this algorithm I represent a proof as $P \vdash G$, where the set \textit{P} are the premises and \textit{G} is a set containing the goal of the proof together with any sub-goals. The two lists used in the algorithm are \textit{list\_proof}, to store the current state of the proof and \textit{list\_goal}, to store the current goals and sub-goals of the proof. $G_{n}$ will also be used to keep track of the current goal. Reachability of the current goal shows whether an expression is in scope and can therefore be accessed at a stage in the proof.
 		
 			\begin{enumerate}
 				\item Given the problem $P \vdash G$, take \textit{G} as the initial goal, add it to \textit{list\_goals} and set the current goal equal to \textit{G}. If the set \textit{P} is not empty then add \textit{P} to \textit{list\_proof}.
@@ -385,12 +383,53 @@ After further research of this topic, I found a resource containing a proof solv
 				
 				\item Create a new goal that will help to achieve the current goal, set $G_{n}$ to this goal and add it to \textit{list\_goals}
 				\begin{enumerate}
-					\item If $G_{n} \neq FALSE$ then analyse the structure of $G_{n}$ and add appropriate assumptions or sub-goals to the appropriate lists (see Procedure 2.1 in \cite{ndAlgo} for more info), then go to step 2 
-					\item If $G_{n} = FALSE$ then search for sources of new goals in \textit{list\_proof}, (see Procedure 2.2 in \cite{ndAlgo} for more info), then go to step 2
-					\item If all formulae in \textit{list\_proof} have been considered as sources for new goals, go to step 6
+					\item Analyse the structure of $G_{n}$ and add appropriate assumptions or sub-goals to the lists based on the definitions below (note: some rules are defined differently to  \cite{ndAlgo}):
+					
+					Let $P_{1}$ ... $P_{k}$ = $\Gamma$, $G_{1}$ ... $G_{k}$ = $\Delta$ and $F$ is an elementary formula:
+				
+					\vspace{0.15cm}
+					\noindent\makebox[\textwidth][c]{%
+						
+					\begin{minipage}{.92\linewidth}
+						
+					
+						$\Gamma \vdash \Delta, A \Rightarrow B$   \hspace{1cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, A \vdash \Delta, A \Rightarrow B, B$
+						
+						$\Gamma \vdash \Delta, \neg A$   \hspace{1.6cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, A \vdash \Delta, \neg A, \bot$
+						
+						$\Gamma \vdash \Delta, A \wedge B$   \hspace{1.15cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma \vdash \Delta, A \wedge B, B, A$
+						
+						$\Gamma \vdash \Delta, A \vee B$   \hspace{1.15cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma \vdash \Delta, A \vee B, A$
+						
+						$\Gamma \vdash \Delta, A \vee B$   \hspace{1.28cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma \vdash \Delta, A \vee B, B$ (if above rule fails)
+						
+						$\Gamma \vdash \Delta, A \Leftrightarrow B$   \hspace{1cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma \vdash \Delta, A \Leftrightarrow B, A \Rightarrow B, B \Rightarrow A$
+						
+						$\Gamma \vdash \Delta, F$   \hspace{1.82cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, \neg F \vdash \Delta, F, \bot$
+						
+						$\Gamma, \neg A \vdash \Delta, \bot$   \hspace{1.155cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, \neg A \vdash \Delta, \bot, A$
+						
+				\end{minipage}}	
+			\vspace{0.15cm}
+			
+						For "Or Elimination", I treat this rule in the same way as the introduction rules, so both of the next two rules must be applied:
+						\vspace{0.15cm}
+						
+						\noindent\makebox[\textwidth][c]{%
+							
+							\begin{minipage}{.92\linewidth}
+						$\Gamma, A \vee B \vdash \Delta, C$   \hspace{0.75cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, A \vee B, A \vdash \Delta, C$
+						
+						$\Gamma, A \vee B \vdash \Delta, C$   \hspace{0.75cm} $\xrightarrow{\makebox[1cm]{}}$  \hspace{1cm} $\Gamma, A \vee B, B \vdash \Delta, C$
+						
+								\end{minipage}}	
+						
+						 \vspace{0.15cm}
+			
+					then go to step 2
+					\item If all formulae in \textit{list\_proof} have been considered as sources for new goals (based on rules in (a)), terminate the algorithm as no proof has been found
 				\end{enumerate}
 			
-				\item Terminate the algorithm as no proof has been found
 				
 			\end{enumerate}
 		
@@ -399,9 +438,9 @@ After further research of this topic, I found a resource containing a proof solv
 \end{algorithm}
 
 
-In addition to the basic algorithm, I added a few features to optimise the speed that the algorithm runs at. In particular at the start of the algorithm I added a check which looks at the resulting expression of the proof and sees from the start whether it contains an implication operator or starts with a not operator. If so then the algorithm now knows that the last rule applied will either be "Implies Introduction" or "Not Introduction". The algorithm can therefore skip the elimination rule checks at the beginning and go straight to these introductions. This speeds up the whole process in these cases significantly and ensures that the proof is as concise as possible. An example of this could be when solving a proof with premises "B" and "$D \wedge E$" and desired result "$A \Rightarrow B$". Without my optimisation the proof would start off with the "And Elimination" of "$D \wedge E$", a completely unnecessary step. This just makes the proof longer. With my extension immediately the algorithm will see the $\Rightarrow$ in the result and will add an assumption of "A", thereby not wasting any time trying any elimination rules. My optimisation works similarly for results beginning with a not operator. This extension clearer speeds up the algorithms overall running time and removes unnecessary steps from proofs.
+In addition to the basic algorithm, I added a few features to optimise the speed that the algorithm runs at. In particular, at the start of the algorithm I added a check which looks at the resulting expression of the proof and sees from the start whether it contains an implication operator or starts with a not operator. If so, then the algorithm now knows that the last rule applied will either be "Implies Introduction" or "Not Introduction". The algorithm can therefore skip the elimination rule checks at the beginning and go straight to these introductions. This speeds up the whole process in these cases significantly and ensures that the proof is as concise as possible. An example of this could be when solving a proof with premises "B" and "$D \wedge E$" and desired result "$A \Rightarrow B$". Without my optimisation the proof would start off with the "And Elimination" of "$D \wedge E$", a completely unnecessary step. This just makes the proof longer. With my extension immediately the algorithm will see the $\Rightarrow$ in the result and will add an assumption of "A", thereby not wasting any time trying any elimination rules. My optimisation works similarly for results beginning with a not operator. This extension clearly speeds up the algorithm's overall running time and removes unnecessary steps from the proofs.
 
- The paper that I retrieved this algorithm from defines its "Or Elimination" rule slightly differently to how I do in this project. In this project, in order to carry out an "Or Elimination", I split the two sides of the Or operator into two separate boxes and try to find the same resulting expression in each, thereby eliminating the original expression (rules taken from \cite{ndBook}). I therefore had to add some extra functionality for this case into the algorithm. I did this by first assuming the left hand side of the Or containing expression. I then created another temporary list to which I added the entirety of the proof so far, except instead of assuming the left hand side expression I assumed the right hand side expression. The algorithm then continues, but whenever a new step is added to the main proof list, I attempt to add a new step to the temporary list. This continues until both lists reach the same expression. By implementing this rule in this way, I am able to use my definition for this rule whilst still benefiting from the use of this efficient algorithm. Using this algorithm I am able to solve any proof, and based on this provide the user with hints at any stage of a proof to help them learn how to solve Natural Deduction problems. 
+ The paper where I sourced this algorithm, defines its "Or Elimination" rule slightly differently to how I have in this project. In order to carry out an "Or Elimination", I split the two sides of the Or operator into two separate boxes and try to find the same resulting expression in each, thereby eliminating the original expression (rule taken from \cite{ndBook}). I therefore had to add some extra functionality for this case into the algorithm. I did this by first assuming the left hand side of the Or containing expression. I then created another temporary list to which I added the entirety of the proof so far, except that instead of assuming the left hand side expression, I assume the right hand side expression. The algorithm then continues, but whenever a new step is added to the main proof list, I attempt to add a new step to the temporary list. This continues until both lists reach the same expression. By implementing this rule in this way, I am able to use my definition for this rule whilst still benefiting from the use of this efficient algorithm. Using this algorithm I am able to solve any proof, and based on this provide the user with hints at any stage of a proof to help them learn how to solve Natural Deduction problems. 
 
 In order to make this part of the software as useful to the user as possible, I decided to add two advanced extensions. Firstly, it is now not just at the end of a proof that a user can ask for a hint, but also in the middle. Sometimes when solving a natural deduction problem you can work out some sub-goals that will appear later on in the proof by working backwards from the goal. However, you may not be able to work out how to get to this sub-goal. In order to help combat this problem I have adapted the hint algorithm to allow the user to leave gaps in the middle of the proofs, and when the proof is submitted, hints will be generated to fill these gaps. An example of this can be seen in the following image typed into LogicAssistant.
 
