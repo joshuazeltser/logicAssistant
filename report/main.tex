@@ -361,7 +361,7 @@ After further research of this topic, I found a resource containing a proof solv
 	\caption{Automated First Order Natural Deduction Proof Solver (my implementation based on~\cite{ndAlgo})}\label{euclid}
 		\noindent\makebox[\textwidth][c]{%
 		\begin{minipage}{.92\linewidth}
-		In this algorithm I represent a proof as $P \vdash G$, where the set \textit{P} are the premises and \textit{G} is a set containing the goal of the proof together with any sub-goals. The two lists used in the algorithm are \textit{list\_proof}, to store the current state of the proof and \textit{list\_goal}, to store the current goals and sub-goals of the proof. $G_{n}$ will also be used to keep track of the current goal. Reachability of the current goal shows whether an expression is in scope and can therefore be accessed at a stage in the proof.
+		In this algorithm I represent a proof as $P \vdash G$, where the set \textit{P} are the premises and \textit{G} is a set containing the goal of the proof together with any sub-goals. The two lists used in the algorithm are \textit{list\_proof}, to store the current state of the proof and \textit{list\_goal}, to store the current goals and sub-goals of the proof.  Reachability of the current goal shows whether an expression is in scope and can therefore be accessed at a stage in the proof.
 		
 			\begin{enumerate}
 				\item Given the problem $P \vdash G$, take \textit{G} as the initial goal, add it to \textit{list\_goals} and set the current goal equal to \textit{G}. If the set \textit{P} is not empty then add \textit{P} to \textit{list\_proof}.
@@ -383,7 +383,7 @@ After further research of this topic, I found a resource containing a proof solv
 				
 				\item Create a new goal that will help to achieve the current goal, set $G_{n}$ to this goal and add it to \textit{list\_goals}
 				\begin{enumerate}
-					\item Analyse the structure of $G_{n}$ and add appropriate assumptions or sub-goals to the lists based on the definitions below (note: some rules are defined differently to  \cite{ndAlgo}):
+					\item Analyse the structure of $G_{n}$ and add appropriate assumptions or sub-goals to the lists based on the definitions below (note: some rules are defined differently to  \cite{ndAlgo}). If your expression fits a structure on the left hand side of an arrow, apply the right hand side to your current state:
 					
 					Let $P_{1}$ ... $P_{k}$ = $\Gamma$, $G_{1}$ ... $G_{k}$ = $\Delta$ and $F$ is an elementary formula:
 				
@@ -1219,34 +1219,8 @@ Before solving a proof, In order to check whether it is valid follow the followi
 
 \pagebreak
 
+\bibliographystyle{IEEEtran}
 
-
-\begin{thebibliography}{9}
-
-\bibitem{pandora} 
-Pandora (Proof Assistant for Natural Deduction using Organised Rectangular Areas) is a learning support tool designed to guide the construction of natural deduction proofs. Found at \url{https://www.doc.ic.ac.uk/pandora/}, last retrieved 7/2/2017
-
-\bibitem{ndBook}
-Software Engineering Mathematics by Jim Woodcock and Martin Loomes, 1989 edition
-
-\bibitem{ndAlgo}
-Alexander Bolotov, Vyacheslav Bocharov, Alexander Gorchakov, Vasilyi Shangin \textit{Automated First Order Natural Deduction}. Conference Paper, January 2005
-
-\bibitem{surveyCrest}
-SurveyCrest, Free online survey creator. Found at \url{ https://www.surveycrest.com/}, last retrieved 6/6/2017
-
-\bibitem{jBrains}
-\url{http://blog.jbrains.ca/permalink/the-four-elements-of-simple-design}
-
-\bibitem{SED}
-Software Engineering Design Course Notes, Imperial College, Dr Robert Chatley
-
-\bibitem{danNorth}
-\url{https://dannorth.net/introducing-bdd/}
-
-
-\end{thebibliography}
-
-
+\bibliography{references/refs}
 
 \end{document}
