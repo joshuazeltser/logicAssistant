@@ -173,23 +173,7 @@ function indent_function() {
 }
 
 
-function changeColour() {
-    var colour = [];
-    var hint = document.getElementById('hintButton');
-    if (hint.getAttribute('class') == 'btn btn-primary') {
-        hint.setAttribute('class', 'btn btn-warning');
-        colour.push('btn btn-warning');
-        localStorage.setItem('colour', JSON.stringify(colour));
-    } else if (hint.getAttribute('class') == 'btn btn-warning') {
-        hint.setAttribute('class', 'btn btn-success');
-        colour.push('btn btn-success');
-        localStorage.setItem('colour', JSON.stringify(colour));
-    } else {
-        hint.setAttribute('class', 'btn btn-primary');
-        colour.push('btn btn-primary');
-        localStorage.setItem('colour', JSON.stringify(colour));
-    }
-}
+
 
 $(function () {
     var textFile = null,
@@ -236,23 +220,59 @@ $(function () {
     window.onload = hideHelper;
 });
 
-function hideHelper() {
-
-    var list = JSON.parse(localStorage.getItem('colour'));
+function changeColour() {
+    var colour = new Array();
     var hint = document.getElementById('hintButton');
-    if (list.pop() == 'btn btn-warning') {
+    if (hint.getAttribute('class') == 'btn btn-primary') {
         hint.setAttribute('class', 'btn btn-warning');
-        $("#hintBox").show();
-        $("#errorBox").hide();
-    } else if (list.pop() == 'btn btn-success') {
+        colour.push('btn btn-warning');
+
+    } else if (hint.getAttribute('class') == 'btn btn-warning') {
         hint.setAttribute('class', 'btn btn-success');
-        $("#hintBox").show();
-        $("#errorBox").show();
+        colour.push('btn btn-success');
     } else {
         hint.setAttribute('class', 'btn btn-primary');
+        colour.push('btn btn-primary');
+    }
+    localStorage.setItem('colour', JSON.stringify(colour));
+}
+
+function hideHelper() {
+
+    console.log('hello');
+    var list = JSON.parse(localStorage.getItem('colour'));
+    var hint = document.getElementById('hintButton');
+
+    // console.log(list.pop());
+
+    var c = list.pop();
+
+    if (c === 'btn btn-warning') {
+        hint.setAttribute('class', 'btn btn-warning');
+        console.log(hint.getAttribute('class'));
+        $("#hintBox").show();
+        $("#errorBox").hide();
+        $("#aHintBox").hide();
+    }
+
+    if (c === 'btn btn-success') {
+        hint.setAttribute('class', 'btn btn-success');
+        console.log(hint.getAttribute('class'));
+        $("#hintBox").hide();
+        $("#errorBox").hide();
+        $("#aHintBox").show();
+    }
+
+    if (c === 'btn btn-primary') {
+        hint.setAttribute('class', 'btn btn-primary');
+        console.log(hint.getAttribute('class'));
         $("#hintBox").hide();
         $("#errorBox").show();
+        $("#aHintBox").hide();
     }
+
+
+    // localStorage.removeItem('colour');
 
     checkHintStatus();
 //

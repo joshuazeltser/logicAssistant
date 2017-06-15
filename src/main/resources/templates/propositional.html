@@ -187,6 +187,7 @@
                 </div>
 
                 <script>
+                    window.onload = hideHelper;
                     window.onload = getVariables();
                     window.onload = getLemmas();
 //
@@ -196,8 +197,10 @@
 
                         if (localStorage.getItem('lemmas') != []) {
                             var vals = JSON.parse(localStorage.getItem('lemmas'));
-                            proof.value = proof.value + vals.pop() + '\n';
-                            rules.value = rules.value + 'Lemma\n';
+                            if (vals != null) {
+                                proof.value = proof.value + vals.pop() + '\n';
+                                rules.value = rules.value + 'Lemma\n';
+                            }
                         }
 
                         localStorage.removeItem('lemmas');
@@ -211,8 +214,10 @@
                         if (localStorage.getItem('items') != []) {
                             var vals = JSON.parse(localStorage.getItem('items'));
 
-                            proof.value = proof.value + vals.pop();
-                            rules.value = rules.value + vals.pop();
+                            if (vals != null) {
+                                proof.value = proof.value + vals.pop();
+                                rules.value = rules.value + vals.pop();
+                            }
 
                             localStorage.removeItem('items');
                         }
@@ -252,6 +257,7 @@
                         <div class="panel-body">
                             <output id="errorBox"  name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
                             <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint()}"></output>
+                            <output id="aHintBox"  th:name="aHintResult" th:utext="${proof.generateAdvancedHint()}"></output>
                             <style>
                                 output {
                                     font-size: 16px;

@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -10,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class HintTests {
 //
     Proof proof = new Proof();
+
 //
     @Test
     public void andEliminationSolverTest() throws SyntaxException {

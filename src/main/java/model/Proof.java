@@ -1025,7 +1025,13 @@ public class Proof {
         errors.addAll(hs);
     }
 
+    public String generateAdvancedHint() throws SyntaxException {
+        setAdvancedHints(true);
+        return generateHint();
+    }
+
     public String generateHint() throws SyntaxException {
+
 
         if (resultExpr.toString().equals("")) {
             return "";
@@ -2175,6 +2181,14 @@ public class Proof {
 
     public void setAdvancedHints(boolean bool) {
         advancedHints = bool;
+    }
+
+    public void switchHints() {
+        if (advancedHints) {
+            advancedHints = false;
+        } else {
+            advancedHints = true;
+        }
     }
 
 
