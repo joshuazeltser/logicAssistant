@@ -1032,6 +1032,9 @@ public class Proof {
 
     public String generateHint() throws SyntaxException {
 
+        if (!errors.isEmpty()) {
+            return printErrors();
+        }
 
         if (resultExpr.toString().equals("")) {
             return "";

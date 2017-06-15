@@ -233,12 +233,21 @@ public class Expression {
                             " twice in a row as part of an expression");
                 }
             }
+            if (i < tokens.length-1) {
+                if (isOperator(tokens[i]) && isOperator(tokens[i + 1])) {
+                    throw new SyntaxException("Syntax Error: You cannot use an operator twice in a row as part " +
+                            "of an expression");
+                }
 
-            if (isOperator(tokens[i]) && isOperator(tokens[i+1]) && i < tokens.length-1) {
-                throw new SyntaxException("Syntax Error: You cannot use " + convertStringToHTML(tokens[i]) +" " +
-                        "twice in a row as part of an expression");
+
+                if (!isOperator(tokens[i]) && !isOperator(tokens[i + 1]) && !tokens[i].equals("NOT")
+                        && !tokens[i + 1].equals("NOT") && !tokens[i].equals("OPEN")
+                        && !tokens[i + 1].equals("OPEN")  && !tokens[i].equals("CLOSE")
+                        && !tokens[i + 1].equals("CLOSE")) {
+                    throw new SyntaxException("Syntax Error: You cannot use two Propositions " +
+                            "in a row as part of an expression");
+                }
             }
-
 
 
             if (!inWhiteList(tokens[i])) {
@@ -323,6 +332,10 @@ public class Expression {
 
     private boolean isOperator(String str) {
         switch (str) {
+            case "AND":
+            case "OR":
+            case "IMPLIES":
+            case "ONLY":
             case "^":
             case "->":
             case "<->":
