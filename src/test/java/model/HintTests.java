@@ -1183,21 +1183,21 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-                System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Not Not Elimination"));
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Not Not Elimination, using lines: 1"));
 
         str = "!!A\nA -> B\nA\nB";
         rules +="\nDoubleNot-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
-                        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+//                        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Elimination, using lines: 2, 3"));
 
         rules +="\nImplies-Elim (2,3)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
 
     }
 
@@ -1211,49 +1211,49 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "B ^ E\nE -> C\nA\n\nA -> (B -> C)";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "B ^ E\nE -> C\nA\nB\n\nA -> (B -> C)";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 1"));
 
         str = "B ^ E\nE -> C\nA\nB\nE\n\nA -> (B -> C)";
         rules +="\nAnd-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Elimination, using lines: 2, 5"));
 
         str = "B ^ E\nE -> C\nA\nB\nE\nC\n\nA -> (B -> C)";
         rules +="\nImplies-Elim (2,5)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Introduction, using lines: 4, 6"));
 
         str = "B ^ E\nE -> C\nA\nB\nE\nC\nB -> C\nA -> (B -> C)";
         rules +="\nImplies-Intro (4,6)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Introduction, using lines: 3, 7"));
 
         rules +="\nImplies-Intro (3,7)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
     @Test
@@ -1265,35 +1265,35 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "!(A | B)\nA\n\n!A";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Or Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Or Introduction, using lines: 2"));
 
         str = "!(A | B)\nA\nA | B\n\n!A";
         rules +="\nOr-Intro (2)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Not Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Not Elimination, using lines: 1, 3"));
 
         str = "!(A | B)\nA\nA | B\nFALSE\n!A";
         rules +="\nNot-Elim (1,3)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Not Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Not Introduction, using lines: 2, 4"));
 
         rules +="\nNot-Intro (2,4)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
     @Test
@@ -1306,56 +1306,56 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 1"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\n\nD | E";
         rules +="\nAnd-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\n\nD | E";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Elimination, using lines: 2, 5"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\n\nD | E";
         rules +="\nImplies-Elim (2,5)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\n\nD | E";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Elimination, using lines: 3, 7"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\nD\n\nD | E";
         rules +="\nImplies-Elim (3,7)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Or Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Or Elimination, using lines: 4, 5, 6, 7, 8"));
 
         str = "A ^ (B | C)\nB -> D\nC -> D\nB | C\nB\nD\nC\nD\nD\nD | E";
         rules +="\nOr-Elim (4,5,6,7,8)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Or Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Or Introduction, using lines: 9"));
 
         rules +="\nOr-Intro (9)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
     @Test
@@ -1368,14 +1368,14 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Only Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Only Introduction, using lines: 1, 2"));
 
         rules +="\nOnly-Intro (1,2)";
         proof.frontEndFunctionality(str, rules);
 
-                System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
     }
 
     @Test
@@ -1389,23 +1389,23 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 1"));
 
         String str1 = "A ^ B\nC\nD\nB\nB ^ C\nD -> B ^ C";
         String rules1 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)";
 
         proof.frontEndFunctionality(str1, rules1);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Introduction, using lines: 4, 2"));
 //
         String rules2 = "GIVEN\nGIVEN\nASSUMPTION\nAnd-Elim (1)\nAnd-Intro (4,2)";
 
         proof.frontEndFunctionality(str1, rules2);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Introduction"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Introduction, using lines: 3, 5"));
 
     }
 
@@ -1419,56 +1419,56 @@ public class HintTests {
 
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 1"));
 
         str = "A | B ^ D\nA -> B\nA | B\n\nB";
         rules +="\nAnd-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 1"));
 
         str = "A | B ^ D\nA -> B\nA | B\nD\n\nB";
         rules +="\nAnd-Elim (1)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "A | B ^ D\nA -> B\nA | B\nD\nA\n\nB";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Implies Elimination, using lines: 2, 5"));
 
         str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\n\nB";
         rules +="\nImplies-Elim (2,5)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Assumption"));
 
         str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\nB ^ D\n\nB";
         rules +="\nASSUMPTION";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination, using lines: 7"));
 
         str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\nB ^ D\nB\nB";
         rules +="\nAnd-Elim (7)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Hint: Or Elimination"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Or Elimination, using lines: 1, 5, 6, 7, 8"));
 
         rules +="\nOr-Elim (1,5,6,7,8)";
         proof.frontEndFunctionality(str, rules);
 
-        System.out.println(proof.generateHint());
-//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+//        System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
 
     }
 
