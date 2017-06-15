@@ -107,7 +107,7 @@
         </center>
         <p></p>
 
-        <output id="hintStatus" onload="checkHintStatus()" value="Hints are Off"></output>
+
 
         <script>
 
@@ -124,11 +124,11 @@
                 var hint = document.getElementById('hintButton');
 
                 if (hint.getAttribute('class') == 'btn btn-primary') {
-                    status.value = 'Hints are Off';
+                    status.value = 'Hints are OFF';
                 } else if (hint.getAttribute('class') == 'btn btn-warning') {
-                    status.value = 'Simple Hints are On';
+                    status.value = 'Simple Hints are ON';
                 } else {
-                    status.value = 'Advanced Hints are On';
+                    status.value = 'Advanced Hints are ON';
                 }
             }
 
@@ -252,6 +252,7 @@
                         </ul>
                     </div>
                     <a download="proof.la" id="downloadlink" style="display: none">Download</a>
+                    <output id="hintStatus" onload="checkHintStatus()" value="Hints are OFF" style='font-size: 12px; font-weight:bold'></output>
                     <p></p>
                     <div id="error" class="panel panel-default">
                         <div class="panel-body">

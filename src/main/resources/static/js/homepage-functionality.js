@@ -271,9 +271,6 @@ function hideHelper() {
         $("#aHintBox").hide();
     }
 
-
-    // localStorage.removeItem('colour');
-
     checkHintStatus();
 //
 }
