@@ -37,9 +37,9 @@ public class TruthTable {
             boolean result = validateProof();
 
             if (result) {
-                return "Proof is Valid";
+                return "Conclusion IS provable using these premises";
             } else {
-                return "Proof is Invalid";
+                return "Conclusion is NOT provable using these premises";
             }
         }
         else {

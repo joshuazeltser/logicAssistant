@@ -119,12 +119,17 @@ Throughout this report I will represent propositions using a capital letter or a
 \item A logical Iff (if and only if) will be represented by $\Leftrightarrow$
 \end{itemize}
 
-Propositions can be grouped together to form sentences using these operators. This is how Propositional Logic is used to model real life scenarios made up of events represented by Propositions. The syntax and grammer of a sentence in Propositional Logic is defined in Figure 1.
+Propositions can be grouped together to form sentences using these operators. This is how Propositional Logic is used to model real life scenarios made up of events represented by Propositions. The syntax and grammer of a sentence in Propositional Logic is defined in Figure 1 below.
 
 \begin{figure}[!ht]
-  \centering
-  \makebox[\textwidth]{\includegraphics[width=100mm]{figures/PropositionalSentences}}
-  \caption{Propositional Logic Grammar Rules}
+	
+	\noindent\makebox[\textwidth][c]{%
+	\begin{minipage}{.92\linewidth}
+		\centering
+		\large
+		P $:=$ a proposition | $\top$ | $\bot$ | $\neg P$ | P $\vee$ P | P $\wedge$ P | P $\Rightarrow$ P | P $\Leftrightarrow$ P 
+	\end{minipage}}
+	\caption{Propositional Sentence Definition}
 \end{figure}
 
 I have now defined a Propositional Logic language for this project. I have added brackets into the rules in order to ensure that it is possible to fully understand what a Propositional statement is saying and is therefore unambiguous. Without brackets some statements may become a bit ambiguous and difficult to understand. Truth tables can be used to interpret all of the possible results of a logical sentence. This helps users to plan for any possible outcomes of a set of propositions occurring.
@@ -141,7 +146,7 @@ I have now defined a Propositional Logic language for this project. I have added
 
 
 \subsection{Predicate Logic \label{predicate}}
-Propositional logic is very useful when trying to represent the truth values of propositions, but there is limited scope in this formalisation as to the type of statements that can be represented. For example if I wanted to represent the statement "some boys like football", it would be very difficult to do this using just Propositional Logic. This is why I decided to also check proofs of the more useful first order Predicate Logic. This logical system allows users to both apply properties to specific objects and add quantifiers to them. This makes it much more expressive and useful in real world applications. 
+Propositional logic is very useful when trying to represent the truth values of propositions, but there is limited scope in this formalisation as to the type of statements that can be represented. For example if I wanted to represent the statement "some boys like football", it would be very difficult to do this using just Propositional Logic. This is why I decided to also check proofs created using the more useful first order Predicate Logic. This logical system allows users to both apply properties to specific objects and add quantifiers to them. This makes it much more expressive and useful in real world applications. 
 
 The properties that an object has are called a Predicate. Predicates can be unary where they have just one property, or they can be n-ary describing relationships between them and other predicates. Predicate logic also includes two quantifiers that allow this formalisation to be more expressive. The first quantifier is a "for all" quantifier ($\forall$). This enables the representation of statements like "all dragons are green". The other quantifier is the "exists" quantifier ($\exists$). This quantifier allows the representation of statements such as "some dragons are blue".These two quantifiers together, increase the expressive power that can be created using this logical system. Below are some examples of statements that can be created using Predicate logic.
 
@@ -161,7 +166,7 @@ There are ten Propositional rules for Natural Deduction that can be used to form
 
 \subsubsection{Propositional Rules Examples}
 
-Throughout this project I have used the Gentzen Natural Deduction system. This means that I have set out the proofs as shown in the examples below. The first example shows a basic proof with the given premise written first followed by the various deductions made throughout the proof. On each line of the proof, I have written a justification of the rule that was used together with the lines that the rule has used to make the deduction.
+Throughout this project I have used the Gentzen Natural Deduction system (see \cite{gentzen}). This means that I have set out the proofs as shown in the examples below using the various Natural Deduction rules (see \ref{appendix:nd-prop}). The first example shows a basic proof with the given premise written first followed by the various deductions made throughout the proof. On each line of the proof, I have written a justification of the rule that was used together with the lines that the rule has used to make the deduction.
 
 \begin{exmp} Show that $A \wedge B \vdash A \vee B$
 
@@ -292,6 +297,8 @@ In Predicate Logic, similar Natural Deduction proofs can be created. These proof
 
 \section{Design \label{design}}
 
+LogicAssistant has been created in order to provide an educational tool that can help anyone solving Natural Deduction Proofs. This tool, as well as checking whether users proofs are valid, will provide them with hints, ensuring that no one is stuck not knowing what to do next in a proof. I made sure to design this application to be as user friendly as possible, with the many useful features allowing users of all levels of knowledge of this area to benefit from it. 
+
 The design methodology that I decided to use for this project is the Model View Controller architecture. This entails the separation of the front-end website components from the back-end where the actual core functionality of the system is written. These two areas are then controlled by various controller classes, which bring all of these components together to create the finished application. I chose this methodology in order to make the system easier to understand and later build on. Whenever I need to add an extra feature to the application, I am able to just update the model part of the code-base and then change the front-end view code. This is much simpler than having all of the code together in one large code base. This methodology therefore made the development of this application much easier.
 
 
@@ -307,7 +314,7 @@ The Operator class is used to represent one of the seven operators used in this 
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/ComponentsUML}}
+	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/ComponentsUML}}
 	\caption{Component class structure}
 \end{figure}
 
@@ -550,7 +557,7 @@ The final and most important page of the application is the User Guide. This pag
 
 \subsection{Controller}
 
-In order to coordinate and control the model and view parts of this web-app, it was necessary to add some controller classes. As I used the Java Spring framework to build this application (see \ref{JavaSpring}), I was provided with some special controller functionality that can be used to control the entire programme. Therefore, each page has its own controller class which retrieves a mapping based on the url, and allows the passing of Java objects into the front-end of the application. For example, the main page receives a mapping of "/", as it is the home page, and the controller passes in a Proof object so that the associated functionality can be applied. This controller also has a post mapping which returns to this same page after the form has been submitted. Similarly, the validity page has its own controller which receives a mapping of "/validity" as the browser enters that page. The controller then provides a TruthTable object to the front-end, so that it can be used to carry out the validation checks. These two controllers are therefore really important as they allow the various pages to communicate with each other, as well as to the back-end of the programme. This setup means that unlike Ajax, interactions are only made between the front-end and back-end on a page reloading. Although this led to a few complications, in the end I was able to connect all of the required components successfully. This therefore completes the explanation of setup of the Model View Controller infrastructure that I have built for this application.
+In order to coordinate and control the model and view parts of this web-app, it was necessary to add some controller classes. As I used the Java Spring framework to build this application (see~\ref{JavaSpring}), I was provided with some special controller functionality that can be used to control the entire programme. Therefore, each page has its own controller class which retrieves a mapping based on the url, and allows the passing of Java objects into the front-end of the application. For example, the main page receives a mapping of "/", as it is the home page, and the controller passes in a Proof object so that the associated functionality can be applied. This controller also has a post mapping which returns to this same page after the form has been submitted. Similarly, the validity page has its own controller which receives a mapping of "/validity" as the browser enters that page. The controller then provides a TruthTable object to the front-end, so that it can be used to carry out the validation checks. These two controllers are therefore really important as they allow the various pages to communicate with each other, as well as to the back-end of the programme. This setup means that unlike Ajax, interactions are only made between the front-end and back-end on a page reloading. Although this led to a few complications, in the end I was able to connect all of the required components successfully. This therefore completes the explanation of setup of the Model View Controller infrastructure that I have built for this application.
 
 \pagebreak
 
@@ -679,12 +686,14 @@ From the outset of this project I realised how important testing would be for th
 	\caption{Test Driven Development Cycle (image from \cite{SED})}
 \end{figure}
 
-The cycle works by first writing a test before any implementation, which is expected to fail. Then small pieces of functionality are created in order for this test to pass. The code is then refactored according to common software engineering practises. Then more tests are written and the cycle begins again. This created two main benefits. Firstly, it means I will know whether the functionality that I had created had been successfully completed, as evidenced by these tests passing. On top of this, as new functionality are added, I will be able to ensure that the rest of the code-base is still functioning properly and has not been broken. This mechanism therefore made it very easy for me to add new features to the code-base. When writing these tests I wanted them to verify that the behaviour of the system is as expected. In order to do this I followed the idea of Behaviour Driven Development, a term thought of by Dan North a technology consultant (see \cite{danNorth}). The idea behind this is to encourage people to think about the required behaviour of their code, rather than the detail of the actual implementation. A plan can be made before starting a project and then formalised using the test cases themselves, together with the names given to them. I tried, where possible, to do this throughout my project, allowing my test suites to guide me through to the projects successful completion. This methodology was mainly used in the back-end of the project, where it was easy to write large test suites using JUnit (see \ref{JUnit}). In the end, this led to a large test-suite of over one hundred and ten tests being created. 
+The cycle works by first writing a test before any implementation, which is expected to fail. Then small pieces of functionality are created in order for this test to pass. The code is then refactored according to common software engineering practises. Then more tests are written and the cycle begins again. This created two main benefits. Firstly, it means I will know whether the functionality that I had created had been successfully completed, as evidenced by these tests passing. On top of this, as new functionality are added, I will be able to ensure that the rest of the code-base is still functioning properly and has not been broken. This mechanism therefore made it very easy for me to add new features to the code-base. When writing these tests I wanted them to verify that the behaviour of the system is as expected. In order to do this I followed the idea of Behaviour Driven Development, a term thought of by Dan North a technology consultant (see~\cite{danNorth}). The idea behind this is to encourage people to think about the required behaviour of their code, rather than the detail of the actual implementation. A plan can be made before starting a project and then formalised using the test cases themselves, together with the names given to them. I tried, where possible, to do this throughout my project, allowing my test suites to guide me through to the projects successful completion. This methodology was mainly used in the back-end of the project, where it was easy to write large test suites using JUnit (see \ref{JUnit}). In the end, this led to a large test-suite of over one hundred and ten tests being created. 
 
 \subsubsection{Back-End}
 The main portions of this project's functionality were created in the back-end of the code-base. As this part was written in Java, I was able to easily create big test-suites using JUnit (see \ref{JUnit}). As mentioned above, Maven (see \ref{maven}) was used to package and deploy this project. By writing a large number of back-end tests, I was able to link my test-suites to my Maven build, ensuring that the code-base is fully functioning whenever the programme is deployed.
 
 The large number of test-cases that have been created for the back-end of this project, meant that I could test a variety of aspects of the code-base. I therefore split the test-cases into five different classes. The first tests the various operations that can be done on expressions. When I created the Expression class in the back-end, these tests enabled me to create Expressions which could be manipulated in the various ways that I required later on in the project. Next, I created an error test class. One of the most important features of this software, is the error messages that are produced when mistakes are made. This makes the software educational for the user, which was one of my main objectives. There are lots of different possible error messages that could occur depending on the case that the user is in. I therefore was insistent on writing plenty of tests to check to see whether the correct error messages are being displayed at any time. This helped me to fine tune my error message delivery system. The code below is taken from one my Syntax error test cases.
+
+\begin{figure}[!ht]
 
 	\begin{lstlisting}
 		@Test
@@ -704,12 +713,17 @@ The large number of test-cases that have been created for the back-end of this p
 			}
 		}
 	\end{lstlisting}
-
+\caption{Java Syntax Error test example }
+\end{figure}
 
 The next and most significant section of tests is for Natural Deduction rules. One of the key features of this software is the checking of Natural Deduction proofs to ensure that they are valid. In order to do this the software checks that each rule that is used in the proof is used correctly. This part of the project required a lot of code to be written so I had to ensure that no code was broken as new parts were added. I therefore created a test class just for these rules. This class contains twenty nine tests which go through all of the Natural Deduction rules and tries to ensure that the checks that are made are done so correctly. I also tried to add some edge cases which attempt to trick the code as it runs these checks. With the help of this test class, I was confident that this part of the project was functioning correctly.
 
 The final and largest test class, tests the solver and hint components of the project. The algorithm that I used to solve natural deduction proofs in order to generate hints (see \ref{hints}), has been proven to be sound and complete (as proven in \cite{ndAlgo}). However, I had to ensure that regarding the way I implemented it, with the extensions that I added, I was confident enough in the correctness of the algorithm. I therefore created an in-depth test-suite to test both simple and more complex cases that this part of the software could face. Due to the large number of possible cases, I had to create a high number of tests. This meant that I spent a long time perfecting this test-suite in order for it to be a useful tool for this part of the project. Below is an example of a test case written to test the hint generation system. 
+
+Overall, these test classes together helped me to perfect each part of this project, ensuring that they are able to work in almost any cases that are thrown at them.
 \pagebreak
+
+\begin{figure}[!ht]
 	\begin{lstlisting}
 		@Test
 		public void hintTest8() throws SyntaxException {
@@ -728,24 +742,23 @@ The final and largest test class, tests the solver and hint components of the pr
 			// Add the previously hinted step
 			str = "A ^ (B -> D)\nB\nB -> D\nD";
 			rules +="\nAnd-Elim (1)";
-			
 			proof.frontEndFunctionality(str, rules);
-
 			assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
 		
 			rules +="\nImplies-Elim (2,3)";
 			proof.frontEndFunctionality(str, rules);
-
 			assertTrue(proof.generateHint().equals("Proof already successfully solved"));
 		}
 \end{lstlisting}
+\caption{Java Hint test example}
+\end{figure}
 
-Overall, these test classes together helped me to perfect each part of this project, ensuring that they are able to work in almost any cases that are thrown at them.
 
 \subsubsection{Front-End}
 
 A major component of the project is the front-end, which the users themselves will be using to access the useful functionality that this software provides. This part of the project is very important as the user will use this to judge how useful this tool actually is. I therefore considered that it would be wrong for me to just create test-cases for the back-end of the project. Using Selenium (see \ref{selenium}), I was able to create integration tests which actually act as the user by clicking on the buttons and typing in input. These tests allowed me to see how the user experiences the website itself, and whether each of the features works for them. Just because my features work in the back-end of the software, it does not necessarily mean that they will also work in the front-end. Therefore, I must use these front-end tests to ensure that all parts of my software are functioning correctly. These tests were very useful after each feature was created to ensure that they were working as expected throughout the development process. This way I was sure that the user received the full experience provided by LogicAssistant. An example of one of my front-end tests can be found below.
 
+\begin{figure}[!ht]
 \begin{lstlisting}
 		@Test
 		public void complexProofTest1() throws InterruptedException {
@@ -760,6 +773,9 @@ A major component of the project is the front-end, which the users themselves wi
 			assertTrue(errorBox.getText().equals("Proof is Valid"));
 		}
 \end{lstlisting}
+
+\caption{Java front-end test example}
+\end{figure}
 
 \subsection{Trello \label{trello}}
 
