@@ -1530,6 +1530,50 @@ public class Proof {
 
     }
 
+    private List<Integer> findOrElimRefs(List<Expression> proof) throws SyntaxException {
+        List<Integer> refs = new LinkedList<>();
+
+        Expression orExpression = new Expression();
+        for (int i = 0; i < proof.size(); i++) {
+            if (proof.get(i).contains(new Operator("OR", OR))) {
+                orExpression.addToExpression(proof.get(i).toString());
+
+                List<Expression> sides = orExpression.splitExpressionBy(OperatorType.OR);
+
+                if (checkBracketValidity(sides.get(0)) && checkBracketValidity(sides.get(1))) {
+                    refs.add(i + 1);
+                } else {
+                    continue;
+                }
+
+                for (int j = i + 1; j < proof.size(); j++) {
+                    if (proof.get(j).getRuleType() == RuleType.ASSUMPTION) {
+                        refs.add(j+1);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        List<Expression> sides = orExpression.splitExpressionBy(OperatorType.OR);
+
+
+        Expression rhs = new Expression();
+        rhs.addToExpression(sides.get(1).toString());
+
+        for (int j = refs.get(1)-1; j < proof.size(); j++) {
+            if (proof.get(j).equals(rhs) && proof.get(j).getRuleType() == RuleType.ASSUMPTION) {
+                refs.add(j);
+                refs.add(j+1);
+                break;
+            }
+        }
+
+        refs.add(proof.size());
+
+
+        return refs;
+    }
 
 
     private void applyIntroductionRule(Expression expr) throws SyntaxException {
@@ -1553,11 +1597,42 @@ public class Proof {
                 } else {
 
                     for (int i = rhsIndex; i < list_proof.size(); i++) {
+                        List<Integer> newRefs = new LinkedList<>();
+                        if (i > rhsIndex) {
+                            List<Integer> refs = list_proof.get(i).getReferenceLine();
+
+
+
+                            for (int j = 0; j < refs.size(); j++) {
+                                if (j == 0 && refs.size() != 1) {
+                                    newRefs.add(refs.get(j));
+                                } else {
+                                    newRefs.add(refs.get(j) + orElimExtra);
+                                }
+                            }
+                        } else {
+                            newRefs.addAll(list_proof.get(i).getReferenceLine());
+                        }
+
+                        list_proof.get(i).removeRefs();
+
+                        for (Integer ref : newRefs) {
+                            list_proof.get(i).addReferenceLine(ref + "");
+                        }
+
                         temp1.add(list_proof.get(i));
                     }
 
+
                     Expression expr1 = list_goals.get(list_goals.size() - 1);
                     expr1.setRuleType(RuleType.OR_ELIM);
+
+                    List<Integer> elimRefs = findOrElimRefs(temp1);
+
+                    for (Integer ref : elimRefs) {
+                        expr1.addReferenceLine(ref + "");
+                    }
+
                     temp1.add(expr1);
                     inscope.add(expr1);
                     list_proof = temp1;

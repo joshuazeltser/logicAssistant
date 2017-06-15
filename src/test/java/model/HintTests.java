@@ -1409,5 +1409,68 @@ public class HintTests {
 
     }
 
+    @Test
+    public void advancedHintTest7() throws SyntaxException {
+
+        proof.setAdvancedHints(true);
+
+        String str = "A | B ^ D\nA -> B\n\nB";
+        String rules = "GIVEN\nGIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "A | B ^ D\nA -> B\nA | B\n\nB";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "A | B ^ D\nA -> B\nA | B\nD\n\nB";
+        rules +="\nAnd-Elim (1)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "A | B ^ D\nA -> B\nA | B\nD\nA\n\nB";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Implies Elimination"));
+
+        str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\n\nB";
+        rules +="\nImplies-Elim (2,5)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Assumption"));
+
+        str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\nB ^ D\n\nB";
+        rules +="\nASSUMPTION";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "A | B ^ D\nA -> B\nA | B\nD\nA\nB\nB ^ D\nB\nB";
+        rules +="\nAnd-Elim (7)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Hint: Or Elimination"));
+
+        rules +="\nOr-Elim (1,5,6,7,8)";
+        proof.frontEndFunctionality(str, rules);
+
+        System.out.println(proof.generateHint());
+//        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+    }
+
 
 }
