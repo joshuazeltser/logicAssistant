@@ -1,8 +1,10 @@
 package model;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -1151,29 +1153,7 @@ public class HintTests {
 
     }
 
-    @Test
-    public void lemmaTest1() throws SyntaxException {
 
-        String str = "A | !A\n\nA";
-        String rules = "Lemma\n";
-
-
-        proof.frontEndFunctionality(str, rules);
-
-//        System.out.println(proof.isProofValid());
-        assertTrue(proof.generateHint().equals("Hint: Assumption"));
-
-    }
-
-    @Test
-    public void lemmaTest2() throws SyntaxException {
-
-      Expression expr = new Expression();
-
-
-        System.out.println(expr.getRuleType());
-
-    }
 
     @Test
     public void advancedHintTest1() throws SyntaxException {
@@ -1473,6 +1453,65 @@ public class HintTests {
         assertTrue(proof.generateHint().equals("Proof already successfully solved"));
 
     }
+
+    @Test
+    public void lemmaTest1() throws SyntaxException {
+
+        String str = "A | !A\n\nA";
+        String rules = "Lemma1 ()";
+
+
+        proof.frontEndFunctionality(str, rules);
+
+        assertTrue(proof.isProofValid());
+
+    }
+
+    @Test
+    public void lemmaTest2() throws SyntaxException {
+
+
+        String str = "D\nA\nB\nA ^ B -> C\nC\n\nC ^ D";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (2,3,4)";
+
+        proof.frontEndFunctionality(str, rules);
+
+
+        assertTrue(proof.isProofValid());
+
+    }
+
+    @Test
+    public void lemmaTest3() throws SyntaxException {
+
+
+        String str = "E\nA\nB\nA ^ B -> C\nC\nD ^ A ^ B\n";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (2,3,4)\nLemma2 (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+       assertFalse(proof.isProofValid());
+
+    }
+
+    @Test
+    public void lemmaTest4() throws SyntaxException {
+
+
+        String str = "D\nE ^ F\nA\nB\nC\nA ^ B ^ C\nE\nF\nD ^ E ^ F";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (3,4,5)\nAnd-Elim (2)\nAnd-Elim (2)\nAvailable (6)";
+
+        proof.frontEndFunctionality(str, rules);
+
+
+//        assertFalse(proof.isProofValid());
+
+
+        System.out.println(proof.isProofValid());
+        proof.printRules();
+        System.out.println(proof.getErrors());
+    }
+
 
 
 }

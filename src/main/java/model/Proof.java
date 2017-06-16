@@ -45,6 +45,12 @@ public class Proof {
 
     boolean advancedHints;
 
+    List<String> lemmaDependants;
+
+
+
+    private Map<String, Integer> lemmas;
+
 
     public Proof() {
         expressions = new LinkedList<>();
@@ -64,6 +70,8 @@ public class Proof {
         orElimStack = new Stack<>();
         orsLeft = false;
         advancedHints = false;
+        lemmas = new LinkedHashMap<>();
+        lemmaDependants = new LinkedList<>();
     }
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
@@ -172,15 +180,14 @@ public class Proof {
 
                 } catch (SyntaxException s) {
 
-                    errors = new LinkedList<>();
+
                     errors.add("LINE " + (i + 1) + " - " + s.getMessage());
                     //if there is a syntax error don't display other error messages
                     return;
                 }
 
 
-                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION") &&
-                        !components[0].equals("Lemma")) {
+                if (!components[0].equals("GIVEN") && !components[0].equals("ASSUMPTION")) {
                     if (components.length == 1) {
 
                         String comps = removeBracketsFromString(components[0]);
@@ -189,6 +196,7 @@ public class Proof {
 
                         for (int j = 0; j < lines.length; j++) {
                             if (!lines[j].equals("")) {
+
                                 newExpr.addReferenceLine(lines[j]);
                             }
                         }
@@ -201,6 +209,9 @@ public class Proof {
 
                         String[] lines = comps.split(",");
                         for (int j = 0; j < lines.length; j++) {
+                            if (components[0].contains("Lemma") && components[1].equals("()")) {
+                                break;
+                            }
                             newExpr.addReferenceLine(lines[j]);
                         }
                     }
@@ -301,16 +312,21 @@ public class Proof {
             return RuleType.DOUBLE_NOT_ELIM;
         }
 
-        String tick = StringEscapeUtils.unescapeHtml4("&#10004;");
-        String available = tick + "-Available";
-        if (rule.equals(available)) {
+//        String tick = StringEscapeUtils.unescapeHtml4("&#10004;");
+//        String available = "Available";
+        if (rule.equals("Available")) {
             return RuleType.AVAILABLE;
         }
 
+        if (!rule.equals("")) {
+            if (rule.substring(0, rule.length() - 1).equals("Lemma")) {
+                lemmas.put(rule, expressions.size());
+                return RuleType.LEMMA;
+            }
+        }
 
         //For testing purposes (HintTests.java)
         switch (rule) {
-            case "Lemma":
             case "GIVEN": return RuleType.GIVEN;
             case "ASSUMPTION": return RuleType.ASSUMPTION;
             case "And-Intro": return RuleType.AND_INTRO;
@@ -331,6 +347,13 @@ public class Proof {
         }
         System.out.println("invalid");
         return RuleType.INVALID;
+    }
+
+    public void printRules() {
+        for (Expression e : expressions) {
+            System.out.print(e.getRuleType() + " ");
+        }
+        System.out.println();
     }
 
     private String ruleFormatting(String rule) {
@@ -380,7 +403,8 @@ public class Proof {
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
                 case AVAILABLE: isAvailableRuleValid(expressions.get(i)); break;
-                case INVALID: System.out.println("heree " + expressions.get(i)); return false;
+                case LEMMA: isLemmaRuleValid(expressions.get(i)); break;
+                case INVALID: return false;
                 case EMPTY: return true;
                 default:
                     if (expressions.get(i).getRuleType() == null) {
@@ -393,6 +417,8 @@ public class Proof {
 
         return errors.isEmpty();
     }
+
+
 
     public String frontEndProofValidity() throws SyntaxException {
         if (proofString.equals("") || proofLabels.equals("")) {
@@ -452,7 +478,48 @@ public class Proof {
         return boxes;
     }
 
-    public boolean isAvailableRuleValid(Expression e1) {
+    private boolean isLemmaRuleValid(Expression e1) throws SyntaxException {
+        List<Expression> lemmaExpr = new LinkedList<>();
+        List<Integer> refs = e1.getReferenceLine();
+
+
+
+
+        for (int i = 0; i < refs.size(); i++) {
+            Expression temp = new Expression();
+            if (expressions.get(refs.get(i) - 1).getRuleType() != RuleType.GIVEN) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be proved using " +
+                        "expressions which aren't premises");
+            }
+            temp.addToExpression(expressions.get(refs.get(i) - 1).toString());
+            lemmaExpr.add(temp);
+        }
+
+
+
+
+
+        TruthTable lemmaTable = new TruthTable();
+
+        if (!refs.isEmpty()) {
+            lemmaTable.setPremises(lemmaExpr);
+        }
+        lemmaTable.setResult(e1);
+
+       if (lemmaTable.validateProof()) {
+           return true;
+       } else {
+           errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be proved using " +
+                   "these premises");
+           return false;
+       }
+
+
+
+
+    }
+
+    public boolean isAvailableRuleValid(Expression e1) throws SyntaxException {
         int ref1;
 
         try {
@@ -463,10 +530,107 @@ public class Proof {
             return false;
         }
 
+        if (expressions.get(ref1).getRuleType() == RuleType.LEMMA) {
+            Expression lemmaResult = expressions.get(ref1);
+
+            List<Expression> lemmaExpr = new LinkedList<>();
+            for (Integer ref : lemmaResult.getReferenceLine()) {
+                Expression temp = new Expression();
+                temp.addToExpression(expressions.get(ref - 1).toString());
+                lemmaExpr.add(temp);
+            }
+
+            lemmaExpr.add(lemmaResult);
+
+            // Go through permises of lemma
+            // If they contain no operator then find an unused expression in the proof and assign it
+            // If they contain an operator find an unused expression with this operator in the proof
+
+
+            List<Proposition> resultProps = setupLemmaPropositions(lemmaResult, lemmaExpr);
+
+            List<List<Integer>> propositionStructure = setupPropositionStructure(lemmaExpr, resultProps);
+
+            List<Integer> values = new LinkedList<>();
+
+
+            for (List<Integer> v : propositionStructure) {
+                for (Integer i : v) {
+                    if (!values.contains(i)) {
+                        values.add(i);
+                    }
+                }
+            }
+
+            List<List<Integer>> valuePermutations = generatePerm(values);
+
+
+            boolean ok = false;
+            for (Expression expr : lemmaExpr) {
+                for (Expression expr1 : expressions) {
+                    if (!expr1.isMarked() && !expr.isLemmaMarked()) {
+                        if (expr.compareStructure(expr1)) {
+
+                            //compare propositions themselves once same structure
+
+                            for (List<Integer> perm : valuePermutations) {
+                                //perm = [0,1,2] [0] [1] [2] [0,1,2]
+                                Map<String, Integer> propNum = new HashMap<>();
+                                int count = 0;
+                                for (Proposition p : resultProps) {
+                                    propNum.put(p.toString(), perm.get(count));
+                                    count++;
+                                }
+                                List<Proposition> potential = expr1.listPropositions();
+
+                                System.out.println("propNums " + propNum);
+                                List<Integer> potentialNums = new LinkedList<>();
+
+//                                System.out.println("potential " + potential);
+                                for (Proposition p : potential) {
+                                    potentialNums.add(propNum.get(p.toString()));
+                                }
+                                System.out.println("resultProps " + resultProps);
+                                System.out.println("potentialNums " + potentialNums);
+
+                                System.out.println(propositionStructure);
+                                for (List<Integer> i : propositionStructure) {
+                                    if (potentialNums.equals(i)) {
+                                        ok = true;
+                                    }
+//                                    ok = false;
+                                }
+
+
+                            }
+
+
+                            expr.setLemmaMarked(true);
+                            expr1.setMarked(true);
+                        }
+                    }
+                }
+            }
+
+
+            System.out.println(propositionStructure);
+
+
+            if (!ok) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This lemma cannot be used" +
+                        " as not all of the premises can be applied");
+                return false;
+            }
+
+            return  true;
+        }
+
+
         Boolean x = checkReferenceInScope1(e1, ref1);
         if (x != null) return x;
 
         if (!e1.equals(expressions.get(ref1))) {
+            System.out.println("here");
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
                     "this rule");
             return false;
@@ -475,6 +639,93 @@ public class Proof {
         return true;
 
     }
+
+    public List<List<Integer>> generatePerm(List<Integer> original) {
+        if (original.size() == 0) {
+            List<List<Integer>> result = new ArrayList<List<Integer>>();
+            result.add(new ArrayList<Integer>());
+            return result;
+        }
+        Integer firstElement = original.remove(0);
+        List<List<Integer>> returnValue = new ArrayList<List<Integer>>();
+        List<List<Integer>> permutations = generatePerm(original);
+        for (List<Integer> smallerPermutated : permutations) {
+            for (int index=0; index <= smallerPermutated.size(); index++) {
+                List<Integer> temp = new ArrayList<Integer>(smallerPermutated);
+                temp.add(index, firstElement);
+                returnValue.add(temp);
+            }
+        }
+        return returnValue;
+    }
+
+    private List<List<Integer>> setupPropositionStructure(List<Expression> lemmaExpr, List<Proposition> resultProps) {
+        List<List<Integer>> propositionStructure = new LinkedList<>();
+
+        for (Expression expr : lemmaExpr) {
+
+            List<Integer> struct = new LinkedList<>();
+
+            List<Proposition> props = expr.listPropositions();
+
+
+            for (Proposition p1 : props) {
+                for (String p2 : lemmaDependants) {
+                    if (p1.toString().equals(p2.toString())) {
+                        System.out.println("props " + props);
+                        struct.add(lemmaDependants.indexOf(p1.toString()));
+
+                    }
+                }
+
+            }
+            propositionStructure.add(struct);
+        }
+
+
+        System.out.println("resultProps " + resultProps);
+        List<Integer> struct = new LinkedList<>();
+        for (Proposition p1 : resultProps) {
+            for (String p2 : lemmaDependants) {
+                if (p1.toString().equals(p2.toString())) {
+                    struct.add(lemmaDependants.indexOf(p1.toString()));
+
+                }
+            }
+        }
+        propositionStructure.add(struct);
+        return propositionStructure;
+    }
+
+    private List<Proposition> setupLemmaPropositions(Expression lemmaResult, List<Expression> lemmaExpr) {
+        for (Expression e : lemmaExpr) {
+            for (Proposition p : e.listPropositions()) {
+                if (!lemmaDependants.contains(p.toString())) {
+                    lemmaDependants.add(p.toString());
+                }
+            }
+        }
+        List<Proposition> resultProps = lemmaResult.listPropositions();
+
+        for (Proposition p : resultProps) {
+            if (!lemmaDependants.contains(p.toString())) {
+                lemmaDependants.add(p.toString());
+            }
+        }
+        return resultProps;
+    }
+
+    private boolean allMarked(List<Expression> list) {
+        for (Expression e : list) {
+            if (!e.isLemmaMarked()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
     public boolean isAndIntroValid(Expression e1) {
 
@@ -2192,6 +2443,18 @@ public class Proof {
         } else {
             advancedHints = true;
         }
+    }
+
+    public Map<String, Integer> getLemmas() {
+        return lemmas;
+    }
+
+    public void setLemmas(Map<String, Integer> lemmas) {
+        this.lemmas = lemmas;
+    }
+
+    public List<String> getErrors() {
+        return errors;
     }
 
 

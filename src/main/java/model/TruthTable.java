@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import static java.lang.Character.isDigit;
+
 /**
  * Created by joshuazeltser on 29/03/2017.
  */
@@ -186,7 +188,7 @@ public class TruthTable {
         return false;
     }
 
-    private void printTruthTable(List<String> propositions, String[][] truthTable) {
+    public void printTruthTable(List<String> propositions, String[][] truthTable) {
         //print results for testing purposes
         for (int i = 0; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
             for (int j = 0; j < propositions.size() + premises.size() + 1; j++) {
@@ -370,7 +372,11 @@ public class TruthTable {
                         vals.push(v);
                         break;
                     case ' ': break;
-                    default : vals.push(Integer.parseInt(c + ""));
+                    default : if (isDigit(c)) {
+                        vals.push(Integer.parseInt(c + ""));
+                    } else {
+                        continue;
+                    }
                 }
             }
             results.put(perms.get(count), vals.peek());

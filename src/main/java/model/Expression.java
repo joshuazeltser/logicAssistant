@@ -8,6 +8,7 @@ import javax.validation.constraints.Null;
 import java.util.*;
 
 import static model.OperatorType.CLOSE_BRACKET;
+import static model.OperatorType.NOT;
 import static model.OperatorType.OPEN_BRACKET;
 
 
@@ -24,7 +25,7 @@ public class Expression {
 
     private boolean marked;
 
-    private boolean introMarked;
+    private boolean lemmaMarked;
 
 
 
@@ -32,7 +33,7 @@ public class Expression {
         expression = new LinkedList<>();
         lines = new LinkedList<>();
         this.ruleType = ruleType;
-        introMarked = false;
+        lemmaMarked = false;
         marked = false;
     }
 
@@ -51,6 +52,41 @@ public class Expression {
             throw new SyntaxException("Syntax Error: " + a + " is an invalid line number");
         }
 
+    }
+
+    public boolean compareStructure(Expression e2) {
+
+        if (expression.size() != e2.expression.size()) {
+            return false;
+        }
+
+
+        for (int i = 0; i < expression.size(); i++) {
+            if (expression.get(i).equals(new Operator("NOT", NOT))) {
+                if (!e2.expression.get(i).equals(new Operator("NOT", NOT))) {
+                    return false;
+                }
+            }
+
+            if (expression.get(i).equals(new Operator("OPEN", OPEN_BRACKET))) {
+                if (!e2.expression.get(i).equals(new Operator("OPEN", OPEN_BRACKET))) {
+                    return false;
+                }
+            }
+
+            if (expression.get(i).equals(new Operator("CLOSE", CLOSE_BRACKET))) {
+                if (!e2.expression.get(i).equals(new Operator("CLOSE", CLOSE_BRACKET))) {
+                    return false;
+                }
+            }
+
+            if (isOperator(expression.get(i).toString())) {
+                if (!expression.get(i).equals(e2.expression.get(i))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public List<Integer> getReferenceLine() {
@@ -108,7 +144,7 @@ public class Expression {
 
                 default:
                     while (token.charAt(0) == '!') {
-                         expression.add(new Operator("NOT", OperatorType.NOT));
+                         expression.add(new Operator("NOT", NOT));
 
                         token = token.substring(1);
                     }
@@ -126,7 +162,7 @@ public class Expression {
                     }
 
                     while (token.charAt(0) == '!') {
-                        expression.add(new Operator("NOT", OperatorType.NOT));
+                        expression.add(new Operator("NOT", NOT));
                         token = token.substring(1);
                     }
 
@@ -304,7 +340,7 @@ public class Expression {
                     str += "(";
                 } else if (c.equals(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) {
                     str += ")";
-                } else if (c.equals(new Operator("NOT", OperatorType.NOT))) {
+                } else if (c.equals(new Operator("NOT", NOT))) {
                     str += "!(";
                     not = true;
                 } else if (c.equals(new Operator("IMPLIES", OperatorType.IMPLIES))) {
@@ -349,6 +385,9 @@ public class Expression {
 
         for (Component expr : expression) {
             if (expr instanceof Proposition) {
+                if (isOperator(expr.toString())) {
+                    continue;
+                }
                 props.add((Proposition) expr);
 
             }
@@ -610,16 +649,16 @@ public class Expression {
         if (expression.get(0).toString().equals("NOT")) {
             expression.remove(0);
             if (equals(e1)) {
-                expression.add(0, new Operator("NOT", OperatorType.NOT));
+                expression.add(0, new Operator("NOT", NOT));
                 return true;
             }
-            expression.add(0, new Operator("NOT", OperatorType.NOT));
+            expression.add(0, new Operator("NOT", NOT));
         }
 
         if (e1.expression.get(0).toString().equals("NOT")) {
             e1.expression.remove(0);
             if (equals(e1)) {
-                e1.expression.add(0, new Operator("NOT", OperatorType.NOT));
+                e1.expression.add(0, new Operator("NOT", NOT));
                 return true;
             }
         }
@@ -649,4 +688,11 @@ public class Expression {
         lines.clear();
     }
 
+    public boolean isLemmaMarked() {
+        return lemmaMarked;
+    }
+
+    public void setLemmaMarked(boolean lemmaMarked) {
+        this.lemmaMarked = lemmaMarked;
+    }
 }
