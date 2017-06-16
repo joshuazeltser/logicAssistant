@@ -49,10 +49,10 @@ public class TruthTable {
         }
     }
 
-    public String frontEndLemmaFunctionality(String res) throws SyntaxException {
+    public String frontEndLemmaFunctionality(String prems, String res) throws SyntaxException {
 
         if (!res.equals("")) {
-            readPremisesFromInput("", res);
+            readPremisesFromInput(prems, res);
             if (!errors.isEmpty()) {
                 return printErrors();
             }

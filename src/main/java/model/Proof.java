@@ -319,7 +319,7 @@ public class Proof {
         }
 
         if (!rule.equals("")) {
-            if (rule.substring(0, rule.length() - 1).equals("Lemma")) {
+            if (rule.equals("Lemma")) {
                 lemmas.put(rule, expressions.size());
                 return RuleType.LEMMA;
             }
@@ -583,17 +583,17 @@ public class Proof {
                                 }
                                 List<Proposition> potential = expr1.listPropositions();
 
-                                System.out.println("propNums " + propNum);
+//                                System.out.println("propNums " + propNum);
                                 List<Integer> potentialNums = new LinkedList<>();
 
 //                                System.out.println("potential " + potential);
                                 for (Proposition p : potential) {
                                     potentialNums.add(propNum.get(p.toString()));
                                 }
-                                System.out.println("resultProps " + resultProps);
-                                System.out.println("potentialNums " + potentialNums);
-
-                                System.out.println(propositionStructure);
+//                                System.out.println("resultProps " + resultProps);
+//                                System.out.println("potentialNums " + potentialNums);
+//
+//                                System.out.println(propositionStructure);
                                 for (List<Integer> i : propositionStructure) {
                                     if (potentialNums.equals(i)) {
                                         ok = true;
@@ -613,7 +613,7 @@ public class Proof {
             }
 
 
-            System.out.println(propositionStructure);
+//            System.out.println(propositionStructure);
 
 
             if (!ok) {
@@ -630,7 +630,7 @@ public class Proof {
         if (x != null) return x;
 
         if (!e1.equals(expressions.get(ref1))) {
-            System.out.println("here");
+//            System.out.println("here");
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
                     "this rule");
             return false;
@@ -672,7 +672,7 @@ public class Proof {
             for (Proposition p1 : props) {
                 for (String p2 : lemmaDependants) {
                     if (p1.toString().equals(p2.toString())) {
-                        System.out.println("props " + props);
+//                        System.out.println("props " + props);
                         struct.add(lemmaDependants.indexOf(p1.toString()));
 
                     }
@@ -683,7 +683,7 @@ public class Proof {
         }
 
 
-        System.out.println("resultProps " + resultProps);
+//        System.out.println("resultProps " + resultProps);
         List<Integer> struct = new LinkedList<>();
         for (Proposition p1 : resultProps) {
             for (String p2 : lemmaDependants) {

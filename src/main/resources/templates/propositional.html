@@ -190,20 +190,71 @@
                     window.onload = hideHelper;
                     window.onload = getVariables();
                     window.onload = getLemmas();
+
+                    var lemmaCount = 1;
 //
                     function getLemmas() {
                         var proof = document.getElementById('Text1');
                         var rules = document.getElementById('Text2');
 
-                        if (localStorage.getItem('lemmas') != []) {
-                            var vals = JSON.parse(localStorage.getItem('lemmas'));
+
+                        var lemmaSize = 0;
+
+                        if (localStorage.getItem('lemmaPremises') != []) {
+                            var vals = JSON.parse(localStorage.getItem('lemmaPremises'));
+
                             if (vals != null) {
                                 proof.value = proof.value + vals.pop() + '\n';
-                                rules.value = rules.value + 'Lemma\n';
+
+
+                                var x = proof.value.split('\n');
+                                lemmaSize = x.length;
+
+                                /*<![CDATA[*/
+
+                                for (var i = 0; i < x.length-1; i++) {
+                                    rules.value = rules.value + 'GIVEN\n';
+
+                                }
+                                /*]]>*/
                             }
+
+                            localStorage.removeItem('lemmaPremises');
                         }
 
-                        localStorage.removeItem('lemmas');
+
+
+
+                        if (localStorage.getItem('lemmas') != []) {
+                            var vals = JSON.parse(localStorage.getItem('lemmas'));
+
+                            var x = proof.value.split('\n');
+                            var proofSize = x.length;
+
+                            var diff = proofSize - lemmaSize;
+
+
+                            if (vals != null) {
+                                proof.value = proof.value + vals.pop() + '\n';
+                                lemmaCount++;
+                                rules.value = rules.value + 'Lemma (';
+                                /*<![CDATA[*/
+
+                                for (var i = diff; i < proofSize - 1; i++) {
+                                    rules.value = rules.value + (i + 1);
+
+                                    if (i == proofSize - 2) {
+                                        rules.value = rules.value + ")"
+                                    } else {
+                                        rules.value = rules.value + ","
+                                    }
+
+                                }
+                                /*]]>*/
+                            }
+                            localStorage.removeItem('lemmas');
+                        }
+
                     }
 
                     //            });

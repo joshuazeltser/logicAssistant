@@ -20,13 +20,7 @@
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
     <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
     <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
-    <script type="text/javascript">
-        $(function() {
-            $(".lined").linedtextarea(
-                {selectedLine: 1}
-            );
-        });
-    </script>
+
 </head>
 <body>
 <!-- Navigation -->
@@ -108,16 +102,43 @@
     <div class="col-md-8">
         <center>
             <form id="tt" action="/lemma" th:object="${truthTable}" method="post">
-
                 <div class="input-group">
-                    <p class="lead" align="center">Lemma</p>
-                    <textarea id="resultBox" onkeyup="formatLemmaHTML()" th:field="*{ttResults}" rows="1" style="overflow: hidden"></textarea>
+                    <p class="lead" align="center">Premises</p>
+                    <textarea class="lined" onkeyup="formatPremiseHTML()" th:field="*{ttPremises}" id="premises" cols="20" rows="5"></textarea>
 
                     <script>
-                        function formatLemmaHTML() {
-                            var box = document.getElementById('resultBox');
-
+                        function formatPremiseHTML() {
+                            var box1 = document.getElementById('premises');
                             /*<![CDATA[*/
+
+                            box1.value = box1.value.replace('^', convertEntities('&and;'));
+                            box1.value = box1.value.replace('|', convertEntities('&or;'));
+                            box1.value = box1.value.replace('->', convertEntities('&rarr;'));
+                            box1.value = box1.value.replace('<->', convertEntities('&harr;'));
+                            box1.value = box1.value.replace('!', convertEntities('&not;'));
+                            box1.value = box1.value.replace('FALSE', convertEntities('&bot;'));
+                            /*]]>*/
+                        }
+                    </script>
+                    <style>
+                        .linedtextarea textarea {
+                            padding-right:0.3em;
+                            padding-top:0.3em;
+                            border: 0;
+                            height: 240px;
+                            width: 300px;
+                        }
+                    </style>
+                </div>
+                <p></p>
+                <div class="input-group">
+                    <p class="lead" align="center">Result</p>
+                    <textarea id="resultBox"  onkeyup="formatResultHTML()" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
+                    <script>
+                        function formatResultHTML() {
+                            var box = document.getElementById('resultBox');
+                            /*<![CDATA[*/
+
                             box.value = box.value.replace('^', convertEntities('&and;'));
                             box.value = box.value.replace('|', convertEntities('&or;'));
                             box.value = box.value.replace('->', convertEntities('&rarr;'));
@@ -128,14 +149,6 @@
                         }
                     </script>
 
-
-                    <style>
-                        textarea {
-                            font-size: 40px;
-                            height: 70px;
-                            vertical-align: top;
-                        }
-                    </style>
                 </div>
                 <p></p>
                 <div>
@@ -144,7 +157,7 @@
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
-                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndLemmaFunctionality(truthTable.ttResults)}"></output>
+                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndLemmaFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
                         <script>
                             var x = document.getElementById('errorBox');
                             if (x.value  == 'Lemma is Valid' ) {
@@ -154,13 +167,23 @@
                             var sub = document.getElementById('submit2');
                             sub.onclick = function () {
 
+                                var premises = document.getElementById('premises');
                                 var result = document.getElementById('resultBox');
 
+
+
                                 var lemmas = [];
+                                var lemmaPremises = [];
 
                                 lemmas.push(result.value);
-
                                 localStorage.setItem('lemmas', JSON.stringify(lemmas));
+
+//                                if (!premises.value.equals("")) {
+                                    lemmaPremises.push(premises.value);
+
+
+                                    localStorage.setItem('lemmaPremises', JSON.stringify(lemmaPremises));
+//                                }
                             }
                         </script>
 
