@@ -17,55 +17,56 @@
 \contentsline {subsubsection}{\numberline {3.1.5}Workflow}{11}{subsubsection.3.1.5}
 \contentsline {subsubsection}{\numberline {3.1.6}Validity Checking }{11}{subsubsection.3.1.6}
 \contentsline {subsubsection}{\numberline {3.1.7}Hints }{12}{subsubsection.3.1.7}
-\contentsline {subsection}{\numberline {3.2}View}{16}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Controller}{21}{subsection.3.3}
-\contentsline {section}{\numberline {4}Development Tools}{22}{section.4}
-\contentsline {subsection}{\numberline {4.1}Java}{22}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Java Spring }{22}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Bootstrap }{23}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Javascript}{23}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}JUnit}{23}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}Selenium }{23}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Maven }{24}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Intellij }{24}{subsection.4.8}
-\contentsline {subsection}{\numberline {4.9}Git }{24}{subsection.4.9}
-\contentsline {subsection}{\numberline {4.10}Heroku}{25}{subsection.4.10}
-\contentsline {section}{\numberline {5}Project Management}{26}{section.5}
-\contentsline {subsection}{\numberline {5.1}Schedule }{26}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Iteration 1 - 1/12/2016 $\Rightarrow $ 8/1/2017}{26}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Iteration 2 - 9/1/2017 $\Rightarrow $ 10/2/2017}{26}{subsubsection.5.1.2}
-\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{26}{subsubsection.5.1.3}
-\contentsline {subsubsection}{\numberline {5.1.4}Iteration 4 - 27/3/2017 $\Rightarrow $ 21/4/2017}{27}{subsubsection.5.1.4}
-\contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{27}{subsubsection.5.1.5}
-\contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{28}{subsubsection.5.1.6}
-\contentsline {subsubsection}{\numberline {5.1.7}Iteration 7 - 3/6/2017 $\Rightarrow $ 30/6/2017}{28}{subsubsection.5.1.7}
-\contentsline {subsection}{\numberline {5.2}Testing }{28}{subsection.5.2}
-\contentsline {subsubsection}{\numberline {5.2.1}Test Driven Development }{29}{subsubsection.5.2.1}
-\contentsline {subsubsection}{\numberline {5.2.2}Back-End}{29}{subsubsection.5.2.2}
-\contentsline {subsubsection}{\numberline {5.2.3}Front-End}{31}{subsubsection.5.2.3}
-\contentsline {subsection}{\numberline {5.3}Trello }{32}{subsection.5.3}
-\contentsline {section}{\numberline {6}Evaluation}{33}{section.6}
-\contentsline {subsection}{\numberline {6.1}Realistic Objectives}{33}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Project Plan}{34}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Testing}{34}{subsection.6.3}
-\contentsline {subsection}{\numberline {6.4}Front-End Design}{35}{subsection.6.4}
-\contentsline {subsection}{\numberline {6.5}Difficulties }{36}{subsection.6.5}
-\contentsline {subsubsection}{\numberline {6.5.1}Algorithm Implementation}{36}{subsubsection.6.5.1}
-\contentsline {subsubsection}{\numberline {6.5.2}Expression Structure}{36}{subsubsection.6.5.2}
-\contentsline {subsubsection}{\numberline {6.5.3}Learning Java Spring}{37}{subsubsection.6.5.3}
-\contentsline {subsection}{\numberline {6.6}Competitor Analysis}{37}{subsection.6.6}
-\contentsline {subsection}{\numberline {6.7}User Feedback }{39}{subsection.6.7}
-\contentsline {section}{\numberline {7}Conclusion}{42}{section.7}
-\contentsline {subsection}{\numberline {7.1}Learning Outcomes}{42}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Future Work}{43}{subsection.7.2}
-\contentsline {section}{\numberline {A}Natural Deduction Rules}{44}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{44}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Predicate Rules}{44}{subsection.A.2}
-\contentsline {section}{\numberline {B}User Survey \cite {surveyCrest} }{45}{appendix.B}
-\contentsline {section}{\numberline {C}User Guide }{46}{appendix.C}
-\contentsline {subsection}{\numberline {C.1}Check Proof Validity}{46}{subsection.C.1}
-\contentsline {subsection}{\numberline {C.2}Goal Validity}{48}{subsection.C.2}
-\contentsline {subsection}{\numberline {C.3}Hints}{50}{subsection.C.3}
-\contentsline {subsection}{\numberline {C.4}Lemmas}{50}{subsection.C.4}
-\contentsline {subsection}{\numberline {C.5}Saving \& Loading Proofs}{50}{subsection.C.5}
-\contentsline {section}{References}{51}{section*.2}
+\contentsline {subsubsection}{\numberline {3.1.8}Lemmas }{15}{subsubsection.3.1.8}
+\contentsline {subsection}{\numberline {3.2}View }{17}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Controller}{22}{subsection.3.3}
+\contentsline {section}{\numberline {4}Development Tools }{23}{section.4}
+\contentsline {subsection}{\numberline {4.1}Java}{23}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Java Spring }{23}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Bootstrap }{24}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Javascript}{24}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}JUnit}{24}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Selenium }{24}{subsection.4.6}
+\contentsline {subsection}{\numberline {4.7}Maven }{25}{subsection.4.7}
+\contentsline {subsection}{\numberline {4.8}Intellij }{25}{subsection.4.8}
+\contentsline {subsection}{\numberline {4.9}Git }{25}{subsection.4.9}
+\contentsline {subsection}{\numberline {4.10}Heroku}{26}{subsection.4.10}
+\contentsline {section}{\numberline {5}Project Management}{27}{section.5}
+\contentsline {subsection}{\numberline {5.1}Schedule }{27}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}Iteration 1 - 1/12/2016 $\Rightarrow $ 8/1/2017}{27}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Iteration 2 - 9/1/2017 $\Rightarrow $ 10/2/2017}{27}{subsubsection.5.1.2}
+\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{27}{subsubsection.5.1.3}
+\contentsline {subsubsection}{\numberline {5.1.4}Iteration 4 - 27/3/2017 $\Rightarrow $ 21/4/2017}{28}{subsubsection.5.1.4}
+\contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{28}{subsubsection.5.1.5}
+\contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{29}{subsubsection.5.1.6}
+\contentsline {subsubsection}{\numberline {5.1.7}Iteration 7 - 3/6/2017 $\Rightarrow $ 30/6/2017}{29}{subsubsection.5.1.7}
+\contentsline {subsection}{\numberline {5.2}Testing }{29}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Test Driven Development }{30}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Back-End}{30}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Front-End}{32}{subsubsection.5.2.3}
+\contentsline {subsection}{\numberline {5.3}Trello }{33}{subsection.5.3}
+\contentsline {section}{\numberline {6}Evaluation}{34}{section.6}
+\contentsline {subsection}{\numberline {6.1}Realistic Objectives}{34}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Project Plan}{35}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Testing}{35}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Front-End Design}{36}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}Difficulties }{37}{subsection.6.5}
+\contentsline {subsubsection}{\numberline {6.5.1}Algorithm Implementation}{37}{subsubsection.6.5.1}
+\contentsline {subsubsection}{\numberline {6.5.2}Expression Structure}{37}{subsubsection.6.5.2}
+\contentsline {subsubsection}{\numberline {6.5.3}Learning Java Spring}{38}{subsubsection.6.5.3}
+\contentsline {subsection}{\numberline {6.6}Competitor Analysis}{38}{subsection.6.6}
+\contentsline {subsection}{\numberline {6.7}User Feedback }{40}{subsection.6.7}
+\contentsline {section}{\numberline {7}Conclusion}{43}{section.7}
+\contentsline {subsection}{\numberline {7.1}Learning Outcomes}{43}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Future Work}{44}{subsection.7.2}
+\contentsline {section}{\numberline {A}Natural Deduction Rules}{45}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Propositional Rules (adapted from \cite {ndBook})}{45}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Predicate Rules}{45}{subsection.A.2}
+\contentsline {section}{\numberline {B}User Survey \cite {surveyCrest} }{46}{appendix.B}
+\contentsline {section}{\numberline {C}User Guide }{47}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}Check Proof Validity}{47}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}Goal Validity}{49}{subsection.C.2}
+\contentsline {subsection}{\numberline {C.3}Hints}{51}{subsection.C.3}
+\contentsline {subsection}{\numberline {C.4}Lemmas}{52}{subsection.C.4}
+\contentsline {subsection}{\numberline {C.5}Saving \& Loading Proofs}{53}{subsection.C.5}
+\contentsline {section}{References}{55}{section*.2}

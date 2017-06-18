@@ -37,10 +37,10 @@
 \begin{abstract}
 
 	\noindent
-	Natural Deduction proofs can be quite complex and it can often be quite difficult to learn how to solve them effectively. A Natural Deduction proof can be completed without the author knowing whether what they have created is valid. Alternatively, they may become stuck midway through a proof and not know what to do next.	\newline
+	Natural Deduction proofs can be quite complex and it can often be difficult to learn how to solve them effectively. A Natural Deduction proof can be completed without the author knowing whether what they have created is valid. Alternatively, they may become stuck midway through a proof and not know what to do next.	\newline
 	
 	\noindent
-	 This project aimed to create LogicAssistant, a tool to assist users at all levels of knowledge of this subject area with their proofs. This project started by creating an internal representation of these proofs before moving on to solving the many problems associated with these proofs. This meant focussing on creating a system which checks whether a user's proof is valid, and also produces hints when a user is stuck in the middle of their proof. LogicAssistant focused on Propositional Logic Natural Deduction problems, which are the main basis that this type of problem is built on. Together with an easy-to-use front-end user interface this project led to the creation of a fundamental tool that can be used by anyone attempting to solve these problems. This tool contains more advanced and useful features than its competitors, making it the tool to use when learning to use Natural Deduction.
+	 This project aimed to create LogicAssistant, a tool to assist users at all levels of knowledge of this subject area with their proofs. The project started by creating an internal representation of these proofs before moving on to solving the many problems associated with solving them. This meant focussing on creating a system which checks whether a user's proof is valid, and also produces hints when a user is unsure which rule to apply next. LogicAssistant focuses on Propositional Logic Natural Deduction problems, which are the main basis that this type of problem is built on. Together with an easy-to-use front-end user interface this project led to the creation of a fundamental tool that can be used by anyone attempting to solve these problems. This tool contains more advanced and useful features than its competitors, making it the tool to use when learning to solve Natural Deduction proofs.
 \end{abstract}
 
 
@@ -63,6 +63,8 @@
 \tableofcontents
 \pagebreak
 
+\clearpage\null\newpage
+
 \pagenumbering{arabic}
 
 
@@ -70,19 +72,19 @@
 
 \subsection{Motivation}
 
-Mathematical logic is an area used throughout the engineering and scientific industries. From developing artificial intelligence software to students completing a Computer Science degree, logic is a fundamental tool. In order to ensure that logic is used correctly a proof system must be used. Natural Deduction provides the tools needed to deduce and prove the validity of logical problems, making it a vital tool for everyone to learn to use. This is why many universities make it a priority to teach this to their students as they begin their studies. For students new to Natural Deduction, or even those more advanced users, logicians are often left stuck in the middle of a proof not knowing what to do next, and then when they have completed the proof, are unsure as to whether it is valid. LogicAssistant is being created to assist users with this problem.
+Mathematical logic is an area used throughout the engineering and scientific industries. From developing artificial intelligence software to students completing a Computer Science degree, logic is a fundamental tool. In order to ensure that logic is used correctly a proof system must be used. Natural Deduction provides the tools needed to deduce and prove the validity of logical problems, making it a vital tool for everyone to learn to use. This is why many universities make it a priority to teach this to their students as they begin their studies. For students new to Natural Deduction, or even those more advanced users, logicians are often left stuck in the middle of a proof not knowing what to do next. Then when they have completed the proof, they are unsure as to whether it is valid. LogicAssistant has been created to assist users with this problem.
 
 Although the basics of Natural Deduction are easy to learn by just committing to memory the various rules that are defined, when it comes to more complex proofs it can be difficult to work out whether your proof is correct. You may have made an assumption at some point in your proof that was invalid, or just mistakenly used the wrong rule. It is not always the case that you can find someone who is an expert in this field who can check over your proof for you. This problem assumes that you are even able to get to the point of completing your proof. Often you may just have to sit staring at a certain point in your proof unsure of what to do next. You could at this stage go through each rule and try to work out which fits best, but this is quite a short-sighted approach as you may be going off in the complete wrong direction. This is also quite time consuming. When using Natural Deduction in the real world there is not always someone around to point out which rule to use next. 
 
-In order to remedy these problems, I have built LogicAssistant which will contain a number of useful features that will aid users with their Natural Deduction proofs. The first feature which I aim to create is a proof checker which allows the user to type in their Natural Deduction Proof specifying all of the rules they have used, and the software will notify them as to whether it is valid. I also want the user to be notified as to which parts of the proof are wrong and are thereby causing the proof to be invalid. This means that a user will always be sure whether a proof they have created is valid and if it isn't, they will know immediately where they went wrong. The other main feature that LogicAssistant will have is the ability to ask for hints at any stage of a proof. This means that if a user is stuck at any point in their proof they can ask the software to provide them with the next rule to apply. This will be very helpful especially for students who are new to Natural Deduction proof techniques. All of these features and more will be condensed together into an easy-to-use web interface that a user can access whenever they need to check or solve a proof. 
+In order to remedy these problems, I have built LogicAssistant which contains a number of useful features that aid users with their Natural Deduction proofs. The first feature which I aimed to create, was a proof checker which allows the user to type in their Natural Deduction Proof specifying all of the rules they have used, and the software will notify them as to whether it is valid. I also wanted the user to be notified as to which parts of the proof are wrong and are thereby causing the proof to be invalid. This means that a user will always be sure whether a proof they have created is valid and if it isn't, they will know immediately where they went wrong. The other main feature that LogicAssistant provides is the ability to ask for hints at any stage of a proof. This means that if a user is stuck at any point in their proof they can ask the software to provide them with the next rule to apply. This is very helpful especially for students who are new to Natural Deduction proof techniques. All of these features and more have been condensed together into an easy-to-use web interface that a user can access whenever they need to check or solve a proof. 
 
-There are tools already in the market that assist you with Natural Deduction. Most of these tools are very complex and difficult to use, requiring a high level of technical and mathematical knowledge to understand them. This makes them often a waste of time to use on a simple Natural Deduction proof. There are also tools like Pandora\cite{pandora} which allow you to enter your Natural Deduction proof step by step and then tell you whether it is valid. The drawback of this software is that it only allows you to enter a step in the proof if it is valid. This means that the amount that can be learnt from this tool is limited as through trial and error you could eventually solve your proof without really knowing what you are doing. The problem that these tools are trying to solve is quite complex and difficult. There are lots of different rules to consider at any part of the proof, and when it comes to generating hints there are often several different possible rules to use next. The motivation behind LogicAssistant is therefore to fill in the gaps left by existing solvers, in order to help remedy the difficult problem of automating the validation and assistance process for logicians solving Natural Deduction proofs.
+There are tools already in the market that assist you with Natural Deduction. Most of these tools are very complex and difficult to use, requiring a high level of technical and mathematical knowledge to understand them. This makes them often a waste of time to use on a simple Natural Deduction proof. There are also tools like Pandora\cite{pandora} which allow you to enter your Natural Deduction proof step by step and then tells you whether it is valid. The drawback of this software is that it only allows you to enter a step in the proof if it is valid. This means that the amount that can be learnt from this tool is limited as through trial and error you could eventually solve your proof without really knowing what you are doing. The problem that these tools are trying to solve is quite complex and difficult. There are lots of different rules to consider at any part of the proof, and when it comes to generating hints there are often several different possible rules to use next. The motivation behind LogicAssistant is therefore to fill in the gaps left by existing solvers, in order to help remedy the difficult problem of automating the validation and assistance process for logicians solving Natural Deduction proofs.
 
 \subsection{Objectives \label{objectives}}
 
-When starting this project I came up with a number of objectives that I wanted to achieve. Over time some of these goals may have changed depending on the level of difficulty or ease that I experienced during different parts of the project. The first and main objective of this project was to create an easy-to-use proof checker for Propositional Natural Deduction proofs. A tool that can be used by anyone to easily check whether their Natural Deduction proofs are valid and if not they will be notified as to where they have gone wrong. Once this was complete my next objective was to add a hint option which offers the user a clue as to the next step when they are stuck at any part of the proof. These two goals combined will allow me to create a tool that doesn't just help people who are trying to solve Natural Deduction proofs, but also acts as a learning tool for anyone new to this area. By the end of this project almost anyone, no matter what their knowledge of logical proofs, will be able to use this tool to help them learn how to successfully create valid Natural Deduction proofs.
+When starting this project I came up with a number of objectives that I wanted to achieve. Over time some of these goals may have changed depending on the level of difficulty or ease that I experienced during different parts of the project. The first and main objective of this project was to create an easy-to-use proof checker for Propositional Natural Deduction proofs. A tool that can be used by anyone to easily check whether their Natural Deduction proofs are valid and if not, they will be notified as to where they have gone wrong. Once this was complete my next objective was to add a hint option which offers the user a clue as to the next step when they are stuck at any part of the proof. These two goals combined allowed me to create a tool that doesn't just help people who are trying to solve Natural Deduction proofs, but also acts as a learning tool for anyone new to this area. By the end of this project almost anyone, no matter what their knowledge of logical proofs, will be able to use this tool to help them learn how to successfully create valid Natural Deduction proofs.
 
-In order to ensure that my project is as easy-to-use and as useful as possible, I have added the following additional objectives that, time allowing, I would like to complete:
+In order to ensure that my project is as easy-to-use and as useful as possible, I have added the following additional objectives that, time allowing, I planned to complete:
 \begin{itemize}
 \item Add proof checks for first order predicate logic Natural Deduction
 \item Add hints for proofs using first order predicate logic
@@ -132,7 +134,7 @@ Propositions can be grouped together to form sentences using these operators. Th
 	\caption{Propositional Sentence Definition}
 \end{figure}
 
-I have now defined a Propositional Logic language for this project. I have added brackets into the rules in order to ensure that it is possible to fully understand what a Propositional statement is saying and is therefore unambiguous. Without brackets some statements may become a bit ambiguous and difficult to understand. Truth tables can be used to interpret all of the possible results of a logical sentence. This helps users to plan for any possible outcomes of a set of propositions occurring.
+Now that I have defined a Propositional Logic language for this project, I will add brackets into the grammar in order to ensure that it is possible to fully understand what a Propositional statement is saying and is therefore unambiguous. Without brackets some statements may become a bit ambiguous and difficult to understand. Truth tables can be used to interpret all of the possible results of a logical sentence. This helps users to plan for any possible outcomes of a set of propositions occurring.
 
 \pagebreak
 \begin{exmp}Examples of Propositional Statements using our language
@@ -146,7 +148,7 @@ I have now defined a Propositional Logic language for this project. I have added
 
 
 \subsection{Predicate Logic \label{predicate}}
-Propositional logic is very useful when trying to represent the truth values of propositions, but there is limited scope in this formalisation as to the type of statements that can be represented. For example if I wanted to represent the statement "some boys like football", it would be very difficult to do this using just Propositional Logic. This is why I decided to also check proofs created using the more useful first order Predicate Logic. This logical system allows users to both apply properties to specific objects and add quantifiers to them. This makes it much more expressive and useful in real world applications. 
+Propositional logic is very useful when trying to represent the truth values of propositions, but there is limited scope in this formalisation as to the type of statements that can be represented. For example if I wanted to represent the statement "some boys like football", it would be very difficult to do this using just Propositional Logic. This is why I planned to also check proofs created using the more useful first order Predicate Logic. This logical system allows users to both apply properties to specific objects and add quantifiers to them. This makes it much more expressive and useful in real world applications. 
 
 The properties that an object has are called a Predicate. Predicates can be unary where they have just one property, or they can be n-ary describing relationships between them and other predicates. Predicate logic also includes two quantifiers that allow this formalisation to be more expressive. The first quantifier is a "for all" quantifier ($\forall$). This enables the representation of statements like "all dragons are green". The other quantifier is the "exists" quantifier ($\exists$). This quantifier allows the representation of statements such as "some dragons are blue".These two quantifiers together, increase the expressive power that can be created using this logical system. Below are some examples of statements that can be created using Predicate logic.
 
@@ -160,13 +162,13 @@ The properties that an object has are called a Predicate. Predicates can be unar
 
 \subsection{Natural Deduction}
 
-The logical systems that were introduced above present a language and an interpretation using Propositional and Predicate atoms. All the reasoning that can be taken away from these systems are based on truth tables. Truth tables are a way of considering all of the possible outcomes of a statement filled with atoms that can be true or false. For simple systems truth tables are enough to be able to prove and reason about a situation. In order to be able to consider much more complicated problems, the truth tables would need to be very large, making it a time consuming problem to solve. It is therefore, necessary to introduce a formal system which provides the tools to solve and deduce these problems. To solve this problem Natural Deduction was created. Using a set of strict rules, Natural Deduction allows the deduction of the consequences of any Propositional or Predicate statements that are given, showing the immediate outcome. This apparatus is very useful in solving logical problems in all areas. When a statement can be deduced from a number of premises using Natural Deduction it is placed on the right side of a $\vdash$ symbol, while the original premises will be listed on the left of this symbol. Natural Deduction has a list of rules for both Propositional and Predicate logic allowing the deduction of the consequences of any premise. This proof solving methodology can also be used to solve proofs with no premises using its complex rule-set.
+The logical systems that were introduced above present a language and an interpretation using Propositional and Predicate atoms. All the reasoning that can be taken away from these systems are based on truth tables. Truth tables are a way of considering all of the possible outcomes of a statement filled with atoms that can be true or false. For simple systems truth tables are enough to be able to prove and reason about a situation. In order to be able to consider much more complicated problems, the truth tables would need to be very large, making it a time consuming problem to solve. It is therefore, necessary to introduce a formal system which provides the tools to solve and deduce these problems. To solve this problem, Natural Deduction was created. Using a set of strict rules, Natural Deduction allows the deduction of the consequences of any Propositional or Predicate statements that are given, showing the immediate outcome. This apparatus is very useful in solving logical problems in all areas. When a statement can be deduced from a number of premises using Natural Deduction it is placed on the right side of a $\vdash$ symbol, while the original premises will be listed on the left of this symbol. Natural Deduction has a list of rules for both Propositional and Predicate logic allowing the deduction of the consequences of any premise. This proof solving methodology can also be used to solve proofs with no premises using its complex rule-set.
 
-There are ten Propositional rules for Natural Deduction that can be used to form proofs (see Appendix \ref{appendix:nd-prop}). In this report I have outlined the rules based on the following process. Each rule consists of a horizontal line with the resulting expression or expressions placed beneath it. The expressions are either assumptions (where indicated) or expressions that need to be derived in order for the result below the line to be proven. For example, in the case of "And Introduction", both A and B need to be derived in order for the introduction to come into effect. In several cases, such as "Implies Introduction", an assumption must be made and a sub-goal proven in order for the expression below the line to be proven. These rules can be combined together to make-up complex Natural Deduction proofs.
+There are ten Propositional rules for Natural Deduction that can be used to form proofs (see Appendix \ref{appendix:nd-prop}). In this report I have outlined the rules based on the following process. Each rule consists of a horizontal line with the resulting expression or expressions placed beneath it. The expressions on top are either assumptions (where indicated) or expressions that need to be derived in order for the result below the line to be proven. For example, in the case of "And Introduction", both A and B need to be derived in order for the introduction to come into effect. In several cases, such as "Implies Introduction", an assumption must be made and a sub-goal proven in order for the expression below the line to be proven. These rules can be combined together to make-up complex Natural Deduction proofs.
 
 \subsubsection{Propositional Rules Examples}
 
-Throughout this project I have used the Gentzen Natural Deduction system (see \cite{gentzen}). This means that I have set out the proofs as shown in the examples below using the various Natural Deduction rules (see \ref{appendix:nd-prop}). The first example shows a basic proof with the given premise written first followed by the various deductions made throughout the proof. On each line of the proof, I have written a justification of the rule that was used together with the lines that the rule has used to make the deduction.
+Throughout this project I have used the Gentzen Natural Deduction system (see \cite{gentzen}). This means that I have set out the proofs as shown in the examples below using the various Natural Deduction rules (see \ref{appendix:nd-prop}). The first example shows a basic proof with the given premise written first followed by the various deductions made throughout the proof. On each line of the proof, I have written a justification of the rule that was used together with the lines that the rule has utilised to make the deduction.
 
 \begin{exmp} Show that $A \wedge B \vdash A \vee B$
 
@@ -267,21 +269,6 @@ In Predicate Logic, similar Natural Deduction proofs can be created. These proof
 
 \end{exmp}
 
-\begin{exmp} Show that $\forall x. \forall y.P(x,y) \Rightarrow \neg P(y,x) \vdash \forall x.\neg P(x,x)$
-
-\begin{fitch}
-\fj \forall x. \forall y.P(x,y) \Rightarrow \neg P(y,x) & Given\\
-\fa \forall y. P(a,y) \Rightarrow \neg P(y,a) & $\forall$-Elim (1) \\
-\fa P(a,a) \Rightarrow \neg P(a,a) & $\forall$-Elim (2) \\
-\fr \fa P(a,a) & Assumption \\
-\fa \fa \neg P(a,a) & $\Rightarrow$-Elim (3,4) \\
-\fa \fa \bot & $\neg$-Elim (4,5) \\
-\fa \neg P(a,a) & $\neg$-Intro (4,5) \\
-\fa \forall x.\neg P(x,x) & $\forall$-Intro (6)
-\end{fitch}
-
-\end{exmp}
-
 \begin{exmp} Show that $s=t \vdash (s = u) \Rightarrow (t = u)$
 
 \begin{fitch}
@@ -297,20 +284,20 @@ In Predicate Logic, similar Natural Deduction proofs can be created. These proof
 
 \section{Design \label{design}}
 
-LogicAssistant has been created in order to provide an educational tool that can help anyone solving Natural Deduction Proofs. This tool, as well as checking whether users proofs are valid, will provide them with hints, ensuring that no one is stuck not knowing what to do next in a proof. I made sure to design this application to be as user friendly as possible, with the many useful features allowing users of all levels of knowledge of this area to benefit from it. 
+LogicAssistant has been created in order to provide an educational tool that can help anyone solve Natural Deduction Proofs. This tool, as well as checking whether users proofs are valid, will provide them with hints, ensuring that no one is stuck not knowing what to do next in a proof. I made sure to design this application to be as user friendly as possible, with the many useful features allowing users of all levels of knowledge of this area to benefit from it. 
 
-The design methodology that I decided to use for this project is the Model View Controller architecture. This entails the separation of the front-end website components from the back-end where the actual core functionality of the system is written. These two areas are then controlled by various controller classes, which bring all of these components together to create the finished application. I chose this methodology in order to make the system easier to understand and later build on. Whenever I need to add an extra feature to the application, I am able to just update the model part of the code-base and then change the front-end view code. This is much simpler than having all of the code together in one large code base. This methodology therefore made the development of this application much easier.
+The design methodology that I decided to use for this project is the Model View Controller architecture. This entails the separation of the front-end website components from the back-end where the actual core functionality of the system is written. These two areas are then controlled by various controller classes, which bring all of these components together to create the finished application. I chose this methodology in order to make the system easier to understand and later build on. Whenever I need to add an extra feature to the application, I am able to just update the model part of the code-base and then change the front-end view code. This is much simpler than having all of the code together in one large code base. This methodology therefore made the development of this application much easier. The tools I used to design the application using this methodology can be found in section \ref{devTools}. Before explaining the reasoning behind using these tools, I present in this section the complex design of this application.
 
 
 \subsection{Model}
-The model part of any Model View Controller structured project, controls the main pieces of functionality of the application. This is, therefore, the part of the code-base that actually creates the problem solving features needed by the user. In order to create the functionality required for me to meet my objectives, I had to devise a fitting back-end design. There are lots of different problems that needed solving, so I tried to separate the different parts of my code-base into obvious classes that would make the code easy to read by any third party.
+The model component of any Model View Controller structured project, controls the main pieces of functionality of the application. This is, therefore, the part of the code-base that actually creates the problem solving features needed by the user. In order to create the functionality required for me to meet my objectives, I had to devise a fitting back-end design. There are lots of different problems that needed solving, so I tried to separate the different parts of my code-base into obvious classes that would make the code easy to read by any third party.
 
 \subsubsection{Component}
 In both Propositional and First Order Predicate logics, logical expressions can be made up of two different components, Propositions (or Predicates for Predicate logic) and Operators. For this project both of these components require some common functionality such as how they are converted to Strings, how they are interpreted when input by the user and how equality between them is worked out. Due to this common functionality I decided to create an interface called Component which encompasses all the commonly used methods used by each of these components. I then created a Proposition and an Operator class which would each represent a component type. Each of these classes would inherit from the Component interface. This setup was very useful in other parts of the code-base, as it allowed me to pass in a Component and then check which type of component I was dealing with.  
 
 The Proposition class, as well as inheriting and implementing the common toString and equals methods from the Components interface, contained functionality to set and retrieve the name of a Proposition. A Proposition is made up of a String field which represents the name of the Proposition. This is one of the main components of expressions that are used in this logical system.
 
-The Operator class is used to represent one of the seven operators used in this logical system, as described in the Background section above (see \ref{Background}). This class also inherits the toString and equals methods from Components, making it much easier to use when building expressions. Each Operator object is made of a string which represents its name and an enum value corresponding to each operator. I have created an enum called OperatorType, which contains all of the different operator types used in this logical environment. The reason that I set operators up in this way is that it easily allows me to check which operator is being used in an expression at any time due to its uniquely identified enum value. The rest of this class is filled with getters and setters that help with the general functionality of this logical system. The diagram below shows the class structure of the various types of Components.
+The Operator class is used to represent one of the seven operators used in this logical system, as described in the Background section above (see \ref{Background}). This class also inherits the toString and equals methods from Components, making it much easier to use when building expressions. Each Operator object is made up of a string which represents its name and an enum value corresponding to each operator. I have created an enum called OperatorType, which contains all of the different operator types used in this logical environment. The reason that I set operators up in this way is that it easily allows me to check which operator is being used in an expression at any time due to its uniquely identified enum value. The rest of this class is filled with getters and setters that help with the general functionality of this logical system. Figure 2 shows the class structure of the various types of Components.
 
 \begin{figure}[!ht]
 	\centering
@@ -320,9 +307,9 @@ The Operator class is used to represent one of the seven operators used in this 
 
 \subsubsection{Expression}
 
-When using Natural Deduction, a proof is represented by a set of expressions each derived from previous expressions based on the Natural Deduction rule-set (see Appendix \ref{appendix:nd}). Expressions are therefore a fundamental building block of proofs. I created an Expression class, inside which I represented an expression itself by a list of Components. An Expression object has several other properties which are very helpful when functionality is applied to them. Each Expression keeps track of which line it represents in a proof, a very useful feature when applying rules that depend on several different lines in a proof. Using an enum which enumerates all of the different Natural Deduction rules that can be applied, each Expression also stores the rule that was used to derive it. This makes it simple to find out which rule was used when an Expression was formed, and is especially useful when carrying out the proof validity checking process.
+When using Natural Deduction, a proof is represented by a set of expressions each derived from previous expressions based on the Natural Deduction rule-set (see Appendix \ref{appendix:nd}). Expressions are therefore a fundamental building block of proofs. I created an Expression class, inside which I represented an expression itself by a list of Components. An Expression object has several other properties which are very helpful when functionality is applied to them. Each Expression keeps track of which line it represents in a proof, a very useful feature when applying rules that depend on several different lines in a proof. Using an enum which enumerates all of the different Natural Deduction rules that can be applied, each Expression also stores the rule that was used to derive it. This makes it simple to find out which rule was used when an Expression was formed, especially when carrying out the proof validity checking process.
 
-The most important operation that the Expression functionality carries out, is the parsing of expressions from their String inputs. It is at this stage of the process that the Components themselves are checked to be valid and if so are added to the Expression list. If any Components or the Expression as a whole are not valid, the entire process will be halted and the user alerted. This process enables the creation of an internal representation of the expression, making it easier to use when applying the various types of functionality later on in the programme. In order to effectively carry out the creation of this internal representation, and to help with the various operations that are carried out on expressions, a lot of extra functionality has been added to Expressions. Functionality such as equality and splitting Expressions around an Operator among others, have been added as they are very useful when applying the various Natural Deduction rules to an expression, especially for elimination rules which require an expression to be split into one or two sub-expressions around the specified operator. An Expression object is, therefore, a fundamental building block for logical proofs in this project.
+The most important operation that the Expression functionality carries out, is the parsing of expressions from their String inputs. It is at this stage of the process that the Components themselves are checked to be valid and if so are added to the Expression list. If any Components or the Expression as a whole are not valid, the entire process will be halted and the user alerted. This process enables the creation of an internal representation of the expression, making it easier to use when applying the various types of functionality later on in the programme. In order to effectively carry out the creation of this internal representation, and to help with the various operations that are carried out on expressions, a lot of extra functionality has been added. Functionality such as equality and splitting Expressions around an Operator, have been added as they are very useful when applying the various Natural Deduction rules to an expression. This is especially true for elimination rules which require an expression to be split into one or two sub-expressions around the specified operator. An Expression object is therefore a fundamental building block for logical proofs in this project.
 
 \subsubsection{Proof}
 
@@ -330,33 +317,33 @@ In order to represent the proofs that the user inputs into the system, I created
 
 Each Proof object contains functionality that reads in Expressions along with their associated rules, and stores them in a list representing the proof. Proofs also provide a large amount of functionality that checks whether each of the Natural Deduction rules have been applied correctly.  For example if an expression was created using And Introduction, the code would check to ensure that both the right and left hand sides of the And operator have been proven earlier on in the code. If a rule has been used incorrectly, or cannot be used at this stage in the proof, then a rule error will be thrown aborting this entire process. These checks are a fundamental part of this tool as they are what alerts the user as to whether their proof is valid. 
 
-Another additional complexity that has to be taken into account when forming Proofs, is the scope that the current expression is in. Whenever an assumption is made a new scope (or box), is opened until it is closed by certain rules being completed. Once this has happened nothing after this scope can use any expressions inside this scope for any further steps of the proof (apart from the result of the scope). This is another check that the code must make when assessing whether a rule has been used correctly at any point of the proof. I implemented this checking functionality by creating a list which, before starting the process of checking whether rules have been used validly, stores as pairs the starting and ending indexes of boxes in the proof. Then as each rule is checked to see whether it is valid, the referenced line indexes for the rule are checked to see whether they fall within a completed box before the current expression in the proof. If they do, this check fails and an associated error is generated. This mechanism ensures that only references that are in-scope can be used to create new lines in the Proof. This Proof object, therefore, is the basis that most of the applications core functionality is built on.
+Another additional complexity that has to be taken into account when forming Proofs, is the scope that the current expression is in. Whenever an assumption is made a new scope (or box), is opened until it is closed by certain rules being completed. Once this has happened nothing after this scope can use any expressions inside this scope for any further steps of the proof (apart from the result of the scope). This is another check that the code must make when assessing whether a rule has been used correctly at any point of the proof. I implemented this checking functionality by creating a list which, before starting the process of checking whether rules have been used validly, stores as pairs the starting and ending indexes of boxes in the proof. Then as each rule is checked to see whether it is valid, the referenced line indexes for the rule are checked to see whether they fall within a completed box before the current expression in the proof. If they do, this check fails and an associated error is generated. This mechanism ensures that only references that are in-scope can be used to create new lines in the Proof. This Proof object is therefore the basis that most of the applications core functionality is built on.
 
 \subsubsection{Error Checking}
 
 One of the main goals that I set at the beginning of this project, was to make a Natural Deduction solver which is a tool that can help teach people how to successfully solve these types of problems. I therefore made sure to have a very detailed error message system that allows a user to see exactly where they have gone wrong. This would mean that they can learn from any mistakes that they may have made. In order to make this as easy as possible, every error message that is displayed contains the type of error that has occurred, the line that it was thrown on as well as some extra information about the associated problem. This makes it very easy for the user to immediately understand what they have done wrong. In the case where no errors are thrown, the programme will display the string "Proof is Valid", alerting the user to their valid proof. 
 
-The first type of error check that occurs as soon as the parser starts to read the user input, is for Syntax errors. This check ensures that as Components are added only valid expressions are formed.  For example if two operators are added to an expression in a row, this error will be thrown. Similarly, if there are any mismatched brackets in an expression, a syntax error will immediately be thrown. This type of error is fundamental as the syntax of the proof must be completely correct in order for the user to move onto actually solving the proof at hand. This check is done right at the beginning of the parsing process for this very reason.
+The first type of error check that occurs as soon as the parser starts to read the user input, is for Syntax errors. This check ensures that as Components are added only valid expressions are formed.  For example if two operators are added to an expression in a row, this error will be thrown. Similarly, if there are any mismatched brackets in an expression, a syntax error will immediately be thrown. This type of error is fundamental, as the syntax of the proof must be completely correct in order for the user to move onto actually solving the proof at hand. This check is done right at the beginning of the parsing process for this very reason.
 
-The other type of error check, which helps to make this an educational tool, is for Rule errors. Whenever a proof is entered by a user, there is a function in the Proof class which goes through the proof and ensures that each line is valid. It does this by going through the list of expressions (the proof), and checks whether the specified rule can be used in the proof at this point. It also checks that the lines referenced by this rule are valid and are not out of scope. If all of the rules used are used correctly then the user is notified that the proof is completely valid. If not, the user will be alerted to the line and rule which was incorrectly used, helping them to learn from their mistake. In order to clearly show the user all of the rules that have been broken at the same time, the Proof class contains an error list. This list slowly builds up as the proof is checked, and is then displayed after this process is complete. I decided to allow this accumulation of errors so that a user can fix several errors that exist at a time, rather than having to solve several over a long chain of trial and error. These error checks are done after any syntax errors, that may cause expressions to be invalid, have been fixed.
+The other type of error check, which helps to make this an educational tool, is for Rule errors. Whenever a proof is entered by a user, there is a function in the Proof class which goes through the proof and ensures that each line is valid. It does this by going through the list of expressions (the proof), and checking whether the specified rules can be used in the proof at each point. It also checks that the lines referenced by this rule are valid and are not out of scope. If all of the rules used are used correctly then the user is notified that the proof is completely valid. If not, the user will be alerted to the line and rule which was incorrectly used, helping them to learn from their mistake. In order to clearly show the user all of the rules that have been broken at the same time, the Proof class contains an error list. This list slowly builds up as the proof is checked, and is then displayed after this process is complete. I decided to allow this accumulation of errors so that a user can fix several errors that exist at a time, rather than having to solve several over a long chain of trial and error. These error checks are done after any syntax errors, that may cause expressions to be invalid, have been fixed.
 
 \subsubsection{Workflow}
 Up to this point, I have explained the core features that this application's functionality is built from. It is upon these features that further, more complex additions are made to this software. In this section, I briefly describe the overall workflow process, from user input all the way to the output that they ultimately receive.
 
 The user starts off by inserting two strings into the core functionality, each separated by a newline character for each line in the proof. The first string represents the various expressions that make up the proof, while the second represents the associated rules used to form each expression. Once the user has entered these two strings they are able to submit their proof to check whether it is valid. Before doing this they have the option of applying other further functionality such as a validity check or turn on hints, as discussed in the next two sections.
 
-Once the user has submitted the proof, a Proof object is created for this proof and the strings are tokenised by new-lines. For each line of the proof an Expression object is then created containing the expression itself as well as the associated rule that was used to create it. The line numbers of any lines in the proof that are referenced in order for a rule to be applied, are also added to this newly created expression. In order to create these expressions, each Expression takes the string representing the expression itself and tokenises it by spaces. At this point the tokens are checked to see whether any Syntax errors exist and if so the entire process will be terminated and the user alerted. Assuming no Syntax errors are thrown, each token is then converted into a Component depending on its type. Each of these Components are then added to the list representing the expression. After each Expression has been created, they are all added to the list of expressions stored in the Proof object. The application now has an internal representation of the users proof.
+Once the user has submitted the proof, a Proof object is created for this proof and the strings are tokenised by new-lines. For each line of the proof an Expression object is then created containing the expression itself as well as the associated rule that was used to create it. The line numbers of any lines in the proof that are referenced in order for a rule to be applied, are also added to this newly created Expression. In order to create these expressions, each Expression takes the string representing the expression itself and tokenises it by spaces. At this point the tokens are checked to see whether any Syntax errors exist and if so the entire process will be terminated and the user alerted. Assuming no Syntax errors are thrown, each token is then converted into a Component depending on its type. Each of these Components are then added to the list representing the expression. After each Expression has been created, they are all added to the list of expressions stored in the Proof object. The application now has an internal representation of the users proof.
 
 Now that a Proof has been created, the functionality begins to check whether the various rules have been applied correctly throughout the proof. It does this by iterating through the list of expressions from the bottom up checking each rule as it passes. Within each rule check, the reference or references quoted are checked to ensure that they are in scope, and that they are valid references to use for the associated rule. The system also checks whether the correct number of lines have been referenced in order for the rule to be successfully applied. If any of these checks fail, an associated Rule error will be thrown terminating the entire process and alerting the user. If all of the rules used are checked and proven to be valid, the system concludes that the proof as a whole is valid. If this is the case, the user is alerted to this fact through a display of "Proof is Valid" on the screen. This ends the workflow of this application as it checks a proof for any errors a user may have included in their Natural Deduction proofs. 
 
 \subsubsection{Validity Checking \label{validity}}
-Natural Deduction proofs can be quite long, adding an extra difficulty when trying to debug a mistake that was made in a proof. When solving a proof, it would be helpful to know that you can solve the proof with the given premises and result at all. It would be pointless to just start solving the proof if you will never reach the resulting expression. This is a major problem faced by even the more experienced solvers of these problems.
+Natural Deduction proofs can be quite long, adding an extra difficulty when trying to debug a mistake that was made in a proof. When solving a proof, it would be helpful to know that you can solve the proof with the given premises and result at all. It would be pointless to start solving the proof if you can never reach the resulting expression. This is a major problem faced by even the more experienced solvers of these problems.
 
-In order to remedy this potential issue I have added an optional extra validation stage before the main solver functionality. This stage allows the user to input their desired premises and result, and they will be used to check whether a proof using these expressions is valid. In order to implement this I have used the Truth Table validation method. This works by calculating the truth values of each premise and the result. The method then looks to see whether in the cases where all of the premises evaluate to true, the result expression also evaluates to true. If every case of the premises all evaluate to true, then we know that the proof is valid and that there is a possible proof that can be used to solve it. I implemented this check by first creating a TruthTable object, which is represented by a 2D array. When the user submits their premises and result, this array is populated with the possible input values for each proposition, the truth values of each premise in each of the cases, and the truth value of the result in each case. This object then has functionality that checks whether all of the truth values evaluate to true in the required cases, and if so designates this proof as valid. This whole mechanism will save a user a lot of time by allowing them to see immediately whether a proof they are about to try to solve is solvable. Although this algorithm is relatively efficient for small expressions, this algorithm does not scale very well and would be very inefficient for large expressions. However, for use as a Natural Deduction solver where most expressions will have less than a dozen propositions, this does not present a problem. This is why I chose to use this algorithm to validate proofs. 
+In order to remedy this potential issue I have added an optional extra validation stage before the main solver functionality. This stage allows the user to input their desired premises and result, and they will be used to check whether a proof using these expressions is valid. In order to implement this I have used the Truth Table validation method. This works by calculating the truth values of each premise and the result. The method then looks to see whether in the cases where all of the premises evaluate to true, the result expression also evaluates to true. If in each of these cases the result evaluates to true, then we know that the proof is valid and that there is a possible proof that can be used to solve it. I implemented this check by first creating a TruthTable object, which is represented by a 2D array. When the user submits their premises and result, this array is populated with the possible input values for each proposition, the truth values of each premise in each of the cases, and the truth value of the result in each case. This object then has functionality that checks whether all of the truth values evaluate to true in the required cases, and if so designates this proof as valid. This whole mechanism will save a user a lot of time by allowing them to see immediately whether a proof they are about to try to solve is solvable. Although this algorithm is relatively efficient for small expressions, it does not scale very well and would be very inefficient for large expressions. However, for use as a Natural Deduction solver where most expressions will have less than a dozen propositions, this does not present a problem. This is why I chose to use this algorithm to validate proofs for this application. 
 
 \subsubsection{Hints \label{hints}}
 
-One of the advanced features that I set out to implement during this project is hints. I wanted to allow a user to start a proof and if they become stuck at any step, they could use my software to gain a hint as to what rule to apply next. This feature is something that is lacking in similar software such as Pandora. When first planning to include this feature in the project,  I felt that I would start by implementing a simple form of hints, where when a hint was requested I would try each of the rules and reply to the user with any rules that didn't throw any errors. Obviously, this is quite a short-sighted way of implementing this, as a user could be sent off in a completely wrong direction. Also, when it comes to introduction rules, there can be quite a lot of different possible cases to consider. I therefore decided that this methodology for generating hints is not useful for a user and started to explore some alternative methods.
+One of the advanced features that I set out to implement during this project is hints. I wanted to allow a user to start a proof and if they become stuck at any step, they could use my software to gain a hint as to what rule to apply next. This feature is something that is lacking in similar software such as Pandora. When first planning to include this feature in the project,  I felt that I would start by implementing a simple form of hints, where when a hint was requested I would try each of the rules and reply to the user with any rules that didn't throw any errors. Obviously, this is quite a short-sighted way of implementing this, as a user could be sent off in a completely wrong direction. Also, when it comes to introduction rules, there can be quite a lot of different possible cases to consider. I therefore decided that this methodology for generating hints is not useful for a user, and started to explore some alternative methods.
 
 Based on this exploration, I decided that the best way to implement this feature would be to actually apply an algorithm which solves the proof first. This would mean that when a hint is requested the system compares the users proof so far to the solved proof, in order to generate a hint for the next step. The first algorithm that I tried was one which took the premises that were given by the user and firstly tries each of the elimination rules on them several times. As this was happening the algorithm built up a list of possible proofs based on the steps found to be valid so far. The algorithm then tried some introduction rules in order to move further into the proof. This process would continue in a loop until either the resulting expression was reached, or a time-out was met. 
 
@@ -449,28 +436,41 @@ In addition to the basic algorithm, I added a few features to optimise the speed
 
  The paper where I sourced this algorithm, defines its "Or Elimination" rule slightly differently to how I have in this project. In order to carry out an "Or Elimination", I split the two sides of the Or operator into two separate boxes and try to find the same resulting expression in each, thereby eliminating the original expression (rule taken from \cite{ndBook}). I therefore had to add some extra functionality for this case into the algorithm. I did this by first assuming the left hand side of the Or containing expression. I then created another temporary list to which I added the entirety of the proof so far, except that instead of assuming the left hand side expression, I assume the right hand side expression. The algorithm then continues, but whenever a new step is added to the main proof list, I attempt to add a new step to the temporary list. This continues until both lists reach the same expression. By implementing this rule in this way, I am able to use my definition for this rule whilst still benefiting from the use of this efficient algorithm. Using this algorithm I am able to solve any proof, and based on this provide the user with hints at any stage of a proof to help them learn how to solve Natural Deduction problems. 
 
-In order to make this part of the software as useful to the user as possible, I decided to add two advanced extensions. Firstly, a user can ask for a hint not only at the end of a proof, but also in the middle. Sometimes when solving a natural deduction problem you can work out some sub-goals that will appear later on in the proof by working backwards from the goal. However, you may not be able to work out how to get to this sub-goal. In order to help combat this problem I have adapted the hint algorithm to allow the user to leave gaps in the middle of the proofs, and when the proof is submitted, hints will be generated to fill these gaps. An example of this can be seen in the following image typed into LogicAssistant.
+In order to make this part of the software as useful to the user as possible, I decided to add two advanced extensions. Firstly, a user can ask for a hint not only at the end of a proof, but also in the middle. Sometimes when solving a natural deduction problem you can work out some sub-goals that will appear later on in the proof by working backwards from the goal. However, you may not be able to work out how to get to this sub-goal. In order to help combat this problem I have adapted the hint algorithm to allow the user to leave gaps in the middle of the proofs, and when the proof is submitted, hints will be generated to fill these gaps. An example of this can be seen in figure 3.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/hintInMiddle}}
+	\makebox[\textwidth]{\includegraphics[width=11.1cm]{figures/hintInMiddle}}
 	\caption{Example of hints in the middle of proofs}
 \end{figure}
 
 In this proof the user has been able to work out the first two steps, and has also been able to add a sub-goal as the second last step by working backwards. The user however does not know how to fill the gap that is left. By leaving a blank line, LogicAssistant will keep providing the user with hints until the proof has been completely solved. This feature is really important as a good technique to use when solving these proofs by hand is to work backwards, and now it is possible to continue using this method even when stuck midway. It may sometimes be the case, especially for newer users of this proof system, that a user becomes stuck in the middle of a proof and cannot move further, even with a hint. They may not know how to use the rule hinted to, and will therefore be left stuck not knowing what to do next. In order to combat this, I have further extended the hint capabilities of this system, providing the user with an advanced hint option. By selecting this option, when a hint is requested at any stage of a proof, as well as just receiving a hint telling the user which rule to apply next, they will also be given references to the lines that should be used when applying this rule. This option therefore completely gives away to the user what to do next, ensuring that they are able to move on with their proof.
 
-Another advanced feature that I have added is the tailoring of hints towards how the user has input the proof. Often there are multiple ways to solve a proof using Natural Deduction. The solving algorithm that this software uses tries to find the shortest optimal solution for these proofs, but that doesn't mean that other longer methods are invalid. As this is a learning tool, I decided that the hints generated should try to, where possible, follow the route that the user has started to take. Even if this means a longer proof, at least the user will be learning how to create valid proofs; the main objective of this tool. An example of this can be seen in the image below.
+Another advanced feature that I have added is the tailoring of hints towards how the user has input the proof. Often there are multiple ways to solve a proof using Natural Deduction. The solving algorithm that this software uses tries to find the shortest optimal solution for these proofs, but that doesn't mean that other longer methods are invalid. As this is a learning tool, I decided that the hints generated should try to, where possible, follow the route that the user has started to take. Even if this means a longer proof, at least the user will be learning how to create valid proofs; the main objective of this tool. An example of this can be seen in figure 4.
 
 \begin{figure}[!ht]
 	\centering
 	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/proofComparison}}
-	\caption{Comparison between possible proof make up}
+	\caption{Comparison between possible proof make-ups}
 \end{figure}
 
 This example shows two proofs with the same premises and goals, yet one is slightly longer than the other. The red boxes indicate the differences. Depending on which way the user takes, this algorithm will now learn from this and continue to follow in this direction. I was able to do this by, in step 1 of the algorithm (see Algorithm \ref{solveAlgo}), when the premises and results are added to the two lists, also adding the steps of the proof that had already been entered by the user. This means that when the algorithm starts to run it continues on from where the user is up to, thereby helping to tailor the generated proof and hints to the user's method. These two extra features together make this programme an invaluable tool when learning to solve these complex problems. 
 
-\pagebreak\
-\subsection{View}
+\subsubsection{Lemmas \label{lemmas}}
+
+A further essential feature that I added to the application was lemmas. Sometimes, it is not possible to solve a proof with the given premises. Alternatively, there may be no premises at all and the proof can't be solved without any. One way to enable these proofs to be solved is by adding a lemma. A lemma is an expression that has been proven either with or without its own premises, that can be added to a proof. This lemma can then be used throughout the proof where necessary. The simplest form of lemma is one which can be proven without any premises. One often used by logicians is "A $\vee \neg$A". This lemma would be added to the beginning of a proof, and using unification can be used throughout the proof if a similar expression arises. An example of a more complex lemma can be seen in figure 5.
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/lemmaExample}}
+	\caption{Comparison between possible proof make up}
+\end{figure}
+
+In the figure above, a lemma has been proven on line 6 which relies on the premises indicated by the red box. LogicAssistant has proven this lemma to be valid, and has therefore added it to the list of premises. Then, if a similar structured set of expressions is proven, this lemma can be reused. In this example using lines 1, 2 and 8, the proof contains the correct structure, according to the lemma, to prove "G". Therefore, "G" can be proven on line 9, referencing the lemma in the premise list. This process can be carried out many times throughout a proof. The use of lemmas can be really helpful in proofs which can't be proven with just the premises provided. Also, for very long proofs, where there is repetition of small parts of the proof, a lemma can be used to prove the repetitive parts once, and then the lemma can just be referenced. This helps to keep proofs concise. LogicAsistant provides this important functionality to assist users as much as possible, as they learn to solve complex Natural Deduction proofs. 
+
+
+\pagebreak
+\subsection{View \label{view}}
 
 One of the key components of this project is the design of the front-end. I wanted to make the application as easy-to-use and as appealing as possible to users looking for help in solving their Natural Deduction proofs. I therefore spent a long time perfecting this part of the application. As mentioned below (see \ref{JavaSpring}), I used Java Spring to create a front-end that uses the Java back-end of this project. This meant using Thymeleaf together with HTML and Javascript to create an easy-to-use, but powerful user interface. In order to perfect the website I carried out several iterations before deciding on this final design.
 
@@ -480,7 +480,7 @@ One of the key components of this project is the design of the front-end. I want
 	\caption{Website homepage}
 \end{figure}
 
-The website itself is made up of three pages. The first of which is the home page (see image above), which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page (see figure below). 
+The website itself is made up of three pages. The first of which is the home page (see figure 6 above), which contains most of the core functionality of the application. This page is made up of several different components. When you load the page the first part you see is the two text areas right in the middle of the page (see figure 7). 
 
 \begin{figure}[!ht]
 	\centering
@@ -489,24 +489,24 @@ The website itself is made up of three pages. The first of which is the home pag
 \end{figure}
 
 
-The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on, that rule is added to the next line of the proof. These two components of the webpage can be seen in the figure below.
+The left one includes line numbers and allows the user to type in each step of their proof. The text area on the right allows the user to add a rule for each line of their proof. A key is conveniently displayed on the left hand side of the page, to show the user how to represent each of the operators in this logical system. In order to insert a rule corresponding to a line in the proof, on the right hand side of the page there is a list of buttons each representing a different rule. When one is clicked on, that rule is added to the next line of the proof. These two components of the webpage can be seen in figure 8 below.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=10cm]{figures/key&rules}}
+	\makebox[\textwidth]{\includegraphics[width=7cm]{figures/key&rules}}
 	\caption{Symbol Key \& Rule Buttons}
 \end{figure}
 
-If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, the left text area will automatically indent itself to represent any boxes (scopes) included in the proof. An example of this formatting can be seen in the figure below.
+If the rule needs references added to it regarding the lines in the proof it is using, the user can type these into the text area manually. If an assumption is used at any point of the proof, the left text area will automatically indent itself to represent any boxes (scopes) included in the proof. An example of this formatting can be seen in figure 9.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/indentation}}
+	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/indentation}}
 	\caption{Full proof with references and indentation}
 \end{figure}
 
 
-Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them as to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. The figure below shows some possible error messages that may be displayed.
+Once the user has completed their proof they can click the submit button towards the bottom of the page, and the solver will alert them as to whether their proof is valid. If not, it will display any syntax or rule errors, including some extra helpful information to assist them in solving any issues that may be present. Figure 10 below shows some possible error messages that may be displayed.
 \pagebreak
 
 \begin{figure}[!ht]
@@ -515,7 +515,7 @@ Once the user has completed their proof they can click the submit button towards
 	\caption{Error Message examples}
 \end{figure}
 
-If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns orange. This means that basic hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above, if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. An example of a user requesting a hint in the middle of a proof can be seen in the figure below.
+If the user becomes stuck at any part of their proof, they can click the "Hint" button at the bottom of the page so that it turns orange. This means that basic hint mode has been turned on, so that when submit is now clicked, a hint will be delivered to the user in the output box at the bottom. If the hint button is used after the proof has already been solved, the user will be notified to this fact. Also, as mentioned above, if the user has lines in the middle of the proof that they are stuck on, they can leave a blank line and an associated hint will be generated. An example of a user requesting a hint in the middle of a proof can be seen in figure 11.
 
 \begin{figure}[!ht]
 	\centering
@@ -523,7 +523,7 @@ If the user becomes stuck at any part of their proof, they can click the "Hint" 
 	\caption{Hint requested for a proof}
 \end{figure}
 
-If a user is still stuck, even after having requested a hint, they can select the "Advanced Hints" mode by clicking the "Hint" button again, turning it green. Now, when the proof is submitted, as well as a hint informing the user which rule to apply next, the line numbers that this rule should reference are also displayed. This allows the user to easily add the next step of their proof and move on. The figure below shows an example of an "Advanced Hint" being requested.
+If a user is still stuck, even after having requested a hint, they can select the "Advanced Hints" mode by clicking the "Hint" button again, turning it green. Now, when the proof is submitted, as well as a hint informing the user which rule to apply next, the line numbers that this rule should reference are also displayed. This allows the user to easily add the next step of their proof and move on. Figure 12 below shows an example of an "Advanced Hint" being requested.
 
 \begin{figure}[!ht]
 	\centering
@@ -531,23 +531,35 @@ If a user is still stuck, even after having requested a hint, they can select th
 	\caption{Advanced Hint requested for a proof}
 \end{figure}
 
-This page also contains some other features that assist a user when using this software. Firstly, there is a drop-down menu towards the bottom of the page, that contains two useful options. An option to reset the page in order to type a new proof, and also a "save proof as" option. This allows the user to save any proofs they have, so that they can be revisited again on a later occasion. On the left hand side of the page there is also functionality that allows the user to upload their own proofs. This programme has its own file type (.la) and files of this type can be uploaded to this solver. The proof then can either be checked or added to and then saved again for future use. All of these small features together make using this system much simpler and straightforward for users. Some of these features can be seen in the figure below.
+This page also contains some other features that assist a user when using this software. Firstly, there is a drop-down menu towards the bottom of the page, that contains two useful options. An option to reset the page in order to type a new proof, and also a "save proof as" option. This allows the user to save any proofs they have, so that they can be revisited again on a later occasion. On the left hand side of the page there is also functionality that allows the user to upload their own proofs. This programme has its own file type (.la) and files of this type can be uploaded to this solver. The proof then can either be checked or added to and then saved again for future use. All of these small features together make using this system much simpler and straightforward for users. Some of these features can be seen in figure 13.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/extraFunctionality}}
+	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/extraFunctionality}}
 	\caption{Additional Functionality}
 \end{figure}
 
-The next page of the web-app is the proof validation page. This can be accessed using a button on the left hand side of the home page. This page allows the user to type in their chosen premises and the resulting expression that they want to use in their proof. Then by clicking the "Check Validity" button, the validity algorithm will be triggered (see \ref{validity}), alerting the user as to whether the proof will be valid. This step saves the user a lot of time by allowing them to see whether the proof they are about to solve is solvable before they even start the proof solving process. Once this check has been completed the user can navigate back to the home page in order to actually solve their proof step by step. The figure below shows valid and invalid proofs that have been entered into the validity checker.
+
+As discussed above (see \ref{lemmas}), lemmas are an important tool that can help users to solve complex proofs that cannot be solved using just the expressions provided. In order to add a lemma, a user can click the "Add Lemma" button on the button panel on the right hand side of the page, and they will then be taken to the "Lemma Checker" page. On this page the user can insert the premises, if there are any, and the resulting expression of the their suggested lemma. If the lemma is proven to be valid, it will be added to the main proof, otherwise an appropriate error message will be displayed. Figure 14 below shows a picture of what this page looks like when a lemma is proven to be invalid.
 
 \begin{figure}[!ht]
 	\centering
-	\makebox[\textwidth]{\includegraphics[width=13cm]{figures/validityChecker}}
-	\caption{Validity Checker}
+	\makebox[\textwidth]{\includegraphics[width=11cm]{figures/lemmaFail}}
+	\caption{Invalid lemma error}
 \end{figure}
 
-The final and most important page of the application is the User Guide. This page contains a detailed description of how to use all of the features mentioned above. With the help of this page I believe that almost any user will be able to work out how to use most of the functionality on the website. In addition to this, throughout the website I have added tooltips onto some of the key pieces of functionality. This means that when a user puts their mouse over one of these tooltips they will be shown a small speech bubble explaining what that piece of functionality is used for. This will increase the ease at which new users are able to benefit from this software. Some tooltips used in this webpage can be seen in the figure below. This is therefore how the front-end (or view) part of my application has been created.
+
+
+The next page of the web-app is the proof validation page. This can be accessed using a button on the left hand side of the home page. This page allows the user to type in their chosen premises and the resulting expression that they want to use in their proof. Then by clicking the "Check Validity" button, the validity algorithm will be triggered (see \ref{validity}), alerting the user as to whether the proof will be valid. This step saves the user a lot of time by allowing them to see whether the proof they are about to solve is solvable before they even start the proof solving process. Once this check has been completed the user can navigate back to the home page in order to actually solve their proof step by step. Figure 15 shows valid and invalid proofs that have been entered into the validity checker.
+
+\begin{figure}[!ht]
+	\centering
+	\makebox[\textwidth]{\includegraphics[width=12cm]{figures/validityChecker}}
+	\caption{Validity Checker}
+\end{figure}
+\pagebreak
+
+The final and most important page of the application is the User Guide. This page contains a detailed description of how to use all of the features mentioned above. With the help of this page I believe that almost any user will be able to work out how to use most of the functionality on the website. In addition to this, throughout the website I have added tooltips onto some of the key pieces of functionality. This means that when a user puts their mouse over one of these tooltips they will be shown a small speech bubble explaining what that piece of functionality is used for. This will increase the ease at which new users are able to benefit from this software. Some tooltips used in this webpage can be seen in figure 16. This is therefore how the front-end (or view) part of my application has been created.
 
 \begin{figure}[!ht]
 	\centering
@@ -561,7 +573,7 @@ In order to coordinate and control the model and view parts of this web-app, it 
 
 \pagebreak
 
-\section{Development Tools}
+\section{Development Tools \label{devTools}}
 
 \subsection{Java}
 
@@ -603,7 +615,7 @@ When writing Java code it is very easy to make small syntactic mistakes in the c
 
 \subsection{Git \label{git}}
 
-A key area that needs to be considered when carrying out any large scale project such as this is version control. One cannot afford to lose a projects source code, and it is really useful to have previous versions of the code-base that can be returned to at any point in the project. For this project, I decided to use Git for this as I am very familiar with its functionality and so would be able to effectively utilise all of its key features. In order to manage my Git repository, I decided to use Github. Github has a really easy-to-use interface and is compatible with Maven making it very simple for me to upload my project. I was able to create a private project on Github and using its clear website, I was able to look up previous versions of my code base whenever necessary. Github also provides some very useful statistics about how the version control side of my project was progressing. I used these statistics to try to keep up a good level of Software Engineering practice. The figure on the next page contains an image of my Github dashboard.
+A key area that needs to be considered when carrying out any large scale project such as this is version control. One cannot afford to lose a projects source code, and it is really useful to have previous versions of the code-base that can be returned to at any point in the project. For this project, I decided to use Git for this as I am very familiar with its functionality and so would be able to effectively utilise all of its key features. In order to manage my Git repository, I decided to use Github. Github has a really easy-to-use interface and is compatible with Maven making it very simple for me to upload my project. I was able to create a private project on Github and using its clear website, I was able to look up previous versions of my code base whenever necessary. Github also provides some very useful statistics about how the version control side of my project was progressing. I used these statistics to try to keep up a good level of Software Engineering practice. Figure 17 on the next page contains an image of my Github dashboard.
 
 One Git feature that was really helpful for me throughout the project was the use of git-hooks. I created a Git hook which, whenever I committed my work, runs all of my unit tests over the code and ensures that they all pass. If any fail, the commit is halted to enable me to fix the associated errors before being able to commit. This is a very useful feature as often after changing one part of the code-base, you may accidentally break the code somewhere else. Without Git hooks these errors may not be picked up on, meaning that broken code is committed to Git.  This is obviously not a good technique to follow, so I made sure to add these hooks as early as possible in the project to avoid this from happening.
 
@@ -667,7 +679,7 @@ In this iteration I also aim to spend time adding some other extensions such as 
 From the start of this iteration, I aim to have finished adding any new features. I intend to go through my code, tidy it up, add comments and ensure that all unnecessary code is removed. I will also look through and try to solve any remaining bugs left in my code-base. At the same time I will complete my report, noting how the various parts of the project were carried out. I want to allow as much time as possible to do this, to make sure that I can create a high level and well written report. This iteration will also be used to create my project presentation, making sure it looks professional and is able to inform the audience of exactly what my project is capable of doing.
 
 \subsection{Testing \label{testing}}
-Creating a simple design when carrying out a software project ensures that anyone looking at the code-base can understand what is going on. When problems occur, a simple design can also help in the debugging process. J.B. Rainsberger, a software engineer well known for his contributions to agile development, writes in his blog (see \cite{jBrains}) how there are four elements of a simple design. These elements can be visualised in the figure below:
+Creating a simple design when carrying out a software project ensures that anyone looking at the code-base can understand what is going on. When problems occur, a simple design can also help in the debugging process. J.B. Rainsberger, a software engineer well known for his contributions to agile development, writes in his blog (see \cite{jBrains}) how there are four elements of a simple design. These elements can be visualised in figure 18 below:
 
 \begin{figure}[!ht]
 	\centering
@@ -678,7 +690,7 @@ Creating a simple design when carrying out a software project ensures that anyon
 The last of these elements is "Behaves Correctly". This means that the software as a whole functions properly, producing the expected output. The best way to achieve this is through testing. By building large test-suites that are able to cover most of the possible cases that the software will be faced with, a programmer can ensure that their entire code-base is working to its full potential. In this project, I spent a large amount of time focusing on this area..
 
 \subsubsection{Test Driven Development \label{TDD}}
-From the outset of this project I realised how important testing would be for the development process. I therefore decided to adopt the Test Driven Development methodology. When following the Test Driven Development practice, a cycle is followed as shown in the diagram below.
+From the outset of this project I realised how important testing would be for the development process. I therefore decided to adopt the Test Driven Development methodology. When following the Test Driven Development practice, a cycle is followed as shown in figure 19 below.
 
 \begin{figure}[!ht]
 	\centering
@@ -691,7 +703,7 @@ The cycle works by first writing a test before any implementation, which is expe
 \subsubsection{Back-End}
 The main portions of this project's functionality were created in the back-end of the code-base. As this part was written in Java, I was able to easily create big test-suites using JUnit (see \ref{JUnit}). As mentioned above, Maven (see \ref{maven}) was used to package and deploy this project. By writing a large number of back-end tests, I was able to link my test-suites to my Maven build, ensuring that the code-base is fully functioning whenever the programme is deployed.
 
-The large number of test-cases that have been created for the back-end of this project, meant that I could test a variety of aspects of the code-base. I therefore split the test-cases into five different classes. The first tests the various operations that can be done on expressions. When I created the Expression class in the back-end, these tests enabled me to create Expressions which could be manipulated in the various ways that I required later on in the project. Next, I created an error test class. One of the most important features of this software, is the error messages that are produced when mistakes are made. This makes the software educational for the user, which was one of my main objectives. There are lots of different possible error messages that could occur depending on the case that the user is in. I therefore was insistent on writing plenty of tests to check to see whether the correct error messages are being displayed at any time. This helped me to fine tune my error message delivery system. The code below is taken from one my Syntax error test cases.
+The large number of test-cases that have been created for the back-end of this project, meant that I could test a variety of aspects of the code-base. I therefore split the test-cases into five different classes. The first tests the various operations that can be done on expressions. When I created the Expression class in the back-end, these tests enabled me to create Expressions which could be manipulated in the various ways that I required later on in the project. Next, I created an error test class. One of the most important features of this software, is the error messages that are produced when mistakes are made. This makes the software educational for the user, which was one of my main objectives. There are lots of different possible error messages that could occur depending on the case that the user is in. I therefore was insistent on writing plenty of tests to check to see whether the correct error messages are being displayed at any time. This helped me to fine tune my error message delivery system. The code below (figure 20) is taken from one my Syntax error test cases.
 
 \begin{figure}[!ht]
 
@@ -718,7 +730,7 @@ The large number of test-cases that have been created for the back-end of this p
 
 The next and most significant section of tests is for Natural Deduction rules. One of the key features of this software is the checking of Natural Deduction proofs to ensure that they are valid. In order to do this the software checks that each rule that is used in the proof is used correctly. This part of the project required a lot of code to be written so I had to ensure that no code was broken as new parts were added. I therefore created a test class just for these rules. This class contains twenty nine tests which go through all of the Natural Deduction rules and tries to ensure that the checks that are made are done so correctly. I also tried to add some edge cases which attempt to trick the code as it runs these checks. With the help of this test class, I was confident that this part of the project was functioning correctly.
 
-The final and largest test class, tests the solver and hint components of the project. The algorithm that I used to solve natural deduction proofs in order to generate hints (see \ref{hints}), has been proven to be sound and complete (as proven in \cite{ndAlgo}). However, I had to ensure that regarding the way I implemented it, with the extensions that I added, I was confident enough in the correctness of the algorithm. I therefore created an in-depth test-suite to test both simple and more complex cases that this part of the software could face. Due to the large number of possible cases, I had to create a high number of tests. This meant that I spent a long time perfecting this test-suite in order for it to be a useful tool for this part of the project. Below is an example of a test case written to test the hint generation system. 
+The final and largest test class, tests the solver and hint components of the project. The algorithm that I used to solve natural deduction proofs in order to generate hints (see \ref{hints}), has been proven to be sound and complete (as proven in \cite{ndAlgo}). However, I had to ensure that regarding the way I implemented it, with the extensions that I added, I was confident enough in the correctness of the algorithm. I therefore created an in-depth test-suite to test both simple and more complex cases that this part of the software could face. Due to the large number of possible cases, I had to create a high number of tests. This meant that I spent a long time perfecting this test-suite in order for it to be a useful tool for this part of the project. Figure 21 shows an example of a test-case written to test the hint generation system. 
 
 Overall, these test classes together helped me to perfect each part of this project, ensuring that they are able to work in almost any cases that are thrown at them.
 \pagebreak
@@ -756,7 +768,7 @@ Overall, these test classes together helped me to perfect each part of this proj
 
 \subsubsection{Front-End}
 
-A major component of the project is the front-end, which the users themselves will be using to access the useful functionality that this software provides. This part of the project is very important as the user will use this to judge how useful this tool actually is. I therefore considered that it would be wrong for me to just create test-cases for the back-end of the project. Using Selenium (see \ref{selenium}), I was able to create integration tests which actually act as the user by clicking on the buttons and typing in input. These tests allowed me to see how the user experiences the website itself, and whether each of the features works for them. Just because my features work in the back-end of the software, it does not necessarily mean that they will also work in the front-end. Therefore, I must use these front-end tests to ensure that all parts of my software are functioning correctly. These tests were very useful after each feature was created to ensure that they were working as expected throughout the development process. This way I was sure that the user received the full experience provided by LogicAssistant. An example of one of my front-end tests can be found below.
+A major component of the project is the front-end, which the users themselves will be using to access the useful functionality that this software provides. This part of the project is very important as the user will use this to judge how useful this tool actually is. I therefore considered that it would be wrong for me to just create test-cases for the back-end of the project. Using Selenium (see \ref{selenium}), I was able to create integration tests which actually act as the user by clicking on the buttons and typing in input. These tests allowed me to see how the user experiences the website itself, and whether each of the features works for them. Just because my features work in the back-end of the software, it does not necessarily mean that they will also work in the front-end. Therefore, I must use these front-end tests to ensure that all parts of my software are functioning correctly. These tests were very useful after each feature was created to ensure that they were working as expected throughout the development process. This way I was sure that the user received the full experience provided by LogicAssistant. Figure 22 below shows one of my front-end test-cases.
 
 \begin{figure}[!ht]
 \begin{lstlisting}
@@ -781,7 +793,7 @@ A major component of the project is the front-end, which the users themselves wi
 
 One of the hardest parts of any large software development project, is managing the large list of tasks that build up as the project progresses. As I code, I am constantly thinking of new features or extensions that would improve the software. It is very easy to forget to implement them later on in the project. I therefore needed a way to sort these tasks and ensure that none of them were omitted. To solve this problem, I decided to use Trello. Trello is a project management tool that allows you to create lists of tasks that you need to complete for your project. The lists can be customised using different colours and labels helping you to plan the devlopment process of your project. I have found this tool very useful in the past, so I decided to use it again for this project.
 
-I set up my Trello board by creating four different lists. I created a list for all of the back-end tasks that I would need to do, a list for all of my front-end tasks, a list of any bugs that I had found in the code-base and a list of completed tasks. This setup allowed me to look through my back-end and front-end task lists to help me decide which tasks to complete at any point of the development process. Then, once these tasks were completed, I could move them to the "Completed Tasks" list. As I went through these tasks any additional tasks that I thought about could be added to the lists to be implemented later on. I was able to similarly do this with any bugs I found, preventing me from forgetting about them later on in the project. Another really useful feature that I used was labels. Whenever I thought a certain task in the project was very important, and it was necessary for me to implement it as soon as possible, I could label the task in red. This indicated to me that this task needed to be completed next. Overall, this tool really helped me to manage my work-flow as I went about developing this complex software. The image below shows my Trello board at one point in the development process.
+I set up my Trello board by creating four different lists. I created a list for all of the back-end tasks that I would need to do, a list for all of my front-end tasks, a list of any bugs that I had found in the code-base and a list of completed tasks. This setup allowed me to look through my back-end and front-end task lists to help me decide which tasks to complete at any point of the development process. Then, once these tasks were completed, I could move them to the "Completed Tasks" list. As I went through these tasks any additional tasks that I thought about could be added to the lists to be implemented later on. I was able to similarly do this with any bugs I found, preventing me from forgetting about them later on in the project. Another really useful feature that I used was labels. Whenever I thought a certain task in the project was very important, and it was necessary for me to implement it as soon as possible, I could label the task in red. This indicated to me that this task needed to be completed next. Overall, this tool really helped me to manage my work-flow as I went about developing this complex software. Figure 23 shows my Trello board at one point in the development process.
 
 \begin{figure}[!ht]
 	\centering
@@ -884,7 +896,7 @@ One of the best ways to judge how well a project is preceding, is to collect som
 
 Looking at the results of the survey a number of conclusions can be drawn, some of which I worked on in order to improve the overall product. Firstly, of those surveyed 60\% of users already use some kind of tool to help them with their Natural Deduction proofs. LogicAssistant for these people is therefore a competing product, which I will have to prove to be superior to the ones they are currently using. For the rest of the people surveyed, LogicAssistant will need to demonstrate to them the benefits of using such a tool, especially as to how it will make the entire proof solving process much simpler. Another question that was asked in the survey was how LogicAssistant compares to other similar products that those surveyed had used. All of them replied that it was at least slightly better than other software that they had encountered. This showed me that LogicAssistant must be doing something right, especially as even those who don't commonly use this type of software supported its achievements.
 
-One of the main goals that I wanted to achieve by the end of this project was to make this application as easy-to-use as possible. This would allow LogicAssistant to attract users at lots of different levels of knowledge of Natural Deduction, as they try to solve their complex proofs. In order to test how successfully I had done this, I asked in the survey for people to rate how easy-to-use they had found LogicAssistant out of a score of ten. The results can be seen on the graph below. The graph shows to what extent the people surveyed thought that the website was easy-to-use. In another of the survey questions I asked what was missing from this tool as a whole. Several people answered that it was a bit difficult to figure out exactly what to do upon arriving at the website, especially regarding the hint options. In response to these comments, I inserted extra tooltips and simplified some of the features, so that it was very clear how to use the application. I would hope that the finished product today has resolved these issues and is therefore very easy for any user to operate.
+One of the main goals that I wanted to achieve by the end of this project was to make this application as easy-to-use as possible. This would allow LogicAssistant to attract users at lots of different levels of knowledge of Natural Deduction, as they try to solve their complex proofs. In order to test how successfully I had done this, I asked in the survey for people to rate how easy-to-use they had found LogicAssistant out of a score of ten. The results can be seen on the graph below (see figure 24). The graph shows to what extent the people surveyed thought that the website was easy-to-use. In another of the survey questions I asked what was missing from this tool as a whole. Several people answered that it was a bit difficult to figure out exactly what to do upon arriving at the website, especially regarding the hint options. In response to these comments, I inserted extra tooltips and simplified some of the features, so that it was very clear how to use the application. I would hope that the finished product today has resolved these issues and is therefore very easy for any user to operate.
 
 \begin{figure}[!ht]
 	\centering
@@ -892,7 +904,7 @@ One of the main goals that I wanted to achieve by the end of this project was to
 	\caption{Ease of use survey results}
 \end{figure}
 
-Another key component that I wanted to gain feedback on, was the design of the front-end of the application. This is the part of the application that the users will actually see, so must be aesthetically pleasing as well as having features that are displayed clearly. I again asked the people I surveyed to rate how they found the design of the user interface. The results of this question can be seen on the graph below. This graph similarly shows that most people surveyed thought the design of the website was good as well as just being easy-to-use. A few gave a slightly lower score, and in answering what is missing from this application they said that how the proof itself is displayed is a bit lacking. They added that they would prefer to have proper boxes around new scopes, as well as more of a notification when a proof is found to be valid. I did not in the end have time to work on these constructive points, but these items would definitely be on the agenda to implement next if I was to continue working on this project. 
+Another key component that I wanted to gain feedback on, was the design of the front-end of the application. This is the part of the application that the users will actually see, so must be aesthetically pleasing as well as having features that are displayed clearly. I again asked the people I surveyed to rate how they found the design of the user interface. The results of this question can be seen on the graph below (see figure 25). This graph similarly shows that most people surveyed thought the design of the website was good as well as just being easy-to-use. A few gave a slightly lower score, and in answering what is missing from this application they said that how the proof itself is displayed is a bit lacking. They added that they would prefer to have proper boxes around new scopes, as well as more of a notification when a proof is found to be valid. I did not in the end have time to work on these constructive points, but these items would definitely be on the agenda to implement next if I was to continue working on this project. 
 
 \begin{figure}[!ht]
 	\centering
@@ -1182,7 +1194,7 @@ In order to check whether a proof you have written is valid please follow the fo
 \pagebreak
 \subsection{Goal Validity}
 
-Before solving a proof, In order to check whether it is valid follow the following steps:
+Before solving a proof, in order to check whether it is valid follow the following steps:
 
 \begin{enumerate}
 	\item Click on the "Check Proof Validity" button on the left hand side of the page (this can be done even in the middle of solving a proof)
@@ -1228,9 +1240,131 @@ Before solving a proof, In order to check whether it is valid follow the followi
 
 \subsection{Hints}
 
+If you become stuck at any point in the proof, hints can be generated as follows:
+
+\begin{enumerate}
+	\item Type as much of your proof as you can (this could mean leaving a gap in the middle), and leave a space before typing your resulting expression
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=13cm]{figures/UserGuide/hintProof}}
+		\caption{Type your partial proof}
+	\end{figure}
+	
+	\item To turn on basic hints, click the "Hint" button once so that it turns orange
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=5cm]{figures/UserGuide/hintsOn}}
+		\caption{Turn on hints}
+	\end{figure}
+	
+	\item Press the "Submit" button, and your hint should be displayed in the box at the bottom
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/UserGuide/hintOutput}}
+		\caption{Hint output}
+	\end{figure}
+	\pagebreak
+	\item To turn on advanced hints, click the "Hint" button twice so that it turns green
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=5cm]{figures/UserGuide/advancedHintsOn}}
+		\caption{Turn on advanced hints}
+	\end{figure}
+	
+	\item Press the "Submit" button, and your advanced hint should be displayed in the box at the bottom
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=\linewidth]{figures/UserGuide/advancedHintOutput}}
+		\caption{Turn on hints}
+	\end{figure}
+	
+\end{enumerate}
+
+
 \subsection{Lemmas}
 
+In order to add a Lemma to your proof, follow these instructions:
+
+\begin{enumerate}
+	\item Click the "Add Lemma" button on the button bar on the right hand side of the page
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=5cm]{figures/UserGuide/addLemmaButton}}
+		\caption{Add Lemma Button}
+	\end{figure}
+
+	\item Type your required premises (if there are any) and lemma result into the "Lemma Checker"
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=5.7cm]{figures/UserGuide/lemmaInput}}
+		\caption{Lemma inputs}
+	\end{figure}
+
+	\item Press the "Add Lemma" button at the bottom of the page
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=5cm]{figures/UserGuide/lemmaButton}}
+		\caption{Lemma Button}
+	\end{figure}
+
+	\item If the lemma was valid, it will automatically be added to your proof, and can be referenced using the "Available" rule
+	
+\end{enumerate}
+
 \subsection{Saving \& Loading Proofs}
+
+In order to save a proof:
+
+\begin{enumerate}
+	\item Make sure you have fully inserted the proof you want to save
+	\item Press the "Save Proof As" button in the sub-menu at the bottom of the page
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=7cm]{figures/UserGuide/saveAs}}
+		\caption{Save Proof As button}
+	\end{figure}
+	\item Choose your desired file destination folder and name
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=11cm]{figures/UserGuide/chooseFolder}}
+		\caption{Select directory to save proof}
+	\end{figure}
+
+	\item Press "Save"
+\end{enumerate}
+
+In order to load a proof:
+\begin{enumerate}
+	\item Click the "Choose File" button on the left hand side of the page
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=6cm]{figures/UserGuide/uploadButton}}
+		\caption{Upload proof button}
+	\end{figure}
+
+	\item Find the saved proof in your file directory
+	
+	\begin{figure}[!ht]
+		\centering
+		\makebox[\textwidth]{\includegraphics[width=13cm]{figures/UserGuide/chooseFile}}
+		\caption{Select file to upload}
+	\end{figure}
+
+	\item Click "Open"
+	\item Click the "Upload" button below
+	\item Your proof will be inserted into the main proof boxes on the page
+\end{enumerate}
 
 
 \pagebreak

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  15 JUN 2017 22:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.26)  18 JUN 2017 23:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -964,7 +964,7 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )
 \c@lstlisting=\count170
 
-(./titlepage.tex <./figures/imperial.pdf, id=288, 362.35374pt x 95.35625pt>
+(./titlepage.tex <./figures/imperial.pdf, id=292, 362.35374pt x 95.35625pt>
 File: ./figures/imperial.pdf Graphic file (type pdf)
 
 <use ./figures/imperial.pdf>
@@ -989,7 +989,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 39.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<figures/imperial2.pdf, id=289, 1606.0pt x 1712.79903pt>
+<figures/imperial2.pdf, id=293, 1606.0pt x 1712.79903pt>
 File: figures/imperial2.pdf Graphic file (type pdf)
 
 <use figures/imperial2.pdf>
@@ -1025,94 +1025,103 @@ l.62
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [5]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) 
-has been already used, duplicate ignored
+ [5] [6
+
+]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
+ been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.84 
+l.86 
       [1]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 87.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 89.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 87.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 89.
 
-[2] [3] [4] [5] [6] [7]
-<figures/ComponentsUML.jpeg, id=476, 1417.295pt x 746.79pt>
+[2] [3] [4] [5] [6] [7] [8]
+<figures/ComponentsUML.jpeg, id=490, 1417.295pt x 746.79pt>
 File: figures/ComponentsUML.jpeg Graphic file (type jpg)
 
 <use figures/ComponentsUML.jpeg>
-Package pdftex.def Info: figures/ComponentsUML.jpeg used on input line 317.
+Package pdftex.def Info: figures/ComponentsUML.jpeg used on input line 304.
 (pdftex.def)             Requested size: 369.88582pt x 194.89009pt.
- [8] [9 <./figures/ComponentsUML.jpeg>]
-[10] [11] [12]
-Overfull \hbox (47.00003pt too wide) in paragraph at lines 443--443
+ [9 <./figures/ComponentsUML.jpeg>] [10]
+[11] [12]
+Overfull \hbox (47.00003pt too wide) in paragraph at lines 430--430
 []
  []
 
 
-Overfull \hbox (47.00003pt too wide) in paragraph at lines 443--443
+Overfull \hbox (47.00003pt too wide) in paragraph at lines 430--430
 [] 
  []
 
-[13] <figures/hintInMiddle.jpeg, id=528, 1332.98pt x 857.2025pt>
+[13] <figures/hintInMiddle.jpeg, id=537, 621.32124pt x 436.63126pt>
 File: figures/hintInMiddle.jpeg Graphic file (type jpg)
 
 <use figures/hintInMiddle.jpeg>
-Package pdftex.def Info: figures/hintInMiddle.jpeg used on input line 456.
-(pdftex.def)             Requested size: 341.43306pt x 219.5582pt.
+Package pdftex.def Info: figures/hintInMiddle.jpeg used on input line 443.
+(pdftex.def)             Requested size: 315.82576pt x 221.94612pt.
  [14 <./figures/hintInMiddle.jpeg>]
-<figures/proofComparison.jpeg, id=534, 1606.0pt x 694.595pt>
+<figures/proofComparison.jpeg, id=543, 1593.955pt x 738.76pt>
 File: figures/proofComparison.jpeg Graphic file (type jpg)
 
 <use figures/proofComparison.jpeg>
-Package pdftex.def Info: figures/proofComparison.jpeg used on input line 466.
-(pdftex.def)             Requested size: 426.79135pt x 184.58614pt.
+Package pdftex.def Info: figures/proofComparison.jpeg used on input line 453.
+(pdftex.def)             Requested size: 426.79135pt x 197.79951pt.
  [15 <./figures/proofComparison.jpeg>]
-<figures/wholePageImage.jpeg, id=542, 1221.56375pt x 811.03pt>
+<figures/lemmaExample.jpeg, id=551, 1314.9125pt x 859.21pt>
+File: figures/lemmaExample.jpeg Graphic file (type jpg)
+
+<use figures/lemmaExample.jpeg>
+Package pdftex.def Info: figures/lemmaExample.jpeg used on input line 465.
+(pdftex.def)             Requested size: 426.79135pt x 278.87285pt.
+ [16 <./figures/lemmaExample.jpeg>]
+<figures/wholePageImage.jpeg, id=558, 1207.51125pt x 779.91376pt>
 File: figures/wholePageImage.jpeg Graphic file (type jpg)
 
 <use figures/wholePageImage.jpeg>
 Package pdftex.def Info: figures/wholePageImage.jpeg used on input line 479.
-(pdftex.def)             Requested size: 369.88582pt x 245.57555pt.
+(pdftex.def)             Requested size: 369.88582pt x 238.90274pt.
 
-<figures/textareas.jpeg, id=543, 666.49pt x 439.6425pt>
+<figures/textareas.jpeg, id=559, 666.49pt x 439.6425pt>
 File: figures/textareas.jpeg Graphic file (type jpg)
 
 <use figures/textareas.jpeg>
 Package pdftex.def Info: figures/textareas.jpeg used on input line 487.
 (pdftex.def)             Requested size: 256.0748pt x 168.91739pt.
- [16 <./figures/wholePageImage.jpeg> <./figures/textareas.jpeg>] <figures/key&r
-ules.jpeg, id=551, 1195.46625pt x 672.5125pt>
+ [17 <./figures/wholePageImage.jpeg> <./figures/textareas.jpeg>] <figures/key&r
+ules.jpeg, id=566, 403.5075pt x 395.4775pt>
 File: figures/key&rules.jpeg Graphic file (type jpg)
 
 <use figures/key&rules.jpeg>
 Package pdftex.def Info: figures/key&rules.jpeg used on input line 496.
-(pdftex.def)             Requested size: 284.52756pt x 160.06201pt.
+(pdftex.def)             Requested size: 199.16928pt x 195.20377pt.
 
-<figures/indentation.jpeg, id=552, 647.41875pt x 420.57124pt>
+<figures/indentation.jpeg, id=567, 622.325pt x 430.60875pt>
 File: figures/indentation.jpeg Graphic file (type jpg)
 
 <use figures/indentation.jpeg>
 Package pdftex.def Info: figures/indentation.jpeg used on input line 504.
-(pdftex.def)             Requested size: 369.88582pt x 240.2864pt.
- [17 <./figures/key&rules.jpeg> <./figures/indentation.jpeg>] <figures/errorsAn
-dSubmit.jpeg, id=559, 1678.27pt x 803.0pt>
+(pdftex.def)             Requested size: 341.43306pt x 236.25075pt.
+ [18 <./figures/key&rules.jpeg> <./figures/indentation.jpeg>] <figures/errorsAn
+dSubmit.jpeg, id=574, 1379.1525pt x 728.7225pt>
 File: figures/errorsAndSubmit.jpeg Graphic file (type jpg)
 
 <use figures/errorsAndSubmit.jpeg>
 Package pdftex.def Info: figures/errorsAndSubmit.jpeg used on input line 514.
-(pdftex.def)             Requested size: 369.88582pt x 176.97911pt.
+(pdftex.def)             Requested size: 369.88582pt x 195.4345pt.
 
-<figures/hintProof.jpeg, id=560, 643.40375pt x 582.175pt>
+<figures/hintProof.jpeg, id=575, 643.40375pt x 582.175pt>
 File: figures/hintProof.jpeg Graphic file (type jpg)
 
 <use figures/hintProof.jpeg>
 Package pdftex.def Info: figures/hintProof.jpeg used on input line 522.
 (pdftex.def)             Requested size: 369.88582pt x 334.69473pt.
- [18 <./figures/errorsAndSubmit.jpeg> <./figures/hintProof.jpeg>] <figures/adva
-ncedHintProof.jpeg, id=567, 676.5275pt x 594.22pt>
+ [19 <./figures/errorsAndSubmit.jpeg> <./figures/hintProof.jpeg>] <figures/adva
+ncedHintProof.jpeg, id=582, 676.5275pt x 594.22pt>
 File: figures/advancedHintProof.jpeg Graphic file (type jpg)
 
 <use figures/advancedHintProof.jpeg>
@@ -1120,73 +1129,54 @@ Package pdftex.def Info: figures/advancedHintProof.jpeg used on input line 530.
 
 (pdftex.def)             Requested size: 369.88582pt x 324.89073pt.
 
-<figures/extraFunctionality.jpeg, id=568, 1025.8325pt x 357.335pt>
+<figures/extraFunctionality.jpeg, id=583, 1025.8325pt x 357.335pt>
 File: figures/extraFunctionality.jpeg Graphic file (type jpg)
 
 <use figures/extraFunctionality.jpeg>
 Package pdftex.def Info: figures/extraFunctionality.jpeg used on input line 538
 .
-(pdftex.def)             Requested size: 369.88582pt x 128.84224pt.
- [19 <./figures/advancedHintProof.jpeg> <./figures/extraFunctionality.jpeg>]
-<figures/validityChecker.jpeg, id=576, 1142.2675pt x 614.295pt>
+(pdftex.def)             Requested size: 341.43306pt x 118.93507pt.
+ [20 <./figures/advancedHintProof.jpeg> <./figures/extraFunctionality.jpeg>]
+<figures/lemmaFail.jpeg, id=591, 1543.7675pt x 1069.9975pt>
+File: figures/lemmaFail.jpeg Graphic file (type jpg)
+
+<use figures/lemmaFail.jpeg>
+Package pdftex.def Info: figures/lemmaFail.jpeg used on input line 547.
+(pdftex.def)             Requested size: 312.9803pt x 216.91821pt.
+
+<figures/validityChecker.jpeg, id=593, 1142.2675pt x 614.295pt>
 File: figures/validityChecker.jpeg Graphic file (type jpg)
 
 <use figures/validityChecker.jpeg>
-Package pdftex.def Info: figures/validityChecker.jpeg used on input line 546.
-(pdftex.def)             Requested size: 369.88582pt x 198.92175pt.
-
-<figures/tooltips.jpeg, id=577, 1549.79pt x 889.3225pt>
+Package pdftex.def Info: figures/validityChecker.jpeg used on input line 557.
+(pdftex.def)             Requested size: 341.43306pt x 183.61504pt.
+ [21 <./figures/lemmaFail.jpeg> <./figures/validityChecker.jpeg>] <figures/tool
+tips.jpeg, id=601, 1549.79pt x 889.3225pt>
 File: figures/tooltips.jpeg Graphic file (type jpg)
 
 <use figures/tooltips.jpeg>
-Package pdftex.def Info: figures/tooltips.jpeg used on input line 554.
+Package pdftex.def Info: figures/tooltips.jpeg used on input line 566.
 (pdftex.def)             Requested size: 341.43306pt x 195.92294pt.
- [20 <./figures/validityChecker.jpeg> <./figures/tooltips.jpeg>] [21] [22] [23]
- [24]
-<figures/github.jpeg, id=607, 1013.7875pt x 594.22pt>
+ [22 <./figures/tooltips.jpeg>] [23] [24] [25]
+<figures/github.jpeg, id=625, 1013.7875pt x 594.22pt>
 File: figures/github.jpeg Graphic file (type jpg)
 
 <use figures/github.jpeg>
-Package pdftex.def Info: figures/github.jpeg used on input line 615.
+Package pdftex.def Info: figures/github.jpeg used on input line 627.
 (pdftex.def)             Requested size: 426.79135pt x 250.15099pt.
- [25 <./figures/github.jpeg>]
+ [26 <./figures/github.jpeg>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 631.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 631.
+(hyperref)                removing `math shift' on input line 643.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 631.
+(hyperref)                removing `\Rightarrow' on input line 643.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 635.
+(hyperref)                removing `math shift' on input line 643.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 635.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 635.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 641.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Rightarrow' on input line 641.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 641.
-
-[26]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 647.
@@ -1211,6 +1201,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 653.
 
+[27]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 659.
@@ -1223,7 +1214,6 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 659.
 
-[27]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 665.
@@ -1236,34 +1226,59 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 665.
 
-<figures/elementsOfDesign.jpeg, id=622, 1423.3175pt x 1124.2pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 671.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 671.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 671.
+
+[28]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 677.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Rightarrow' on input line 677.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 677.
+
+<figures/elementsOfDesign.jpeg, id=641, 1423.3175pt x 1124.2pt>
 File: figures/elementsOfDesign.jpeg Graphic file (type jpg)
 
 <use figures/elementsOfDesign.jpeg>
-Package pdftex.def Info: figures/elementsOfDesign.jpeg used on input line 674.
+Package pdftex.def Info: figures/elementsOfDesign.jpeg used on input line 686.
 (pdftex.def)             Requested size: 199.16928pt x 157.30115pt.
- [28 <./figures/elementsOfDesign.jpeg>]
-<figures/TDD.jpeg, id=632, 927.465pt x 937.5025pt>
+ [29 <./figures/elementsOfDesign.jpeg>]
+<figures/TDD.jpeg, id=650, 927.465pt x 937.5025pt>
 File: figures/TDD.jpeg Graphic file (type jpg)
  <use figures/TDD.jpeg>
-Package pdftex.def Info: figures/TDD.jpeg used on input line 685.
+Package pdftex.def Info: figures/TDD.jpeg used on input line 697.
 (pdftex.def)             Requested size: 199.16928pt x 201.31592pt.
 
-[29 <./figures/TDD.jpeg>]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 698.
+[30 <./figures/TDD.jpeg>]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 710.
 
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [30] [31]
-<figures/trelloBoard.jpeg, id=715, 2258.4375pt x 1108.14pt>
+) [31] [32]
+<figures/trelloBoard.jpeg, id=733, 2258.4375pt x 1108.14pt>
 File: figures/trelloBoard.jpeg Graphic file (type jpg)
 
 <use figures/trelloBoard.jpeg>
-Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 788.
+Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 800.
 (pdftex.def)             Requested size: 426.79135pt x 209.39899pt.
- [32 <./figures/trelloBoard.jpeg>] [33] [34]
-[35]
+ [33 <./figures/trelloBoard.jpeg>] [34] [35]
+[36]
 \myBox1=\box62
 \myScoreStart1=\dimen278
 \myCenter1=\dimen279
@@ -1272,177 +1287,277 @@ Package pdftex.def Info: figures/trelloBoard.jpeg used on input line 788.
 \myScoreStart2=\dimen281
 \myCenter2=\dimen282
 \myScoreEnd2=\dimen283
- [36] [37] [38] [39]
-<figures/easeOfUseGraph.png, id=762, 655.44875pt x 412.54124pt>
+ [37] [38] [39] [40]
+<figures/easeOfUseGraph.png, id=781, 655.44875pt x 412.54124pt>
 File: figures/easeOfUseGraph.png Graphic file (type png)
 
 <use figures/easeOfUseGraph.png>
-Package pdftex.def Info: figures/easeOfUseGraph.png used on input line 891.
+Package pdftex.def Info: figures/easeOfUseGraph.png used on input line 903.
 (pdftex.def)             Requested size: 369.88582pt x 232.80927pt.
 
-<figures/websiteDesignGraph.png, id=764, 593.21625pt x 425.59pt>
+<figures/websiteDesignGraph.png, id=783, 593.21625pt x 425.59pt>
 File: figures/websiteDesignGraph.png Graphic file (type png)
 
 <use figures/websiteDesignGraph.png>
-Package pdftex.def Info: figures/websiteDesignGraph.png used on input line 899.
+Package pdftex.def Info: figures/websiteDesignGraph.png used on input line 911.
 
 (pdftex.def)             Requested size: 369.88582pt x 265.37616pt.
- [40 <./figures/easeOfUseGraph.png>]
-[41 <./figures/websiteDesignGraph.png>] [42] [43]
+ [41 <./figures/easeOfUseGraph.png>]
+[42 <./figures/websiteDesignGraph.png>] [43] [44]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 943.
+(hyperref)                removing `\@ifnextchar' on input line 955.
 
 \myBox3=\box64
 \myScoreStart3=\dimen284
 \myCenter3=\dimen285
 \myScoreEnd3=\dimen286
-[44] <figures/SurveyApplication.pdf, id=818, 585.73775pt x 788.65001pt>
+[45] <figures/SurveyApplication.pdf, id=837, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1128.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1140.
 
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
  <use figures/SurveyApplication.pdf>
-Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1128.
+Package pdftex.def Info: figures/SurveyApplication.pdf used on input line 1140.
 
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 
-<figures/SurveyApplication.pdf, id=821, page=1, 585.73775pt x 788.65001pt>
+<figures/SurveyApplication.pdf, id=840, page=1, 585.73775pt x 788.65001pt>
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1128.
+e 1140.
 (pdftex.def)             Requested size: 585.73631pt x 788.64809pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1128.
+e 1140.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1128.
+e 1140.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1128.
+e 1140.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 1128.
+(hyperref)                removing `\@ifnextchar' on input line 1140.
 
 File: figures/SurveyApplication.pdf Graphic file (type pdf)
 <use figures/SurveyApplication.pdf, page 1>
 Package pdftex.def Info: figures/SurveyApplication.pdf, page1 used on input lin
-e 1128.
+e 1140.
 (pdftex.def)             Requested size: 439.30223pt x 591.48605pt.
- [45 <./figures/SurveyApplication.pdf>] <figures/UserGuide/homepage.jpeg, id=89
-6, 1233.60875pt x 798.985pt>
+ [46 <./figures/SurveyApplication.pdf>] <figures/UserGuide/homepage.jpeg, id=91
+5, 1233.60875pt x 798.985pt>
 File: figures/UserGuide/homepage.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/homepage.jpeg>
-Package pdftex.def Info: figures/UserGuide/homepage.jpeg used on input line 114
-5.
+Package pdftex.def Info: figures/UserGuide/homepage.jpeg used on input line 115
+7.
 (pdftex.def)             Requested size: 312.9803pt x 202.7083pt.
 
-<figures/UserGuide/proofBox.jpeg, id=897, 452.69125pt x 473.77pt>
+<figures/UserGuide/proofBox.jpeg, id=916, 452.69125pt x 473.77pt>
 File: figures/UserGuide/proofBox.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/proofBox.jpeg>
-Package pdftex.def Info: figures/UserGuide/proofBox.jpeg used on input line 115
-3.
+Package pdftex.def Info: figures/UserGuide/proofBox.jpeg used on input line 116
+5.
 (pdftex.def)             Requested size: 230.46748pt x 241.19298pt.
 
-<figures/UserGuide/ruleBox.jpeg, id=898, 644.4075pt x 586.19pt>
+<figures/UserGuide/ruleBox.jpeg, id=917, 644.4075pt x 586.19pt>
 File: figures/UserGuide/ruleBox.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/ruleBox.jpeg>
-Package pdftex.def Info: figures/UserGuide/ruleBox.jpeg used on input line 1160
+Package pdftex.def Info: figures/UserGuide/ruleBox.jpeg used on input line 1172
 .
 (pdftex.def)             Requested size: 284.52756pt x 258.82779pt.
- [46 <./figures/UserGuide/homepage.jpeg> <./figures/UserGuide/proofBox.jpeg>]
-<figures/UserGuide/submitButton.jpeg, id=908, 193.72375pt x 113.42375pt>
+ [47 <./figures/UserGuide/homepage.jpeg> <./figures/UserGuide/proofBox.jpeg>]
+<figures/UserGuide/submitButton.jpeg, id=926, 193.72375pt x 113.42375pt>
 File: figures/UserGuide/submitButton.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/submitButton.jpeg>
 Package pdftex.def Info: figures/UserGuide/submitButton.jpeg used on input line
- 1167.
+ 1179.
 (pdftex.def)             Requested size: 227.62204pt x 133.2729pt.
 
-<figures/UserGuide/errorComparison.jpeg, id=909, 1320.935pt x 598.235pt>
+<figures/UserGuide/errorComparison.jpeg, id=927, 1320.935pt x 598.235pt>
 File: figures/UserGuide/errorComparison.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/errorComparison.jpeg>
 Package pdftex.def Info: figures/UserGuide/errorComparison.jpeg used on input l
-ine 1174.
+ine 1186.
 (pdftex.def)             Requested size: 426.79135pt x 193.29216pt.
- [47 <./figures/UserGuide/ruleBox.jpeg> <./figures/UserGuide/submitButton.jpeg>
+ [48 <./figures/UserGuide/ruleBox.jpeg> <./figures/UserGuide/submitButton.jpeg>
 ]
-<figures/UserGuide/validButton.jpeg, id=920, 183.68625pt x 58.2175pt>
+<figures/UserGuide/validButton.jpeg, id=938, 183.68625pt x 58.2175pt>
 File: figures/UserGuide/validButton.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/validButton.jpeg>
 Package pdftex.def Info: figures/UserGuide/validButton.jpeg used on input line 
-1192.
+1204.
 (pdftex.def)             Requested size: 227.62204pt x 72.14719pt.
 
-<figures/UserGuide/validityPage.jpeg, id=921, 1186.4325pt x 722.7pt>
+<figures/UserGuide/validityPage.jpeg, id=939, 1186.4325pt x 722.7pt>
 File: figures/UserGuide/validityPage.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/validityPage.jpeg>
 Package pdftex.def Info: figures/UserGuide/validityPage.jpeg used on input line
- 1200.
+ 1212.
 (pdftex.def)             Requested size: 341.43306pt x 207.97864pt.
- [48 <./figures/UserGuide/errorComparison.jpeg> <./figures/UserGuide/validButto
+ [49 <./figures/UserGuide/errorComparison.jpeg> <./figures/UserGuide/validButto
 n.jpeg> <./figures/UserGuide/validityPage.jpeg>]
-<figures/UserGuide/premiseResult.jpeg, id=931, 379.4175pt x 448.67625pt>
+<figures/UserGuide/premiseResult.jpeg, id=950, 379.4175pt x 448.67625pt>
 File: figures/UserGuide/premiseResult.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/premiseResult.jpeg>
 Package pdftex.def Info: figures/UserGuide/premiseResult.jpeg used on input lin
-e 1208.
+e 1220.
 (pdftex.def)             Requested size: 170.71652pt x 201.8819pt.
 File: figures/validityChecker.jpeg Graphic file (type jpg)
  <use figures/validityChecker.jpeg>
-Package pdftex.def Info: figures/validityChecker.jpeg used on input line 1216.
+Package pdftex.def Info: figures/validityChecker.jpeg used on input line 1228.
 (pdftex.def)             Requested size: 341.43306pt x 183.61504pt.
 
-<figures/UserGuide/back.jpeg, id=932, 188.705pt x 71.26625pt>
+<figures/UserGuide/back.jpeg, id=951, 188.705pt x 71.26625pt>
 File: figures/UserGuide/back.jpeg Graphic file (type jpg)
 
 <use figures/UserGuide/back.jpeg>
-Package pdftex.def Info: figures/UserGuide/back.jpeg used on input line 1224.
+Package pdftex.def Info: figures/UserGuide/back.jpeg used on input line 1236.
 (pdftex.def)             Requested size: 142.26378pt x 53.72682pt.
- [49 <./figures/UserGuide/premiseResult.jpeg> <./figures/UserGuide/back.jpeg>] 
-[50] (./main.bbl) [51]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1242.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1242.
+ [50 <./figures/UserGuide/premiseResult.jpeg> <./figures/UserGuide/back.jpeg>]
+<figures/UserGuide/hintProof.jpeg, id=962, 649.42625pt x 422.57875pt>
+File: figures/UserGuide/hintProof.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/hintProof.jpeg>
+Package pdftex.def Info: figures/UserGuide/hintProof.jpeg used on input line 12
+50.
+(pdftex.def)             Requested size: 369.88582pt x 240.6854pt.
+
+<figures/UserGuide/hintsOn.jpeg, id=963, 173.64874pt x 71.26625pt>
+File: figures/UserGuide/hintsOn.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/hintsOn.jpeg>
+Package pdftex.def Info: figures/UserGuide/hintsOn.jpeg used on input line 1258
+.
+(pdftex.def)             Requested size: 142.26378pt x 58.38757pt.
+
+<figures/UserGuide/hintOutput.jpeg, id=964, 633.36626pt x 153.57375pt>
+File: figures/UserGuide/hintOutput.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/hintOutput.jpeg>
+Package pdftex.def Info: figures/UserGuide/hintOutput.jpeg used on input line 1
+266.
+(pdftex.def)             Requested size: 426.79135pt x 103.48672pt.
+ [51 <./figures/UserGuide/hintProof.jpeg> <./figures/UserGuide/hintsOn.jpeg> <.
+/figures/UserGuide/hintOutput.jpeg>]
+<figures/UserGuide/advancedHintsOn.jpeg, id=976, 175.65625pt x 69.25874pt>
+File: figures/UserGuide/advancedHintsOn.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/advancedHintsOn.jpeg>
+Package pdftex.def Info: figures/UserGuide/advancedHintsOn.jpeg used on input l
+ine 1274.
+(pdftex.def)             Requested size: 142.26378pt x 56.09714pt.
+
+<figures/UserGuide/advancedHintOutput.jpeg, id=977, 635.37375pt x 144.54pt>
+File: figures/UserGuide/advancedHintOutput.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/advancedHintOutput.jpeg>
+Package pdftex.def Info: figures/UserGuide/advancedHintOutput.jpeg used on inpu
+t line 1282.
+(pdftex.def)             Requested size: 426.79135pt x 97.09271pt.
+
+<figures/UserGuide/addLemmaButton.jpeg, id=978, 169.63374pt x 55.20625pt>
+File: figures/UserGuide/addLemmaButton.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/addLemmaButton.jpeg>
+Package pdftex.def Info: figures/UserGuide/addLemmaButton.jpeg used on input li
+ne 1298.
+(pdftex.def)             Requested size: 142.26378pt x 46.30048pt.
+
+<figures/UserGuide/lemmaInput.jpeg, id=979, 400.49625pt x 421.575pt>
+File: figures/UserGuide/lemmaInput.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/lemmaInput.jpeg>
+Package pdftex.def Info: figures/UserGuide/lemmaInput.jpeg used on input line 1
+306.
+(pdftex.def)             Requested size: 162.18062pt x 170.71764pt.
+
+<figures/UserGuide/lemmaButton.jpeg, id=980, 159.59625pt x 51.19125pt>
+File: figures/UserGuide/lemmaButton.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/lemmaButton.jpeg>
+Package pdftex.def Info: figures/UserGuide/lemmaButton.jpeg used on input line 
+1314.
+(pdftex.def)             Requested size: 142.26378pt x 45.63191pt.
+ [52 <./figures/UserGuide/advancedHintsOn.jpeg> <./figures/UserGuide/advancedHi
+ntOutput.jpeg> <./figures/UserGuide/addLemmaButton.jpeg> <./figures/UserGuide/l
+emmaInput.jpeg>]
+<figures/UserGuide/saveAs.jpeg, id=993, 218.8175pt x 166.6225pt>
+File: figures/UserGuide/saveAs.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/saveAs.jpeg>
+Package pdftex.def Info: figures/UserGuide/saveAs.jpeg used on input line 1332.
+
+(pdftex.def)             Requested size: 199.16928pt x 151.6623pt.
+
+<figures/UserGuide/chooseFolder.jpeg, id=994, 417.56pt x 216.81pt>
+File: figures/UserGuide/chooseFolder.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/chooseFolder.jpeg>
+Package pdftex.def Info: figures/UserGuide/chooseFolder.jpeg used on input line
+ 1339.
+(pdftex.def)             Requested size: 312.9803pt x 162.51776pt.
+
+<figures/UserGuide/uploadButton.jpeg, id=995, 218.8175pt x 132.495pt>
+File: figures/UserGuide/uploadButton.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/uploadButton.jpeg>
+Package pdftex.def Info: figures/UserGuide/uploadButton.jpeg used on input line
+ 1352.
+(pdftex.def)             Requested size: 170.71652pt x 103.36992pt.
+ [53 <./figures/UserGuide/lemmaButton.jpeg> <./figures/UserGuide/saveAs.jpeg> <
+./figures/UserGuide/chooseFolder.jpeg>] <figures/UserGuide/chooseFile.jpeg, id=
+1009, 699.61375pt x 374.39874pt>
+File: figures/UserGuide/chooseFile.jpeg Graphic file (type jpg)
+
+<use figures/UserGuide/chooseFile.jpeg>
+Package pdftex.def Info: figures/UserGuide/chooseFile.jpeg used on input line 1
+360.
+(pdftex.def)             Requested size: 369.88582pt x 197.9448pt.
+ [54 <./figures/UserGuide/uploadButton.jpeg> <./figures/UserGuide/chooseFile.jp
+eg>] (./main.bbl) [55]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1376.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1376.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1242.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1242.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1376.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1376.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9D438A4B742AB27500762389A4BE33BB;4652.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1242.
+(rerunfilecheck)             Checksum: 66A3BAA11C52CE65AF0D70955BCCD97E;4721.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1376.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 22829 strings out of 493014
- 403143 string characters out of 6133351
+ 22939 strings out of 493014
+ 405781 string characters out of 6133351
  653700 words of memory out of 5000000
- 25600 multiletter control sequences out of 15000+600000
+ 25660 multiletter control sequences out of 15000+600000
  22808 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,24n,72p,2380b,4955s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1468,10 +1583,10 @@ al/texlive/2016/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local
 exlive/2016/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/tex
 live/2016/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texli
 ve/2016/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb>
-Output written on main.pdf (60 pages, 3312423 bytes).
+Output written on main.pdf (65 pages, 3552839 bytes).
 PDF statistics:
- 1088 PDF objects out of 1200 (max. 8388607)
- 933 compressed objects within 10 object streams
- 277 named destinations out of 1000 (max. 500000)
- 743 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1168 PDF objects out of 1200 (max. 8388607)
+ 994 compressed objects within 10 object streams
+ 314 named destinations out of 1000 (max. 500000)
+ 821 words of extra memory for PDF output out of 10000 (max. 10000000)
 
