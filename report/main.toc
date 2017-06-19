@@ -35,7 +35,7 @@
 \contentsline {subsection}{\numberline {5.1}Schedule }{27}{subsection.5.1}
 \contentsline {subsubsection}{\numberline {5.1.1}Iteration 1 - 1/12/2016 $\Rightarrow $ 8/1/2017}{27}{subsubsection.5.1.1}
 \contentsline {subsubsection}{\numberline {5.1.2}Iteration 2 - 9/1/2017 $\Rightarrow $ 10/2/2017}{27}{subsubsection.5.1.2}
-\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{27}{subsubsection.5.1.3}
+\contentsline {subsubsection}{\numberline {5.1.3}Iteration 3 - 11/2/2017 $\Rightarrow $ 10/3/2017}{28}{subsubsection.5.1.3}
 \contentsline {subsubsection}{\numberline {5.1.4}Iteration 4 - 27/3/2017 $\Rightarrow $ 21/4/2017}{28}{subsubsection.5.1.4}
 \contentsline {subsubsection}{\numberline {5.1.5}Iteration 5 - 22/4/2017 $\Rightarrow $ 12/5/2017}{28}{subsubsection.5.1.5}
 \contentsline {subsubsection}{\numberline {5.1.6}Iteration 6 - 13/5/2017 $\Rightarrow $ 2/6/2017}{29}{subsubsection.5.1.6}
@@ -64,7 +64,7 @@
 \contentsline {subsection}{\numberline {A.2}Predicate Rules}{45}{subsection.A.2}
 \contentsline {section}{\numberline {B}User Survey \cite {surveyCrest} }{46}{appendix.B}
 \contentsline {section}{\numberline {C}User Guide }{47}{appendix.C}
-\contentsline {subsection}{\numberline {C.1}Check Proof Validity}{47}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.1}Proof Validity}{47}{subsection.C.1}
 \contentsline {subsection}{\numberline {C.2}Goal Validity}{49}{subsection.C.2}
 \contentsline {subsection}{\numberline {C.3}Hints}{51}{subsection.C.3}
 \contentsline {subsection}{\numberline {C.4}Lemmas}{52}{subsection.C.4}
