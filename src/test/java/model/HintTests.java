@@ -1498,8 +1498,9 @@ public class HintTests {
     public void lemmaTest4() throws SyntaxException {
 
 
-        String str = "D\nE ^ F\nA\nB\nC\nA ^ B ^ C\nE\nF\nD ^ F ^ E";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (3,4,5)\nAnd-Elim (2)\nAnd-Elim (2)\nLemma1 (1,7,8)";
+        String str = "D\nE ^ F\nA\nB\nC\nA ^ B ^ C\nX\nZ\nE\nF\nD ^ F ^ E\nD ^ X ^ Z";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma2 (3,4,5)\nGIVEN\nGIVEN\nAnd-Elim (2)\n" +
+                "And-Elim (2)\nLemma2 (1,9,10)\nLemma2 (1,7,8)";
 
         proof.frontEndFunctionality(str, rules);
 
@@ -1507,8 +1508,5 @@ public class HintTests {
         assertTrue(proof.isProofValid());
 
     }
-
-
-
-
+    
 }

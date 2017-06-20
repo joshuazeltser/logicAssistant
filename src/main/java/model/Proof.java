@@ -424,6 +424,7 @@ public class Proof {
             }
         }
 
+        System.out.println(errors);
         return errors.isEmpty();
     }
 
@@ -512,29 +513,18 @@ public class Proof {
 
         lemmaRefExpr.add(lemmaExpr);
 
-        //First check all structures are equal
+        //First check all result structures are equal
 
         if (lemmaUserRefExpr.size() != lemmaRefExpr.size()) {
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
-                    "using these references");
+                    "with these references");
             return false;
         }
 
-        for (Expression expr : lemmaUserRefExpr) {
-            for (Expression expr1 : lemmaRefExpr) {
-                if (expr1.isLemmaMarked()) {
-                    continue;
-                }
-
-                if (expr.compareStructure(expr1)) {
-                    expr1.setLemmaMarked(true);
-                }
-            }
-        }
-
-        if (!allLemmaMarked(lemmaRefExpr)) {
+        if (!lemmaExpr.compareStructure(e1)) {
+            System.out.println("here");
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
-                    "using these references");
+                    "with these references");
             return false;
         }
 
@@ -545,12 +535,15 @@ public class Proof {
 
         List<List<Integer>> lemmaNums = createNumericalRepresentation(lemmaRefExpr);
 
+        System.out.println(userNums);
+        System.out.println(lemmaNums);
+
         for (int i = 0; i < userNums.size(); i++) {
             Collections.sort(userNums.get(i));
             Collections.sort(lemmaNums.get(i));
             if (!userNums.get(i).equals(lemmaNums.get(i))) {
                 errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
-                        "using these references");
+                        "with these references");
                 return false;
             }
 
@@ -593,6 +586,7 @@ public class Proof {
             userStructure.add(toAdd);
         }
 
+
         return userStructure;
     }
 
@@ -617,6 +611,7 @@ public class Proof {
         for (int i = 0; i < refs.size(); i++) {
             Expression temp = new Expression();
             if (expressions.get(refs.get(i) - 1).getRuleType() != RuleType.GIVEN) {
+
                 errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be proved using " +
                         "expressions which aren't premises");
             }
@@ -635,9 +630,13 @@ public class Proof {
         }
         lemmaTable.setResult(e1);
 
+        System.out.println(e1);
+        System.out.println(lemmaExpr);
+
        if (lemmaTable.validateProof()) {
            return true;
        } else {
+           System.out.println("jher");
            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be proved using " +
                    "these premises");
            return false;
