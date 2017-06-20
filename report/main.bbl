@@ -30,17 +30,17 @@ J.~Woodcock and M.~Loomes, \emph{Software Engineering Mathematics}.\hskip 1em
 ``Surveycrest.'' [Online]. Available: \url{https://www.surveycrest.com/}
 \BIBentrySTDinterwordspacing
 
+\bibitem{pandora}
+\BIBentryALTinterwordspacing
+I.~C. Computing, ``Pandora.'' [Online]. Available:
+  \url{https://www.doc.ic.ac.uk/pandora/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{gentzen}
 \BIBentryALTinterwordspacing
 G.~Gentzen, ``Untersuchungen {\"u}ber das logische schlie{\ss}en i,''
   \emph{Mathematische Zeitschrift}, vol.~39, pp. 176--210, 1935. [Online].
   Available: \url{http://eudml.org/doc/168546}
-\BIBentrySTDinterwordspacing
-
-\bibitem{pandora}
-\BIBentryALTinterwordspacing
-I.~C. Computing, ``Pandora.'' [Online]. Available:
-  \url{https://www.doc.ic.ac.uk/pandora/}
 \BIBentrySTDinterwordspacing
 
 \bibitem{ndAlgo}
