@@ -1508,5 +1508,5 @@ public class HintTests {
         assertTrue(proof.isProofValid());
 
     }
-    
+
 }

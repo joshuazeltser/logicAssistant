@@ -202,17 +202,19 @@
 
                         if (localStorage.getItem('lemmaPremises') != []) {
                             var vals = JSON.parse(localStorage.getItem('lemmaPremises'));
+                            var x = proof.value.split('\n');
+                            lemmaSize = x.length;
 
                             if (vals != null) {
                                 proof.value = proof.value + vals.pop() + '\n';
 
 
                                 var x = proof.value.split('\n');
-                                lemmaSize = x.length;
+                                var lemmaSize2 = x.length;
 
                                 /*<![CDATA[*/
 
-                                for (var i = 0; i < x.length-1; i++) {
+                                for (var i = lemmaSize; i < lemmaSize2; i++) {
                                     rules.value = rules.value + 'GIVEN\n';
 
                                 }
@@ -229,27 +231,33 @@
                             var vals = JSON.parse(localStorage.getItem('lemmas'));
 
                             var x = proof.value.split('\n');
-                            var proofSize = x.length;
+                            var proofSize = 0;
+//                            if (x.length == 1) {
+                                proofSize = x.length;
+//                            }
 
-                            var diff = proofSize - lemmaSize;
+//                            var diff = 0;
+//
+//                                diff = lemmaSize2 - lemmaSize - 1;
+
 
 
                             if (vals != null) {
                                 proof.value = proof.value + vals.pop() + '\n';
                                 lemmaCount++;
-                                rules.value = rules.value + 'Lemma (';
+                                rules.value = rules.value + '\nLemma? (?)';
                                 /*<![CDATA[*/
 
-                                for (var i = diff; i < proofSize - 1; i++) {
-                                    rules.value = rules.value + (i + 1);
+//                                for (var i = diff; i < proofSize - 1; i++) {
+//                                    rules.value = rules.value + (i + 1);
 
-                                    if (i == proofSize - 2) {
-                                        rules.value = rules.value + ")"
-                                    } else {
-                                        rules.value = rules.value + ","
-                                    }
-
-                                }
+//                                    if (i == proofSize - 2) {
+//                                        rules.value = rules.value + ")"
+//                                    } else {
+//                                        rules.value = rules.value + ","
+//                                    }
+//
+//                                }
                                 /*]]>*/
                             }
                             localStorage.removeItem('lemmas');
@@ -358,10 +366,36 @@
                <button id="b15" type="button" class="btn btn-primary" value="&#10004;-Available (?)">&#10004; Available</button>
 
                    <!-- Button trigger modal -->
-<button id="lemma" class="btn btn-primary"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">
+<!--<button id="lemma" class="btn btn-primary"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">-->
+    <!--Add Lemma-->
+<!--</button>-->
+<div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Lemmas <span class="caret"></span>
+  </button>
+  <ul id="drop" class="dropdown-menu">
+    <li><a id="lemma"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">
     Add Lemma
-</button>
+</a></li>
+    <li><a onclick="addLemma()">Use Lemma</a></li>
 
+  </ul>
+    <script>
+        function addLemma() {
+            var rules = document.getElementById('Text2');
+
+            rules.value = rules.value + 'Lemma? (?)';
+        }
+
+    </script>
+
+    <style>
+        #drop {
+            top: -100%;
+            left: -135%;
+        }
+    </style>
+</div>
 
                </span>
         </center>

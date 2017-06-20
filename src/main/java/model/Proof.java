@@ -214,6 +214,11 @@ public class Proof {
                                 if (components[1].equals("()")) {
                                     continue;
                                 }
+
+                                if (components[0].charAt(components[0].length()-1) == '?') {
+                                    errors.add("? is not a valid number to define a lemma with");
+                                    return;
+                                }
                                 newExpr.setLemmaNum(Integer.parseInt(components[0].charAt(components[0].length()-1) + ""));
 
                             }
@@ -535,8 +540,6 @@ public class Proof {
 
         List<List<Integer>> lemmaNums = createNumericalRepresentation(lemmaRefExpr);
 
-        System.out.println(userNums);
-        System.out.println(lemmaNums);
 
         for (int i = 0; i < userNums.size(); i++) {
             Collections.sort(userNums.get(i));
@@ -630,13 +633,10 @@ public class Proof {
         }
         lemmaTable.setResult(e1);
 
-        System.out.println(e1);
-        System.out.println(lemmaExpr);
 
        if (lemmaTable.validateProof()) {
            return true;
        } else {
-           System.out.println("jher");
            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be proved using " +
                    "these premises");
            return false;
