@@ -429,7 +429,6 @@ public class Proof {
             }
         }
 
-        System.out.println(errors);
         return errors.isEmpty();
     }
 
