@@ -4,6 +4,7 @@ import javassist.expr.Expr;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static model.OperatorType.*;
 
@@ -209,8 +210,12 @@ public class Proof {
 
                         String[] lines = comps.split(",");
                         for (int j = 0; j < lines.length; j++) {
-                            if (components[0].contains("Lemma") && components[1].equals("()")) {
-                                break;
+                            if (components[0].contains("Lemma")) {
+                                if (components[1].equals("()")) {
+                                    continue;
+                                }
+                                newExpr.setLemmaNum(Integer.parseInt(components[0].charAt(components[0].length()-1) + ""));
+
                             }
                             newExpr.addReferenceLine(lines[j]);
                         }
@@ -319,9 +324,12 @@ public class Proof {
         }
 
         if (!rule.equals("")) {
-            if (rule.equals("Lemma")) {
+            if (rule.contains("Lemma")) {
+                if (lemmas.containsKey(rule)) {
+                    return RuleType.LEMMA;
+                }
                 lemmas.put(rule, expressions.size());
-                return RuleType.LEMMA;
+                return RuleType.LEMMA_DEFINITION;
             }
         }
 
@@ -403,7 +411,8 @@ public class Proof {
                 case ONLY_INTRO: isOnlyIntroValid(expressions.get(i)); break;
                 case DOUBLE_NOT_ELIM: isDoubleNotElimValid(expressions.get(i)); break;
                 case AVAILABLE: isAvailableRuleValid(expressions.get(i)); break;
-                case LEMMA: isLemmaRuleValid(expressions.get(i)); break;
+                case LEMMA_DEFINITION: isLemmaRuleValid(expressions.get(i)); break;
+                case LEMMA: canLemmaBeUsed(expressions.get(i)); break;
                 case INVALID: return false;
                 case EMPTY: return true;
                 default:
@@ -432,10 +441,6 @@ public class Proof {
         }
         System.out.println(errors);
         return "Proof is INVALID!";
-    }
-
-    public List<Expression> getExpressions() {
-        return expressions;
     }
 
     public void addExpression(Expression expr) {
@@ -478,7 +483,131 @@ public class Proof {
         return boxes;
     }
 
+    private boolean canLemmaBeUsed(Expression e1) throws SyntaxException {
+
+
+        String lemmaName = "Lemma" + e1.getLemmaNum();
+
+        if (!lemmas.containsKey(lemmaName)) {
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be found");
+            return false;
+        }
+
+        Expression lemmaExpr = expressions.get(lemmas.get(lemmaName));
+
+        List<Expression> lemmaUserRefExpr = new LinkedList<>();
+
+        for (Integer ref : e1.getReferenceLine()) {
+            lemmaUserRefExpr.add(expressions.get(ref - 1));
+        }
+
+        lemmaUserRefExpr.add(e1);
+
+
+        List<Expression> lemmaRefExpr = new LinkedList<>();
+
+        for (Integer ref : lemmaExpr.getReferenceLine()) {
+            lemmaRefExpr.add(expressions.get(ref - 1));
+        }
+
+        lemmaRefExpr.add(lemmaExpr);
+
+        //First check all structures are equal
+
+        if (lemmaUserRefExpr.size() != lemmaRefExpr.size()) {
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
+                    "using these references");
+            return false;
+        }
+
+        for (Expression expr : lemmaUserRefExpr) {
+            for (Expression expr1 : lemmaRefExpr) {
+                if (expr1.isLemmaMarked()) {
+                    continue;
+                }
+
+                if (expr.compareStructure(expr1)) {
+                    expr1.setLemmaMarked(true);
+                }
+            }
+        }
+
+        if (!allLemmaMarked(lemmaRefExpr)) {
+            errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
+                    "using these references");
+            return false;
+        }
+
+        //Check actual propostions are equal
+
+
+        List<List<Integer>> userNums = createNumericalRepresentation(lemmaUserRefExpr);
+
+        List<List<Integer>> lemmaNums = createNumericalRepresentation(lemmaRefExpr);
+
+        for (int i = 0; i < userNums.size(); i++) {
+            Collections.sort(userNums.get(i));
+            Collections.sort(lemmaNums.get(i));
+            if (!userNums.get(i).equals(lemmaNums.get(i))) {
+                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
+                        "using these references");
+                return false;
+            }
+
+        }
+        return true;
+
+
+    }
+
+    private List<List<Integer>> createNumericalRepresentation(List<Expression> lemmaUserRefExpr) {
+        List<List<Integer>> userStructure = new LinkedList<>();
+
+        List<String> propList = new LinkedList<>();
+        for (Expression expr : lemmaUserRefExpr) {
+
+            for (Proposition p : expr.listPropositions()) {
+                if (!propList.contains(p.toString())){
+                    propList.add(p.toString());
+                }
+            }
+        }
+
+        Map<Integer, String> propValue1 = new HashMap<>();
+        int count = 0;
+        for (String p : propList) {
+            propValue1.put(count, p);
+            count++;
+        }
+
+        Map<String,Integer> propValueReverse1 =
+                propValue1.entrySet().stream()
+                        .collect(Collectors.toMap(Map.Entry::getValue,Map.Entry::getKey));
+
+
+        for (Expression e : lemmaUserRefExpr) {
+            List<Integer> toAdd = new LinkedList<>();
+            for (Proposition p : e.listPropositions()) {
+                toAdd.add(propValueReverse1.get(p.toString()));
+            }
+            userStructure.add(toAdd);
+        }
+
+        return userStructure;
+    }
+
+    private boolean allLemmaMarked(List<Expression> list) {
+        for (Expression l : list) {
+            if (!l.isLemmaMarked()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isLemmaRuleValid(Expression e1) throws SyntaxException {
+
+
         List<Expression> lemmaExpr = new LinkedList<>();
         List<Integer> refs = e1.getReferenceLine();
 
@@ -530,107 +659,11 @@ public class Proof {
             return false;
         }
 
-        if (expressions.get(ref1).getRuleType() == RuleType.LEMMA) {
-            Expression lemmaResult = expressions.get(ref1);
-
-            List<Expression> lemmaExpr = new LinkedList<>();
-            for (Integer ref : lemmaResult.getReferenceLine()) {
-                Expression temp = new Expression();
-                temp.addToExpression(expressions.get(ref - 1).toString());
-                lemmaExpr.add(temp);
-            }
-
-            lemmaExpr.add(lemmaResult);
-
-            // Go through permises of lemma
-            // If they contain no operator then find an unused expression in the proof and assign it
-            // If they contain an operator find an unused expression with this operator in the proof
-
-
-            List<Proposition> resultProps = setupLemmaPropositions(lemmaResult, lemmaExpr);
-
-            List<List<Integer>> propositionStructure = setupPropositionStructure(lemmaExpr, resultProps);
-
-            List<Integer> values = new LinkedList<>();
-
-
-            for (List<Integer> v : propositionStructure) {
-                for (Integer i : v) {
-                    if (!values.contains(i)) {
-                        values.add(i);
-                    }
-                }
-            }
-
-            List<List<Integer>> valuePermutations = generatePerm(values);
-
-
-            boolean ok = false;
-            for (Expression expr : lemmaExpr) {
-                for (Expression expr1 : expressions) {
-                    if (!expr1.isMarked() && !expr.isLemmaMarked()) {
-                        if (expr.compareStructure(expr1)) {
-
-                            //compare propositions themselves once same structure
-
-                            for (List<Integer> perm : valuePermutations) {
-                                //perm = [0,1,2] [0] [1] [2] [0,1,2]
-                                Map<String, Integer> propNum = new HashMap<>();
-                                int count = 0;
-                                for (Proposition p : resultProps) {
-                                    propNum.put(p.toString(), perm.get(count));
-                                    count++;
-                                }
-                                List<Proposition> potential = expr1.listPropositions();
-
-//                                System.out.println("propNums " + propNum);
-                                List<Integer> potentialNums = new LinkedList<>();
-
-//                                System.out.println("potential " + potential);
-                                for (Proposition p : potential) {
-                                    potentialNums.add(propNum.get(p.toString()));
-                                }
-//                                System.out.println("resultProps " + resultProps);
-//                                System.out.println("potentialNums " + potentialNums);
-//
-//                                System.out.println(propositionStructure);
-                                for (List<Integer> i : propositionStructure) {
-                                    if (potentialNums.equals(i)) {
-                                        ok = true;
-                                    }
-//                                    ok = false;
-                                }
-
-
-                            }
-
-
-                            expr.setLemmaMarked(true);
-                            expr1.setMarked(true);
-                        }
-                    }
-                }
-            }
-
-
-//            System.out.println(propositionStructure);
-
-
-            if (!ok) {
-                errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This lemma cannot be used" +
-                        " as not all of the premises can be applied");
-                return false;
-            }
-
-            return  true;
-        }
-
 
         Boolean x = checkReferenceInScope1(e1, ref1);
         if (x != null) return x;
 
         if (!e1.equals(expressions.get(ref1))) {
-//            System.out.println("here");
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: This line cannot be used for " +
                     "this rule");
             return false;
@@ -640,80 +673,9 @@ public class Proof {
 
     }
 
-    public List<List<Integer>> generatePerm(List<Integer> original) {
-        if (original.size() == 0) {
-            List<List<Integer>> result = new ArrayList<List<Integer>>();
-            result.add(new ArrayList<Integer>());
-            return result;
-        }
-        Integer firstElement = original.remove(0);
-        List<List<Integer>> returnValue = new ArrayList<List<Integer>>();
-        List<List<Integer>> permutations = generatePerm(original);
-        for (List<Integer> smallerPermutated : permutations) {
-            for (int index=0; index <= smallerPermutated.size(); index++) {
-                List<Integer> temp = new ArrayList<Integer>(smallerPermutated);
-                temp.add(index, firstElement);
-                returnValue.add(temp);
-            }
-        }
-        return returnValue;
-    }
-
-    private List<List<Integer>> setupPropositionStructure(List<Expression> lemmaExpr, List<Proposition> resultProps) {
-        List<List<Integer>> propositionStructure = new LinkedList<>();
-
-        for (Expression expr : lemmaExpr) {
-
-            List<Integer> struct = new LinkedList<>();
-
-            List<Proposition> props = expr.listPropositions();
 
 
-            for (Proposition p1 : props) {
-                for (String p2 : lemmaDependants) {
-                    if (p1.toString().equals(p2.toString())) {
-//                        System.out.println("props " + props);
-                        struct.add(lemmaDependants.indexOf(p1.toString()));
 
-                    }
-                }
-
-            }
-            propositionStructure.add(struct);
-        }
-
-
-//        System.out.println("resultProps " + resultProps);
-        List<Integer> struct = new LinkedList<>();
-        for (Proposition p1 : resultProps) {
-            for (String p2 : lemmaDependants) {
-                if (p1.toString().equals(p2.toString())) {
-                    struct.add(lemmaDependants.indexOf(p1.toString()));
-
-                }
-            }
-        }
-        propositionStructure.add(struct);
-        return propositionStructure;
-    }
-
-    private List<Proposition> setupLemmaPropositions(Expression lemmaResult, List<Expression> lemmaExpr) {
-        for (Expression e : lemmaExpr) {
-            for (Proposition p : e.listPropositions()) {
-                if (!lemmaDependants.contains(p.toString())) {
-                    lemmaDependants.add(p.toString());
-                }
-            }
-        }
-        List<Proposition> resultProps = lemmaResult.listPropositions();
-
-        for (Proposition p : resultProps) {
-            if (!lemmaDependants.contains(p.toString())) {
-                lemmaDependants.add(p.toString());
-            }
-        }
-        return resultProps;
-    }
 
     private boolean allMarked(List<Expression> list) {
         for (Expression e : list) {

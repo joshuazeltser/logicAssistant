@@ -1458,7 +1458,7 @@ public class HintTests {
     public void lemmaTest1() throws SyntaxException {
 
         String str = "A | !A\n\nA";
-        String rules = "Lemma ()";
+        String rules = "Lemma1 ()";
 
 
         proof.frontEndFunctionality(str, rules);
@@ -1472,7 +1472,7 @@ public class HintTests {
 
 
         String str = "D\nA\nB\nA ^ B -> C\nC\n\nC ^ D";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma (2,3,4)";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (2,3,4)";
 
         proof.frontEndFunctionality(str, rules);
 
@@ -1486,7 +1486,7 @@ public class HintTests {
 
 
         String str = "E\nA\nB\nA ^ B -> C\nC\nD ^ A ^ B\n";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma (2,3,4)\nLemma2 (1)";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (2,3,4)\nLemma2 (1)";
 
         proof.frontEndFunctionality(str, rules);
 
@@ -1498,19 +1498,16 @@ public class HintTests {
     public void lemmaTest4() throws SyntaxException {
 
 
-        String str = "D\nE ^ F\nA\nB\nC\nA ^ B ^ C\nE\nF\nD ^ E ^ F";
-        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma (3,4,5)\nAnd-Elim (2)\nAnd-Elim (2)\nAvailable (6)";
+        String str = "D\nE ^ F\nA\nB\nC\nA ^ B ^ C\nE\nF\nD ^ F ^ E";
+        String rules = "GIVEN\nGIVEN\nGIVEN\nGIVEN\nGIVEN\nLemma1 (3,4,5)\nAnd-Elim (2)\nAnd-Elim (2)\nLemma1 (1,7,8)";
 
         proof.frontEndFunctionality(str, rules);
 
 
-//        assertFalse(proof.isProofValid());
+        assertTrue(proof.isProofValid());
 
-
-        System.out.println(proof.isProofValid());
-        proof.printRules();
-        System.out.println(proof.getErrors());
     }
+
 
 
 

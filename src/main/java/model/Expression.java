@@ -27,6 +27,8 @@ public class Expression {
 
     private boolean lemmaMarked;
 
+    private Integer lemmaNum;
+
 
 
     public Expression(RuleType ruleType) {
@@ -35,6 +37,7 @@ public class Expression {
         this.ruleType = ruleType;
         lemmaMarked = false;
         marked = false;
+        lemmaNum = 0;
     }
 
     public Expression() {
@@ -694,5 +697,13 @@ public class Expression {
 
     public void setLemmaMarked(boolean lemmaMarked) {
         this.lemmaMarked = lemmaMarked;
+    }
+
+    public Integer getLemmaNum() {
+        return lemmaNum;
+    }
+
+    public void setLemmaNum(Integer lemmaNum) {
+        this.lemmaNum = lemmaNum;
     }
 }
