@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>LogicAssistant</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="webjars/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Custom CSS -->
+    <link href="../static/css/shop-homepage.css" th:href="@{/css/shop-homepage.css}" rel="stylesheet"/>
+    <!--Normalisation CSS -->
+    <link href="../static/css/normalize.css" th:href="@{/css/normalize.css}" rel="stylesheet"/>
+    <!-- jQuery -->
+    <script src="webjars/jquery/3.1.1-1/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
+    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+    <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
+  
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">LogicAssistant</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/validity">Validity Checker</a>
+                </li>
+                <li>
+                    <a href="/userGuide" cols="20" rows="20">User Guide</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<div class="container">
+    <h1 class="jumbotron" align="center">User Help</h1>
+
+<center>
+<div class="card">
+    <div class="row">
+    <div class="card-block">
+        <h4 class="card-title">User Guide</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Step-by-step instructions of how to use LogicAssistant</h6>
+        <p class="card-text">To see the User Guide for this application click here:</p>
+        <a href="/user" class="card-link">User Guide</a>
+    </div>
+    <div class="card-block">
+        <h4 class="card-title">ND Rules</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Definitions of each of the Propositional Natural Deduction rules</h6>
+        <p class="card-text">To see the definition of the Propositional Natural Deduction rules, click here:</p>
+        <a href="/user" class="card-link">ND Rules</a>
+    </div>
+    </div>
+
+</div>
+</center>
+</div>
+</body>
+</html>
