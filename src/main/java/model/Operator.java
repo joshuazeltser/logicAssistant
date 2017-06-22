@@ -31,7 +31,7 @@ public class Operator implements Component{
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return name;
     }
 
@@ -51,7 +51,7 @@ public class Operator implements Component{
 
         Operator expr2 = (Operator) c;
 
-        return toString().equals(expr2.toString());
+        return name.equals(expr2.name) && type.equals(expr2.type);
     }
 
 

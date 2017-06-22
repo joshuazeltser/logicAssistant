@@ -1,15 +1,12 @@
 package model;
 
-import javassist.compiler.ast.Expr;
-import javassist.compiler.ast.IntConst;
 import org.apache.commons.lang3.StringEscapeUtils;
-
-import javax.validation.constraints.Null;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static model.OperatorType.CLOSE_BRACKET;
+import static model.BracketType.CLOSE_BRACKET;
+import static model.BracketType.OPEN_BRACKET;
 import static model.OperatorType.NOT;
-import static model.OperatorType.OPEN_BRACKET;
 
 
 /**
@@ -71,14 +68,14 @@ public class Expression {
                 }
             }
 
-            if (expression.get(i).equals(new Operator("OPEN", OPEN_BRACKET))) {
-                if (!e2.expression.get(i).equals(new Operator("OPEN", OPEN_BRACKET))) {
+            if (expression.get(i).equals(new Bracket("OPEN", OPEN_BRACKET))) {
+                if (!e2.expression.get(i).equals(new Bracket("OPEN", OPEN_BRACKET))) {
                     return false;
                 }
             }
 
-            if (expression.get(i).equals(new Operator("CLOSE", CLOSE_BRACKET))) {
-                if (!e2.expression.get(i).equals(new Operator("CLOSE", CLOSE_BRACKET))) {
+            if (expression.get(i).equals(new Bracket("CLOSE", CLOSE_BRACKET))) {
+                if (!e2.expression.get(i).equals(new Bracket("CLOSE", CLOSE_BRACKET))) {
                     return false;
                 }
             }
@@ -139,10 +136,10 @@ public class Expression {
                     expression.add(new Operator("ONLY", OperatorType.ONLY));
                     break;
                 case "(":
-                    expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+                    expression.add(new Bracket("OPEN", BracketType.OPEN_BRACKET));
                     break;
                 case ")":
-                    expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
+                    expression.add(new Bracket("CLOSE", BracketType.CLOSE_BRACKET));
                     break;
 
                 default:
@@ -153,7 +150,7 @@ public class Expression {
                     }
                     while (token.contains("(")) {
 
-                        expression.add(new Operator("OPEN", OperatorType.OPEN_BRACKET));
+                        expression.add(new Bracket("OPEN", BracketType.OPEN_BRACKET));
 
                         token = token.substring(1);
                     }
@@ -172,7 +169,7 @@ public class Expression {
                     expression.add(new Proposition(token));
 
                     while (count > 0) {
-                        expression.add(new Operator("CLOSE", OperatorType.CLOSE_BRACKET));
+                        expression.add(new Bracket("CLOSE", BracketType.CLOSE_BRACKET));
                         count--;
                     }
 
@@ -339,9 +336,9 @@ public class Expression {
                     str += "&";
                 } else if (c.equals(new Operator("OR", OperatorType.OR))) {
                     str += "|";
-                } else if (c.equals(new Operator("OPEN", OperatorType.OPEN_BRACKET))) {
+                } else if (c.equals(new Bracket("OPEN", BracketType.OPEN_BRACKET))) {
                     str += "(";
-                } else if (c.equals(new Operator("CLOSE", OperatorType.CLOSE_BRACKET))) {
+                } else if (c.equals(new Bracket("CLOSE", BracketType.CLOSE_BRACKET))) {
                     str += ")";
                 } else if (c.equals(new Operator("NOT", NOT))) {
                     str += "!(";
@@ -403,10 +400,14 @@ public class Expression {
         String result = "";
         int count = 0;
 
-        for (Component c : expression) {
+        List<String> strings = expression.stream()
+                .map(object -> Objects.toString(object, null))
+                .collect(Collectors.toList());
+
+        for (String c : strings) {
 
             result += c.toString();
-            if (count < expression.size() - 1) {
+            if (count < strings.size() - 1) {
                 result += " ";
             }
             count++;
@@ -511,12 +512,17 @@ public class Expression {
                      default: t =((Operator) thisExpression.get(i)).getType();
                  }
 
+                 List<Component> temp = new LinkedList<>();
+                 temp.addAll(thisExpression);
 
                  if ( t == type) {
                       lhsExpr = new Expression(ruleType);
                       lhsExpr.expression = thisExpression.subList(0, i);
+
+
+
                       rhsExpr = new Expression(ruleType);
-                      rhsExpr.expression = thisExpression.subList(i+1 , thisExpression.size());
+                      rhsExpr.expression = temp.subList(i+1 , thisExpression.size());
 
                       if (checkBracketValidity(lhsExpr) && checkBracketValidity(rhsExpr)) {
                           break;
@@ -539,10 +545,10 @@ public class Expression {
 
     }
     private boolean checkBracketValidity(Expression expr) {
-        return ((expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                expr.contains(new Operator("CLOSE", CLOSE_BRACKET))) ||
-                (!expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                        !expr.contains(new Operator("CLOSE", CLOSE_BRACKET))));
+        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
+                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
     }
 
 
@@ -574,7 +580,10 @@ public class Expression {
     }
 
     public boolean contains(Component c) {
-        for (Component component : expression) {
+        List<Component> list = new LinkedList<>();
+        list.addAll(expression);
+
+        for (Component component : list) {
             if(c.toString().equals(component.toString())) {
                 return true;
             }

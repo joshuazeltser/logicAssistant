@@ -20,7 +20,7 @@ public class Proposition implements Component{
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return name;
     }
 

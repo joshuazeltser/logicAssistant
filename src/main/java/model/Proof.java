@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static model.BracketType.CLOSE_BRACKET;
+import static model.BracketType.OPEN_BRACKET;
 import static model.OperatorType.*;
 
 /**
@@ -1447,6 +1449,7 @@ public class Proof {
                 break;
             }
 
+
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
                     && !current_goal.equals(resultExpr)) {
@@ -2051,10 +2054,10 @@ public class Proof {
     }
 
     private boolean checkBracketValidity(Expression expr) {
-        return ((expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                expr.contains(new Operator("CLOSE", CLOSE_BRACKET))) ||
-                (!expr.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                        !expr.contains(new Operator("CLOSE", CLOSE_BRACKET))));
+        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
+                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
     }
 
     private boolean allMarked() {
@@ -2251,10 +2254,10 @@ public class Proof {
                         rhs.addReferenceLine(Integer.toString(count1));
 
                         if (newProof.isImpliesElimValid(rhs) &&
-                                (rhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                        rhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
-                                (!rhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                        !rhs.contains(new Operator("CLOSE",CLOSE_BRACKET)))) {
+                                (rhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                        rhs.contains(new Bracket("CLOSE",CLOSE_BRACKET))) ||
+                                (!rhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                        !rhs.contains(new Bracket("CLOSE",CLOSE_BRACKET)))) {
                             rhs.setRuleType(RuleType.IMPLIES_ELIM);
 
                             if (!newProof.expressions.contains(rhs)) {
@@ -2302,10 +2305,10 @@ public class Proof {
 
 
                 if (newProof.isAndElimValid(lhs) &&
-                        (lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
-                        (!lhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                !lhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) && !doneLeft) {
+                        (lhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                lhs.contains(new Bracket("CLOSE",CLOSE_BRACKET))) ||
+                        (!lhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                !lhs.contains(new Bracket("CLOSE",CLOSE_BRACKET))) && !doneLeft) {
                     Expression result = new Expression(RuleType.AND_ELIM);
                     result.addToExpression(lhs.toString());
 
@@ -2323,10 +2326,10 @@ public class Proof {
                 }
 
                 if (newProof.isAndElimValid(rhs) &&
-                        (rhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                rhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) ||
-                        (!rhs.contains(new Operator("OPEN", OPEN_BRACKET)) &&
-                                !rhs.contains(new Operator("CLOSE",CLOSE_BRACKET))) && doneLeft) {
+                        (rhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                rhs.contains(new Bracket("CLOSE",CLOSE_BRACKET))) ||
+                        (!rhs.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+                                !rhs.contains(new Bracket("CLOSE",CLOSE_BRACKET))) && doneLeft) {
 
                     Expression result = new Expression(RuleType.AND_ELIM);
                     result.addToExpression(rhs.toString());
