@@ -199,9 +199,75 @@ $(function () {
         var proofArray = proof.value.split("\n");
         var rulesArray = rules.value.split("\n");
         var output = "";
+
+
+
         /*<![CDATA[*/
         for (var i = 0; i < proofArray.length; i++) {
-            output = output + proofArray[i] + ' , ' + rulesArray[i];
+
+                var comps = proofArray[i].split(' ');
+
+                for (var j = 0; j < comps.length; j++) {
+
+                    switch (comps[j]) {
+                        case decodeEntities('&and;'):
+                            output = output + '^ ';
+                            break;
+                        case decodeEntities('&or;'):
+                            output = output + '| ';
+                            break;
+                        case decodeEntities('&rarr;'):
+                            output = output + '-> ';
+                            break;
+                        case decodeEntities('&harr;'):
+                            output = output + '<-> ';
+                            break;
+                        case decodeEntities('&not;&not;'):
+                            output = output + '!!';
+                            break;
+                        case decodeEntities('&not;'):
+                            output = output + '!';
+                            break;
+
+                        default:
+                            output = output + comps[j] + ' ';
+                    }
+
+                }
+            output = output + ', '
+            var comps2 = rulesArray[i].split('-');
+
+            for (var j = 0; j < comps2.length; j++) {
+
+                switch (comps2[j]) {
+                    case decodeEntities('&and;'):
+                        output = output + 'And-';
+                        break;
+                    case decodeEntities('&or;'):
+                        output = output + 'Or-';
+                        break;
+                    case decodeEntities('&rarr;'):
+                        output = output + 'Implies-';
+                        break;
+                    case decodeEntities('&harr;'):
+                        output = output + 'Only-';
+                        break;
+                    case decodeEntities('&not;&not;'):
+                        output = output + 'NotNot-';
+                        break;
+                    case decodeEntities('&not;'):
+                        output = output + 'Not-';
+                        break;
+                    case decodeEntities('&#10004;'):
+                        output = output + '';
+                        break;
+
+                    default:
+                        output = output + comps2[j];
+                }
+
+            }
+
 
             if (i < proofArray.length - 1) {
                 output = output + '\n';
