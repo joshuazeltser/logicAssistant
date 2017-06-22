@@ -909,6 +909,51 @@ public class HintTests {
     }
 
     @Test
+    public void hintTest16() throws SyntaxException {
+        String str = "(A ^ B) ^ C\n\nB | D";
+        String rules = "GIVEN";
+
+        proof.frontEndFunctionality(str, rules);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "(A ^ B) ^ C\nA ^ B\n\nB | D";
+        rules = "GIVEN\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "(A ^ B) ^ C\nA ^ B\nB\n\nB | D";
+        rules = "GIVEN\nAnd-Elim (1)\nAnd-Elim (2)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: And Elimination"));
+
+        str = "(A ^ B) ^ C\nA ^ B\nB\nC\n\nB | D";
+        rules = "GIVEN\nAnd-Elim (1)\nAnd-Elim (2)\nAnd-Elim (1)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Hint: Or Introduction"));
+
+        str = "(A ^ B) ^ C\nA ^ B\nB\nC\nB | D";
+        rules = "GIVEN\nAnd-Elim (1)\nAnd-Elim (2)\nAnd-Elim (1)\nOr-Intro (3)";
+
+        proof.frontEndFunctionality(str, rules);
+
+//                System.out.println(proof.generateHint());
+        assertTrue(proof.generateHint().equals("Proof already successfully solved"));
+
+
+    }
+
+    @Test
     public void multipleGoalTest1() throws SyntaxException {
 
         String str = "A ^ B\nC\nD\n\nB ^ C\n\nD -> B ^ C";
