@@ -385,7 +385,7 @@ public class Expression {
 
         for (Component expr : expression) {
             if (expr instanceof Proposition) {
-                if (isOperator(expr.toString())) {
+                if (isOperator(expr.toString()) || expr.toString().equals("OPEN") || expr.toString().equals("CLOSE")) {
                     continue;
                 }
                 props.add((Proposition) expr);
@@ -473,7 +473,7 @@ public class Expression {
         List<Component> thisExpression = expression;
 
 
-        if (expression.size() == 1) {
+        if (expression.size() <= 1) {
             Expression end = new Expression();
             end.expression.addAll(thisExpression);
 
@@ -493,6 +493,7 @@ public class Expression {
 
                 if (!temp.checkBracketValidity()) {
                     thisExpression.add(0, new Bracket("OPEN", OPEN_BRACKET));
+
                     thisExpression.add(new Bracket("CLOSE", CLOSE_BRACKET));
                 }
 
@@ -587,11 +588,39 @@ public class Expression {
 
         Expression expr2 = (Expression) o;
 
+
+
         return toString().equals(expr2.toString()) ||
                 ("OPEN " + toString() + " CLOSE").equals(expr2.toString()) ||
                 toString().equals("OPEN " + expr2.toString() + " CLOSE") ||
                 ("OPEN " + toString() + " CLOSE").equals("OPEN " + expr2.toString() + " CLOSE");
     }
+
+    public boolean quickEquals(Expression e2) {
+        List<Proposition> list1 = listPropositions();
+
+        List<Proposition> list2 = e2.listPropositions();
+
+        List<String> ops1 = listOperators();
+        List<String> ops2 = e2.listOperators();
+
+        return list1.toString().equals(list2.toString()) && ops1.equals(ops2);
+
+
+    }
+
+    private List<String> listOperators() {
+        List<String> res = new LinkedList<>();
+
+        for (Component e : expression) {
+            if (isOperator(e.toString())) {
+                res.add(e.toString());
+            }
+        }
+
+        return res;
+    }
+
 
     public RuleType getRuleType() {
         return ruleType;
