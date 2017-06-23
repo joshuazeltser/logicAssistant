@@ -79,6 +79,9 @@ public class Proof {
 
     public String frontEndFunctionality(String proof, String rule) throws SyntaxException{
 
+        proofString = proof;
+        proofLabels = rule;
+
         expressions.clear();
 
         String result = "";
@@ -98,6 +101,7 @@ public class Proof {
 
         return result;
     }
+    
 
 
     public void separateByNewLine(String proof, String rule) throws SyntaxException {

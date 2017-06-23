@@ -1,4 +1,6 @@
 B , GIVEN
-----  A , ASSUMPTION
-----  B , Available (1)
+A , ASSUMPTION
+B , Available (1)
 A -> B , Implies-Intro (2,3)
+ , 
+ , 

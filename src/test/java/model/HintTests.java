@@ -953,6 +953,8 @@ public class HintTests {
 
     }
 
+
+
     @Test
     public void multipleGoalTest1() throws SyntaxException {
 

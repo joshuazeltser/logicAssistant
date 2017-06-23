@@ -118,8 +118,6 @@ function indent_function() {
     proof.value = "";
     
     var indentArray = new Array();
-    
-    var length = proofArray.length;
 
     /*<![CDATA[*/
     for (var i = 0; i < proofArray.length; i++) {
@@ -151,8 +149,10 @@ function indent_function() {
                     continue;
                 }
                 if (proofArray[i].charAt(j) != ' ') {
-                    proof.value = proof.value + '----';
-                    added = true;
+                    if (rulesArray[i] != '') {
+                        proof.value = proof.value + '----';
+                        added = true;
+                    }
                 }
             }
             if (added) {
@@ -222,19 +222,22 @@ $(function () {
                         case decodeEntities('&harr;'):
                             output = output + '<-> ';
                             break;
-                        case decodeEntities('&not;&not;'):
-                            output = output + '!!';
-                            break;
-                        case decodeEntities('&not;'):
-                            output = output + '!';
-                            break;
 
                         default:
+                        if (comps[j].indexOf(decodeEntities('&not;&not;')) >= 0) {
+                            output = output + '!!';
+                            output = output + comps[j].substring(1,comps[j].length) + ' ';
+                        } else if (comps[j].indexOf(decodeEntities('&not;')) >= 0) {
+                            output = output + '!';
+                            output = output + comps[j].substring(1,comps[j].length) + ' ';
+                        } else {
                             output = output + comps[j] + ' ';
+                        }
+
                     }
 
                 }
-            output = output + ', '
+            output = output + ', ';
             var comps2 = rulesArray[i].split('-');
 
             for (var j = 0; j < comps2.length; j++) {
