@@ -1625,4 +1625,19 @@ public class HintTests {
 
     }
 
+    @Test
+    public void hintTest17() throws SyntaxException {
+
+
+        String str = "A ∧ (B ∨ C)\n\n(A ∧ B) ∨ (A ∧ C)";
+        String rules = "GIVEN\n";
+
+        proof.frontEndFunctionality(str, rules);
+
+
+        System.out.println(proof.generateHint());
+//        assertFalse(proof.isProofValid());
+
+    }
+
 }

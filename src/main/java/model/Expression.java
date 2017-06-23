@@ -472,11 +472,29 @@ public class Expression {
 
         List<Component> thisExpression = expression;
 
+
+        if (expression.size() == 1) {
+            Expression end = new Expression();
+            end.expression.addAll(thisExpression);
+
+            List<Expression> res = new LinkedList<>();
+            res.add(end);
+            return res;
+         }
+
         if (thisExpression.get(0).toString().equals("OPEN")
                     && thisExpression.get(thisExpression.size() - 1).toString().equals("CLOSE")) {
 
                 thisExpression.remove(0);
                 thisExpression.remove(thisExpression.size() - 1);
+
+                Expression temp = new Expression();
+                temp.expression.addAll(thisExpression);
+
+                if (!temp.checkBracketValidity()) {
+                    thisExpression.add(0, new Bracket("OPEN", OPEN_BRACKET));
+                    thisExpression.add(new Bracket("CLOSE", CLOSE_BRACKET));
+                }
 
         }
 
@@ -524,7 +542,7 @@ public class Expression {
                       rhsExpr = new Expression(ruleType);
                       rhsExpr.expression = temp.subList(i+1 , thisExpression.size());
 
-                      if (checkBracketValidity(lhsExpr) && checkBracketValidity(rhsExpr)) {
+                      if (lhsExpr.checkBracketValidity() && rhsExpr.checkBracketValidity()) {
                           break;
                       } else {
                           continue;
@@ -544,12 +562,12 @@ public class Expression {
 
 
     }
-    private boolean checkBracketValidity(Expression expr) {
-        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
-                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
-    }
+//    private boolean checkBracketValidity(Expression expr) {
+//        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+//                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
+//                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+//                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
+//    }
 
 
     @Override
@@ -612,19 +630,19 @@ public class Expression {
         for (int i = 0; i < str.length(); i++)
         {
             char current = str.charAt(i);
-            if (current == '{' || current == '(' || current == '[')
+            if (current == '(')
             {
                 stack.push(current);
             }
 
 
-            if (current == '}' || current == ')' || current == ']')
+            if (current == ')')
             {
                 if (stack.isEmpty())
                     return false;
 
                 char last = stack.peek();
-                if (current == '}' && last == '{' || current == ')' && last == '(' || current == ']' && last == '[')
+                if (current == ')' && last == '(')
                     stack.pop();
                 else
                     return false;
@@ -634,6 +652,49 @@ public class Expression {
 
         return stack.isEmpty();
     }
+
+
+    protected boolean checkBracketValidity() {
+
+
+
+        Stack<Component> stack = new Stack<>();
+        for (int i = 0; i < expression.size(); i++) {
+
+            Component current = expression.get(i);
+            if (current.toString().equals("OPEN")) {
+                stack.push(current);
+            }
+
+
+            if (current.toString().equals("CLOSE")) {
+
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                Component last = stack.peek();
+
+                if (current.toString().equals("CLOSE") && last.toString().equals("OPEN")) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            }
+
+        }
+
+        return stack.isEmpty();
+
+
+
+//
+//        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+//                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
+//                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
+//                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
+    }
+
 
     public static boolean externalBrackets(String str) {
 

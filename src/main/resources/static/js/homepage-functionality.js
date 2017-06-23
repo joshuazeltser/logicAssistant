@@ -149,7 +149,7 @@ function indent_function() {
                     continue;
                 }
                 if (proofArray[i].charAt(j) != ' ') {
-                    if (rulesArray[i] != '') {
+                    if (rulesArray[i] != '' && rulesArray[i].indexOf(decodeEntities('&or;') + "-Elim") < 0) {
                         proof.value = proof.value + '----';
                         added = true;
                     }
