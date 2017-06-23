@@ -89,6 +89,8 @@ public class Proof {
             separateByNewLine(proof, rule);
 
             result = frontEndProofValidity();
+            System.out.println(expressions);
+            printRules();
 
         } catch (SyntaxException s) {
             errors.add(s.getMessage());
@@ -170,6 +172,7 @@ public class Proof {
                     continue;
                 }
                 String[] components = exprRule[i].split(" ");
+                System.out.println("-- " + components[0]);
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
                     if (!expr[i].equals("")) {
@@ -327,9 +330,9 @@ public class Proof {
             return RuleType.DOUBLE_NOT_ELIM;
         }
 
-//        String tick = StringEscapeUtils.unescapeHtml4("&#10004;");
-//        String available = "Available";
-        if (rule.equals("Available")) {
+        String tick = StringEscapeUtils.unescapeHtml4("&#10004;");
+        String available = tick + "-Available";
+        if (rule.equals(available)) {
             return RuleType.AVAILABLE;
         }
 

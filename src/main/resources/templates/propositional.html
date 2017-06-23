@@ -146,20 +146,47 @@
                     <script>
 
                         function formatHTML() {
-                            var box = document.getElementById('Text1');
 
 
-                            /*<![CDATA[*/
 
-                            box.value = box.value.replace('^', convertEntities('&and;'));
-                            box.value = box.value.replace('|', convertEntities('&or;'));
-                            box.value = box.value.replace('->', convertEntities('&rarr;'));
-                            box.value = box.value.replace('<->', convertEntities('&harr;'));
-                            box.value = box.value.replace('!', convertEntities('&not;'));
-                            box.value = box.value.replace('FALSE', convertEntities('&bot;'));
-                            /*]]>*/
 
                         }
+
+                        function setCaretPosition(ctrl, pos){
+                            if(ctrl.setSelectionRange)
+                            {
+                                ctrl.focus();
+                                ctrl.setSelectionRange(pos,pos);
+                            }
+                            else if (ctrl.createTextRange) {
+                                var range = ctrl.createTextRange();
+                                range.collapse(true);
+                                range.moveEnd('character', pos);
+                                range.moveStart('character', pos);
+                                range.select();
+                            }
+                        }
+
+                            document.getElementById('Text1').addEventListener('input', function (e) {
+
+
+
+                                /*<![CDATA[*/
+                                var box = e.target,
+                                    position = box.selectionStart;
+
+
+                                box.value = box.value.replace('^', convertEntities('&and;'));
+                                box.value = box.value.replace('|', convertEntities('&or;'));
+                                box.value = box.value.replace('<->', convertEntities('&harr;'));
+                                box.value = box.value.replace('->', convertEntities('&rarr;'));
+                                box.value = box.value.replace('!', convertEntities('&not;'));
+                                box.value = box.value.replace('FALSE', convertEntities('&bot;'));
+
+                                setTimeout(function(){   box.setSelectionRange(position,position);});
+                                /*]]>*/
+                            });
+
 
 
 
