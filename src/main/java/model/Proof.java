@@ -89,8 +89,6 @@ public class Proof {
             separateByNewLine(proof, rule);
 
             result = frontEndProofValidity();
-            System.out.println(expressions);
-            printRules();
 
         } catch (SyntaxException s) {
             errors.add(s.getMessage());
@@ -172,7 +170,6 @@ public class Proof {
                     continue;
                 }
                 String[] components = exprRule[i].split(" ");
-                System.out.println("-- " + components[0]);
                 Expression newExpr = new Expression(convertStringToRule(components[0]));
                 try {
                     if (!expr[i].equals("")) {
@@ -366,7 +363,6 @@ public class Proof {
 
 
         }
-        System.out.println("invalid");
         return RuleType.INVALID;
     }
 
@@ -533,7 +529,6 @@ public class Proof {
         }
 
         if (!lemmaExpr.compareStructure(e1)) {
-            System.out.println("here");
             errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: this lemma cannot be used " +
                     "with these references");
             return false;
