@@ -1,6 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.*;
@@ -260,8 +259,8 @@ public class Proof {
 
     public String printErrors() {
         String result = "";
-        for (String str : errors) {
-            result += str + "\n<br>";
+        for (int i = errors.size()-1; i >= 0; i--) {
+            result += errors.get(i) + "\n<br>";
         }
         return result;
     }
@@ -450,7 +449,6 @@ public class Proof {
             }
             return "Proof is Valid";
         }
-        System.out.println(errors);
         return "Proof is INVALID!";
     }
 
