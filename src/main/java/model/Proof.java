@@ -839,6 +839,8 @@ public class Proof {
         if (expressions.get(ref1).equals(lhs) || expressions.get(ref1).equals(rhs)) {
             return true;
         }
+        System.out.println(lhs);
+        System.out.println(expressions.get(ref1));
 
         errors.add("LINE " + (expressions.indexOf(e1) + 1) + " - RULE ERROR: Or Introduction cannot be used here " +
                 "with this reference");
@@ -1458,10 +1460,8 @@ public class Proof {
             if (timeOutCount > 20) {
                 break;
             }
-
-            System.out.println("proof " + list_proof);
-            System.out.println("goals " + list_goals);
-
+            System.out.println(list_proof);
+            System.out.println(list_goals);
 
             if (current_goal.contains(new Operator("IMPLIES", IMPLIES))
                     || (resultExpr.contains(new Operator("IMPLIES", IMPLIES)) && timeOutCount < 1)
@@ -1478,9 +1478,6 @@ public class Proof {
 
             if (checkIfExpressionsReached(current_goal)) {
 
-//                if (orsLeft) {
-//                    applyIntroductionRule(current_goal);
-//                } else {
                     if (list_goals.size() > 1) {
                         list_goals.remove(list_goals.size() - 1);
                     }
@@ -1493,8 +1490,8 @@ public class Proof {
 
                 if (current_goal.equals(list_goals.get(0)) && list_proof.get(list_proof.size()-1).equals(current_goal)
                         && list_goals.size() == 1 && !orsLeft) {
-                    System.out.println("result " + list_proof);
-                    printRuleType();
+
+                    System.out.println(list_proof);
                     return list_proof;
                 }
                 continue;
@@ -1832,14 +1829,11 @@ public class Proof {
     }
 
 private boolean left = false;
+
     private void applyIntroductionRule(Expression expr) throws SyntaxException {
 
         if (!orElimStack.isEmpty()) {
 
-            System.out.println("-------");
-            System.out.println(orElimStack.peek().getRuleType());
-            System.out.println(list_proof.get(list_proof.size()-1).getRuleType());
-            System.out.println("-------");
             if (list_proof.get(list_proof.size() - 1).quickEquals(orElimStack.peek())) {
                 if (!left) {
 
@@ -1863,8 +1857,6 @@ private boolean left = false;
                     inscope.add(list_proof.get(list_proof.size()-1));
                     left = true;
                 } else {
-
-                    System.out.println("fin or");
 
                     if (!list_proof.get(list_proof.size()-1).equals(list_goals.get(list_goals.size()-1))) {
                         list_proof.add(orElimStack.peek());
@@ -2049,7 +2041,11 @@ private boolean left = false;
 
                     Expression toAdd = list_goals.get(list_goals.size() - 1);
 
+                    System.out.println(list_goals.get(list_goals.size()-1).getReferenceLine());
+                    toAdd.removeRefs();
+
                     toAdd.setRuleType(RuleType.OR_INTRO);
+
                     toAdd.addReferenceLine((list_proof.lastIndexOf(lhs) + 1) + "");
 
                     list_proof.add(toAdd);

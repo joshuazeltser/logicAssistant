@@ -262,7 +262,7 @@ public class Expression {
 
 
             if (!tokens[i].equals("(") && !tokens[i].equals(")") && !tokens[i].equals("!") &&
-                    !tokens[i].equals("NOT") && i < tokens.length-1) {
+                    !tokens[i].equals("NOT") && i < tokens.length-1 && !tokens.equals("OPEN")) {
 
                 if (tokens[i].equals(tokens[i+1])) {
                     throw new SyntaxException("Syntax Error: You cannot use " + convertStringToHTML(tokens[i]) +"" +
