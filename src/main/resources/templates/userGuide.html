@@ -18,9 +18,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
-    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css"
+          rel="stylesheet"/>
     <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
-  
 </head>
 <body>
 <!-- Navigation -->
@@ -28,7 +28,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -53,30 +54,26 @@
 </nav>
 <div class="container">
     <h1 class="jumbotron" align="center">User Help</h1>
-
-<center>
-
-
-    <div class="card">
-        <div class="card-block">
-            <h4 class="card-title">User Guide</h4>
-            <p class="card-text">Step-by-step instructions of how to use LogicAssistant</p>
-            <a href="/User-Guide" class="btn btn-primary">User Guide</a>
+    <center>
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">User Guide</h4>
+                <p class="card-text">Step-by-step instructions of how to use LogicAssistant</p>
+                <a href="/User-Guide" class="btn btn-primary">User Guide</a>
+            </div>
+            <p id="p1"></p>
+            <style>
+                #p1 {
+                    margin: 50px 0 0 0;
+                }
+            </style>
+            <div class="card-block">
+                <h4 class="card-title">Natural Deduction Rules</h4>
+                <p class="card-text">Definitions of each of the Propositional Natural Deduction rules</p>
+                <a href="/ND-Rules" class="btn btn-primary">ND Rules</a>
+            </div>
         </div>
-
-        <p id="p1"></p>
-        <style>
-            #p1 {
-                margin: 50px 0 0 0;
-            }
-        </style>
-        <div class="card-block">
-            <h4 class="card-title">Natural Deduction Rules</h4>
-            <p class="card-text">Definitions of each of the Propositional Natural Deduction rules</p>
-            <a href="/ND-Rules" class="btn btn-primary">ND Rules</a>
-        </div>
-    </div>
-</center>
+    </center>
 </div>
 </body>
 </html>

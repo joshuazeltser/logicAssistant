@@ -16,9 +16,6 @@ import java.io.InputStream;
 @Controller
 public class NDRulesController {
 
-
-
-
 	@RequestMapping(value = "/ND-Rules", method = RequestMethod.GET)
 	public void getFile(HttpServletResponse response) {
 		try {

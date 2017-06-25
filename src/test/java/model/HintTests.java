@@ -1,9 +1,5 @@
 package model;
 
-import javassist.expr.Expr;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -13,10 +9,10 @@ import static org.junit.Assert.assertTrue;
  * Created by joshuazeltser on 14/04/2017.
  */
 public class HintTests {
-//
+
     Proof proof = new Proof();
 
-//
+
     @Test
     public void andEliminationSolverTest() throws SyntaxException {
         String str = "A ^ B\nC\n\nB";

@@ -10,7 +10,6 @@ import static java.lang.Character.isDigit;
 public class TruthTable {
 
     private Expression result;
-
     private List<Expression> premises;
 
     private String ttPremises;
@@ -27,6 +26,7 @@ public class TruthTable {
         errors = new LinkedList<>();
     }
 
+    // Check and alert front-end whether proof would be valid
     public String frontEndFunctionality(String prems, String res) throws SyntaxException {
 
         if (!res.equals("")) {
@@ -49,6 +49,7 @@ public class TruthTable {
         }
     }
 
+    // Check and alert front-end whether lemma would be valid
     public String frontEndLemmaFunctionality(String prems, String res) throws SyntaxException {
 
         if (!res.equals("")) {
@@ -78,6 +79,7 @@ public class TruthTable {
         return result;
     }
 
+    // Read in premises and result, tokenise, and create internal representation of expressions
     public void readPremisesFromInput(String prems, String res) {
 
             Expression temp2 = new Expression(RuleType.GIVEN);
@@ -152,17 +154,15 @@ public class TruthTable {
         // Check that in all rows that every premise evaluates to true the result also evaluates to true
         if (premises.size() == 0) {
             if (!checkResultValues(propositions, truthTable)) {
-//                printTruthTable(propositions, truthTable);
                 return false;
             }
         } else if (checkRowValidity(propositions, truthTable)) {
-//            printTruthTable(propositions, truthTable);
             return false;
         }
-//        printTruthTable(propositions, truthTable);
         return true;
     }
 
+    // Check whether result truth values evaluate to true
     private boolean checkResultValues(List<String> propositions, String[][] truthTable) {
         for (int i = 1; i < (int) Math.pow(2, propositions.size())+1; i++) {
             if (Integer.parseInt(truthTable[i][propositions.size() + premises.size()]) != 1) {
@@ -171,7 +171,6 @@ public class TruthTable {
         }
         return true;
     }
-
 
     private boolean checkRowValidity(List<String> propositions, String[][] truthTable) {
         for (int i = 1; i < (int) Math.pow(2, propositions.size())+1; i++) {
@@ -188,16 +187,8 @@ public class TruthTable {
         return false;
     }
 
-    public void printTruthTable(List<String> propositions, String[][] truthTable) {
-        //print results for testing purposes
-        for (int i = 0; i < (int) Math.pow(2, propositions.size()) + 1; i++) {
-            for (int j = 0; j < propositions.size() + premises.size() + 1; j++) {
-                System.out.print(truthTable[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
 
+    // Generate propositions that make up the proof to be added to truth table
     private List<String> generateProofPropositions() {
         List<String> propositions =  new LinkedList<>();
 
@@ -221,6 +212,7 @@ public class TruthTable {
         return propositions;
     }
 
+    // Add the truth values of the various expressions to the truth table
     private void addExpressionValues(String[][] truthTable, List<String> propositions,
                                      Expression expr, int i) throws SyntaxException {
 
@@ -281,7 +273,8 @@ public class TruthTable {
 
     }
 
-    private void addTruthResultsToTable(String[][] truthTable, List<String> propositions, int i, List<Integer> columns, List<List<Integer>> values, List<Integer> premiseVals) {
+    private void addTruthResultsToTable(String[][] truthTable, List<String> propositions, int i, List<Integer> columns,
+                                        List<List<Integer>> values, List<Integer> premiseVals) {
         boolean notRow = false;
         int premiseCount = 0;
         for (List<Integer> row : values) {
@@ -294,7 +287,6 @@ public class TruthTable {
                     }
                     count1++;
                 }
-                count1 = 0;
                 if (!notRow) {
                     truthTable[q][propositions.size() + i] = premiseVals.get(premiseCount).toString();
                 }
@@ -307,7 +299,9 @@ public class TruthTable {
     }
 
 
-    public LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> convertToTruthValues(Expression expr) throws SyntaxException {
+    // convert expression to its truth values
+    public LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> convertToTruthValues(Expression expr)
+            throws SyntaxException {
 
         List<Proposition> propositions = expr.listPropositions();
 
@@ -333,7 +327,9 @@ public class TruthTable {
         return evaluateTruthValues(replacedProps, perms);
     }
 
-    public LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> evaluateTruthValues(List<String> values, List<LinkedHashMap<Proposition, Integer>> perms) {
+    // work out truth values
+    public LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer>
+                evaluateTruthValues(List<String> values, List<LinkedHashMap<Proposition, Integer>> perms) {
 
         LinkedHashMap<LinkedHashMap<Proposition, Integer>,Integer> results = new LinkedHashMap<>();
         int count = 0;
@@ -430,6 +426,7 @@ public class TruthTable {
         }
     }
 
+    // generate all bit permuatation of length size
     public int[][] generatePermutations(int size) {
 
         int numRows = (int)Math.pow(2, size);
@@ -454,8 +451,6 @@ public class TruthTable {
     public void setResult(Expression result) {
         this.result = result;
     }
-
-
 
     public List<Expression> getPremises() {
         return premises;

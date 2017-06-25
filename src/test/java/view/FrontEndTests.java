@@ -34,7 +34,6 @@ public class FrontEndTests  {
     private WebElement submit;
     private WebElement errorBox;
     private WebElement indentButton;
-    private WebElement resultBox;
     private WebElement hintButton;
     private WebElement hintBox;
     private WebElement validityButton;
@@ -83,7 +82,7 @@ public class FrontEndTests  {
                 submit = driver.findElement(By.id("submit"));
                 errorBox = driver.findElement(By.name("result"));
                 indentButton = driver.findElement(By.id("b14"));
-                resultBox = driver.findElement(By.id("resultBox"));
+//                resultBox = driver.findElement(By.id("resultBox"));
                 hintButton = driver.findElement(By.id("hintButton"));
                 hintBox = driver.findElement(By.id("hintBox"));
                 validityButton = driver.findElement(By.id("validityCheck"));
@@ -351,13 +350,14 @@ public class FrontEndTests  {
         textArea1.sendKeys("A ^ B");
         textArea2.sendKeys("GIVEN");
 
-        resultBox.sendKeys("A");
+        textArea1.sendKeys("\nA");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: AND_ELIM"));
+        assertTrue(hintBox.getText().equals("Hint: And Elimination"));
     }
 
     @Test
@@ -368,13 +368,14 @@ public class FrontEndTests  {
         textArea2.sendKeys("GIVEN\n" +
                 "GIVEN\n");
 
-        resultBox.sendKeys("A -> (B -> C)");
+        textArea1.sendKeys("\nA -> (B -> C)");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: ASSUMPTION"));
+        assertTrue(hintBox.getText().equals("Hint: Assumption"));
 
 
         refreshElements();
@@ -383,10 +384,11 @@ public class FrontEndTests  {
         textArea2.sendKeys("ASSUMPTION\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: ASSUMPTION"));
+        assertTrue(hintBox.getText().equals("Hint: Assumption"));
 
         refreshElements();
 
@@ -394,10 +396,11 @@ public class FrontEndTests  {
         textArea2.sendKeys("ASSUMPTION\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: AND_ELIM"));
+        assertTrue(hintBox.getText().equals("Hint: And Elimination"));
 
         refreshElements();
 
@@ -405,10 +408,11 @@ public class FrontEndTests  {
         textArea2.sendKeys("And-Elim (1)\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: IMPLIES_ELIM"));
+        assertTrue(hintBox.getText().equals("Hint: Implies Elimination"));
 
         refreshElements();
 
@@ -416,10 +420,11 @@ public class FrontEndTests  {
         textArea2.sendKeys("Implies-Elim (2,5)\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: IMPLIES_INTRO"));
+        assertTrue(hintBox.getText().equals("Hint: Implies Introduction"));
 
         refreshElements();
 
@@ -427,17 +432,18 @@ public class FrontEndTests  {
         textArea2.sendKeys("Implies-Intro (4,6)\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 
-        assertTrue(hintBox.getText().equals("Hint: IMPLIES_INTRO"));
+        assertTrue(hintBox.getText().equals("Hint: Implies Introduction"));
 
         refreshElements();
 
-        textArea1.sendKeys("A -> (B -> C)\n");
         textArea2.sendKeys("Implies-Intro (3,7)\n");
 
         hintButton.click();
+        submit.click();
 
         refreshElements();
 

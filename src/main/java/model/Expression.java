@@ -26,6 +26,7 @@ public class Expression {
 
     private Integer lemmaNum;
 
+    private final List<String> operatorNames = Arrays.asList("AND", "OR", "IMPLIES", "ONLY");
 
 
     public Expression(RuleType ruleType) {
@@ -54,6 +55,7 @@ public class Expression {
 
     }
 
+    // Compares the structures of two expression
     public boolean compareStructure(Expression e2) {
 
         if (expression.size() != e2.expression.size()) {
@@ -97,6 +99,8 @@ public class Expression {
         this.ruleType = ruleType;
     }
 
+
+    // Create internal representation of expression if all checks pass
     public boolean addToExpression(String input) throws SyntaxException {
 
         if (!checkBrackets(input)) {
@@ -114,10 +118,6 @@ public class Expression {
         tokens = convertHTMLToChar(tokens);
 
         syntaxCheck(tokens);
-
-
-
-
 
         for (int i = 0; i < tokens.length; i++) {
 
@@ -294,6 +294,7 @@ public class Expression {
         }
     }
 
+    // Check whether string is a valid input
     private boolean inWhiteList(String str) {
 
         char[] chars = str.toCharArray();
@@ -367,6 +368,11 @@ public class Expression {
     }
 
     private boolean isOperator(String str) {
+        String and = StringEscapeUtils.unescapeHtml4("&and;");
+        String or = StringEscapeUtils.unescapeHtml4("&or;");
+        String implies = StringEscapeUtils.unescapeHtml4("&rarr;");
+        String only = StringEscapeUtils.unescapeHtml4("&harr;");
+
         switch (str) {
             case "AND":
             case "OR":
@@ -376,10 +382,16 @@ public class Expression {
             case "->":
             case "<->":
             case "|": return true;
-            default: return false;
+            default:
+                if (str.equals(and) || str.equals(or) || str.equals(implies) || str.equals(only)) {
+                    return true;
+                }
+
+                return false;
         }
     }
 
+    // Produce a list of propositions found in this expression
     public List<Proposition> listPropositions() {
         List<Proposition> props = new LinkedList<>();
 
@@ -423,37 +435,7 @@ public class Expression {
         return s.substring(0, s.length()-1);
     }
 
-    public int surroundedByBrackets (OperatorType type) {
-
-        int num = countOperator(type);
-        int[] ops = new int[num];
-        int counter = 0;
-
-        for (int i = 0; i < expression.size(); i++) {
-            if (expression.get(i) instanceof Operator) {
-                if (((Operator) expression.get(i)).getType() == type) {
-                    ops[counter] = i;
-                    counter++;
-                }
-            }
-        }
-        for (int j = 0; j < ops.length; j++) {
-            if (ops[j] < 2) {
-                return ops[j];
-            }
-
-            if (ops[j] > expression.size()-2) {
-                return ops[j];
-            }
-            if (!expression.get(ops[j]-2).toString().equals("OPEN")) {
-
-                return ops[j];
-            }
-        }
-        return 0;
-    }
-
-
+    // Count number of times the given operator can be found in this expression
     public int countOperator(OperatorType type) {
         int count = 0;
         for (Component c : expression) {
@@ -466,8 +448,7 @@ public class Expression {
         return count;
     }
 
-
-    private List<String> operatorNames = Arrays.asList("AND", "OR", "IMPLIES", "ONLY");
+    // Split expression by given operator
     public List<Expression> splitExpressionBy(OperatorType type) {
 
         List<Component> thisExpression = expression;
@@ -482,6 +463,7 @@ public class Expression {
             return res;
          }
 
+        // remove brackets if necessary
         if (thisExpression.get(0).toString().equals("OPEN")
                     && thisExpression.get(thisExpression.size() - 1).toString().equals("CLOSE")) {
 
@@ -501,60 +483,53 @@ public class Expression {
 
         List<Expression> result = new LinkedList<>();
 
-        int num = countOperator(type);
-
         Expression lhsExpr = new Expression();
         Expression rhsExpr = new Expression();
 
-//        if (num > 1) {
-//            int index = surroundedByBrackets(type);
-//
-//            lhsExpr = new Expression(ruleType);
-//            lhsExpr.expression = thisExpression.subList(0, index);
-//
-//            rhsExpr = new Expression(ruleType);
-//            rhsExpr.expression = thisExpression.subList(index+1 , thisExpression.size());
-//
-//
-//        } else {
-            for (int i = 0; i < thisExpression.size(); i++) {
+        // generate lhs and rhs expressions
+        for (int i = 0; i < thisExpression.size(); i++) {
 
 
-             if (thisExpression.get(i) instanceof Operator || operatorNames.contains(thisExpression.get(i).toString()) ) {
+            if (thisExpression.get(i) instanceof Operator || operatorNames.contains(thisExpression.get(i).toString())) {
 
-                 OperatorType t;
-                 switch (thisExpression.get(i).toString()) {
-                     case "AND" : t = OperatorType.AND; break;
-                     case "OR" : t = OperatorType.OR; break;
-                     case "IMPLIES" : t = OperatorType.IMPLIES; break;
-                     case "ONLY" : t = OperatorType.ONLY; break;
-                     default: t =((Operator) thisExpression.get(i)).getType();
-                 }
+                OperatorType t;
+                switch (thisExpression.get(i).toString()) {
+                    case "AND":
+                        t = OperatorType.AND;
+                        break;
+                    case "OR":
+                        t = OperatorType.OR;
+                        break;
+                    case "IMPLIES":
+                        t = OperatorType.IMPLIES;
+                        break;
+                    case "ONLY":
+                        t = OperatorType.ONLY;
+                        break;
+                    default:
+                        t = ((Operator) thisExpression.get(i)).getType();
+                }
 
-                 List<Component> temp = new LinkedList<>();
-                 temp.addAll(thisExpression);
+                List<Component> temp = new LinkedList<>();
+                temp.addAll(thisExpression);
 
-                 if ( t == type) {
-                      lhsExpr = new Expression(ruleType);
-                      lhsExpr.expression = thisExpression.subList(0, i);
+                if (t == type) {
+                    lhsExpr = new Expression(ruleType);
+                    lhsExpr.expression = thisExpression.subList(0, i);
 
 
+                    rhsExpr = new Expression(ruleType);
+                    rhsExpr.expression = temp.subList(i + 1, thisExpression.size());
 
-                      rhsExpr = new Expression(ruleType);
-                      rhsExpr.expression = temp.subList(i+1 , thisExpression.size());
-
-                      if (lhsExpr.checkBracketValidity() && rhsExpr.checkBracketValidity()) {
-                          break;
-                      } else {
-                          continue;
-                      }
-                  }
-             }
-
+                    if (lhsExpr.checkBracketValidity() && rhsExpr.checkBracketValidity()) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
             }
 
-//        }
-//        System.out.println(lhsExpr);
+        }
 
         result.add(lhsExpr);
         result.add(rhsExpr);
@@ -563,13 +538,6 @@ public class Expression {
 
 
     }
-//    private boolean checkBracketValidity(Expression expr) {
-//        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-//                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
-//                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-//                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
-//    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -589,13 +557,14 @@ public class Expression {
         Expression expr2 = (Expression) o;
 
 
-
+        // ignore outer brackets
         return toString().equals(expr2.toString()) ||
                 ("OPEN " + toString() + " CLOSE").equals(expr2.toString()) ||
                 toString().equals("OPEN " + expr2.toString() + " CLOSE") ||
                 ("OPEN " + toString() + " CLOSE").equals("OPEN " + expr2.toString() + " CLOSE");
     }
 
+    // Compare propositions and operators of two expressions
     public boolean quickEquals(Expression e2) {
         List<Proposition> list1 = listPropositions();
 
@@ -639,6 +608,7 @@ public class Expression {
         return false;
     }
 
+    // remove n components from the start of the expression
     public void removeNcomponents(int n) {
         for (int i = 0; i < n; i++) {
             expression.remove(0);
@@ -650,12 +620,13 @@ public class Expression {
         expression.remove(expression.size()-1);
     }
 
+    // Ensure that all brackets are matching in the string version of the expression
     public static boolean checkBrackets(String str)
     {
         if (str.isEmpty())
             return true;
 
-        Stack<Character> stack = new Stack<Character>();
+        Stack<Character> stack = new Stack<>();
         for (int i = 0; i < str.length(); i++)
         {
             char current = str.charAt(i);
@@ -683,9 +654,8 @@ public class Expression {
     }
 
 
+    // Ensure that all brackets in the expression are matching
     protected boolean checkBracketValidity() {
-
-
 
         Stack<Component> stack = new Stack<>();
         for (int i = 0; i < expression.size(); i++) {
@@ -714,35 +684,6 @@ public class Expression {
         }
 
         return stack.isEmpty();
-
-
-
-//
-//        return ((expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-//                expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))) ||
-//                (!expr.contains(new Bracket("OPEN", OPEN_BRACKET)) &&
-//                        !expr.contains(new Bracket("CLOSE", CLOSE_BRACKET))));
-    }
-
-
-    public static boolean externalBrackets(String str) {
-
-        if (str.charAt(0) != '(' || str.charAt(str.length() - 1) != ')') {
-            return false;
-        }
-
-        char[] array = str.toCharArray();
-
-        String result = "";
-        for (int i = 0; i < str.length(); i++) {
-            if (i != 0 && i != str.length()-1) {
-                result += array[i];
-            }
-        }
-
-        return checkBrackets(result);
-
-
     }
 
     public boolean equalExceptFirst(Expression e1) {

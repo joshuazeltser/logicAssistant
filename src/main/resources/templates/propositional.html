@@ -19,7 +19,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
-    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css"
+          rel="stylesheet"/>
     <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
 </head>
 <body>
@@ -28,7 +29,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -91,7 +93,8 @@
             </tbody>
         </table>
         <center>
-            <a id="validityCheck" onclick="addVariables()" type="button" href="/validity"  class="btn btn-success" value="Check">
+            <a id="validityCheck" onclick="addVariables()" type="button" href="/validity"  class="btn btn-success"
+               value="Check">
                 Check Proof Validity</a>
         </center>
         <p></p>
@@ -105,19 +108,7 @@
                </span>
         </center>
         <p></p>
-
-
-
         <script>
-
-
-//            $(function () {
-//                window.onload = checkHintStatus;
-
-
-
-
-
             function checkHintStatus() {
                 var status = document.getElementById('hintStatus');
                 var hint = document.getElementById('hintButton');
@@ -139,69 +130,32 @@
                 <div class="inline-div">
                     <p class="lead" align="center" data-original-title="Type your proof here">Proof
                     </p>
-                    <textarea class="lined"  onkeyup="formatHTML()" id="Text1" th:field="*{proofString}" cols="14" rows="8"
+                    <textarea class="lined"  id="Text1" th:field="*{proofString}" cols="14" rows="8"
                               th:inline="text" style="overflow: hidden"></textarea>
-
                     <script>
+                        document.getElementById('Text1').addEventListener('input', function (e) {
 
-                        function formatHTML() {
+                            /*<![CDATA[*/
+                            var box = e.target,
+                                position = box.selectionStart;
 
+                            box.value = box.value.replace('^', convertEntities('&and;'));
+                            box.value = box.value.replace('|', convertEntities('&or;'));
+                            box.value = box.value.replace('<->', convertEntities('&harr;'));
+                            box.value = box.value.replace('->', convertEntities('&rarr;'));
+                            box.value = box.value.replace('!', convertEntities('&not;'));
+                            box.value = box.value.replace('FALSE', convertEntities('&bot;'));
 
-
-
-                        }
-
-                        function setCaretPosition(ctrl, pos){
-                            if(ctrl.setSelectionRange)
-                            {
-                                ctrl.focus();
-                                ctrl.setSelectionRange(pos,pos);
-                            }
-                            else if (ctrl.createTextRange) {
-                                var range = ctrl.createTextRange();
-                                range.collapse(true);
-                                range.moveEnd('character', pos);
-                                range.moveStart('character', pos);
-                                range.select();
-                            }
-                        }
-
-                            document.getElementById('Text1').addEventListener('input', function (e) {
-
-
-
-                                /*<![CDATA[*/
-                                var box = e.target,
-                                    position = box.selectionStart;
-
-
-                                box.value = box.value.replace('^', convertEntities('&and;'));
-                                box.value = box.value.replace('|', convertEntities('&or;'));
-                                box.value = box.value.replace('<->', convertEntities('&harr;'));
-                                box.value = box.value.replace('->', convertEntities('&rarr;'));
-                                box.value = box.value.replace('!', convertEntities('&not;'));
-                                box.value = box.value.replace('FALSE', convertEntities('&bot;'));
-
-                                setTimeout(function(){   box.setSelectionRange(position,position);});
-                                /*]]>*/
-                            });
-
-
-
-
-
-
-
+                            setTimeout(function(){   box.setSelectionRange(position,position);});
+                            /*]]>*/
+                        });
 
                     </script>
-
-
-
-
                 </div>
                 <div class="inline-div">
                     <p class="lead" align="center" data-original-title="Type your rules here">Rule</p>
-                    <textarea onclick="indent_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8" spellcheck="false" >
+                    <textarea onclick="indent_function()" id="Text2" th:field="*{proofLabels}" cols="14" rows="8"
+                              spellcheck="false" >
 			</textarea>
                     <style>
                         textarea {
@@ -211,14 +165,13 @@
                         }
                     </style>
                 </div>
-
                 <script>
                     window.onload = hideHelper;
                     window.onload = getVariables();
                     window.onload = getLemmas();
 
                     var lemmaCount = 1;
-//
+                    //
                     function getLemmas() {
                         var proof = document.getElementById('Text1');
                         var rules = document.getElementById('Text2');
@@ -250,52 +203,25 @@
                             localStorage.removeItem('lemmaPremises');
                         }
 
-
-
-
                         if (localStorage.getItem('lemmas') != []) {
                             var vals = JSON.parse(localStorage.getItem('lemmas'));
 
                             var x = proof.value.split('\n');
-                            var proofSize = 0;
-//                            if (x.length == 1) {
-                                proofSize = x.length;
-//                            }
-
-//                            var diff = 0;
-//
-//                                diff = lemmaSize2 - lemmaSize - 1;
-
-
 
                             if (vals != null) {
                                 proof.value = proof.value + vals.pop() + '\n';
                                 lemmaCount++;
-                                rules.value = rules.value + '\nLemma? (?)';
-                                /*<![CDATA[*/
-
-//                                for (var i = diff; i < proofSize - 1; i++) {
-//                                    rules.value = rules.value + (i + 1);
-
-//                                    if (i == proofSize - 2) {
-//                                        rules.value = rules.value + ")"
-//                                    } else {
-//                                        rules.value = rules.value + ","
-//                                    }
-//
-//                                }
-                                /*]]>*/
+                                rules.value = rules.value + 'Lemma? (?)';
                             }
                             localStorage.removeItem('lemmas');
                         }
 
                     }
 
-                    //            });
                     function getVariables() {
                         var proof = document.getElementById('Text1');
                         var rules = document.getElementById('Text2');
-//                            var res = document.getElementById('resultBox');
+
                         if (localStorage.getItem('items') != []) {
                             var vals = JSON.parse(localStorage.getItem('items'));
 
@@ -306,8 +232,6 @@
 
                             localStorage.removeItem('items');
                         }
-
-
                     }
 
                 </script>
@@ -315,16 +239,17 @@
                 <div id="options" class="col-md-10">
                     <style>
                         #options {
-                            /*position: absolute;*/
                             left: 50%;
                             margin-left: -305px;
                         }
                     </style>
                     <div class="btn-group">
                         <input id="submit" class="btn btn-primary" type="submit" value="Submit" />
-                        <button id="hintButton" onclick="changeColour(); checkHintStatus()" class="btn btn-primary" type="button"
+                        <button id="hintButton" onclick="changeColour(); checkHintStatus()" class="btn btn-primary"
+                                type="button"
                                 data-toggle="tooltip" data-placement="top" title="Turn hints on/off">Hint</button>
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-original-title="Type your rules here">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-original-title="Type your rules here">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
@@ -333,17 +258,20 @@
                             <li class="divider"></li>
                             <li><a id="save" href="#">Save Proof As</a></li>
                             <li><a id="b14" type="button">Refresh Indent</a></li>
-                            <!--<button id="b14" type="button" class="btn btn-warning" value="Indent">Refresh Indent</button>-->
                         </ul>
                     </div>
                     <a download="proof.la" id="downloadlink" style="display: none">Download</a>
-                    <output id="hintStatus" onload="checkHintStatus()" value="Hints are OFF" style='font-size: 12px; font-weight:bold'></output>
+                    <output id="hintStatus" onload="checkHintStatus()" value="Hints are OFF" style='font-size: 12px;
+                    font-weight:bold'></output>
                     <p></p>
                     <div id="error" class="panel panel-default">
                         <div class="panel-body">
-                            <output id="errorBox"  name="result" th:name="result" th:utext="${proof.frontEndFunctionality(proof.proofString, proof.proofLabels)}"></output>
+                            <output id="errorBox"  name="result" th:name="result"
+                                    th:utext="${proof.frontEndFunctionality(proof.proofString,
+                                                                                proof.proofLabels)}"></output>
                             <output id="hintBox"  th:name="hintResult" th:utext="${proof.generateHint()}"></output>
-                            <output id="aHintBox"  th:name="aHintResult" th:utext="${proof.generateAdvancedHint()}"></output>
+                            <output id="aHintBox"  th:name="aHintResult" th:utext="${proof.generateAdvancedHint()}">
+                            </output>
                             <style>
                                 output {
                                     font-size: 16px;
@@ -353,7 +281,6 @@
                                 window.onload = hideHelper;
 
                                 function addVariables() {
-//                var sub = document.getElementById('submit');
 
                                     var premises = document.getElementById('Text1');
                                     var result = document.getElementById('Text2');
@@ -373,56 +300,76 @@
         </center>
     </div>
     <div class="col-md-2">
-        <p class="lead" align="center" data-toggle="tooltip" data-placement="top" title="Choose a rule">Rule Selection</p>
+        <p class="lead" align="center" data-toggle="tooltip" data-placement="top"
+           title="Choose a rule">Rule Selection</p>
         <center>
                <span id='buttonGroup' align="center" class="btn-group-vertical" >
-               <button id="b1" type="button" class="btn btn-primary" value="GIVEN">GIVEN</button>
-               <button id="b2" type="button" class="btn btn-primary" value="ASSUMPTION">ASSUMPTION</button>
-               <button id="b3" type="button" class="btn btn-primary" value="&and;-Intro (?)">&and; Introduction</button>
-               <button id="b4" type="button" class="btn btn-primary" value="&and;-Elim (?)">&and; Elimination</button>
-               <button id="b5" type="button" class="btn btn-primary" value="&or;-Intro (?)">&or; Introduction</button>
-               <button id="b6" type="button" class="btn btn-primary" value="&or;-Elim (?)">&or; Elimination</button>
-               <button id="b7" type="button" class="btn btn-primary" value="&rarr;-Intro (?)">&rarr; Introduction</button>
-               <button id="b8" type="button" class="btn btn-primary" value="&rarr;-Elim (?)">&rarr; Elimination</button>
-               <button id="b9" type="button" class="btn btn-primary" value="&harr;-Intro (?)">&harr; Introduction</button>
-               <button id="b10" type="button" class="btn btn-primary" value="&harr;-Elim (?)">&harr; Elimination</button>
-               <button id="b11" type="button" class="btn btn-primary" value="&not;-Intro (?)">&not; Introduction</button>
-               <button id="b12" type="button" class="btn btn-primary" value="&not;-Elim (?)">&not; Eliminiation</button>
-               <button id="b13" type="button" class="btn btn-primary" value="&not;&not;-Elim (?)">&not;&not; Elimination</button>
-               <button id="b15" type="button" class="btn btn-primary" value="&#10004;-Available (?)">&#10004; Available</button>
+                  <button id="b1" type="button" class="btn btn-primary" value="GIVEN">GIVEN</button>
+                  <button id="b2" type="button" class="btn btn-primary" value="ASSUMPTION">ASSUMPTION</button>
+                  <button id="b3" type="button" class="btn btn-primary" value="&and;-Intro (?)">
+                      &and; Introduction
+                  </button>
+                  <button id="b4" type="button" class="btn btn-primary" value="&and;-Elim (?)">
+                      &and; Elimination
+                  </button>
+                  <button id="b5" type="button" class="btn btn-primary" value="&or;-Intro (?)">
+                      &or; Introduction
+                  </button>
+                  <button id="b6" type="button" class="btn btn-primary" value="&or;-Elim (?)">
+                      &or; Elimination
+                  </button>
+                  <button id="b7" type="button" class="btn btn-primary" value="&rarr;-Intro (?)">
+                      &rarr; Introduction
+                  </button>
+                  <button id="b8" type="button" class="btn btn-primary" value="&rarr;-Elim (?)">
+                      &rarr; Elimination
+                  </button>
+                  <button id="b9" type="button" class="btn btn-primary" value="&harr;-Intro (?)">
+                      &harr; Introduction
+                  </button>
+                  <button id="b10" type="button" class="btn btn-primary" value="&harr;-Elim (?)">
+                      &harr; Elimination
+                  </button>
+                  <button id="b11" type="button" class="btn btn-primary" value="&not;-Intro (?)">
+                      &not; Introduction
+                  </button>
+                  <button id="b12" type="button" class="btn btn-primary" value="&not;-Elim (?)">
+                      &not; Eliminiation
+                  </button>
+                  <button id="b13" type="button" class="btn btn-primary" value="&not;&not;-Elim (?)">
+                      &not;&not; Elimination
+                  </button>
+                  <button id="b15" type="button" class="btn btn-primary" value="&#10004;-Available (?)">
+                      &#10004; Available
+                  </button>
+                  <div class="btn-group">
+                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false">
+                     Lemmas <span class="caret"></span>
+                     </button>
+                     <ul id="drop" class="dropdown-menu">
+                        <li><a id="lemma"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables();
+                        location.href='/lemma'">
+                           Add Lemma
+                           </a>
+                        </li>
+                        <li><a onclick="addLemma()">Use Lemma</a></li>
+                     </ul>
+                     <script>
+                        function addLemma() {
+                            var rules = document.getElementById('Text2');
 
-                   <!-- Button trigger modal -->
-<!--<button id="lemma" class="btn btn-primary"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">-->
-    <!--Add Lemma-->
-<!--</button>-->
-<div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Lemmas <span class="caret"></span>
-  </button>
-  <ul id="drop" class="dropdown-menu">
-    <li><a id="lemma"   data-toggle="modal" data-target="#myModalNorm" onclick="addVariables(); location.href='/lemma'">
-    Add Lemma
-</a></li>
-    <li><a onclick="addLemma()">Use Lemma</a></li>
+                            rules.value = rules.value + 'Lemma? (?)';
+                        }
 
-  </ul>
-    <script>
-        function addLemma() {
-            var rules = document.getElementById('Text2');
-
-            rules.value = rules.value + 'Lemma? (?)';
-        }
-
-    </script>
-
-    <style>
-        #drop {
-            top: -100%;
-            left: -135%;
-        }
-    </style>
-</div>
-
+                     </script>
+                     <style>
+                        #drop {
+                            top: -100%;
+                            left: -135%;
+                        }
+                     </style>
+                  </div>
                </span>
         </center>
     </div>

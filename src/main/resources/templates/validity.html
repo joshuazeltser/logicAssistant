@@ -18,9 +18,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="../static/js/jquery-linedtextarea.js" th:src="@{/js/jquery-linedtextarea.js}"></script>
-    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/jquery-linedtextarea.css" th:href="@{/css/jquery-linedtextarea.css}" type="text/css"
+          rel="stylesheet"/>
     <script src="../static/js/homepage-functionality.js" th:src="@{/js/homepage-functionality.js}"></script>
-  
 </head>
 <body>
 <!-- Navigation -->
@@ -28,7 +28,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -91,15 +92,14 @@
         </table>
         <p></p>
         <a href="/" id="submit"  class="btn btn-success" type="submit">Back to Proof Checker</a>
-
     </div>
     <div class="col-md-8">
         <center>
             <form id="tt" action="/validity" th:object="${truthTable}" method="post">
                 <div class="input-group">
                     <p class="lead" align="center">Premises</p>
-                    <textarea class="lined" onkeyup="formatPremiseHTML()" th:field="*{ttPremises}" id="premises" cols="20" rows="5"></textarea>
-
+                    <textarea class="lined" onkeyup="formatPremiseHTML()" th:field="*{ttPremises}" id="premises"
+                              cols="20" rows="5"></textarea>
                     <script>
                         function formatPremiseHTML() {
                             var box1 = document.getElementById('premises');
@@ -127,7 +127,8 @@
                 <p></p>
                 <div class="input-group">
                     <p class="lead" align="center">Result</p>
-                    <textarea id="resultBox"  onkeyup="formatResultHTML()" class="form-control custom-control" th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
+                    <textarea id="resultBox"  onkeyup="formatResultHTML()" class="form-control custom-control"
+                              th:field="*{ttResults}" rows="1" style="resize:none"></textarea>
                     <script>
                         function formatResultHTML() {
                             var box = document.getElementById('resultBox');
@@ -142,7 +143,6 @@
                             /*]]>*/
                         }
                     </script>
-
                 </div>
                 <p></p>
                 <div>
@@ -151,20 +151,15 @@
                 <p></p>
                 <div id="error" class="panel panel-default">
                     <div class="panel-body">
-                        <output id="errorBox" th:name="result2" th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises, truthTable.ttResults)}"></output>
+                        <output id="errorBox" th:name="result2"
+                                th:utext="${truthTable.frontEndFunctionality(truthTable.ttPremises,
+                                                                            truthTable.ttResults)}"></output>
                         <script>
                             var x = document.getElementById('errorBox');
                             if (x.value  == 'Proof is Valid' ) {
                                 window.location.replace('/');
                             }
                         </script>
-                        <script>
-
-
-
-
-                        </script>
-
                     </div>
                 </div>
             </form>
