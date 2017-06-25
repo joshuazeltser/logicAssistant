@@ -109,7 +109,7 @@ public class FrontEndTests  {
     }
 
 
-@Ignore
+
     @Test
     public void simpleProofTest() throws InterruptedException {
 
@@ -176,72 +176,7 @@ public class FrontEndTests  {
         assertTrue(errorBox.getText().equals("Proof is Valid"));
     }
 
-    @Test
-    public void checkIndentationButton() throws InterruptedException {
 
-        textArea1.sendKeys("!(A | !A)\n" +
-                "A\n" +
-                "A | !A\n" +
-                "FALSE\n" +
-                "!A\n" +
-                "A | !A\n" +
-                "FALSE\n" +
-                "!!(A | !A)\n" +
-                "A | !A\n");
-        textArea2.sendKeys("ASSUMPTION\n" +
-                "ASSUMPTION\n" +
-                "Or-Intro (2)\n" +
-                "Not-Elim (1,3)\n" +
-                "Not-Intro (2,4)\n" +
-                "Or-Intro (5)\n" +
-                "Not-Elim (1,6)\n" +
-                "Not-Intro (1,7)\n" +
-                "DoubleNot-Elim (8)");
-
-        indentButton.click();
-
-        assertTrue(textArea1.getAttribute("value").equals("----  !(A | !A)\n" +
-                "--------  A\n" +
-                "----  A | !A\n" +
-                "--------  FALSE\n" +
-                "----  !A\n" +
-                "----  A | !A\n" +
-                "----  FALSE\n" +
-                "!!(A | !A)\n" +
-                "A | !A\n"));
-    }
-
-    @Test
-    public void checkIndentationButton2() throws InterruptedException {
-
-        textArea1.sendKeys("B ^ E\n" +
-                "E -> C\n" +
-                "A\n" +
-                "B\n" +
-                "E\n" +
-                "C\n" +
-                "B -> C\n" +
-                "A -> (B -> C)");
-        textArea2.sendKeys("GIVEN\n" +
-                "GIVEN\n" +
-                "ASSUMPTION\n" +
-                "ASSUMPTION\n" +
-                "And-Elim (1)\n" +
-                "Implies-Elim (2,5)\n" +
-                "Implies-Intro (4,6)\n" +
-                "Implies-Intro (3,7)");
-
-        indentButton.click();
-
-        assertTrue(textArea1.getAttribute("value").equals("B ^ E\n" +
-                "E -> C\n" +
-                "----  A\n" +
-                "--------  B\n" +
-                "--------  E\n" +
-                "--------  C\n" +
-                "----  B -> C\n" +
-                "A -> (B -> C)"));
-    }
 
     @Test
     public void syntaxErrorTest1() throws InterruptedException {
@@ -261,8 +196,9 @@ public class FrontEndTests  {
 
         refreshElements();
 
-        assertTrue(errorBox.getText().equals("LINE 1 - Syntax Error: You cannot use | operator at " +
-                "this part of an expression"));
+        System.out.println(errorBox.getText());
+        assertTrue(errorBox.getText().equals("LINE 1 - Syntax Error: You cannot use ∨ operator at this " +
+                "part of an expression"));
     }
 
     @Test
@@ -312,8 +248,8 @@ public class FrontEndTests  {
 
         refreshElements();
 
-        assertTrue(errorBox.getText().equals("LINE 7 - RULE ERROR: You cannot reference a line that is i" +
-                "nside a completed box\nLINE 6 - RULE ERROR: This reference cannot be used for Implies Elimination"));
+        assertTrue(errorBox.getText().equals("LINE 6 - RULE ERROR: This reference cannot be used for Implies " +
+                "Elimination\nLINE 7 - RULE ERROR: You cannot reference a line that is inside a completed box"));
     }
 
     @Test
@@ -358,135 +294,6 @@ public class FrontEndTests  {
         refreshElements();
 
         assertTrue(hintBox.getText().equals("Hint: And Elimination"));
-    }
-
-    @Test
-    public void complexHintsTest() throws InterruptedException {
-
-        textArea1.sendKeys("B ^ E\n" +
-                "E -> C\n");
-        textArea2.sendKeys("GIVEN\n" +
-                "GIVEN\n");
-
-        textArea1.sendKeys("\nA -> (B -> C)");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: Assumption"));
-
-
-        refreshElements();
-
-        textArea1.sendKeys("A\n");
-        textArea2.sendKeys("ASSUMPTION\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: Assumption"));
-
-        refreshElements();
-
-        textArea1.sendKeys("B\n");
-        textArea2.sendKeys("ASSUMPTION\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: And Elimination"));
-
-        refreshElements();
-
-        textArea1.sendKeys("E\n");
-        textArea2.sendKeys("And-Elim (1)\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: Implies Elimination"));
-
-        refreshElements();
-
-        textArea1.sendKeys("C\n");
-        textArea2.sendKeys("Implies-Elim (2,5)\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: Implies Introduction"));
-
-        refreshElements();
-
-        textArea1.sendKeys("B -> C\n");
-        textArea2.sendKeys("Implies-Intro (4,6)\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Hint: Implies Introduction"));
-
-        refreshElements();
-
-        textArea2.sendKeys("Implies-Intro (3,7)\n");
-
-        hintButton.click();
-        submit.click();
-
-        refreshElements();
-
-        assertTrue(hintBox.getText().equals("Proof already successfully solved"));
-    }
-
-    @Test
-    public void checkValidityTest1() throws InterruptedException {
-
-        validityButton.click();
-
-        refreshValidityElements();
-
-        validityTextArea.sendKeys("A | B\n" +
-                "A -> D\n" +
-                "B -> D");
-
-        validityResultBox.sendKeys("D");
-
-        checkValidityButton.click();
-
-        refreshValidityElements();
-
-        assertTrue(validityOutpurBox.getText().equals("Proof is Valid"));
-    }
-
-    @Test
-    public void checkValidityTest2() throws InterruptedException {
-
-        validityButton.click();
-
-        refreshValidityElements();
-
-        validityTextArea.sendKeys("A ^ B\n" +
-                "C");
-
-        validityResultBox.sendKeys("D");
-
-        checkValidityButton.click();
-
-        refreshValidityElements();
-
-        assertTrue(validityOutpurBox.getText().equals("Proof is Invalid"));
     }
 
 
